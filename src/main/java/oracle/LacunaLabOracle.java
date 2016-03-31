@@ -30,6 +30,7 @@ public class LacunaLabOracle extends PApplet {
         cli = new CLI( this );
         markov = new MarkovChain();
         //markov.train( loadText( "lacuna_lab_texts.txt" ) );
+        loadConfiguration();
     }
 
     private String loadText( String fileName ) {
@@ -74,25 +75,33 @@ public class LacunaLabOracle extends PApplet {
                     break;
                 case 'e':
                     // export markov chain to json
-                    try {
-                        markov.saveToFile( markovJsonFileName );
-                    } catch ( IOException e ) {
-                        e.printStackTrace( );
-                    }
-                    System.out.println( "Saved markov chain to " + markovJsonFileName );
+                    saveConfiguration( );
                 case 'l':
                     // load markov chain from json
-                    try {
-                        markov.loadFromFile( markovJsonFileName );
-                    } catch ( FileNotFoundException e ) {
-                        e.printStackTrace( );
-                    }
-                    System.out.println( "Loaded markov chain from " + markovJsonFileName );
+                    loadConfiguration();
                 default:
                     cli.type( key );
                     break;
             }
         }
+    }
+
+    private void saveConfiguration() {
+        try {
+            markov.saveToFile( markovJsonFileName );
+        } catch ( IOException e ) {
+            e.printStackTrace( );
+        }
+        System.out.println( "Saved markov chain to " + markovJsonFileName );
+    }
+
+    private void loadConfiguration() {
+        try {
+            markov.loadFromFile( markovJsonFileName );
+        } catch ( FileNotFoundException e ) {
+            e.printStackTrace( );
+        }
+        System.out.println( "Loaded markov chain from " + markovJsonFileName );
     }
 
     public void exit() {
