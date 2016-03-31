@@ -5,6 +5,7 @@ import oracle.markov.MarkovChain;
 import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,6 +17,7 @@ import java.util.stream.Stream;
  */
 public class LacunaLabOracle extends PApplet {
 
+    public static String markovJsonFileName = "lacuna_markov_export.json";
     private CLI cli;
     private MarkovChain markov;
 
@@ -27,7 +29,7 @@ public class LacunaLabOracle extends PApplet {
     public void setup() {
         cli = new CLI( this );
         markov = new MarkovChain();
-        markov.train( loadText( "lacuna_lab_texts.txt" ) );
+        //markov.train( loadText( "lacuna_lab_texts.txt" ) );
     }
 
     private String loadText( String fileName ) {
@@ -70,6 +72,22 @@ public class LacunaLabOracle extends PApplet {
                 case ESC:
                     cli.reset( );
                     break;
+                case 'e':
+                    // export markov chain to json
+                    try {
+                        markov.saveToFile( markovJsonFileName );
+                    } catch ( IOException e ) {
+                        e.printStackTrace( );
+                    }
+                    System.out.println( "Saved markov chain to " + markovJsonFileName );
+                case 'l':
+                    // load markov chain from json
+                    try {
+                        markov.loadFromFile( markovJsonFileName );
+                    } catch ( FileNotFoundException e ) {
+                        e.printStackTrace( );
+                    }
+                    System.out.println( "Loaded markov chain from " + markovJsonFileName );
                 default:
                     cli.type( key );
                     break;
