@@ -1,10 +1,15 @@
 package oracle;
 
+import oracle.cli.CLI;
+import oracle.markov.MarkovChain;
+import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
-import processing.core.PSurface;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -12,25 +17,31 @@ import java.awt.event.WindowEvent;
 public class LacunaLabOracle extends PApplet {
 
     private CLI cli;
+    private MarkovChain markov;
 
     public void settings() {
         size( 640, 480 );
         //fullScreen( );
-
-    }
-
-    static final void removeExitEvent(final PSurface surf) {
-        final java.awt.Window win
-                = ((processing.awt.PSurfaceAWT.SmoothCanvas) surf.getNative()).getFrame();
-
-        for (final java.awt.event.WindowListener evt : win.getWindowListeners())
-            win.removeWindowListener(evt);
     }
 
     public void setup() {
-        removeExitEvent( getSurface() );
-
         cli = new CLI( this );
+        markov = new MarkovChain();
+        markov.train( loadText( "lacuna_lab_texts.txt" ) );
+    }
+
+    private String loadText( String fileName ) {
+        String completeText = "";
+        try ( Stream< String > stream = Files.lines( Paths.get( fileName ) )) {
+
+            String s = stream.collect( Collectors.joining( ) );
+            completeText += s;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return completeText;
     }
 
     public void draw() {
@@ -48,16 +59,25 @@ public class LacunaLabOracle extends PApplet {
                     cli.backspace();
                     break;
                 case ENTER:
-                    cli.clear();
+                    MarkovQueue queue = new MarkovQueue( 1 );
+                    String [] inputWords = cli.getLastLine().getText().split( " " );
+                    queue.addFirst( inputWords[ 0 ] );
+                    cli.finish( markov.generateSentence( queue ) );
                     break;
                 case TAB:
-                case ESC:
                 case DELETE:
+                    break;
+                case ESC:
+                    cli.reset( );
                     break;
                 default:
                     cli.type( key );
                     break;
             }
         }
+    }
+
+    public void exit() {
+        // simply overriding
     }
 }
