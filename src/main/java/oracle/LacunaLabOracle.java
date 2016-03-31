@@ -14,8 +14,9 @@ public class LacunaLabOracle extends PApplet {
     private CLI cli;
 
     public void settings() {
-        size( 1920, 1080 );
+        size( 640, 480 );
         //fullScreen( );
+
     }
 
     static final void removeExitEvent(final PSurface surf) {
@@ -29,10 +30,12 @@ public class LacunaLabOracle extends PApplet {
     public void setup() {
         removeExitEvent( getSurface() );
 
-        cli = new CLI();
+        cli = new CLI( this );
     }
 
     public void draw() {
+        background( 0 );
+        cli.draw();
     }
 
     public void keyPressed( ) {
@@ -56,7 +59,5 @@ public class LacunaLabOracle extends PApplet {
                     break;
             }
         }
-
-        System.out.println( cli.getText() );
     }
 }
