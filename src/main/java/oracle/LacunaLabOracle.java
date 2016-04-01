@@ -2,6 +2,7 @@ package oracle;
 
 import oracle.cli.CLI;
 import oracle.markov.MarkovChain;
+import oracle.markov.MarkovChain2;
 import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
@@ -28,7 +29,7 @@ public class LacunaLabOracle extends PApplet {
 
     public void setup() {
         cli = new CLI( this );
-        markov = new MarkovChain();
+        markov = new MarkovChain( 1 );
         //markov.train( loadText( "lacuna_lab_texts.txt" ) );
         loadConfiguration();
     }
@@ -44,7 +45,7 @@ public class LacunaLabOracle extends PApplet {
             e.printStackTrace();
         }
 
-        return completeText;
+        return completeText.toLowerCase();
     }
 
     public void draw() {
@@ -62,10 +63,18 @@ public class LacunaLabOracle extends PApplet {
                     cli.backspace();
                     break;
                 case ENTER:
+                    String [] inputWords = cli.getLastLine().getText().toLowerCase().split( " " );
                     MarkovQueue queue = new MarkovQueue( 1 );
-                    String [] inputWords = cli.getLastLine().getText().split( " " );
-                    queue.addFirst( inputWords[ 0 ] );
-                    cli.finish( markov.generateSentence( queue ) );
+
+                    for( String s : inputWords ) {
+                        queue.push( s );
+                    }
+
+                    String result = markov.generateSentence( queue );
+                    if( result.equals( inputWords[ 0 ] + " " )) {
+                        result = "oracle: no associations. try again";
+                    }
+                    cli.finish( result );
                     break;
                 case TAB:
                 case DELETE:
@@ -75,10 +84,10 @@ public class LacunaLabOracle extends PApplet {
                     break;
                 case 'e':
                     // export markov chain to json
-                    saveConfiguration( );
+                    //saveConfiguration( );
                 case 'l':
                     // load markov chain from json
-                    loadConfiguration();
+                    //loadConfiguration();
                 default:
                     cli.type( key );
                     break;
