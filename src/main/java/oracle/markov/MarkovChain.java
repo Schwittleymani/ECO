@@ -126,7 +126,7 @@ public class MarkovChain {
             // Sometimes the chain doesn't have any start states for the word in question
             // So it should just be save to cut it off here
             if(weights == null) {
-                sentence += ".";
+                //sentence += ".";
                 break;
             }
 
