@@ -25,7 +25,7 @@ public class LacunaLabOracle extends PApplet {
 
     public void settings() {
         size( 640, 480 );
-        fullScreen( );
+        //fullScreen( );
     }
 
     public void setup() {
@@ -77,8 +77,8 @@ public class LacunaLabOracle extends PApplet {
                     }
 
                     String result = markov.generateSentence( queue );
-                    if( result.equals( inputWords[ 0 ] + " " )) {
-                        result = "oracle: we don't care about " + inputWords[ 0 ];
+                    if( result.equals( inputWords[2] + " " )) {
+                        result = "oracle: we don't care about " + inputWords[ 2 ];
                     }
                     cli.finish( result );
                     break;
