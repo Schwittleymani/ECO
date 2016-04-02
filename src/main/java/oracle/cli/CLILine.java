@@ -12,7 +12,7 @@ public class CLILine extends Line {
     }
 
     public void backspace () {
-        if ( size() > 4 ) {
+        if ( size() > CLI.inputPreChars.length() ) {
             remove( size( ) - 1 );
         }
     }
