@@ -1,6 +1,7 @@
 package oracle.cli;
 
 import processing.core.PApplet;
+import processing.core.PFont;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.stream.IntStream;
 public class CLI {
     private ArrayList< CLILine > lines = new ArrayList<>( );
     private PApplet parent;
+    private PFont font;
 
     int textSize = 20;
     private int currentY;
@@ -24,6 +26,8 @@ public class CLI {
 
     public CLI ( PApplet p ) {
         this.parent = p;
+        this.font = p.createFont( "SourceCodePro-Regular.ttf", textSize );
+        p.textFont( this.font );
 
         reset( );
 
@@ -33,7 +37,7 @@ public class CLI {
 
     public void draw () {
         parent.fill( 0, 255, 0 );
-        pushLinesUp();
+        pushLinesUp( );
         lines.forEach( CLILine::draw );
 
         drawBlinkingLine( );
@@ -48,7 +52,7 @@ public class CLI {
         for (int i=0; i < moveUp; i++ ) {
             lines.remove(0);
         }
-        resetYs();
+        resetYs( );
     }
 
     void resetYs() {
@@ -82,7 +86,7 @@ public class CLI {
     }
 
     public void type (String string) {
-        String[] words = string.split(" ");
+        String[] words = string.split( " " );
         CLILine act = getLastLine( );
         float actWidth  = parent.textWidth(act.getText());
         for(int i=0; i < words.length; i++) {
@@ -115,7 +119,7 @@ public class CLI {
         currentY += lineHeight;
         CLILine newLine = new CLILine(this.parent);
         newLine.setPos(paddingLeft, currentY);
-        lines.add(newLine);
+        lines.add( newLine );
         if (inputChars) {
             type(inputPreChars);
         }
@@ -136,8 +140,8 @@ public class CLI {
     }
 
     public boolean available() {
-        parent.println(getLastLine());
-        parent.println(getLastLine().toString().split(" ").length);
+        parent.println( getLastLine( ) );
+        parent.println( getLastLine( ).toString( ).split( " " ).length );
         return getLastLine().getText().split(" ").length > inputPreChars.split(" ").length;
     }
 }
