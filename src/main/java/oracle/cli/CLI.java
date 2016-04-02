@@ -3,6 +3,7 @@ package oracle.cli;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -12,10 +13,11 @@ public class CLI {
     private PApplet parent;
 
     int textSize = 20;
-    int currentY;
+    private int currentY;
     int lineHeight = 30;
     int paddingLeft = 50;
     int maxLineWidth = 540;
+    float cursorBlockWidth;
 
     public CLI ( PApplet p ) {
         this.parent = p;
@@ -23,15 +25,38 @@ public class CLI {
         reset( );
         type( '$' );
         type( ' ' );
+
+        parent.textSize( textSize );
+        cursorBlockWidth = parent.textWidth("a");
     }
 
     public void draw () {
-        parent.textSize( textSize );
         parent.fill( 0, 255, 0 );
-
+        pushLinesUp();
         lines.forEach( CLILine::draw );
 
         drawBlinkingLine( );
+    }
+
+    private void pushLinesUp() {
+        int moveUp = 1;
+        for(;moveUp > 0; moveUp--){
+            if(lines.get(lines.size() - (moveUp)).y > parent.height)
+                break;
+        }
+        for (int i=0; i < moveUp; i++ ) {
+            lines.remove(0);
+        }
+        resetYs();
+    }
+
+    void resetYs() {
+        currentY = 40;
+        for(Line line : lines) {
+            line.y = currentY;
+            currentY += lineHeight;
+        }
+
     }
 
     private void drawBlinkingLine () {
@@ -41,7 +66,11 @@ public class CLI {
         int textColor = ( parent.millis( ) % ( 255 * 4 ) ) / 4;
         parent.stroke( 0, textColor, 0 );
         float textWidth = parent.textWidth( getLastLine( ).getText( ) );
-        parent.line( 50 + textWidth + 5, getLastLine( ).y - ( textSize ), 50 + textWidth + 5, getLastLine( ).y + ( textSize / 2 ) );
+        if(parent.random(1) < 0.04f) {
+            parent.noFill();
+        }
+        parent.rect( 50 + textWidth + 5, getLastLine( ).y - ( textSize ),
+                cursorBlockWidth, textSize + 10*parent.noise(parent.frameCount*0.01f));
 
         parent.popStyle( );
     }
