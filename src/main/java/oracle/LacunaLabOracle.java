@@ -25,7 +25,7 @@ public class LacunaLabOracle extends PApplet {
 
     public void settings() {
         size( 640, 480 );
-        //fullScreen( );
+        fullScreen( );
     }
 
     public void setup() {

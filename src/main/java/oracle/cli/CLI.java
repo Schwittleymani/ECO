@@ -27,8 +27,6 @@ public class CLI {
 
         parent.textSize( textSize );
         cursorBlockWidth = parent.textWidth("a");
-
-        type(inputPreChars);
     }
 
     public void draw () {
@@ -71,7 +69,7 @@ public class CLI {
             parent.noFill();
         }
         parent.rect( 50 + textWidth + 5, getLastLine( ).y - ( textSize ),
-                cursorBlockWidth, textSize + 10*parent.noise(parent.frameCount*0.01f));
+                cursorBlockWidth, textSize + 10 * parent.noise( parent.frameCount * 0.01f ) );
 
         parent.popStyle( );
     }
@@ -95,7 +93,7 @@ public class CLI {
     public void finish ( String answer ) {
         newLine( );
         type( answer );
-        newLine(true);
+        newLine( true );
     }
 
     private void newLine () {
@@ -123,5 +121,6 @@ public class CLI {
         CLILine line = new CLILine( this.parent );
         line.setPos( paddingLeft, currentY );
         lines.add( line );
+        type(inputPreChars);
     }
 }
