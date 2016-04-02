@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.Arrays;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -69,7 +70,7 @@ public class LacunaLabOracle extends PApplet {
                     cli.backspace();
                     break;
                 case ENTER:
-                    if( cli.getLastLine().getText().equals( "[ ] " )) {
+                    if( cli.getLastLine().getText().equals(CLI.inputPreChars)) {
                         return;
                     }
                     String [] inputWords = cli.getLastLine().getText().toLowerCase().split( " " );
@@ -80,6 +81,7 @@ public class LacunaLabOracle extends PApplet {
                     }
 
                     String result = markov.generateSentence( queue );
+                    //println(Arrays.toString(inputWords));
                     if( result.equals( inputWords[2] + " " )) {
                         result = "oracle: we don't care about " + inputWords[ 2 ];
                     }

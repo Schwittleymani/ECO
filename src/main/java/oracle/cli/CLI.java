@@ -18,7 +18,7 @@ public class CLI {
     int paddingLeft = 50;
     int maxLineWidth = 540;
     float cursorBlockWidth;
-    static String inputPreChars = "[ ] ";
+    public static String inputPreChars = "[ ]";
 
     public CLI ( PApplet p ) {
         this.parent = p;
@@ -90,9 +90,10 @@ public class CLI {
         for(int i=0; i < words.length; i++) {
             if(actWidth + parent.textWidth(words[i]) > maxLineWidth) {
                 newLine();
+                act = getLastLine( );
                 actWidth  = parent.textWidth(act.getText());
             } else {
-                act.add(words[i]);
+                act.add(words[i]+" ");
                 actWidth  = parent.textWidth(act.getText());
             }
         }
