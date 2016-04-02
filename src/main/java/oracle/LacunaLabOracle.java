@@ -113,7 +113,5 @@ public class LacunaLabOracle extends PApplet {
         System.out.println( "Loaded markov chain from " + markovJsonFileName );
     }
 
-    public void exit() {
-        // simply overriding
-    }
+
 }

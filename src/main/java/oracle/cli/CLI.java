@@ -23,11 +23,11 @@ public class CLI {
         this.parent = p;
 
         reset( );
-        type( '$' );
-        type( ' ' );
 
         parent.textSize( textSize );
         cursorBlockWidth = parent.textWidth("a");
+
+        type( "[ ] " );
     }
 
     public void draw () {
@@ -94,14 +94,22 @@ public class CLI {
     public void finish ( String answer ) {
         newLine( );
         type( answer );
-        newLine( );
+        newLine(true);
     }
 
     private void newLine () {
+        newLine(false);
+    }
+
+    private void newLine (boolean inputChars) {
         currentY += lineHeight;
         CLILine newLine = new CLILine( this.parent );
         newLine.setPos( paddingLeft, currentY );
         lines.add( newLine );
+        if(inputChars) {
+            type("[ ] ");
+        }
+        //type( ' ' );
     }
 
     public CLILine getLastLine () {
