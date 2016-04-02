@@ -71,6 +71,7 @@ public class CLI {
         parent.rect( 50 + textWidth + 5, getLastLine( ).y - ( textSize ),
                 cursorBlockWidth, textSize + 10 * parent.noise( parent.frameCount * 0.01f ) );
 
+
         parent.popStyle( );
     }
 
@@ -82,8 +83,19 @@ public class CLI {
         }
     }
 
-    public void type ( String string ) {
-        string.chars( ).forEachOrdered( c -> type( ( char ) c ) );
+    public void type (String string) {
+        String[] words = string.split(" ");
+        CLILine act = getLastLine( );
+        float actWidth  = parent.textWidth(act.getText());
+        for(int i=0; i < words.length; i++) {
+            if(actWidth + parent.textWidth(words[i]) > maxLineWidth) {
+                newLine();
+                actWidth  = parent.textWidth(act.getText());
+            } else {
+                act.add(words[i]);
+                actWidth  = parent.textWidth(act.getText());
+            }
+        }
     }
 
     public void backspace () {
