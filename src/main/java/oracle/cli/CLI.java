@@ -18,6 +18,7 @@ public class CLI {
     int paddingLeft = 50;
     int maxLineWidth = 540;
     float cursorBlockWidth;
+    static String inputPreChars = "[ ] ";
 
     public CLI ( PApplet p ) {
         this.parent = p;
@@ -27,7 +28,7 @@ public class CLI {
         parent.textSize( textSize );
         cursorBlockWidth = parent.textWidth("a");
 
-        type( "[ ] " );
+        type(inputPreChars);
     }
 
     public void draw () {
@@ -103,13 +104,12 @@ public class CLI {
 
     private void newLine (boolean inputChars) {
         currentY += lineHeight;
-        CLILine newLine = new CLILine( this.parent );
-        newLine.setPos( paddingLeft, currentY );
-        lines.add( newLine );
-        if(inputChars) {
-            type("[ ] ");
+        CLILine newLine = new CLILine(this.parent);
+        newLine.setPos(paddingLeft, currentY);
+        lines.add(newLine);
+        if (inputChars) {
+            type(inputPreChars);
         }
-        //type( ' ' );
     }
 
     public CLILine getLastLine () {
