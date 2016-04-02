@@ -6,6 +6,7 @@ import oracle.markov.MarkovChain2;
 import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,14 +25,16 @@ public class LacunaLabOracle extends PApplet {
 
     public void settings() {
         size( 640, 480 );
-        //fullScreen( );
+        fullScreen( );
     }
 
     public void setup() {
         cli = new CLI( this );
         markov = new MarkovChain( 1 );
         //markov.train( loadText( "lacuna_lab_texts.txt" ) );
+        //saveConfiguration();
         loadConfiguration();
+        noCursor();
     }
 
     private String loadText( String fileName ) {
@@ -56,6 +59,9 @@ public class LacunaLabOracle extends PApplet {
     public void keyPressed( ) {
         if( key == CODED ){
             switch( keyCode ) {
+                case KeyEvent.VK_F1:
+                    cli.reset();
+                    break;
             }
         } else {
             switch( key ) {
@@ -72,7 +78,7 @@ public class LacunaLabOracle extends PApplet {
 
                     String result = markov.generateSentence( queue );
                     if( result.equals( inputWords[ 0 ] + " " )) {
-                        result = "oracle: no associations. try again";
+                        result = "oracle: we don't care about " + inputWords[ 0 ];
                     }
                     cli.finish( result );
                     break;
