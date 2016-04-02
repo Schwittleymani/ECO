@@ -12,7 +12,7 @@ public class CLILine extends Line {
     }
 
     public void backspace () {
-        if ( size() > 2 ) {
+        if ( size() > 4 ) {
             remove( size( ) - 1 );
         }
     }
