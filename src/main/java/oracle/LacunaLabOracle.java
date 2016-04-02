@@ -69,6 +69,9 @@ public class LacunaLabOracle extends PApplet {
                     cli.backspace();
                     break;
                 case ENTER:
+                    if( cli.getLastLine().getText().equals( "[ ] " )) {
+                        return;
+                    }
                     String [] inputWords = cli.getLastLine().getText().toLowerCase().split( " " );
                     MarkovQueue queue = new MarkovQueue( 1 );
 
