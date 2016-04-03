@@ -3,11 +3,7 @@ package oracle.markov;
 /**
  * Created by mrzl on 31.03.2016.
  */
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import org.json.simple.JSONObject;
@@ -18,7 +14,7 @@ import org.json.simple.JSONValue;
  * @author Alek Ratzloff <alekratz@gmail.com>
  *
  */
-public class MarkovChain {
+public class MarkovChain implements Serializable {
 
     private Hashtable<MarkovQueue, Weighttable> chain = new Hashtable<>();
     private Random random = new Random();
@@ -126,8 +122,8 @@ public class MarkovChain {
             // Sometimes the chain doesn't have any start states for the word in question
             // So it should just be save to cut it off here
             if(weights == null) {
-                //sentence += ".";
-                break;
+                System.err.println( "No Words for this." );
+                return "nothing";
             }
 
             String append = word = weights.getRandomWord();
@@ -198,12 +194,12 @@ public class MarkovChain {
 
         FileWriter writer = new FileWriter(file);
         JSONObject root = new JSONObject();
-        chain.forEach((queue, table) -> {
-            String jsonKey = queue.toString(); // this gives a comma-separated list of the words
-            JSONObject queueRule = new JSONObject();
-            table.forEach(queueRule::put);
-            root.put(jsonKey, queueRule);
-        });
+        chain.forEach( ( queue, table ) -> {
+            String jsonKey = queue.toString( ); // this gives a comma-separated list of the words
+            JSONObject queueRule = new JSONObject( );
+            table.forEach( queueRule::put );
+            root.put( jsonKey, queueRule );
+        } );
 
         writer.write(root.toJSONString());
         writer.close();
@@ -219,25 +215,31 @@ public class MarkovChain {
         FileReader reader =  new FileReader(file);
         JSONObject root = (JSONObject) JSONValue.parse(reader);
 
-        root.forEach((wordObj, valueObj) -> {
-            MarkovQueue queue = new MarkovQueue(((String) wordObj).split(" "));
-            if(queue.getOrder() != getOrder()) {
-                if (getOrder() == 1 && count() == 0) {
+        root.forEach( ( wordObj, valueObj ) -> {
+            String[] words = ( ( String ) wordObj ).split( " " );
+            System.out.println( "length: " + words.length );
+            MarkovQueue queue = new MarkovQueue( words );
+            //Arrays.stream(words).forEach(s -> queue.push(s));
+            order = queue.getOrder( );
+            if ( queue.getOrder( ) != getOrder( ) ) {
+
+                if ( getOrder( ) == 1 && count( ) == 0 ) {
                     // if the order is equal to 1, and there hasn't been anything added to the chain yet, then we can infer
                     // that the order is going to be the same order as the queue
-                    order = queue.getOrder();
+                    order = queue.getOrder( );
                 } else {
                     // TODO: make this message less confusing
-                    throw new RuntimeException("Mismatched Markov chain order; " + path + " order is " + queue.getOrder() +
-                            " versus established order of " + order);
+                    throw new RuntimeException( "Mismatched Markov chain order; " + path + " order is " + queue.getOrder( ) +
+                            " versus established order of " + order );
                 }
             }
-            JSONObject value = (JSONObject)valueObj;
-            Weighttable weights = new Weighttable();
-            value.forEach((word, weight) -> {
-                weights.addWeight((String)word, ((Long)weight).intValue());
-            });
-            chain.put(queue, weights);
+
+            JSONObject value = ( JSONObject ) valueObj;
+            Weighttable weights = new Weighttable( );
+            value.forEach( ( word, weight ) -> {
+                weights.addWeight( ( String ) word, ( ( Long ) weight ).intValue( ) );
+            } );
+            chain.put( queue, weights);
         });
     }
 
