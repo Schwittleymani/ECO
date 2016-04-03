@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  * Created by raminsoleymani on 03/04/16.
@@ -28,11 +25,11 @@ public class OracleLogger {
             handler.setFormatter(new Formatter() {
                 @Override
                 public String format(LogRecord record) {
-                    //System.out.println(record.getMillis());
                     String dateString  = dateFormatter.format(new Date());
                     return dateString + ":::"+ record.getMessage() + nl;
                 }
             });
+
             allNowingLogger.setUseParentHandlers(false);
             allNowingLogger.addHandler(handler);
 
