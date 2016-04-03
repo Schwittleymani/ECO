@@ -78,7 +78,7 @@ public class LacunaLabOracle extends PApplet {
                     if ( !cli.available( ) ) {
                         return;
                     }
-                    String[] inputWords = cli.getLastLine( ).getText( ).toLowerCase( ).split( " " );
+                    String[] inputWords = cli.getLastLine( ).getText( true ).toLowerCase( ).split( " " );
                     String result = check( inputWords );
 
                     allnowingLogger.severe( "u:::" + cli.getLastLine( ).getText( true ) );
@@ -93,6 +93,12 @@ public class LacunaLabOracle extends PApplet {
                     if ( result.equals( "nothing" ) ) {
                         result = "oracle: we don't care about " + inputWords[ 2 ];
                     }
+
+                    if( result.length() > 150 ) {
+                        System.out.println( "Cropping text" );
+                        result = result.substring( 0, 150 );
+                    }
+
                     cli.finish( result );
                     break;
                 case TAB:
@@ -116,9 +122,9 @@ public class LacunaLabOracle extends PApplet {
 
     String check ( String[] input ) {
 
-        String noAnswer = "we don't care about " + input[ input.length - 2 ];
+        String noAnswer = "we don't care about " + input[ input.length - 1 ];
 
-        MarkovQueue queue = new MarkovQueue( input.length - 2 );
+        MarkovQueue queue = new MarkovQueue( input.length );
         if ( queue.getOrder( ) - 1 >= markovChains.size( ) ) {
             return noAnswer;
         }
