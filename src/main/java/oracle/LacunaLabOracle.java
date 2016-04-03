@@ -2,7 +2,6 @@ package oracle;
 
 import oracle.cli.CLI;
 import oracle.markov.MarkovChain;
-import oracle.markov.MarkovChain2;
 import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
@@ -11,8 +10,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Arrays;
@@ -22,12 +19,14 @@ import java.util.Arrays;
  */
 public class LacunaLabOracle extends PApplet {
 
-    public static String markovJsonFileName = "lacuna_markov_export-order";
+    public static String exportFileNamePrefix = "lacuna_markov_export-order";
+    public static int MAX_INPUT_WORDS = 3;
     private CLI cli;
     private ArrayList< MarkovChain > markovChains;
 
+
     public void settings () {
-        OracleLogger logger = new OracleLogger();
+        OracleLogger logger = new OracleLogger( );
 
         size( 640, 480 );
         //fullScreen( );
@@ -37,8 +36,8 @@ public class LacunaLabOracle extends PApplet {
         cli = new CLI( this );
         markovChains = new ArrayList<>( );
 
-        //saveConfiguration();
-        loadConfiguration();
+        //saveConfiguration( );
+        loadConfiguration( );
         noCursor( );
     }
 
@@ -78,15 +77,7 @@ public class LacunaLabOracle extends PApplet {
                         return;
                     }
                     String[] inputWords = cli.getLastLine( ).getText( ).toLowerCase( ).split( " " );
-                    MarkovQueue queue = new MarkovQueue( inputWords.length - 2 );
-
-                    for ( String s : inputWords ) {
-                        queue.addLast( s );
-                    }
-                    String result = markovChains.get( queue.getOrder( ) - 1 ).generateSentence( queue );
-                    if ( result.equals( "nothing" ) ) {
-                        result = "oracle: we don't care about " + inputWords[ 2 ];
-                    }
+                    String result = check( inputWords );
                     cli.finish( result );
                     break;
                 case TAB:
@@ -108,8 +99,31 @@ public class LacunaLabOracle extends PApplet {
         }
     }
 
+    String check ( String[] input ) {
+
+        String noAnswer = "we don't care about " + input[ input.length - 2 ];
+
+        MarkovQueue queue = new MarkovQueue( input.length - 2 );
+        if( queue.getOrder() - 1 >= markovChains.size() ) {
+            return noAnswer;
+        }
+        for ( String s : input ) {
+            queue.addLast( s );
+        }
+        String result = markovChains.get( queue.getOrder( ) - 1 ).generateSentence( queue );
+        if ( result.equals( "nothing" ) ) {
+            if( input.length < 4 ) {
+                return noAnswer;
+            }
+
+            String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
+            result = check( subarray );
+        }
+        return result;
+    }
+
     private void saveConfiguration () {
-        for ( int i = 1; i < 5; i++ ) {
+        for ( int i = 1; i < MAX_INPUT_WORDS + 1; i++ ) {
             MarkovChain chain = new MarkovChain( i );
             chain.train( loadText( "lacuna_lab_texts.txt" ) );
             markovChains.add( chain );
@@ -135,18 +149,17 @@ public class LacunaLabOracle extends PApplet {
 
     private void loadConfiguration () {
         try {
-            for ( int i = 1; i < 5; i++ ) {
+            for ( int i = 1; i < MAX_INPUT_WORDS + 1; i++ ) {
                 String fileName = "lacuna_chain-" + i + ".data";
-                FileInputStream f_in = new FileInputStream(fileName);
-                ObjectInputStream obj_in = new ObjectInputStream (f_in);
-                Object obj = obj_in.readObject();
+                FileInputStream f_in = new FileInputStream( fileName );
+                ObjectInputStream obj_in = new ObjectInputStream( f_in );
+                Object obj = obj_in.readObject( );
 
-                if (obj instanceof MarkovChain )
-                {
-                    markovChains.add( (MarkovChain) obj );
+                if ( obj instanceof MarkovChain ) {
+                    markovChains.add( ( MarkovChain ) obj );
                 }
 
-                System.out.println( "Loaded from " + fileName + ". With order " + markovChains.get( markovChains.size() - 1 ).getOrder() );
+                System.out.println( "Loaded from " + fileName + ". With order " + markovChains.get( markovChains.size( ) - 1 ).getOrder( ) );
             }
         } catch ( FileNotFoundException e ) {
             e.printStackTrace( );
@@ -155,7 +168,7 @@ public class LacunaLabOracle extends PApplet {
         } catch ( IOException e ) {
             e.printStackTrace( );
         }
-        System.out.println( "Loaded markov chain from " + markovJsonFileName );
+        System.out.println( "Loaded markov chain from " + exportFileNamePrefix );
     }
 
 
