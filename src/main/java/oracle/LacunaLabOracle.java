@@ -2,7 +2,6 @@ package oracle;
 
 import oracle.cli.CLI;
 import oracle.markov.MarkovChain;
-import oracle.markov.MarkovChain2;
 import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
@@ -11,9 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.Arrays;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -24,7 +23,7 @@ public class LacunaLabOracle extends PApplet {
     private CLI cli;
     private MarkovChain markov;
 
-    OracleLogger logger = new OracleLogger();
+    Logger allnowingLogger = Logger.getLogger("input");
 
     public void settings() {
         size( 640, 480 );
@@ -38,6 +37,7 @@ public class LacunaLabOracle extends PApplet {
         //saveConfiguration();
         loadConfiguration();
         noCursor();
+        new OracleLogger();
     }
 
     private String loadText( String fileName ) {
@@ -76,6 +76,7 @@ public class LacunaLabOracle extends PApplet {
                         return;
                     }
                     String [] inputWords = cli.getLastLine().getText().toLowerCase().split( " " );
+                    allnowingLogger.severe("u:::"+cli.getLastLine().getText(true));
                     MarkovQueue queue = new MarkovQueue( 1 );
 
                     for( String s : inputWords ) {
@@ -83,7 +84,7 @@ public class LacunaLabOracle extends PApplet {
                     }
 
                     String result = markov.generateSentence( queue );
-                    //println(Arrays.toString(inputWords));
+                    allnowingLogger.severe("o:::"+result);
                     if( result.equals( inputWords[2] + " " )) {
                         result = "oracle: we don't care about " + inputWords[ 2 ];
                     }

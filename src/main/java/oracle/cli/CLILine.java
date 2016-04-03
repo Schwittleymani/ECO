@@ -13,7 +13,8 @@ public class CLILine extends Line {
     }
 
     public void backspace () {
-        if ( size() >= CLI.inputPreChars.length() ) {
+
+        if ( getText().length() > CLI.inputPreChars.length()  ) { // -1 is magic shit
             remove( size( ) - 1 );
         }
     }
@@ -22,4 +23,10 @@ public class CLILine extends Line {
         return size() >= CHAR_LIMIT;
     }
 
+    public String getText(boolean cutPreChars) {
+        if(cutPreChars)
+            return String.join( "", this ).substring(CLI.inputPreChars.length());
+        else
+            return getText();
+    }
 }
