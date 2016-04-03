@@ -7,6 +7,7 @@ import processing.core.PApplet;
  */
 public class CLILine extends Line {
 
+    public static int CHAR_LIMIT; // set by CLI
     public CLILine ( PApplet p ) {
         super( p );
     }
@@ -15,6 +16,10 @@ public class CLILine extends Line {
         if ( size() >= CLI.inputPreChars.length() ) {
             remove( size( ) - 1 );
         }
+    }
+
+    public boolean limitReached() {
+        return size() >= CHAR_LIMIT;
     }
 
 }

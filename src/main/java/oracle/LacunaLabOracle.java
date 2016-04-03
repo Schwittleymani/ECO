@@ -24,6 +24,8 @@ public class LacunaLabOracle extends PApplet {
     private CLI cli;
     private MarkovChain markov;
 
+    OracleLogger logger = new OracleLogger();
+
     public void settings() {
         size( 640, 480 );
         fullScreen( );
