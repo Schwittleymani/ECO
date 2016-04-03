@@ -26,7 +26,7 @@ public class CLI {
 
     public CLI ( PApplet p ) {
         this.parent = p;
-        this.font = p.createFont( "SourceCodePro-Regular.ttf", textSize );
+        this.font = p.createFont( "Glass_TTY_VT220.ttf", textSize );
         p.textFont( this.font );
 
         reset( );
