@@ -70,7 +70,7 @@ public class LacunaLabOracle extends PApplet {
                     cli.backspace();
                     break;
                 case ENTER:
-                    if( cli.getLastLine().getText().equals(CLI.inputPreChars)) {
+                    if(! cli.available()) {
                         return;
                     }
                     String [] inputWords = cli.getLastLine().getText().toLowerCase().split( " " );

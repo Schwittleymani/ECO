@@ -3,6 +3,7 @@ package oracle.cli;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 /**
@@ -15,6 +16,7 @@ public class CLI {
     int textSize = 20;
     private int currentY;
     int lineHeight = 30;
+    int paddingTop = 40;
     int paddingLeft = 50;
     int maxLineWidth = 540;
     float cursorBlockWidth;
@@ -50,7 +52,7 @@ public class CLI {
     }
 
     void resetYs() {
-        currentY = 40;
+        currentY = paddingTop;
         for(Line line : lines) {
             line.y = currentY;
             currentY += lineHeight;
@@ -68,7 +70,7 @@ public class CLI {
         if(parent.random(1) < 0.04f) {
             parent.noFill();
         }
-        parent.rect( 50 + textWidth + 5, getLastLine( ).y - ( textSize ),
+        parent.rect( 50 + textWidth, getLastLine( ).y - ( textSize ),
                 cursorBlockWidth, textSize + 10 * parent.noise( parent.frameCount * 0.01f ) );
 
 
@@ -76,11 +78,7 @@ public class CLI {
     }
 
     public void type ( char key ) {
-        CLILine act = getLastLine( );
-        act.add( new String( String.valueOf( key ) ) );
-        if ( parent.textWidth( act.getText( ) ) >= maxLineWidth ) {
-            newLine( );
-        }
+        getLastLine( ).add( new String( String.valueOf( key ) ) );
     }
 
     public void type (String string) {
@@ -130,10 +128,16 @@ public class CLI {
     public void reset () {
         lines.clear( );
 
-        currentY = 40;
+        currentY = paddingTop;
         CLILine line = new CLILine( this.parent );
         line.setPos( paddingLeft, currentY );
         lines.add( line );
         type(inputPreChars);
+    }
+
+    public boolean available() {
+        parent.println(getLastLine());
+        parent.println(getLastLine().toString().split(" ").length);
+        return getLastLine().getText().split(" ").length > inputPreChars.split(" ").length;
     }
 }
