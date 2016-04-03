@@ -7,10 +7,12 @@ import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Arrays;
@@ -20,69 +22,67 @@ import java.util.Arrays;
  */
 public class LacunaLabOracle extends PApplet {
 
-    public static String markovJsonFileName = "lacuna_markov_export.json";
+    public static String markovJsonFileName = "lacuna_markov_export-order";
     private CLI cli;
-    private MarkovChain markov;
+    private ArrayList< MarkovChain > markovChains;
 
-    public void settings() {
+    public void settings () {
         size( 640, 480 );
-        fullScreen( );
+        //fullScreen( );
     }
 
-    public void setup() {
+    public void setup () {
         cli = new CLI( this );
-        markov = new MarkovChain( 1 );
-        //markov.train( loadText( "lacuna_lab_texts.txt" ) );
+        markovChains = new ArrayList<>( );
+
         //saveConfiguration();
         loadConfiguration();
-        noCursor();
+        noCursor( );
     }
 
-    private String loadText( String fileName ) {
+    private String loadText ( String fileName ) {
         String completeText = "";
-        try ( Stream< String > stream = Files.lines( Paths.get( fileName ) )) {
+        try ( Stream< String > stream = Files.lines( Paths.get( fileName ) ) ) {
 
             String s = stream.collect( Collectors.joining( ) );
             completeText += s;
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch ( IOException e ) {
+            e.printStackTrace( );
         }
 
-        return completeText.toLowerCase();
+        return completeText.toLowerCase( );
     }
 
-    public void draw() {
+    public void draw () {
         background( 0 );
-        cli.draw();
+        cli.draw( );
     }
 
-    public void keyPressed( ) {
-        if( key == CODED ){
-            switch( keyCode ) {
+    public void keyPressed () {
+        if ( key == CODED ) {
+            switch ( keyCode ) {
                 case KeyEvent.VK_F1:
-                    cli.reset();
+                    cli.reset( );
                     break;
             }
         } else {
-            switch( key ) {
+            switch ( key ) {
                 case BACKSPACE:
-                    cli.backspace();
+                    cli.backspace( );
                     break;
                 case ENTER:
-                    if(! cli.available()) {
+                    if ( !cli.available( ) ) {
                         return;
                     }
-                    String [] inputWords = cli.getLastLine().getText().toLowerCase().split( " " );
-                    MarkovQueue queue = new MarkovQueue( 1 );
+                    String[] inputWords = cli.getLastLine( ).getText( ).toLowerCase( ).split( " " );
+                    MarkovQueue queue = new MarkovQueue( inputWords.length - 2 );
 
-                    for( String s : inputWords ) {
-                        queue.push( s );
+                    for ( String s : inputWords ) {
+                        queue.addLast( s );
                     }
-
-                    String result = markov.generateSentence( queue );
-                    //println(Arrays.toString(inputWords));
-                    if( result.equals( inputWords[2] + " " )) {
+                    String result = markovChains.get( queue.getOrder( ) - 1 ).generateSentence( queue );
+                    if ( result.equals( "nothing" ) ) {
                         result = "oracle: we don't care about " + inputWords[ 2 ];
                     }
                     cli.finish( result );
@@ -106,19 +106,51 @@ public class LacunaLabOracle extends PApplet {
         }
     }
 
-    private void saveConfiguration() {
-        try {
-            markov.saveToFile( markovJsonFileName );
-        } catch ( IOException e ) {
-            e.printStackTrace( );
+    private void saveConfiguration () {
+        for ( int i = 1; i < 10; i++ ) {
+            MarkovChain chain = new MarkovChain( i );
+            chain.train( loadText( "lacuna_lab_texts.txt" ) );
+            markovChains.add( chain );
+            System.out.println( "Training chain with order " + i );
         }
-        System.out.println( "Saved markov chain to " + markovJsonFileName );
+
+        for ( MarkovChain chain : markovChains ) {
+            String fileName = "lacuna_chain-" + chain.getOrder( ) + ".data";
+            try {
+                ObjectOutputStream obj_out = new ObjectOutputStream(
+                        new FileOutputStream( fileName )
+                );
+                obj_out.writeObject( chain );
+            } catch ( FileNotFoundException e ) {
+                e.printStackTrace( );
+            } catch ( IOException e ) {
+                e.printStackTrace( );
+            }
+            System.out.println( "Saved markov chain to " + fileName );
+        }
+
     }
 
-    private void loadConfiguration() {
+    private void loadConfiguration () {
         try {
-            markov.loadFromFile( markovJsonFileName );
+            for ( int i = 1; i < 10; i++ ) {
+                String fileName = "lacuna_chain-" + i + ".data";
+                FileInputStream f_in = new FileInputStream(fileName);
+                ObjectInputStream obj_in = new ObjectInputStream (f_in);
+                Object obj = obj_in.readObject();
+
+                if (obj instanceof MarkovChain )
+                {
+                    markovChains.add( (MarkovChain) obj );
+                }
+
+                System.out.println( "Loaded from " + fileName + ". With order " + markovChains.get( markovChains.size() - 1 ).getOrder() );
+            }
         } catch ( FileNotFoundException e ) {
+            e.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
+        } catch ( IOException e ) {
             e.printStackTrace( );
         }
         System.out.println( "Loaded markov chain from " + markovJsonFileName );
