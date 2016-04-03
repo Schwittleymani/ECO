@@ -26,7 +26,7 @@ public class CLI {
 
     public CLI ( PApplet p ) {
         this.parent = p;
-        this.font = p.createFont( "SourceCodePro-Regular.ttf", textSize );
+        this.font = p.createFont( "Glass_TTY_VT220.ttf", textSize );
         p.textFont( this.font );
 
         reset( );
@@ -140,8 +140,8 @@ public class CLI {
     }
 
     public boolean available() {
-        parent.println( getLastLine( ) );
-        parent.println( getLastLine( ).toString( ).split( " " ).length );
+        //parent.println( getLastLine( ) );
+        //parent.println( getLastLine( ).toString( ).split( " " ).length );
         return getLastLine().getText().split(" ").length > inputPreChars.split(" ").length;
     }
 }
