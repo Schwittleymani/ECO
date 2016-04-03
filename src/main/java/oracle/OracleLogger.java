@@ -1,33 +1,36 @@
 package oracle;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  * Created by raminsoleymani on 03/04/16.
  */
 public class OracleLogger {
 
-    private final static Logger allNowingLogger = Logger.getLogger("input");
 
-    private static final String dateFormatString = "mm/dd/yyyy HH:mm:ss";
+    private static final String dateFormatString = "mm/dd/yyyy_HH:mm:ss";
     private SimpleDateFormat dateFormatter;
+
+    static final String nl = System.getProperty("line.separator");
 
     public OracleLogger() {
         try {
-            FileHandler handler = new FileHandler("conversation.log");
+            Logger allNowingLogger = Logger.getLogger("input");
+            FileHandler handler = new FileHandler("conversation.log",true);
+            dateFormatter = new SimpleDateFormat(dateFormatString);
             handler.setFormatter(new Formatter() {
                 @Override
                 public String format(LogRecord record) {
-                    String dateString  = dateFormatter.format(new Date(record.getMillis()));
-                    return dateString + " "+ record.getMessage();
+                    String dateString  = dateFormatter.format(new Date());
+                    return dateString + ":::"+ record.getMessage() + nl;
                 }
             });
+
+            allNowingLogger.setUseParentHandlers(false);
             allNowingLogger.addHandler(handler);
 
         } catch (IOException e) {

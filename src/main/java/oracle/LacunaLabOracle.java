@@ -9,10 +9,11 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.Arrays;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -20,15 +21,15 @@ import java.util.Arrays;
 public class LacunaLabOracle extends PApplet {
 
     public static String exportFileNamePrefix = "lacuna_markov_export-order";
-    public static int MAX_INPUT_WORDS = 3;
+    public static int MAX_INPUT_WORDS = 3   ;
     private CLI cli;
     private ArrayList< MarkovChain > markovChains;
 
+    Logger allnowingLogger = Logger.getLogger( "input" );
 
     public void settings () {
-        OracleLogger logger = new OracleLogger( );
-
         size( 640, 480 );
+        allnowingLogger.setUseParentHandlers( false );
         //fullScreen( );
     }
 
@@ -36,8 +37,9 @@ public class LacunaLabOracle extends PApplet {
         cli = new CLI( this );
         markovChains = new ArrayList<>( );
 
-        //saveConfiguration( );
+        //saveConfiguration();
         loadConfiguration( );
+
         noCursor( );
     }
 
@@ -78,6 +80,19 @@ public class LacunaLabOracle extends PApplet {
                     }
                     String[] inputWords = cli.getLastLine( ).getText( ).toLowerCase( ).split( " " );
                     String result = check( inputWords );
+
+                    allnowingLogger.severe( "u:::" + cli.getLastLine( ).getText( true ) );
+                    MarkovQueue queue = new MarkovQueue( 1 );
+
+
+                    for ( String s : inputWords ) {
+                        queue.addLast( s );
+                    }
+
+                    allnowingLogger.severe( "o:::" + result );
+                    if ( result.equals( "nothing" ) ) {
+                        result = "oracle: we don't care about " + inputWords[ 2 ];
+                    }
                     cli.finish( result );
                     break;
                 case TAB:
@@ -104,7 +119,7 @@ public class LacunaLabOracle extends PApplet {
         String noAnswer = "we don't care about " + input[ input.length - 2 ];
 
         MarkovQueue queue = new MarkovQueue( input.length - 2 );
-        if( queue.getOrder() - 1 >= markovChains.size() ) {
+        if ( queue.getOrder( ) - 1 >= markovChains.size( ) ) {
             return noAnswer;
         }
         for ( String s : input ) {
@@ -112,7 +127,7 @@ public class LacunaLabOracle extends PApplet {
         }
         String result = markovChains.get( queue.getOrder( ) - 1 ).generateSentence( queue );
         if ( result.equals( "nothing" ) ) {
-            if( input.length < 4 ) {
+            if ( input.length < 4 ) {
                 return noAnswer;
             }
 
