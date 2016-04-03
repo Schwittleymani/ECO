@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 public class LacunaLabOracle extends PApplet {
 
     public static String exportFileNamePrefix = "lacuna_markov_export-order";
-    public static int MAX_INPUT_WORDS = 3   ;
+    public static int MAX_INPUT_WORDS = 5;
     private CLI cli;
     private ArrayList< MarkovChain > markovChains;
 
@@ -133,7 +133,7 @@ public class LacunaLabOracle extends PApplet {
         }
         String result = markovChains.get( queue.getOrder( ) - 1 ).generateSentence( queue );
         if ( result.equals( "nothing" ) ) {
-            if ( input.length < 4 ) {
+            if ( input.length < 2 ) {
                 return noAnswer;
             }
 
