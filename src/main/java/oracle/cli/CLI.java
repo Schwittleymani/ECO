@@ -33,6 +33,11 @@ public class CLI {
 
         parent.textSize( textSize );
         cursorBlockWidth = parent.textWidth("a");
+        String widthTestString = "";
+        do {
+            widthTestString += "a";
+        } while(parent.textWidth(widthTestString) < maxLineWidth);
+        CLILine.CHAR_LIMIT = widthTestString.length();
     }
 
     public void draw () {
@@ -82,7 +87,8 @@ public class CLI {
     }
 
     public void type ( char key ) {
-        getLastLine( ).add( new String( String.valueOf( key ) ) );
+        if(!getLastLine().limitReached())
+            getLastLine( ).add( new String( String.valueOf( key ) ) );
     }
 
     public void type (String string) {
@@ -140,8 +146,6 @@ public class CLI {
     }
 
     public boolean available() {
-        //parent.println( getLastLine( ) );
-        //parent.println( getLastLine( ).toString( ).split( " " ).length );
         return getLastLine().getText().split(" ").length > inputPreChars.split(" ").length;
     }
 }

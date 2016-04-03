@@ -27,6 +27,8 @@ public class LacunaLabOracle extends PApplet {
     private ArrayList< MarkovChain > markovChains;
 
     public void settings () {
+        OracleLogger logger = new OracleLogger();
+
         size( 640, 480 );
         //fullScreen( );
     }
@@ -107,7 +109,7 @@ public class LacunaLabOracle extends PApplet {
     }
 
     private void saveConfiguration () {
-        for ( int i = 1; i < 10; i++ ) {
+        for ( int i = 1; i < 5; i++ ) {
             MarkovChain chain = new MarkovChain( i );
             chain.train( loadText( "lacuna_lab_texts.txt" ) );
             markovChains.add( chain );
@@ -133,7 +135,7 @@ public class LacunaLabOracle extends PApplet {
 
     private void loadConfiguration () {
         try {
-            for ( int i = 1; i < 10; i++ ) {
+            for ( int i = 1; i < 5; i++ ) {
                 String fileName = "lacuna_chain-" + i + ".data";
                 FileInputStream f_in = new FileInputStream(fileName);
                 ObjectInputStream obj_in = new ObjectInputStream (f_in);
