@@ -58,7 +58,7 @@ public class MarkovManager extends ArrayList< MarkovChain > {
         return answer;
     }
 
-    String check( String[] input ) {
+    String check ( String[] input ) {
         MarkovQueue queue = new MarkovQueue( input.length );
         if ( queue.getOrder( ) - 1 >= size( ) ) {
             input = Arrays.copyOfRange( input, 0, size( ) - 1 );

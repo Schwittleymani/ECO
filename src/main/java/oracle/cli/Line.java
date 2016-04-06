@@ -19,36 +19,36 @@ public class Line extends ArrayList< String > {
 
     public void backspace () {
 
-        if ( getText().length() > CLI.inputPreChars.length()  ) { // -1 is magic shit
+        if ( getText( ).length( ) > CLI.inputPreChars.length( ) ) { // -1 is magic shit
             remove( size( ) - 1 );
         }
     }
 
-    public boolean limitReached() {
-        return size() >= CHAR_LIMIT;
+    public boolean limitReached () {
+        return size( ) >= CHAR_LIMIT;
     }
 
-    public String getText(boolean cutPreChars) {
-        if(cutPreChars)
-            return String.join( "", this ).substring(CLI.inputPreChars.length());
+    public String getText ( boolean cutPreChars ) {
+        if ( cutPreChars )
+            return String.join( "", this ).substring( CLI.inputPreChars.length( ) );
         else
-            return getText();
+            return getText( );
     }
 
     public String getText () {
         return String.join( "", this );
     }
 
-    public void draw() {
+    public void draw () {
         parent.text( getText( ), x, y );
     }
 
-    public void setPos( int x, int y ) {
+    public void setPos ( int x, int y ) {
         this.x = x;
         this.y = y;
     }
 
-    public String toString() {
+    public String toString () {
         return x + " " + y;
     }
 }

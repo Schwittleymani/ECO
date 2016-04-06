@@ -21,12 +21,14 @@ public class LacunaLabOracle extends PApplet {
     public void settings () {
         size( 640, 480 );
         allnowingLogger.setUseParentHandlers( false );
-        fullScreen( );
+        //fullScreen( );
     }
 
     public void setup () {
         cli = new CLI( this );
-        markov = new MarkovManager();
+        cli.addEmojiEasterEgg( );
+
+        markov = new MarkovManager( );
 
         //markov.save();
         markov.load( );
@@ -53,9 +55,10 @@ public class LacunaLabOracle extends PApplet {
                     break;
                 case ENTER:
                     if ( !cli.available( ) ) {
+                        cli.emptyInput();
                         return;
                     }
-                    String inputWordsString = cli.getLastLine( ) .getText( true );
+                    String inputWordsString = cli.getLastLine( ).getText( true );
                     String result = markov.getAnswer( inputWordsString );
 
                     allnowingLogger.severe( "u:::" + cli.getLastLine( ).getText( true ) );
