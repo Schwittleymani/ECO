@@ -4,14 +4,12 @@ import processing.core.PApplet;
 import processing.core.PFont;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.IntStream;
 
 /**
  * Created by mrzl on 31.03.2016.
  */
 public class CLI {
-    private ArrayList< CLILine > lines = new ArrayList<>( );
+    private ArrayList< Line > lines = new ArrayList<>( );
     private PApplet parent;
     private PFont font;
 
@@ -43,13 +41,13 @@ public class CLI {
         do {
             widthTestString += "a";
         } while(parent.textWidth(widthTestString) < maxLineWidth);
-        CLILine.CHAR_LIMIT = widthTestString.length();
+        Line.CHAR_LIMIT = widthTestString.length();
     }
 
     public void draw () {
         parent.fill( 0, 255, 0 );
         pushLinesUp( );
-        lines.forEach( CLILine::draw );
+        lines.forEach( Line::draw );
 
         drawBlinkingLine( );
     }
@@ -99,7 +97,7 @@ public class CLI {
 
     public void type (String string) {
         String[] words = string.split(" " );
-        CLILine act = getLastLine( );
+        Line act = getLastLine( );
         float actWidth  = parent.textWidth(act.getText(false));
         for(int i=0; i < words.length; i++) {
             if(actWidth + parent.textWidth(words[i]) > maxLineWidth) {
@@ -129,7 +127,7 @@ public class CLI {
 
     private void newLine (boolean inputChars) {
         currentY += lineHeight;
-        CLILine newLine = new CLILine(this.parent);
+        Line newLine = new Line(this.parent);
         newLine.setPos(paddingLeft, currentY);
         lines.add( newLine );
         if (inputChars) {
@@ -137,7 +135,7 @@ public class CLI {
         }
     }
 
-    public CLILine getLastLine () {
+    public Line getLastLine () {
         return lines.get( lines.size( ) - 1 );
     }
 
@@ -145,7 +143,7 @@ public class CLI {
         lines.clear( );
 
         currentY = paddingTop;
-        CLILine line = new CLILine( this.parent );
+        Line line = new Line( this.parent );
         line.setPos( paddingLeft, currentY );
         lines.add( line );
         type(inputPreChars);
