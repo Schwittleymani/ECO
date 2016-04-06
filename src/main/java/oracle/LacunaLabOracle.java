@@ -78,9 +78,28 @@ public class LacunaLabOracle extends PApplet {
                     if ( !cli.available( ) ) {
                         return;
                     }
-                    String[] inputWords = cli.getLastLine( ).getText( true ).toLowerCase( ).split( " " );
+                    String inputWordsString = cli.getLastLine( )
+                            .getText( true )
+                            .replace( "?", "" )
+                            .replace( "!", "" )
+                            .replace( ".", "" )
+                            .replace( ",", "" )
+                            .replace( "#", "" )
+                            .replace( "§", "" )
+                            .replace( "$", "" )
+                            .replace( "%", "" )
+                            .replace( "&", "" )
+                            .replace( "/", "" )
+                            .replace( "(", "" )
+                            .replace( ")", "" )
+                            .replace( "=", "" )
+                            .replace( ";", "" )
+                            .replace( ":", "" )
+                            .replace( "_", "" )
+                            .toLowerCase( );
+                    String[] inputWords = inputWordsString.split( " " );
                     String result = check( inputWords );
-                    if( result.equals( "nothing" )) {
+                    if ( result.equals( "nothing" ) ) {
                         String noAnswer = "we don't care about " + cli.getLastLine( ).getText( true );
                         result = noAnswer;
                     }
@@ -98,7 +117,7 @@ public class LacunaLabOracle extends PApplet {
                         result = "oracle: we don't care about " + inputWords[ 2 ];
                     }
 
-                    if( result.length() > 150 ) {
+                    if ( result.length( ) > 150 ) {
                         System.out.println( "Cropping text" );
                         result = result.substring( 0, 150 );
                     }
@@ -125,13 +144,12 @@ public class LacunaLabOracle extends PApplet {
     }
 
     String check ( String[] input ) {
-
-
-
         MarkovQueue queue = new MarkovQueue( input.length );
         if ( queue.getOrder( ) - 1 >= markovChains.size( ) ) {
-            return "nothing";
+            input = Arrays.copyOfRange( input, 0, markovChains.size( ) - 1 );
+            queue = new MarkovQueue( input.length );
         }
+
         for ( String s : input ) {
             queue.addLast( s );
         }
