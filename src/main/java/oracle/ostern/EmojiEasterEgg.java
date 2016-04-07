@@ -14,7 +14,7 @@ public class EmojiEasterEgg extends
         EasterEgg {
 
 
-    ArrayList<C> flakes = new ArrayList<C>();
+    ArrayList<Flake> flakes = new ArrayList<Flake>();
     static int nextIndex = 0;
 
     int MAX_FLAKES = 10;
@@ -38,32 +38,39 @@ public class EmojiEasterEgg extends
         emojiSheet = parent.loadImage("sheet_32.png");
         emojiSet.add(getEmoji(3, 7)); // heart
         for(int i=0; i < INIT_FLAKES;i++)
-            flakes.add(new C());
+            flakes.add(new Flake());
     }
 
     @Override
     public void drawBefore () {
         if ( isRunning( ) ) {
-            for (Iterator<C> iterator = flakes.iterator(); iterator.hasNext(); ) {
-                C c = iterator.next();
+            parent.println("EMOJI TIME");
+            for (Iterator<Flake> iterator = flakes.iterator(); iterator.hasNext(); ) {
+                Flake c = iterator.next();
                 if (c.done) {
                     iterator.remove();
-                } else {
+                } else if(!c.foreground){
                     c.draw();
                 }
             }
         }
-        if(flakes.size()  < MAX_FLAKES && parent.random(1) < FLAKE_CHANCE)
-            flakes.add(new C());
+        if(super.isRunning()) {
+            if (flakes.size() < MAX_FLAKES && parent.random(1) < FLAKE_CHANCE)
+                flakes.add(new Flake());
+        }
     }
 
     @Override
     public void drawAfter () {
         if ( isRunning( ) ) {
-            // after text
-            //parent.noStroke( );
-            //parent.fill( 255, 0, 0 );
-            //parent.rect( parent.random( 0, parent.width ), parent.random( 0, parent.width ), parent.random( 0, parent.width ), parent.random( 0, parent.width ) );
+            for (Iterator<Flake> iterator = flakes.iterator(); iterator.hasNext(); ) {
+                Flake c = iterator.next();
+                if (c.done) {
+                    iterator.remove();
+                } else if(c.foreground){
+                    c.draw();
+                }
+            }
         }
     }
 
@@ -74,10 +81,10 @@ public class EmojiEasterEgg extends
         return super.isRunning() && flakes.size() == 0;
     }
 
-    class C {
-
+    class Flake {
 
         PVector pos;
+        boolean foreground;
         boolean done = false;
         private int index;
         PImage emoji;
@@ -87,7 +94,8 @@ public class EmojiEasterEgg extends
         float yMoveSpeed;
         float xMoveMax;
 
-        C() {
+
+        Flake() {
             radius = radiusRange.get();
             pos = new PVector(parent.random(parent.width), 0);
             xMoveSpeed = xMoveSpeedRange.get();
@@ -95,6 +103,7 @@ public class EmojiEasterEgg extends
             xMoveMax = xMoveMaxRange.get();
             index = nextIndex++;
             emoji = emojiSet.get((int)parent.random(emojiSet.size()));
+            foreground = parent.random(1) <0.5f;
         }
 
         void updatePos() {
@@ -132,7 +141,4 @@ public class EmojiEasterEgg extends
             return parent.random(min, max);
         }
     }
-
-
-
 }
