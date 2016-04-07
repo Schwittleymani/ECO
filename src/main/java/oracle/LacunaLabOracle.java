@@ -55,11 +55,14 @@ public class LacunaLabOracle extends PApplet {
                     break;
                 case ENTER:
                     if ( !cli.available( ) ) {
-                        cli.emptyInput();
                         return;
                     }
                     String inputWordsString = cli.getLastLine( ).getText( true );
                     String result = markov.getAnswer( inputWordsString );
+
+                    if( result.contains( "lacuna" )) {
+                        cli.emptyInput();
+                    }
 
                     allnowingLogger.severe( "u:::" + inputWordsString);
                     allnowingLogger.severe( "o:::" + result );
