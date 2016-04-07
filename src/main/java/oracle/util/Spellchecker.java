@@ -1,6 +1,6 @@
 package oracle.util;
 
-import com.inet.jortho.SpellChecker;
+//import com.inet.jortho.SpellChecker;
 
 import java.net.URL;
 
