@@ -5,6 +5,7 @@ import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class MarkovManager extends ArrayList< MarkovChain > {
 
     private String loadText ( String fileName ) {
         String completeText = "";
-        try ( Stream< String > stream = Files.lines( Paths.get( fileName ) ) ) {
+        try ( Stream< String > stream = Files.lines( Paths.get( fileName ), StandardCharsets.UTF_8 ) ) {
 
             String s = stream.collect( Collectors.joining( ) );
             completeText += s;
