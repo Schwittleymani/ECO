@@ -20,6 +20,7 @@ public class LacunaLabOracle extends PApplet {
 
     public void settings () {
         size( 640, 480 );
+        new OracleLogger();
         allnowingLogger.setUseParentHandlers( false );
         //fullScreen( );
     }
