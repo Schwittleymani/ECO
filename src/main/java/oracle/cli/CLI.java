@@ -1,17 +1,18 @@
 package oracle.cli;
 
+import oracle.ostern.EasterEgg;
+import oracle.ostern.EmojiEasterEgg;
 import processing.core.PApplet;
 import processing.core.PFont;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.IntStream;
+import java.util.HashMap;
 
 /**
  * Created by mrzl on 31.03.2016.
  */
 public class CLI {
-    private ArrayList< CLILine > lines = new ArrayList<>( );
+    private ArrayList< Line > lines = new ArrayList<>( );
     private PApplet parent;
     private PFont font;
 
@@ -24,6 +25,8 @@ public class CLI {
     float cursorBlockWidth;
     public static String inputPreChars = "[ ] ";
 
+    private HashMap< EasterEgg.EASTEREGG_TYPE, EasterEgg > easterEggs;
+
     public CLI ( PApplet p ) {
         this.parent = p;
         this.font = p.createFont( "Glass_TTY_VT220.ttf", textSize );
@@ -32,43 +35,49 @@ public class CLI {
         reset( );
 
         parent.textSize( textSize );
-        setupWidth();
+        setupWidth( );
+
+        easterEggs = new HashMap<>( );
     }
 
-    public void setupWidth() {
+    public void setupWidth () {
         // just one block
-        cursorBlockWidth = parent.textWidth("a");
+        cursorBlockWidth = parent.textWidth( "a" );
         // limit for the input line
         String widthTestString = "";
         do {
             widthTestString += "a";
-        } while(parent.textWidth(widthTestString) < maxLineWidth);
-        CLILine.CHAR_LIMIT = widthTestString.length();
+        } while ( parent.textWidth( widthTestString ) < maxLineWidth );
+        Line.CHAR_LIMIT = widthTestString.length( );
     }
 
     public void draw () {
+        easterEggs.values( ).forEach( EasterEgg::drawBefore );
+
         parent.fill( 0, 255, 0 );
         pushLinesUp( );
-        lines.forEach( CLILine::draw );
+        lines.forEach( Line::draw );
 
         drawBlinkingLine( );
+
+        easterEggs.values( ).forEach( EasterEgg::drawAfter );
     }
 
-    private void pushLinesUp() {
+    private void pushLinesUp () {
         int moveUp = 1;
-        for(;moveUp > 0; moveUp--){
-            if(lines.get(lines.size() - (moveUp)).y > parent.height)
+        for (; moveUp > 0; moveUp-- ) {
+            if ( lines.get( lines.size( ) - ( moveUp ) ).y > parent.height )
                 break;
         }
-        for (int i=0; i < moveUp; i++ ) {
-            lines.remove(0);
+        for ( int i = 0; i < moveUp; i++ ) {
+            lines.remove( 0 );
         }
         resetYs( );
     }
 
-    void resetYs() {
+    void resetYs () {
         currentY = paddingTop;
-        for(Line line : lines) {
+        for ( Line line : lines ) {
             line.y = currentY;
             currentY += lineHeight;
         }
@@ -82,8 +91,8 @@ public class CLI {
         int textColor = ( parent.millis( ) % ( 255 * 4 ) ) / 4;
         parent.stroke( 0, textColor, 0 );
         float textWidth = parent.textWidth( getLastLine( ).getText( ) );
-        if(parent.random(1) < 0.04f) {
-            parent.noFill();
+        if ( parent.random( 1 ) < 0.04f ) {
+            parent.noFill( );
         }
         parent.rect( 50 + textWidth, getLastLine( ).y - ( textSize ),
                 cursorBlockWidth, textSize + 10 * parent.noise( parent.frameCount * 0.01f ) );
@@ -93,22 +102,22 @@ public class CLI {
     }
 
     public void type ( char key ) {
-        if(!getLastLine().limitReached())
+        if ( !getLastLine( ).limitReached( ) )
             getLastLine( ).add( new String( String.valueOf( key ) ) );
     }
 
-    public void type (String string) {
-        String[] words = string.split(" " );
-        CLILine act = getLastLine( );
-        float actWidth  = parent.textWidth(act.getText(false));
-        for(int i=0; i < words.length; i++) {
-            if(actWidth + parent.textWidth(words[i]) > maxLineWidth) {
-                newLine();
+    public void type ( String string ) {
+        String[] words = string.split( " " );
+        Line act = getLastLine( );
+        float actWidth = parent.textWidth( act.getText( false ) );
+        for ( int i = 0; i < words.length; i++ ) {
+            if ( actWidth + parent.textWidth( words[ i ] ) > maxLineWidth ) {
+                newLine( );
                 act = getLastLine( );
-                actWidth  = parent.textWidth(act.getText());
+                actWidth = parent.textWidth( act.getText( ) );
             } else {
-                act.add(words[i]+" ");
-                actWidth  = parent.textWidth(act.getText());
+                act.add( words[ i ] + " " );
+                actWidth = parent.textWidth( act.getText( ) );
             }
         }
     }
@@ -124,20 +133,20 @@ public class CLI {
     }
 
     private void newLine () {
-        newLine(false);
+        newLine( false );
     }
 
-    private void newLine (boolean inputChars) {
+    private void newLine ( boolean inputChars ) {
         currentY += lineHeight;
-        CLILine newLine = new CLILine(this.parent);
-        newLine.setPos(paddingLeft, currentY);
+        Line newLine = new Line( this.parent );
+        newLine.setPos( paddingLeft, currentY );
         lines.add( newLine );
-        if (inputChars) {
-            type(inputPreChars);
+        if ( inputChars ) {
+            type( inputPreChars );
         }
     }
 
-    public CLILine getLastLine () {
+    public Line getLastLine () {
         return lines.get( lines.size( ) - 1 );
     }
 
@@ -145,13 +154,25 @@ public class CLI {
         lines.clear( );
 
         currentY = paddingTop;
-        CLILine line = new CLILine( this.parent );
+        Line line = new Line( this.parent );
         line.setPos( paddingLeft, currentY );
         lines.add( line );
-        type(inputPreChars);
+        type( inputPreChars );
     }
 
-    public boolean available() {
-        return getLastLine().getText().split(" ").length > inputPreChars.split(" ").length;
+    public boolean available () {
+        return getLastLine( ).getText( ).split( " " ).length > inputPreChars.split( " " ).length;
+    }
+
+    public void emptyInput () {
+        easterEggs.get( EasterEgg.EASTEREGG_TYPE.EMOJI ).start( );
+    }
+
+    public void addEmojiEasterEgg () {
+        easterEggs.put( EasterEgg.EASTEREGG_TYPE.EMOJI, new EmojiEasterEgg( parent, 2 ) );
+    }
+
+    public EasterEgg getEasterEgg ( EasterEgg.EASTEREGG_TYPE type ) {
+        return easterEggs.get( type );
     }
 }
