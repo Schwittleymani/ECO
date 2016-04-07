@@ -12,6 +12,8 @@ public abstract class EasterEgg {
     private long durationMillis;
     private long startedMillis;
 
+
+
     public abstract void drawBefore ();
 
     public abstract void drawAfter ();

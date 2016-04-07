@@ -62,7 +62,7 @@ public class LacunaLabOracle extends PApplet {
                     String inputWordsString = cli.getLastLine( ).getText( true );
                     String result = markov.getAnswer( inputWordsString );
 
-                    allnowingLogger.severe( "u:::" + cli.getLastLine( ).getText( true ) );
+                    allnowingLogger.severe( "u:::" + inputWordsString);
                     allnowingLogger.severe( "o:::" + result );
 
                     cli.finish( result );
