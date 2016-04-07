@@ -39,7 +39,6 @@ public class LacunaLabOracle extends PApplet {
     public void draw () {
         background( 0 );
         cli.draw( );
-        println(frameRate);
     }
 
     public void keyPressed () {

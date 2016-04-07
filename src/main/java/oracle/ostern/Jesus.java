@@ -2,9 +2,7 @@ package oracle.ostern;
 
 import processing.core.PApplet;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 /**
