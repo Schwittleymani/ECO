@@ -27,7 +27,6 @@ public class LacunaLabOracle extends PApplet {
 
     public void setup () {
         cli = new CLI( this );
-        cli.addEmojiEasterEgg( );
 
         markov = new MarkovManager( );
 
@@ -40,6 +39,7 @@ public class LacunaLabOracle extends PApplet {
     public void draw () {
         background( 0 );
         cli.draw( );
+        println(frameRate);
     }
 
     public void keyPressed () {

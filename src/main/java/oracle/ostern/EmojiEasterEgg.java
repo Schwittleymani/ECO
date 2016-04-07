@@ -17,11 +17,11 @@ public class EmojiEasterEgg extends
     ArrayList<Flake> flakes = new ArrayList<Flake>();
     static int nextIndex = 0;
 
-    int MAX_FLAKES = 10;
+    int MAX_FLAKES = 20;
     int INIT_FLAKES = 4;
-    float FLAKE_CHANCE = 0.02f;
+    float FLAKE_CHANCE = 0.015f;
 
-    Range radiusRange = new Range(12,30);
+    Range radiusRange = new Range(30,70);
     Range xMoveSpeedRange = new Range(0.04f,0.08f);
     Range yMoveSpeedRange = new Range(0.3f,0.7f);
     Range xMoveRandomRange = new Range(-0.1f,0.1f);
@@ -32,9 +32,8 @@ public class EmojiEasterEgg extends
     ArrayList<PImage> emojiSet = new ArrayList<PImage>();
 
 
-    public EmojiEasterEgg ( PApplet parent, float durationSeconds ) {
-        super( parent, durationSeconds );
-
+    public EmojiEasterEgg () {
+        super(Jesus.EASTEREGG_TYPE.EMOJI);
         emojiSheet = parent.loadImage("sheet_32.png");
         emojiSet.add(getEmoji(3, 7)); // heart
         for(int i=0; i < INIT_FLAKES;i++)
@@ -43,13 +42,10 @@ public class EmojiEasterEgg extends
 
     @Override
     public void drawBefore () {
-        if ( isRunning( ) ) {
-            parent.println("EMOJI TIME");
+        if (isRunning()) {
             for (Iterator<Flake> iterator = flakes.iterator(); iterator.hasNext(); ) {
                 Flake c = iterator.next();
-                if (c.done) {
-                    iterator.remove();
-                } else if(!c.foreground){
+                if(!c.foreground){
                     c.draw();
                 }
             }
@@ -61,8 +57,8 @@ public class EmojiEasterEgg extends
     }
 
     @Override
-    public void drawAfter () {
-        if ( isRunning( ) ) {
+    public boolean drawAfter() {
+        if (isRunning()) {
             for (Iterator<Flake> iterator = flakes.iterator(); iterator.hasNext(); ) {
                 Flake c = iterator.next();
                 if (c.done) {
@@ -71,14 +67,13 @@ public class EmojiEasterEgg extends
                     c.draw();
                 }
             }
-        }
+            return true;
+        } else
+            return false;
     }
 
-
-
-
     public boolean isRunning() {
-        return super.isRunning() && flakes.size() == 0;
+        return super.isRunning() || flakes.size() > 0;
     }
 
     class Flake {
@@ -97,7 +92,7 @@ public class EmojiEasterEgg extends
 
         Flake() {
             radius = radiusRange.get();
-            pos = new PVector(parent.random(parent.width), 0);
+            pos = new PVector(parent.random(parent.width), -radius);
             xMoveSpeed = xMoveSpeedRange.get();
             yMoveSpeed = yMoveSpeedRange.get();
             xMoveMax = xMoveMaxRange.get();

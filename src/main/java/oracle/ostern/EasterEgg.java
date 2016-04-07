@@ -6,32 +6,32 @@ import processing.core.PApplet;
  * Created by mrzl on 07.04.2016.
  */
 public abstract class EasterEgg {
-    public enum EASTEREGG_TYPE {EMOJI}
 
-    protected PApplet parent;
+    static Jesus jesus;
+    public final Jesus.EASTEREGG_TYPE type;
+
+    protected static PApplet parent;
     private long durationMillis;
     private long startedMillis;
 
-
+    public EasterEgg(Jesus.EASTEREGG_TYPE type) {
+        this.type = type;
+        jesus.addEasterEgg(this);
+    }
 
     public abstract void drawBefore ();
 
-    public abstract void drawAfter ();
+    public abstract boolean drawAfter ();
 
-    public EasterEgg ( PApplet parent, float durationSeconds ) {
-        this.parent = parent;
-        this.durationMillis = ( long ) ( durationSeconds * 1000 );
-    }
 
-    public void start () {
+    public EasterEgg start (long durationMillis) {
+        this.durationMillis = durationMillis;
         startedMillis = System.currentTimeMillis( );
-    }
-
-    public void stop () {
-        startedMillis = System.currentTimeMillis( ) + durationMillis;
+        return this;
     }
 
     public boolean isRunning () {
-        return System.currentTimeMillis( ) > startedMillis && System.currentTimeMillis( ) < startedMillis + durationMillis;
+        return Jesus.jesusTime > startedMillis
+                && Jesus.jesusTime < startedMillis + durationMillis;
     }
 }

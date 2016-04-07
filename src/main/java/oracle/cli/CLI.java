@@ -2,6 +2,7 @@ package oracle.cli;
 
 import oracle.ostern.EasterEgg;
 import oracle.ostern.EmojiEasterEgg;
+import oracle.ostern.Jesus;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -15,6 +16,7 @@ public class CLI {
     private ArrayList< Line > lines = new ArrayList<>( );
     private PApplet parent;
     private PFont font;
+    private Jesus jesus;
 
     int textSize = 20;
     private int currentY;
@@ -25,7 +27,7 @@ public class CLI {
     float cursorBlockWidth;
     public static String inputPreChars = "[ ] ";
 
-    private HashMap< EasterEgg.EASTEREGG_TYPE, EasterEgg > easterEggs;
+
 
     public CLI ( PApplet p ) {
         this.parent = p;
@@ -33,11 +35,11 @@ public class CLI {
         p.textFont( this.font );
 
         reset( );
+        jesus = new Jesus(p);
 
         parent.textSize( textSize );
         setupWidth( );
 
-        easterEggs = new HashMap<>( );
     }
 
     public void setupWidth () {
@@ -52,7 +54,7 @@ public class CLI {
     }
 
     public void draw () {
-        easterEggs.values( ).forEach( EasterEgg::drawBefore );
+        jesus.drawBeforeEaster();
 
         parent.fill( 0, 255, 0 );
         pushLinesUp( );
@@ -60,7 +62,7 @@ public class CLI {
 
         drawBlinkingLine( );
 
-        easterEggs.values( ).forEach( EasterEgg::drawAfter );
+        jesus.drawAfterEaster();
     }
 
     private void pushLinesUp () {
@@ -165,14 +167,7 @@ public class CLI {
     }
 
     public void emptyInput () {
-        easterEggs.get( EasterEgg.EASTEREGG_TYPE.EMOJI ).start( );
+        jesus.start(Jesus.EASTEREGG_TYPE.EMOJI, 10);
     }
 
-    public void addEmojiEasterEgg () {
-        easterEggs.put( EasterEgg.EASTEREGG_TYPE.EMOJI, new EmojiEasterEgg( parent, 2 ) );
-    }
-
-    public EasterEgg getEasterEgg ( EasterEgg.EASTEREGG_TYPE type ) {
-        return easterEggs.get( type );
-    }
 }
