@@ -16,75 +16,77 @@ public class LacunaLabOracle extends PApplet {
     private CLI cli;
     private MarkovManager markov;
 
-    Logger allnowingLogger = Logger.getLogger( "input" );
+    Logger allnowingLogger = Logger.getLogger("input");
 
-    public void settings () {
-        size( 640, 480 );
+    public void settings() {
+        size(640, 480);
         new OracleLogger();
-        allnowingLogger.setUseParentHandlers( false );
-        fullScreen( );
+        allnowingLogger.setUseParentHandlers(false);
+        //fullScreen( );
     }
 
-    public void setup () {
-        cli = new CLI( this );
+    public void setup() {
+        cli = new CLI(this);
 
-        markov = new MarkovManager( );
+        markov = new MarkovManager();
 
         //markov.save();
-        markov.load( );
+        markov.load();
 
-        noCursor( );
+        noCursor();
     }
 
-    public void draw () {
-        background( 0 );
-        cli.draw( );
-        if( frameCount % 5 == 0) {
-            cli.update( );
+    public void draw() {
+        background(0);
+        cli.draw();
+        if (frameCount % 5 == 0) {
+            cli.update();
         }
     }
 
-    public void keyPressed () {
-        if ( key == CODED ) {
-            switch ( keyCode ) {
+    public void keyPressed() {
+        if (key == CODED) {
+            switch (keyCode) {
                 case KeyEvent.VK_F1:
-                    cli.reset( );
+                    cli.reset();
                     break;
             }
         } else {
-            switch ( key ) {
+            switch (key) {
                 case BACKSPACE:
-                    if ( !cli.available( ) ) {
-                        cli.backspace( );
-                    }
+                    cli.backspace();
                     break;
                 case ENTER:
-                    if ( !cli.available( ) ) {
+                    if (!cli.available()) {
                         return;
                     }
-                    String inputWordsString = cli.getLastLine( ).getText( true );
-                    String result = markov.getAnswer( inputWordsString );
+                    String inputWordsString = cli.getLastLine().getText(true);
+                    String result = markov.getAnswer(inputWordsString);
 
-                    if( result.contains( "lacuna" )) {
-                        cli.emptyInput();
+                    if (result.contains("lacuna")) {
+                        cli.startEmojiEasterEgg();
                     }
 
-                    allnowingLogger.severe( "u:::" + inputWordsString);
-                    allnowingLogger.severe( "o:::" + result );
+                    allnowingLogger.severe("u:::" + inputWordsString);
+                    allnowingLogger.severe("o:::" + result);
 
-                    System.out.println( result );
-                    cli.finish( result );
+                    System.out.println(result);
+                    cli.finish(result, calculateDelayByInputLength(inputWordsString.split(" ").length));
                     break;
                 case TAB:
                 case DELETE:
                     break;
                 case ESC:
-                    cli.reset( );
+                    cli.reset();
                     break;
                 default:
-                    cli.type( key );
+                    cli.type(key);
                     break;
             }
         }
+    }
+
+    private long calculateDelayByInputLength(int length) {
+        return (long) map(length, 1, 8, 400, 5000);
     }
 }

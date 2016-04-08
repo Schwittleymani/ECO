@@ -30,7 +30,7 @@ public class MarkovManager extends ArrayList< MarkovChain > {
                 .replace( ".", "" )
                 .replace( ",", "" )
                 .replace( "#", "" )
-                .replace( "�", "" )
+                .replace( "?", "" )
                 .replace( "$", "" )
                 .replace( "%", "" )
                 .replace( "&", "" )
@@ -46,7 +46,7 @@ public class MarkovManager extends ArrayList< MarkovChain > {
         answer = check( inputWords );
 
         if ( answer.equals( "nothing" ) ) {
-            String noAnswer = "we don't care about " + input;
+            String noAnswer = "i don't care about this. let's talk about \"" + get(0).generateSentence().split( " " )[0]+ "\" instead?";
             answer = noAnswer;
         }
 
