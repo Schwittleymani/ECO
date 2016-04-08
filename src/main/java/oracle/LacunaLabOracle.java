@@ -12,22 +12,26 @@ import java.util.logging.Logger;
 public class LacunaLabOracle extends PApplet {
 
     public static String EXPORT_FILENAME_PREFIX = "lacuna_markov_export-order";
-    public static int MAX_INPUT_WORDS = 3;
+    public static int MAX_INPUT_WORDS = 8;
     private CLI cli;
     private MarkovManager markov;
 
     Logger allnowingLogger = Logger.getLogger("input");
+
+    long millisLastInteraction;
+    long idleDelay = 120 * 1000; // 2 minutes
 
     public void settings() {
         size(640, 480);
         new OracleLogger();
         allnowingLogger.setUseParentHandlers(false);
         //fullScreen( );
+
+        millisLastInteraction = System.currentTimeMillis();
     }
 
     public void setup() {
         cli = new CLI(this);
-
         markov = new MarkovManager();
 
         //markov.save();
@@ -39,12 +43,15 @@ public class LacunaLabOracle extends PApplet {
     public void draw() {
         background(0);
         cli.draw();
-        if (frameCount % 5 == 0) {
-            cli.update();
+
+        if( System.currentTimeMillis() > millisLastInteraction + idleDelay ) {
+            cli.reset();
         }
     }
 
     public void keyPressed() {
+        millisLastInteraction = System.currentTimeMillis();
+
         if (key == CODED) {
             switch (keyCode) {
                 case KeyEvent.VK_F1:

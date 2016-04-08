@@ -25,6 +25,9 @@ public class CLI {
     float cursorBlockWidth;
     public static String inputPreChars = "[ ] ";
 
+    long cliUpdateDelayMillis = 50;
+    long lastCliUpdateCheck;
+
     String stringToType = "";
     boolean doNewLineWhenFinishedTyping = false;
     long thinkUntil;
@@ -40,6 +43,7 @@ public class CLI {
         parent.textSize(textSize);
         setupWidth();
         thinkUntil = System.currentTimeMillis();
+        lastCliUpdateCheck = System.currentTimeMillis();
     }
 
     public void setupWidth() {
@@ -63,6 +67,7 @@ public class CLI {
                 newLine(true);
                 doNewLineWhenFinishedTyping = false;
             }
+
             return;
         }
         type(stringToType.charAt(0));
@@ -70,6 +75,11 @@ public class CLI {
     }
 
     public void draw() {
+        if( System.currentTimeMillis() > lastCliUpdateCheck + cliUpdateDelayMillis ) {
+            lastCliUpdateCheck = System.currentTimeMillis();
+            update();
+        }
+
         parent.fill(0, 255, 0);
 
         jesus.drawBeforeEaster();
