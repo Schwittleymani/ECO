@@ -39,6 +39,9 @@ public class LacunaLabOracle extends PApplet {
     public void draw () {
         background( 0 );
         cli.draw( );
+        if( frameCount % 5 == 0) {
+            cli.update( );
+        }
     }
 
     public void keyPressed () {
@@ -51,7 +54,9 @@ public class LacunaLabOracle extends PApplet {
         } else {
             switch ( key ) {
                 case BACKSPACE:
-                    cli.backspace( );
+                    if ( !cli.available( ) ) {
+                        cli.backspace( );
+                    }
                     break;
                 case ENTER:
                     if ( !cli.available( ) ) {
@@ -67,6 +72,7 @@ public class LacunaLabOracle extends PApplet {
                     allnowingLogger.severe( "u:::" + inputWordsString);
                     allnowingLogger.severe( "o:::" + result );
 
+                    System.out.println( result );
                     cli.finish( result );
                     break;
                 case TAB:

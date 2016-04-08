@@ -2,7 +2,6 @@ package oracle;
 
 import oracle.markov.MarkovChain;
 import oracle.markov.MarkovQueue;
-import processing.core.PApplet;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +30,7 @@ public class MarkovManager extends ArrayList< MarkovChain > {
                 .replace( ".", "" )
                 .replace( ",", "" )
                 .replace( "#", "" )
-                .replace( "§", "" )
+                .replace( "ï¿½", "" )
                 .replace( "$", "" )
                 .replace( "%", "" )
                 .replace( "&", "" )

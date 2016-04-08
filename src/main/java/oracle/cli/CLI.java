@@ -24,6 +24,9 @@ public class CLI {
     float cursorBlockWidth;
     public static String inputPreChars = "[ ] ";
 
+    String stringToType = "";
+    boolean isNewLine = false;
+
     public CLI ( PApplet p ) {
         this.parent = p;
         this.font = p.createFont( "Glass_TTY_VT220.ttf", textSize );
@@ -45,6 +48,18 @@ public class CLI {
             widthTestString += "a";
         } while ( parent.textWidth( widthTestString ) < maxLineWidth );
         Line.CHAR_LIMIT = widthTestString.length( );
+    }
+
+    public void update () {
+        if( stringToType.isEmpty() ) {
+            if( isNewLine ) {
+                newLine( true );
+                isNewLine = false;
+            }
+            return;
+        }
+        type( stringToType.charAt( 0 ) );
+        stringToType = stringToType.substring( 1, stringToType.length( ) );
     }
 
     public void draw () {
@@ -99,8 +114,12 @@ public class CLI {
     }
 
     public void type ( char key ) {
-        if ( !getLastLine( ).limitReached( ) )
+        if ( !getLastLine( ).limitReached( ) ) {
             getLastLine( ).add( new String( String.valueOf( key ) ) );
+        } else {
+            newLine();
+        }
+
     }
 
     public void type ( String string ) {
@@ -125,8 +144,10 @@ public class CLI {
 
     public void finish ( String answer ) {
         newLine( );
-        type( answer );
-        newLine( true );
+        //type( answer );
+        stringToType = answer;
+        //newLine( true );
+        isNewLine = true;
     }
 
     private void newLine () {
@@ -158,7 +179,7 @@ public class CLI {
     }
 
     public boolean available () {
-        return getLastLine( ).getText( ).split( " " ).length > inputPreChars.split( " " ).length;
+        return getLastLine( ).getText( ).split( " " ).length > inputPreChars.split( " " ).length && stringToType.isEmpty();
     }
 
     public void emptyInput () {
