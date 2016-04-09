@@ -1,6 +1,5 @@
 package oracle;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,8 +9,6 @@ import java.util.logging.*;
  * Created by raminsoleymani on 03/04/16.
  */
 public class OracleLogger {
-
-
     private static final String dateFormatString = "MM/dd/yyyy_HH:mm:ss";
     private SimpleDateFormat dateFormatter;
 

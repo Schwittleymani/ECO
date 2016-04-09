@@ -5,6 +5,7 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PVector;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -36,7 +37,7 @@ public class CLI{
 
     public CLI( PApplet p ) {
         this.parent = p;
-        this.font = p.createFont( "Glass_TTY_VT220.ttf", textSize );
+        this.font = p.createFont( "data" + File.separator + "Glass_TTY_VT220.ttf", textSize );
         p.textFont( this.font );
 
         reset();
