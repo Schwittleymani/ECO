@@ -18,7 +18,7 @@ public class CLI{
     private Jesus jesus;
 
     BlinkingRectangle blinker;
-    TypeSetter typer;
+    DelayedTyper delayedTyper;
 
     int textSize = 20;
     private int currentY;
@@ -29,11 +29,6 @@ public class CLI{
     float cursorBlockWidth;
     public static String inputPreChars = "[ ] ";
 
-    long cliUpdateDelayMillis = 50;
-    long lastCliUpdateCheck;
-
-    long thinkUntil;
-
     public CLI( PApplet p ) {
         this.parent = p;
         this.font = p.createFont( "data" + File.separator + "Glass_TTY_VT220.ttf", textSize );
@@ -43,12 +38,10 @@ public class CLI{
         jesus = new Jesus( p );
 
         blinker = new BlinkingRectangle( p, this );
-        typer = new TypeSetter( this );
+        delayedTyper = new DelayedTyper( this );
 
         parent.textSize( textSize );
         setupWidth();
-        thinkUntil = System.currentTimeMillis();
-        lastCliUpdateCheck = System.currentTimeMillis();
     }
 
     public void setupWidth() {
@@ -62,18 +55,7 @@ public class CLI{
         Line.CHAR_LIMIT = widthTestString.length();
     }
 
-    public void update() {
-        if( isThinking() ){
-            return;
-        }
-    }
-
     public void draw() {
-        if( System.currentTimeMillis() > lastCliUpdateCheck + cliUpdateDelayMillis ){
-            lastCliUpdateCheck = System.currentTimeMillis();
-            update();
-        }
-
         parent.fill( 0, 255, 0 );
 
         jesus.drawBeforeEaster();
@@ -81,7 +63,8 @@ public class CLI{
         pushLinesUp();
         lines.forEach( Line::draw );
 
-        if( isThinking() ){
+        if( delayedTyper.isWaiting() ){
+            // rotates the blinking square when its thinking
             parent.pushMatrix();
             float blockHeight = textSize + 10 * parent.noise( parent.frameCount * 0.01f );
             PVector centerOfBlinkingBox = new PVector( 50 + parent.textWidth( getLastLine().getText() ) + ( cursorBlockWidth / 2 ), getLastLine().y - ( textSize ) + ( blockHeight / 2 ) );
@@ -90,22 +73,19 @@ public class CLI{
             parent.translate( -centerOfBlinkingBox.x, -centerOfBlinkingBox.y );
         }
 
+        // draws blinking square
         blinker.draw();
 
-        boolean doNewLine = typer.update();
-        if( doNewLine ) {
+        // types the text in delayed manner
+        if( delayedTyper.update() ) {
             newLine( true );
         }
 
-        if( isThinking() ){
+        if( delayedTyper.isWaiting() ){
 
             parent.popMatrix();
         }
         jesus.drawAfterEaster();
-    }
-
-    private boolean isThinking() {
-        return System.currentTimeMillis() < thinkUntil;
     }
 
     private void pushLinesUp() {
@@ -158,9 +138,8 @@ public class CLI{
 
     public void finish( String answer, long delayMillis ) {
         newLine();
-        typer.addText( answer );
-        typer.addDelay( delayMillis );
-        thinkUntil = System.currentTimeMillis() + delayMillis;
+        delayedTyper.addText( answer );
+        delayedTyper.addDelay( delayMillis );
     }
 
     private void newLine() {
@@ -192,7 +171,7 @@ public class CLI{
     }
 
     public boolean available() {
-        return getLastLine().getText().split( " " ).length > inputPreChars.split( " " ).length && typer.isEmpty();
+        return getLastLine().getText().split( " " ).length > inputPreChars.split( " " ).length && delayedTyper.isEmpty();
     }
 
     public void startEmojiEasterEgg() {

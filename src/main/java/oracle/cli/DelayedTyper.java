@@ -3,13 +3,13 @@ package oracle.cli;
 /**
  * Created by mrzl on 09.04.2016.
  */
-public class TypeSetter{
+public class DelayedTyper{
     private String textToType;
     private long delayMillisPerCharacter;
     private CLI cli;
     private long startMillis;
 
-    public TypeSetter( CLI cli ) {
+    public DelayedTyper( CLI cli ) {
         textToType = "";
         this.cli = cli;
         delayMillisPerCharacter = 50;
@@ -25,12 +25,16 @@ public class TypeSetter{
         startMillis += millis;
     }
 
+    public boolean isWaiting() {
+        return System.currentTimeMillis() - startMillis > delayMillisPerCharacter;
+    }
+
     /**
      * @return whether a new line should be set
      */
     public boolean update() {
         if( !isEmpty() ){
-            if( System.currentTimeMillis() - startMillis > delayMillisPerCharacter ){
+            if( !isWaiting() ){
                 cli.type( textToType.charAt( 0 ) );
                 textToType = textToType.substring( 1, textToType.length() );
 
