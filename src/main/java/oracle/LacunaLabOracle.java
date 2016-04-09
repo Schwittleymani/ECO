@@ -4,6 +4,7 @@ import oracle.cli.CLI;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 /**
@@ -17,14 +18,13 @@ public class LacunaLabOracle extends PApplet {
     private MarkovManager markov;
 
     Logger logger = Logger.getLogger("input");
-    OracleLogger log;
 
     long millisLastInteraction;
     long idleDelay = 120 * 1000; // 2 minutes
 
     public void settings() {
         size(640, 480);
-        log = new OracleLogger();
+        new OracleLogger();
         logger.setUseParentHandlers( false );
         //fullScreen( );
 
@@ -42,7 +42,7 @@ public class LacunaLabOracle extends PApplet {
     }
 
     public void draw() {
-        background(0);
+        background( 0 );
         cli.draw();
 
         if( System.currentTimeMillis() > millisLastInteraction + idleDelay ) {
@@ -99,7 +99,10 @@ public class LacunaLabOracle extends PApplet {
     }
 
     public void exit() {
-        log.close();
+        for( Handler h : logger.getHandlers() ) {
+            h.flush();
+            h.close();
+        }
         super.exit();
     }
 }
