@@ -11,13 +11,14 @@ import java.util.logging.*;
 public class OracleLogger {
     private static final String dateFormatString = "MM/dd/yyyy_HH:mm:ss";
     private SimpleDateFormat dateFormatter;
-
     static final String nl = System.getProperty("line.separator");
+
+    private FileHandler handler;
 
     public OracleLogger() {
         try {
             Logger allNowingLogger = Logger.getLogger("input");
-            FileHandler handler = new FileHandler("conversation.log",true);
+            handler = new FileHandler("conversation.log",true);
             dateFormatter = new SimpleDateFormat(dateFormatString);
             handler.setFormatter(new Formatter() {
                 @Override
@@ -29,11 +30,13 @@ public class OracleLogger {
 
             allNowingLogger.setUseParentHandlers(false);
             allNowingLogger.addHandler(handler);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    public void close() {
+        handler.flush();
+        handler.close();
+    }
 }

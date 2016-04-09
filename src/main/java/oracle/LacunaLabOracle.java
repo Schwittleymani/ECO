@@ -16,15 +16,16 @@ public class LacunaLabOracle extends PApplet {
     private CLI cli;
     private MarkovManager markov;
 
-    Logger allnowingLogger = Logger.getLogger("input");
+    Logger logger = Logger.getLogger("input");
+    OracleLogger log;
 
     long millisLastInteraction;
     long idleDelay = 120 * 1000; // 2 minutes
 
     public void settings() {
         size(640, 480);
-        new OracleLogger();
-        allnowingLogger.setUseParentHandlers(false);
+        log = new OracleLogger();
+        logger.setUseParentHandlers( false );
         //fullScreen( );
 
         millisLastInteraction = System.currentTimeMillis();
@@ -74,8 +75,8 @@ public class LacunaLabOracle extends PApplet {
                         cli.startEmojiEasterEgg();
                     }
 
-                    allnowingLogger.severe("u:::" + inputWordsString);
-                    allnowingLogger.severe("o:::" + result);
+                    logger.severe( "u:::" + inputWordsString );
+                    logger.severe( "o:::" + result );
 
                     System.out.println(result);
                     cli.finish(result, calculateDelayByInputLength(inputWordsString.split(" ").length));
@@ -95,5 +96,10 @@ public class LacunaLabOracle extends PApplet {
 
     private long calculateDelayByInputLength(int length) {
         return (long) map(length, 1, 8, 400, 5000);
+    }
+
+    public void exit() {
+        log.close();
+        super.exit();
     }
 }
