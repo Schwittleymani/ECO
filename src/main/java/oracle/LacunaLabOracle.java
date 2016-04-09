@@ -1,6 +1,7 @@
 package oracle;
 
 import oracle.cli.CLI;
+import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
@@ -12,22 +13,24 @@ import java.util.logging.Logger;
 public class LacunaLabOracle extends PApplet {
 
     public static String EXPORT_FILENAME_PREFIX = "lacuna_markov_export-order";
-    public static int MAX_INPUT_WORDS = 8;
+    public static int MAX_INPUT_WORDS = 2;
     private CLI cli;
     private MarkovManager markov;
 
-    Logger allnowingLogger = Logger.getLogger("input");
+    OracleLogger logger = new OracleLogger();
 
     long millisLastInteraction;
     long idleDelay = 120 * 1000; // 2 minutes
 
+    private boolean intercept;
+
     public void settings() {
         size(640, 480);
         new OracleLogger();
-        allnowingLogger.setUseParentHandlers(false);
         //fullScreen( );
 
         millisLastInteraction = System.currentTimeMillis();
+        new Webserver(this);
     }
 
     public void setup() {
@@ -68,17 +71,18 @@ public class LacunaLabOracle extends PApplet {
                         return;
                     }
                     String inputWordsString = cli.getLastLine().getText(true);
-                    String result = markov.getAnswer(inputWordsString);
-
-                    if (result.contains("lacuna")) {
-                        cli.startEmojiEasterEgg();
+                    if(intercept) {
+                        println("intercepting");
+                        return;
+                    } else {
+                        String result = markov.getAnswer(inputWordsString);
+                        if (result.contains("lacuna")) {
+                            cli.startEmojiEasterEgg();
+                        }
+                        logger.log(inputWordsString,result);
+                        System.out.println(result);
+                        cli.finish(result, calculateDelayByInputLength(inputWordsString.split(" ").length));
                     }
-
-                    allnowingLogger.severe("u:::" + inputWordsString);
-                    allnowingLogger.severe("o:::" + result);
-
-                    System.out.println(result);
-                    cli.finish(result, calculateDelayByInputLength(inputWordsString.split(" ").length));
                     break;
                 case TAB:
                 case DELETE:
@@ -91,6 +95,10 @@ public class LacunaLabOracle extends PApplet {
                     break;
             }
         }
+    }
+
+    public void intercept() {
+        intercept = true;
     }
 
     private long calculateDelayByInputLength(int length) {
