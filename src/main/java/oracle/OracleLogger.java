@@ -12,7 +12,7 @@ import java.util.logging.*;
 public class OracleLogger {
 
 
-    private static final String dateFormatString = "mm/dd/yyyy_HH:mm:ss";
+    private static final String dateFormatString = "MM/dd/yyyy_HH:mm:ss";
     private SimpleDateFormat dateFormatter;
 
     static final String nl = System.getProperty("line.separator");
