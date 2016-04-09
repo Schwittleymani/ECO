@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class LacunaLabOracle extends PApplet {
 
     public static String EXPORT_FILENAME_PREFIX = "lacuna_markov_export-order";
-    public static int MAX_INPUT_WORDS = 8;
+    public static int MAX_INPUT_WORDS = 3;
     private CLI cli;
     private MarkovManager markov;
 
