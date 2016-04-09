@@ -4,16 +4,18 @@ package oracle.cli;
  * Created by mrzl on 09.04.2016.
  */
 public class DelayedTyper{
-    private String textToType;
-    private long delayMillisPerCharacter;
     private CLI cli;
-    private long startMillis;
+
+    private String textToType;
+    private long startMillis, delayMillisPerCharacter, initDelayStartMillis, initDelayMillis;
 
     public DelayedTyper( CLI cli ) {
         textToType = "";
         this.cli = cli;
         delayMillisPerCharacter = 50;
         startMillis = System.currentTimeMillis();
+        initDelayStartMillis = System.currentTimeMillis();
+        initDelayMillis = 0;
     }
 
     public void addText( String text ) {
@@ -23,10 +25,16 @@ public class DelayedTyper{
 
     public void addDelay( long millis ) {
         startMillis += millis;
+        initDelayStartMillis = System.currentTimeMillis();
+        initDelayMillis = millis;
     }
 
-    public boolean isWaiting() {
+    public boolean isNotWaiting() {
         return System.currentTimeMillis() - startMillis > delayMillisPerCharacter;
+    }
+
+    public boolean isInitDelay() {
+        return System.currentTimeMillis() - initDelayStartMillis < initDelayMillis;
     }
 
     /**
@@ -34,7 +42,7 @@ public class DelayedTyper{
      */
     public boolean update() {
         if( !isEmpty() ){
-            if( !isWaiting() ){
+            if( isNotWaiting() ){
                 cli.type( textToType.charAt( 0 ) );
                 textToType = textToType.substring( 1, textToType.length() );
 

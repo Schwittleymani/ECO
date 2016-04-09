@@ -78,7 +78,6 @@ public class LacunaLabOracle extends PApplet{
                     logger.severe( "u:::" + inputWordsString );
                     logger.severe( "o:::" + result );
 
-                    System.out.println( result );
                     cli.finish( result, calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
                     break;
                 case TAB:

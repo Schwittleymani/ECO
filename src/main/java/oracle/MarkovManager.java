@@ -51,7 +51,6 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
 
         if( answer.length() > maxAnswerLength ){
-            System.out.println( "Cropping text" );
             answer = answer.substring( 0, maxAnswerLength );
         }
 

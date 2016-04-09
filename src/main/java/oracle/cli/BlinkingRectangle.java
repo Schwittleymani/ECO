@@ -24,7 +24,7 @@ public class BlinkingRectangle{
         if( parent.random( 1 ) < 0.04f ){
             parent.noFill();
         }
-        parent.rect( 50 + textWidth, cli.getLastLine().y - ( cli.textSize ),
+        parent.rect( 40 + textWidth, cli.getLastLine().y - ( cli.textSize ),
                 cli.cursorBlockWidth, cli.textSize + 10 * parent.noise( parent.frameCount * 0.01f ) );
 
 

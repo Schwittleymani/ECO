@@ -63,11 +63,12 @@ public class CLI{
         pushLinesUp();
         lines.forEach( Line::draw );
 
-        if( delayedTyper.isWaiting() ){
+        boolean isWaiting = delayedTyper.isInitDelay();
+        if( isWaiting ){
             // rotates the blinking square when its thinking
             parent.pushMatrix();
             float blockHeight = textSize + 10 * parent.noise( parent.frameCount * 0.01f );
-            PVector centerOfBlinkingBox = new PVector( 50 + parent.textWidth( getLastLine().getText() ) + ( cursorBlockWidth / 2 ), getLastLine().y - ( textSize ) + ( blockHeight / 2 ) );
+            PVector centerOfBlinkingBox = new PVector( 40 + parent.textWidth( getLastLine().getText() ) + ( cursorBlockWidth / 2 ), getLastLine().y - ( textSize ) + ( blockHeight / 2 ) );
             parent.translate( centerOfBlinkingBox.x, centerOfBlinkingBox.y );
             parent.rotate( ( parent.frameCount ) );
             parent.translate( -centerOfBlinkingBox.x, -centerOfBlinkingBox.y );
@@ -81,8 +82,7 @@ public class CLI{
             newLine( true );
         }
 
-        if( delayedTyper.isWaiting() ){
-
+        if( isWaiting ){
             parent.popMatrix();
         }
         jesus.drawAfterEaster();
