@@ -10,20 +10,20 @@ import java.util.logging.Logger;
 /**
  * Created by mrzl on 31.03.2016.
  */
-public class LacunaLabOracle extends PApplet {
+public class LacunaLabOracle extends PApplet{
 
     public static String EXPORT_FILENAME_PREFIX = "lacuna_markov_export-order";
-    public static int MAX_INPUT_WORDS = 3;
+    public static int MAX_INPUT_WORDS = 2;
     private CLI cli;
     private MarkovManager markov;
 
-    Logger logger = Logger.getLogger("input");
+    Logger logger = Logger.getLogger( "input" );
 
     long millisLastInteraction;
     long idleDelay = 120 * 1000; // 2 minutes
 
     public void settings() {
-        size(640, 480);
+        size( 640, 480 );
         new OracleLogger();
         logger.setUseParentHandlers( false );
         //fullScreen( );
@@ -32,7 +32,7 @@ public class LacunaLabOracle extends PApplet {
     }
 
     public void setup() {
-        cli = new CLI(this);
+        cli = new CLI( this );
         markov = new MarkovManager();
 
         //markov.save();
@@ -45,7 +45,7 @@ public class LacunaLabOracle extends PApplet {
         background( 0 );
         cli.draw();
 
-        if( System.currentTimeMillis() > millisLastInteraction + idleDelay ) {
+        if( System.currentTimeMillis() > millisLastInteraction + idleDelay ){
             cli.reset();
         }
     }
@@ -53,33 +53,33 @@ public class LacunaLabOracle extends PApplet {
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
-        if (key == CODED) {
-            switch (keyCode) {
+        if( key == CODED ){
+            switch ( keyCode ) {
                 case KeyEvent.VK_F1:
                     cli.reset();
                     break;
             }
         } else {
-            switch (key) {
+            switch ( key ) {
                 case BACKSPACE:
                     cli.backspace();
                     break;
                 case ENTER:
-                    if (!cli.available()) {
+                    if( !cli.available() ){
                         return;
                     }
-                    String inputWordsString = cli.getLastLine().getText(true);
-                    String result = markov.getAnswer(inputWordsString);
+                    String inputWordsString = cli.getLastLine().getText( true );
+                    String result = markov.getAnswer( inputWordsString );
 
-                    if (result.contains("lacuna")) {
+                    if( result.contains( "lacuna" ) ){
                         cli.startEmojiEasterEgg();
                     }
 
                     logger.severe( "u:::" + inputWordsString );
                     logger.severe( "o:::" + result );
 
-                    System.out.println(result);
-                    cli.finish(result, calculateDelayByInputLength(inputWordsString.split(" ").length));
+                    System.out.println( result );
+                    cli.finish( result, calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
                     break;
                 case TAB:
                 case DELETE:
@@ -88,18 +88,19 @@ public class LacunaLabOracle extends PApplet {
                     cli.reset();
                     break;
                 default:
-                    cli.type(key);
+                    cli.type( key );
                     break;
             }
         }
     }
 
-    private long calculateDelayByInputLength(int length) {
-        return (long) map(length, 1, 8, 400, 5000);
+    private long calculateDelayByInputLength( int length ) {
+        return ( long ) map( length, 1, 8, 400, 7000 );
     }
 
     public void exit() {
-        for( Handler h : logger.getHandlers() ) {
+        // getting rid of stupid .lck files
+        for ( Handler h : logger.getHandlers() ) {
             h.flush();
             h.close();
         }

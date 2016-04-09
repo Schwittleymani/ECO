@@ -18,6 +18,7 @@ public class CLI{
     private Jesus jesus;
 
     BlinkingRectangle blinker;
+    TypeSetter typer;
 
     int textSize = 20;
     private int currentY;
@@ -31,8 +32,6 @@ public class CLI{
     long cliUpdateDelayMillis = 50;
     long lastCliUpdateCheck;
 
-    String stringToType = "";
-    boolean doNewLineWhenFinishedTyping = false;
     long thinkUntil;
 
     public CLI( PApplet p ) {
@@ -44,6 +43,7 @@ public class CLI{
         jesus = new Jesus( p );
 
         blinker = new BlinkingRectangle( p, this );
+        typer = new TypeSetter( this );
 
         parent.textSize( textSize );
         setupWidth();
@@ -66,17 +66,6 @@ public class CLI{
         if( isThinking() ){
             return;
         }
-
-        if( stringToType.isEmpty() ){
-            if( doNewLineWhenFinishedTyping ){
-                newLine( true );
-                doNewLineWhenFinishedTyping = false;
-            }
-
-            return;
-        }
-        type( stringToType.charAt( 0 ) );
-        stringToType = stringToType.substring( 1, stringToType.length() );
     }
 
     public void draw() {
@@ -102,6 +91,11 @@ public class CLI{
         }
 
         blinker.draw();
+
+        boolean doNewLine = typer.update();
+        if( doNewLine ) {
+            newLine( true );
+        }
 
         if( isThinking() ){
 
@@ -164,8 +158,8 @@ public class CLI{
 
     public void finish( String answer, long delayMillis ) {
         newLine();
-        stringToType = answer;
-        doNewLineWhenFinishedTyping = true;
+        typer.addText( answer );
+        typer.addDelay( delayMillis );
         thinkUntil = System.currentTimeMillis() + delayMillis;
     }
 
@@ -198,7 +192,7 @@ public class CLI{
     }
 
     public boolean available() {
-        return getLastLine().getText().split( " " ).length > inputPreChars.split( " " ).length && stringToType.isEmpty();
+        return getLastLine().getText().split( " " ).length > inputPreChars.split( " " ).length && typer.isEmpty();
     }
 
     public void startEmojiEasterEgg() {
