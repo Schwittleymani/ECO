@@ -26,15 +26,16 @@ public class EmojiEasterEgg extends
     Range xMoveRandomRange = new Range(-0.1f,0.1f);
     Range xMoveMaxRange = new Range(0.5f,1f);
 
-    private PImage emojiSheet;
+    //private PImage emojiSheet;
 
-    ArrayList<PImage> emojiSet = new ArrayList<PImage>();
-
+    //ArrayList<PImage> emojiSet = new ArrayList<PImage>();
+    PImage heart;
 
     public EmojiEasterEgg () {
         super(Jesus.EASTEREGG_TYPE.EMOJI);
-        emojiSheet = parent.loadImage("sheet_32.png");
-        emojiSet.add(getEmoji(3, 7)); // heart
+        //emojiSheet = parent.loadImage("sheet_32.png");
+        //emojiSet.add(getEmoji(3, 7)); // heart
+        heart = parent.loadImage("heart.png");
         for(int i=0; i < INIT_FLAKES;i++)
             flakes.add(new Flake());
     }
@@ -96,7 +97,7 @@ public class EmojiEasterEgg extends
             yMoveSpeed = yMoveSpeedRange.get();
             xMoveMax = xMoveMaxRange.get();
             index = nextIndex++;
-            emoji = emojiSet.get((int)parent.random(emojiSet.size()));
+            emoji = heart;//emojiSet.get((int)parent.random(emojiSet.size()));
             foreground = parent.random(1) <0.5f;
         }
 
@@ -118,9 +119,9 @@ public class EmojiEasterEgg extends
     }
 
 
-    PImage getEmoji(int x, int y) {
+    /*PImage getEmoji(int x, int y) {
         return emojiSheet.get(x*32, y*32, 32, 32);
-    }
+    }*/
 
     class Range {
 

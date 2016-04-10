@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lacuna oracle master</title>
+	<style type="text/css">
+	#log {
+		position: absolute;
+		height: 95%;
+	}
+
+	#control {
+		position: fixed;
+		bottom: 0px;
+		left: 1px;
+
+		width:98%;
+		padding: 10px;
+		border:solid 1px;
+	}
+
+	#send {
+		position: absolute;
+		margin-left: 20px;
+	}
+
+	#input {
+		width: 700px;
+	}
+
+	#question {
+		width:100%;
+		min-height: 40px;
+		border:solid 1px;
+		margin-bottom: 15px;
+	}
+
+	#doron {
+	}
+	</style>
+</head>
+<body>
+<div id="log">
+</div>
+<div id="control">
+	<div id="question"></div>
+
+	<button onclick="intercept()">Intercept</button>
+	<textarea rows="1" cols="50" id="input"></textarea>
+	</textarea>
+	<button id="send()">send</button>
+
+	<div class="doron"> </div>
+</div>
+
+<script type="text/javascript">
+
+	var xhr;
+	var permanent_request;
+
+	function getLog() {
+		call("getLog",function() {
+			if (xhr.readyState == 4 && xhr.status === 200) {
+				var lines = JSON.parse(xhr.responseText).text.split("|||");
+				var logs = document.getElementById("log");
+				for(var i = 0; i < lines.length; i++) {
+					var lineDiv = document.createElement("div");
+					lineDiv.innerHTML = lines[i];
+					document.body.appendChild(lineDiv);
+				}
+			}
+		});
+	}
+
+	function intercept() {
+		call("intercept",function() {
+			if (xhr.readyState == 4 && xhr.status === 200) {
+				var status = JSON.parse(xhr.responseText).status;
+				if(status) {
+					document.getElementById("question").style.backgroundColor = "#A07070";
+					permanent_request = setInterval(requestInput, 500);
+				}
+			}
+		});
+	}
+
+	function requestInput(){
+		call("requestInput",function() {
+			if (xhr.readyState == 4 && xhr.status === 200) {
+				var text = JSON.parse(xhr.responseText).text;
+				if(text !== "") {
+					clearInterval(permanent_request);
+					document.getElementById("question").style.backgroundColor = "#809070";
+					document.getElementById("question").innerHTML = text;
+				}
+			}
+		});
+	}
+
+	function send() {
+
+	}
+
+	function call(url,fct) {
+		xhr = new XMLHttpRequest();
+		xhr.open('GET', url);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onload = fct
+		xhr.send();
+	}
+
+	getLog();
+</script>
+</body>
+</html>
