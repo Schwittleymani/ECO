@@ -1,8 +1,11 @@
 package oracle;
 
+import processing.core.PApplet;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.*;
 
@@ -13,20 +16,27 @@ public class OracleLogger {
 
     static final String nl = System.getProperty("line.separator");
     SimpleDateFormat dateFormatter = new SimpleDateFormat("mm/dd/yyyy_HH:mm:ss");
+    String completeLoggerFileName = "conversation.log";
+    String sessionLoggerFileName = "session.log";
 
     Logger allknowingLogger = Logger.getLogger("complete");
 
-    public OracleLogger() {
+    PApplet parent;
 
+    public OracleLogger(PApplet parent) {
+
+        this.parent = parent;
         try {
-            FileHandler handler = new FileHandler("conversation.log",true);
+            FileHandler handler = new FileHandler(completeLoggerFileName,true);
             handler.setFormatter(new OracleFormatter());
             allknowingLogger.setUseParentHandlers(false);
             allknowingLogger.addHandler(handler);
 
-            FileHandler sessionhandler = new FileHandler("session.log",false);
+            FileHandler sessionhandler = new FileHandler(sessionLoggerFileName,false);
             sessionhandler.setFormatter(new WebFormatter());
             allknowingLogger.addHandler(sessionhandler);
+
+            removeLoggerGarbage();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,12 +44,27 @@ public class OracleLogger {
 
     }
 
+    private void removeLoggerGarbage() {
+        File file = new File(parent.sketchPath());
+        File[] files = file.listFiles();
+        Arrays.stream(files)
+                .filter(f -> {
+                    String name = f.getName();
+                    boolean readyToDie = (name.startsWith(completeLoggerFileName)
+                        && name.length() > completeLoggerFileName.length()) // "conversation.log".length
+                        || (name.startsWith(sessionLoggerFileName)
+                            && name.length() > sessionLoggerFileName.length());
+                    return readyToDie;
+                })
+                .forEach(f -> f.deleteOnExit());
+    }
+
     public void logInput(String input) {
         allknowingLogger.severe("u:::" + input);
     }
 
-    public void logResponse(String response) {
-        allknowingLogger.severe("o:::" + response);
+    public void logResponse(String response,boolean oracle_or_server) {
+        allknowingLogger.severe((oracle_or_server ?"o" : "web")+":::" + response);
     }
 
     public void log(String input, String result) {

@@ -17,7 +17,7 @@ public class LacunaLabOracle extends PApplet {
     private CLI cli;
     private MarkovManager markov;
 
-    OracleLogger logger = new OracleLogger();
+    OracleLogger logger ;
 
     long millisLastInteraction;
     long idleDelay = 120 * 1000; // 2 minutes
@@ -28,7 +28,7 @@ public class LacunaLabOracle extends PApplet {
 
     public void settings() {
         size(640, 480);
-        new OracleLogger();
+        logger = new OracleLogger(this);
         //fullScreen( );
 
         millisLastInteraction = System.currentTimeMillis();
@@ -113,7 +113,7 @@ public class LacunaLabOracle extends PApplet {
             cli.startEmojiEasterEgg();
         }
         intercept = false;
-        logger.logResponse(response);
+        logger.logResponse(response,false);
         System.out.println(response);
         cli.finishFromWeb(response);
     }
