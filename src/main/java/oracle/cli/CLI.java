@@ -3,7 +3,6 @@ package oracle.cli;
 import oracle.ostern.Jesus;
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.core.PVector;
 
 import java.io.File;
 import java.util.ArrayList;

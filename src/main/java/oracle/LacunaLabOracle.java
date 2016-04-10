@@ -5,8 +5,6 @@ import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
 
 /**
  * Created by mrzl on 31.03.2016.
