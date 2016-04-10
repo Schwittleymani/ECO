@@ -43,7 +43,7 @@ public class DelayedTyper{
     public boolean update() {
         if( !isEmpty() ){
             if( isNotWaiting() ){
-                cli.type( textToType.charAt( 0 ) );
+                type( textToType.charAt( 0 ) );
                 textToType = textToType.substring( 1, textToType.length() );
 
                 startMillis = System.currentTimeMillis();
@@ -55,6 +55,30 @@ public class DelayedTyper{
         }
 
         return false;
+    }
+
+    public void type( char key ) {
+        if( !cli.getLastLine().limitReached() ){
+            cli.getLastLine().add( new String( String.valueOf( key ) ) );
+        } else {
+            cli.newLine();
+        }
+    }
+
+    public void type( String string ) {
+        String[] words = string.split( " " );
+        Line act = cli.getLastLine();
+        float actWidth = cli.getTextWidth( act.getText( false ) );
+        for ( int i = 0; i < words.length; i++ ) {
+            if( actWidth + cli.getTextWidth( words[ i ] ) > cli.getMaxLineWidth() ){
+                cli.newLine();
+                act = cli.getLastLine();
+                actWidth = cli.getTextWidth( act.getText() );
+            } else {
+                act.add( words[ i ] + " " );
+                actWidth = cli.getTextWidth( act.getText() );
+            }
+        }
     }
 
     public boolean isEmpty() {

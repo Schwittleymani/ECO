@@ -12,41 +12,40 @@ import java.util.ArrayList;
  * Created by mrzl on 31.03.2016.
  */
 public class CLI{
+    public static final String LINE_PREFIX_CHARS = "[ ] ";
+
     private ArrayList< Line > lines = new ArrayList<>();
     private PApplet parent;
     private PFont font;
+
     private Jesus jesus;
+    private BlinkingRectangle blinker;
+    private DelayedTyper delayedTyper;
 
-    BlinkingRectangle blinker;
-    DelayedTyper delayedTyper;
+    private int maxLineWidth = 480;
+    private int textSize = 20;
 
-    int textSize = 20;
     private int currentY;
     int lineHeight = 30;
     int paddingTop = 40;
     int paddingLeft = 40;
-    int maxLineWidth = 540;
-    float cursorBlockWidth;
-    public static String inputPreChars = "[ ] ";
 
     public CLI( PApplet p ) {
         this.parent = p;
         this.font = p.createFont( "data" + File.separator + "Glass_TTY_VT220.ttf", textSize );
-        p.textFont( this.font );
+        this.parent.textFont( this.font );
 
-        reset();
         jesus = new Jesus( p );
-
         blinker = new BlinkingRectangle( p, this );
         delayedTyper = new DelayedTyper( this );
+
+        reset();
 
         parent.textSize( textSize );
         setupWidth();
     }
 
     public void setupWidth() {
-        // just one block
-        cursorBlockWidth = parent.textWidth( "a" );
         // limit for the input line
         String widthTestString = "";
         do {
@@ -63,28 +62,14 @@ public class CLI{
         pushLinesUp();
         lines.forEach( Line::draw );
 
-        boolean isWaiting = delayedTyper.isInitDelay();
-        if( isWaiting ){
-            // rotates the blinking square when its thinking
-            parent.pushMatrix();
-            float blockHeight = textSize + 10 * parent.noise( parent.frameCount * 0.01f );
-            PVector centerOfBlinkingBox = new PVector( 40 + parent.textWidth( getLastLine().getText() ) + ( cursorBlockWidth / 2 ), getLastLine().y - ( textSize ) + ( blockHeight / 2 ) );
-            parent.translate( centerOfBlinkingBox.x, centerOfBlinkingBox.y );
-            parent.rotate( ( parent.frameCount ) );
-            parent.translate( -centerOfBlinkingBox.x, -centerOfBlinkingBox.y );
-        }
-
-        // draws blinking square
-        blinker.draw();
+        // draws blinking square, rotating or not
+        blinker.draw( delayedTyper.isInitDelay() );
 
         // types the text in delayed manner
-        if( delayedTyper.update() ) {
+        if( delayedTyper.update() ){
             newLine( true );
         }
 
-        if( isWaiting ){
-            parent.popMatrix();
-        }
         jesus.drawAfterEaster();
     }
 
@@ -108,30 +93,6 @@ public class CLI{
         }
     }
 
-    public void type( char key ) {
-        if( !getLastLine().limitReached() ){
-            getLastLine().add( new String( String.valueOf( key ) ) );
-        } else {
-            newLine();
-        }
-    }
-
-    public void type( String string ) {
-        String[] words = string.split( " " );
-        Line act = getLastLine();
-        float actWidth = parent.textWidth( act.getText( false ) );
-        for ( int i = 0; i < words.length; i++ ) {
-            if( actWidth + parent.textWidth( words[ i ] ) > maxLineWidth ){
-                newLine();
-                act = getLastLine();
-                actWidth = parent.textWidth( act.getText() );
-            } else {
-                act.add( words[ i ] + " " );
-                actWidth = parent.textWidth( act.getText() );
-            }
-        }
-    }
-
     public void backspace() {
         getLastLine().backspace();
     }
@@ -142,18 +103,25 @@ public class CLI{
         delayedTyper.addDelay( delayMillis );
     }
 
-    private void newLine() {
-        newLine( false );
+    public void type( char c ) {
+        delayedTyper.type( c );
     }
 
-    private void newLine( boolean inputChars ) {
+    private void newLine( boolean addLinePrefix ) {
         currentY += lineHeight;
         Line newLine = new Line( this.parent );
         newLine.setPos( paddingLeft, currentY );
         lines.add( newLine );
-        if( inputChars ){
-            type( inputPreChars );
+        if( addLinePrefix ){
+            delayedTyper.type( LINE_PREFIX_CHARS );
+        } else {
+            // a little bit of more offset on the left
+            newLine.setPos( paddingLeft + 40, currentY );
         }
+    }
+
+    public void newLine() {
+        newLine( false );
     }
 
     public Line getLastLine() {
@@ -167,14 +135,26 @@ public class CLI{
         Line line = new Line( this.parent );
         line.setPos( paddingLeft, currentY );
         lines.add( line );
-        type( inputPreChars );
+        delayedTyper.type( LINE_PREFIX_CHARS );
     }
 
     public boolean available() {
-        return getLastLine().getText().split( " " ).length > inputPreChars.split( " " ).length && delayedTyper.isEmpty();
+        return getLastLine().getText().split( " " ).length > LINE_PREFIX_CHARS.split( " " ).length && delayedTyper.isEmpty();
     }
 
     public void startEmojiEasterEgg() {
         jesus.start( Jesus.EASTEREGG_TYPE.EMOJI, 10 );
+    }
+
+    public int getMaxLineWidth() {
+        return maxLineWidth;
+    }
+
+    public int getTextWidth( String text ) {
+        return ( int ) parent.textWidth( text );
+    }
+
+    public int getTextSize() {
+        return textSize;
     }
 }
