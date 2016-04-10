@@ -174,11 +174,24 @@ public class CLI {
         getLastLine().backspace();
     }
 
+
     public void finish(String answer, long delayMillis) {
         newLine();
         stringToType = answer;
         doNewLineWhenFinishedTyping = true;
         thinkUntil = System.currentTimeMillis() + delayMillis;
+    }
+
+    public void finishFromWeb(String answer) {
+        stringToType = answer;
+        doNewLineWhenFinishedTyping = true;
+        thinkUntil = System.currentTimeMillis();
+    }
+
+    // waits for the interception answer
+    public void waitForAnswer() {
+        newLine();
+        thinkUntil = Long.MAX_VALUE;
     }
 
     private void newLine() {

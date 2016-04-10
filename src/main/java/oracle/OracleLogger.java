@@ -34,6 +34,14 @@ public class OracleLogger {
 
     }
 
+    public void logInput(String input) {
+        allknowingLogger.severe("u:::" + input);
+    }
+
+    public void logResponse(String response) {
+        allknowingLogger.severe("o:::" + response);
+    }
+
     public void log(String input, String result) {
         allknowingLogger.severe("u:::" + input);
         allknowingLogger.severe("o:::" + result);
