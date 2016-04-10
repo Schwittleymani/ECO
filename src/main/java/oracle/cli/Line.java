@@ -19,7 +19,7 @@ public class Line extends ArrayList< String > {
 
     public void backspace () {
 
-        if ( getText( ).length( ) > CLI.inputPreChars.length( ) ) { // -1 is magic shit
+        if ( getText( ).length( ) > CLI.LINE_PREFIX_CHARS.length( ) ) { // -1 is magic shit
             remove( size( ) - 1 );
         }
     }
@@ -30,7 +30,7 @@ public class Line extends ArrayList< String > {
 
     public String getText ( boolean cutPreChars ) {
         if ( cutPreChars )
-            return String.join( "", this ).substring( CLI.inputPreChars.length( ) );
+            return String.join( "", this ).substring( CLI.LINE_PREFIX_CHARS.length( ) );
         else
             return getText( );
     }

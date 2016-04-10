@@ -11,32 +11,52 @@ import java.util.logging.*;
  */
 public class OracleLogger {
 
-
-    private static final String dateFormatString = "mm/dd/yyyy_HH:mm:ss";
-    private SimpleDateFormat dateFormatter;
-
     static final String nl = System.getProperty("line.separator");
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("mm/dd/yyyy_HH:mm:ss");
+
+    Logger allknowingLogger = Logger.getLogger("complete");
 
     public OracleLogger() {
-        try {
-            Logger allNowingLogger = Logger.getLogger("input");
-            FileHandler handler = new FileHandler("conversation.log",true);
-            dateFormatter = new SimpleDateFormat(dateFormatString);
-            handler.setFormatter(new Formatter() {
-                @Override
-                public String format(LogRecord record) {
-                    String dateString  = dateFormatter.format(new Date());
-                    return dateString + ":::"+ record.getMessage() + nl;
-                }
-            });
 
-            allNowingLogger.setUseParentHandlers(false);
-            allNowingLogger.addHandler(handler);
+        try {
+            FileHandler handler = new FileHandler("conversation.log",true);
+            handler.setFormatter( new OracleFormatter());
+            allknowingLogger.setUseParentHandlers(false);
+            allknowingLogger.addHandler(handler);
+
+            FileHandler sessionhandler = new FileHandler("session.log",false);
+            sessionhandler.setFormatter(new WebFormatter());
+            allknowingLogger.addHandler(sessionhandler);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    public void log(String input, String result) {
+        allknowingLogger.severe("u:::" + input);
+        allknowingLogger.severe("o:::" + result);
+    }
+
+    public void close() {
+        for( Handler h : allknowingLogger.getHandlers() ) {
+            h.flush();
+            h.close();
+        }
+    }
+
+    class OracleFormatter extends Formatter {
+        @Override
+        public String format(LogRecord record) {
+            String dateString  = dateFormatter.format(new Date());
+            return dateString + ":::"+ record.getMessage() + nl;
+        }
+    }
+
+    class WebFormatter extends Formatter {
+        @Override
+        public String format(LogRecord record) {
+            return "|||"+ record.getMessage() + nl;
+        }
+    }
 }

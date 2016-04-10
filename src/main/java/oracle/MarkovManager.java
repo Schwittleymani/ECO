@@ -15,14 +15,14 @@ import java.util.stream.Stream;
 /**
  * Created by mrzl on 06.04.2016.
  */
-public class MarkovManager extends ArrayList< MarkovChain > {
+public class MarkovManager extends ArrayList< MarkovChain >{
 
     private int maxAnswerLength = 150;
 
-    public MarkovManager () {
+    public MarkovManager() {
     }
 
-    public String getAnswer ( String input ) {
+    public String getAnswer( String input ) {
         String answer = "";
 
         input.replace( "?", "" )
@@ -41,36 +41,35 @@ public class MarkovManager extends ArrayList< MarkovChain > {
                 .replace( ";", "" )
                 .replace( ":", "" )
                 .replace( "_", "" )
-                .toLowerCase( );
+                .toLowerCase();
         String[] inputWords = input.split( " " );
         answer = check( inputWords );
 
-        if ( answer.equals( "nothing" ) ) {
-            String noAnswer = "i don't care about this. let's talk about \"" + get(0).generateSentence().split( " " )[0]+ "\" instead?";
+        if( answer.equals( "nothing" ) ){
+            String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
             answer = noAnswer;
         }
 
-        if ( answer.length( ) > maxAnswerLength ) {
-            System.out.println( "Cropping text" );
+        if( answer.length() > maxAnswerLength ){
             answer = answer.substring( 0, maxAnswerLength );
         }
 
         return answer;
     }
 
-    String check ( String[] input ) {
+    String check( String[] input ) {
         MarkovQueue queue = new MarkovQueue( input.length );
-        if ( queue.getOrder( ) - 1 >= size( ) ) {
-            input = Arrays.copyOfRange( input, 0, size( ) - 1 );
+        if( queue.getOrder() - 1 >= size() ){
+            input = Arrays.copyOfRange( input, 0, size() - 1 );
             queue = new MarkovQueue( input.length );
         }
 
         for ( String s : input ) {
             queue.addLast( s );
         }
-        String result = get( queue.getOrder( ) - 1 ).generateSentence( queue );
-        if ( result.equals( "nothing" ) ) {
-            if ( input.length < 2 ) {
+        String result = get( queue.getOrder() - 1 ).generateSentence( queue );
+        if( result.equals( "nothing" ) ){
+            if( input.length < 2 ){
                 return "nothing";
             }
 
@@ -80,7 +79,7 @@ public class MarkovManager extends ArrayList< MarkovChain > {
         return result;
     }
 
-    public void save () {
+    public void save() {
         for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
             MarkovChain chain = new MarkovChain( i );
             chain.train( loadText( "lacuna_lab_texts.txt" ) );
@@ -89,56 +88,56 @@ public class MarkovManager extends ArrayList< MarkovChain > {
         }
 
         for ( MarkovChain chain : this ) {
-            String fileName = "lacuna_chain-" + chain.getOrder( ) + ".data";
+            String fileName = "data" + File.separator + "lacuna_chain-" + chain.getOrder() + ".data";
             try {
                 ObjectOutputStream obj_out = new ObjectOutputStream(
                         new FileOutputStream( fileName )
                 );
                 obj_out.writeObject( chain );
             } catch ( FileNotFoundException e ) {
-                e.printStackTrace( );
+                e.printStackTrace();
             } catch ( IOException e ) {
-                e.printStackTrace( );
+                e.printStackTrace();
             }
             System.out.println( "Saved markov chain to " + fileName );
         }
     }
 
-    public void load () {
+    public void load() {
         try {
             for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
-                String fileName = "lacuna_chain-" + i + ".data";
+                String fileName = "data" + File.separator + "lacuna_chain-" + i + ".data";
                 FileInputStream f_in = new FileInputStream( fileName );
                 ObjectInputStream obj_in = new ObjectInputStream( f_in );
-                Object obj = obj_in.readObject( );
+                Object obj = obj_in.readObject();
 
-                if ( obj instanceof MarkovChain ) {
+                if( obj instanceof MarkovChain ){
                     add( ( MarkovChain ) obj );
                 }
 
-                System.out.println( "Loaded from " + fileName + ". With order " + get( size( ) - 1 ).getOrder( ) );
+                System.out.println( "Loaded from " + fileName + ". With order " + get( size() - 1 ).getOrder() );
             }
         } catch ( FileNotFoundException e ) {
-            e.printStackTrace( );
+            e.printStackTrace();
         } catch ( ClassNotFoundException e ) {
-            e.printStackTrace( );
+            e.printStackTrace();
         } catch ( IOException e ) {
-            e.printStackTrace( );
+            e.printStackTrace();
         }
         System.out.println( "Loaded markov chain from " + LacunaLabOracle.EXPORT_FILENAME_PREFIX );
     }
 
-    private String loadText ( String fileName ) {
+    private String loadText( String fileName ) {
         String completeText = "";
         try ( Stream< String > stream = Files.lines( Paths.get( fileName ), StandardCharsets.UTF_8 ) ) {
 
-            String s = stream.collect( Collectors.joining( ) );
+            String s = stream.collect( Collectors.joining() );
             completeText += s;
 
         } catch ( IOException e ) {
-            e.printStackTrace( );
+            e.printStackTrace();
         }
 
-        return completeText.toLowerCase( );
+        return completeText.toLowerCase();
     }
 }
