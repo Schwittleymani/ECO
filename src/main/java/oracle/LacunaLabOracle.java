@@ -74,7 +74,18 @@ public class LacunaLabOracle extends PApplet{
                         return;
                     }
 
-                    String inputWordsString = cli.getLastLine().getText(true);
+                    String inputWordsString = cli.getLastLine().getText(true).trim();
+                    while( inputWordsString.startsWith( "." ) ||
+                            inputWordsString.startsWith( "," ) ||
+                            inputWordsString.startsWith( ";" ) ||
+                            inputWordsString.startsWith( ":" ) ||
+                            inputWordsString.startsWith( "-" ) ||
+                            inputWordsString.startsWith( "_" ) ) {
+                        // removing some leading special characters
+                        inputWordsString = inputWordsString.substring( 1 );
+                    }
+                    inputWordsString = inputWordsString.trim();
+                    System.out.println(inputWordsString);
                     if(intercept) {
                         server.sendInput(inputWordsString);
                         logger.logInput(inputWordsString);
