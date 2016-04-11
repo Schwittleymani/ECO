@@ -1,6 +1,7 @@
 package oracle;
 
 import oracle.cli.CLI;
+import oracle.cli.Line;
 import oracle.web.Webserver;
 import processing.core.PApplet;
 
@@ -97,7 +98,9 @@ public class LacunaLabOracle extends PApplet{
                     cli.reset();
                     break;
                 default:
-                    cli.type( key );
+                    if( cli.getLastLine().getText( false ).length() < Line.CHAR_LIMIT ){
+                        cli.type( key );
+                    }
                     break;
             }
         }
