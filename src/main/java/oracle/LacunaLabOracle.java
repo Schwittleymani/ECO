@@ -93,6 +93,7 @@ public class LacunaLabOracle extends PApplet{
                 case DELETE:
                     break;
                 case ESC:
+                    key = 0;
                     cli.reset();
                     break;
                 default:
@@ -123,5 +124,4 @@ public class LacunaLabOracle extends PApplet{
         System.out.println(response);
         cli.finishFromWeb(response);
     }
-
 }
