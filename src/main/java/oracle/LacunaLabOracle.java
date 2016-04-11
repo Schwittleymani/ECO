@@ -19,7 +19,7 @@ public class LacunaLabOracle extends PApplet{
     OracleLogger logger ;
 
     long millisLastInteraction;
-    long idleDelay = 120 * 1000; // 2 minutes
+    long idleDelay = 5 * 60 * 1000; // 2 minutes
 
     Webserver server;
     private boolean intercept;
