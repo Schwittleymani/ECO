@@ -103,7 +103,25 @@ public class CLI{
     }
 
     public void type( char c ) {
-        delayedTyper.type( c );
+        delayedTyper.type(c);
+    }
+
+    public void finishFromWeb(String answer) {
+        //stringToType = answer;
+        //doNewLineWhenFinishedTyping = true;
+        //thinkUntil = System.currentTimeMillis();
+        delayedTyper.addText( answer );
+        delayedTyper.addDelay( 0 );
+    }
+
+    // waits for the interception answer
+    public void waitForAnswer() {
+        newLine();
+        //thinkUntil = Long.MAX_VALUE;
+    }
+
+    public void newLine() {
+        newLine(false);
     }
 
     private void newLine( boolean addLinePrefix ) {
@@ -117,10 +135,6 @@ public class CLI{
             // a little bit of more offset on the left
             newLine.setPos( paddingLeft + 40, currentY );
         }
-    }
-
-    public void newLine() {
-        newLine( false );
     }
 
     public Line getLastLine() {

@@ -19,12 +19,14 @@
 	}
 
 	#send {
-		position: absolute;
+		position: relative;
 		margin-left: 20px;
 	}
 
 	#input {
 		width: 700px;
+		position: relative;
+		top: 7px;
 	}
 
 	#question {
@@ -39,17 +41,14 @@
 	</style>
 </head>
 <body>
-<div id="log">
-</div>
+<div id="log"></div>
 <div id="control">
 	<div id="question"></div>
 
 	<button onclick="intercept()">Intercept</button>
 	<textarea rows="1" cols="50" id="input"></textarea>
-	</textarea>
-	<button id="send()">send</button>
+	<button id="send" onclick="send()">send</button>
 
-	<div class="doron"> </div>
 </div>
 
 <script type="text/javascript">
@@ -75,7 +74,7 @@
 		call("intercept",function() {
 			if (xhr.readyState == 4 && xhr.status === 200) {
 				var status = JSON.parse(xhr.responseText).status;
-				if(status) {
+				if(status == "okay") {
 					document.getElementById("question").style.backgroundColor = "#A07070";
 					permanent_request = setInterval(requestInput, 500);
 				}
@@ -83,9 +82,10 @@
 		});
 	}
 
-	function requestInput(){
-		call("requestInput",function() {
+	function requestInput() {
+		call("intercept",function() {
 			if (xhr.readyState == 4 && xhr.status === 200) {
+				//console.log("response:" ,xhr.responseText);
 				var text = JSON.parse(xhr.responseText).text;
 				if(text !== "") {
 					clearInterval(permanent_request);
@@ -93,19 +93,35 @@
 					document.getElementById("question").innerHTML = text;
 				}
 			}
-		});
+		},'{requestInput:'+"0"+'}');
 	}
 
 	function send() {
-
+		var responseText = document.getElementById("input").value;
+		call("intercept",function() {
+			if (xhr.readyState == 4 && xhr.status === 200) {
+				//console.log("response:" ,xhr.responseText);
+				//var text = JSON.parse(xhr.responseText).text;
+				document.getElementById("question").style.backgroundColor = "white";
+				document.getElementById("question").innerHTML = "";
+				document.getElementById("input").value = "";
+			}
+		},'{response:'+responseText+'}');
 	}
 
-	function call(url,fct) {
+	function call(url,fct,json) {
+		console.log(json);
 		xhr = new XMLHttpRequest();
-		xhr.open('GET', url);
+		xhr.open('PUT', url);
 		xhr.setRequestHeader('Content-Type', 'application/json');
-		xhr.onload = fct
-		xhr.send();
+		xhr.onload = fct;
+		if(json === undefined)
+			xhr.send();
+		else {
+			//console.log("sending: "+","+json);
+			//xhr.send('{requestNumber:'+"5"+'}');
+			xhr.send(json);
+		}
 	}
 
 	getLog();

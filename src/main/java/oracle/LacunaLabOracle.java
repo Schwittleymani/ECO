@@ -16,19 +16,23 @@ public class LacunaLabOracle extends PApplet{
     private CLI cli;
     private MarkovManager markov;
 
-    OracleLogger logger = new OracleLogger();
+    OracleLogger logger ;
 
     long millisLastInteraction;
     long idleDelay = 120 * 1000; // 2 minutes
 
+    Webserver server;
     private boolean intercept;
 
+
     public void settings() {
-        size( 640, 480 );
+        size(640, 480);
+        logger = new OracleLogger(this);
+
         //fullScreen( );
 
         millisLastInteraction = System.currentTimeMillis();
-        new Webserver(this);
+        server = new Webserver(this);
     }
 
     public void setup() {
@@ -71,7 +75,9 @@ public class LacunaLabOracle extends PApplet{
 
                     String inputWordsString = cli.getLastLine().getText(true);
                     if(intercept) {
-                        println("intercepting");
+                        server.sendInput(inputWordsString);
+                        logger.logInput(inputWordsString);
+                        cli.waitForAnswer();
                         return;
                     } else {
                         String result = markov.getAnswer(inputWordsString);
@@ -101,8 +107,21 @@ public class LacunaLabOracle extends PApplet{
         return ( long ) map( length, 1, 8, 400, 7000 );
     }
 
-    public void intercept() {
+    public boolean intercept() {
+        if(intercept)
+            return true;
         intercept = true;
+        return false;
+    }
+
+    public void responseFromTheWeb(String response) {
+        if (response.contains("lacuna")) {
+            cli.startEmojiEasterEgg();
+        }
+        intercept = false;
+        logger.logResponse(response,false);
+        System.out.println(response);
+        cli.finishFromWeb(response);
     }
 
 }
