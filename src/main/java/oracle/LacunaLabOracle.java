@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 public class LacunaLabOracle extends PApplet{
 
     public static String EXPORT_FILENAME_PREFIX = "lacuna_markov_export-order";
-    public static int MAX_INPUT_WORDS = 2;
+    public static int MAX_INPUT_WORDS = 4;
     private CLI cli;
     private MarkovManager markov;
 
@@ -25,7 +25,7 @@ public class LacunaLabOracle extends PApplet{
 
     public void settings() {
         size( 640, 480 );
-        //fullScreen( );
+        fullScreen( );
 
         millisLastInteraction = System.currentTimeMillis();
         new Webserver(this);
