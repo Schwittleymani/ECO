@@ -46,7 +46,7 @@
 	<div id="question"></div>
 
 	<button onclick="intercept()">Intercept</button>
-	<textarea rows="1" cols="50" id="input"></textarea>
+	<textarea rows="1" cols="50" id="input" onkeypress="checkEnter()"></textarea>
 	<button id="send" onclick="send()">send</button>
 
 </div>
@@ -77,6 +77,7 @@
 				if(status == "okay") {
 					document.getElementById("question").style.backgroundColor = "#A07070";
 					permanent_request = setInterval(requestInput, 500);
+					document.getElementById("input").focus();
 				}
 			}
 		});
@@ -91,9 +92,17 @@
 					clearInterval(permanent_request);
 					document.getElementById("question").style.backgroundColor = "#809070";
 					document.getElementById("question").innerHTML = text;
+					document.getElementById("input").focus();
 				}
 			}
 		},'{requestInput:'+"0"+'}');
+	}
+
+	function checkEnter() {
+		var key = window.event.keyCode;
+	    if (key == 13) {
+			send();
+    	}
 	}
 
 	function send() {

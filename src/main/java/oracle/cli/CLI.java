@@ -107,9 +107,6 @@ public class CLI{
     }
 
     public void finishFromWeb(String answer) {
-        //stringToType = answer;
-        //doNewLineWhenFinishedTyping = true;
-        //thinkUntil = System.currentTimeMillis();
         delayedTyper.addText( answer );
         delayedTyper.addDelay( 0 );
     }
@@ -117,7 +114,7 @@ public class CLI{
     // waits for the interception answer
     public void waitForAnswer() {
         newLine();
-        //thinkUntil = Long.MAX_VALUE;
+        delayedTyper.addDelay( Long.MAX_VALUE );
     }
 
     public void newLine() {
