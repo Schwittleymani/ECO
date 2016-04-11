@@ -21,13 +21,13 @@ public class CLI{
     private BlinkingRectangle blinker;
     private DelayedTyper delayedTyper;
 
-    private int maxLineWidth = 480;
+    private int maxLineWidth = 540;
     private int textSize = 20;
 
     private int currentY;
     int lineHeight = 30;
-    int paddingTop = 40;
-    int paddingLeft = 40;
+    int paddingTop = 25;
+    int paddingLeft = 15;
 
     public CLI( PApplet p ) {
         this.parent = p;

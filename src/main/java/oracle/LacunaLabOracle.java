@@ -29,7 +29,7 @@ public class LacunaLabOracle extends PApplet{
         size( 640, 480 );
         logger = new OracleLogger(this);
 
-        fullScreen( );
+        //fullScreen( );
 
         millisLastInteraction = System.currentTimeMillis();
         server = new Webserver(this);
