@@ -28,6 +28,10 @@ public class Line extends ArrayList< String > {
         return size( ) >= CHAR_LIMIT;
     }
 
+    public boolean limitReachedOffset() {
+        return size() >= CHAR_LIMIT - 4;
+    }
+
     public String getText ( boolean cutPreChars ) {
         if ( cutPreChars )
             return String.join( "", this ).substring( CLI.LINE_PREFIX_CHARS.length( ) );

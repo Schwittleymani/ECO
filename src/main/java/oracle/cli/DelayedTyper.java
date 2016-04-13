@@ -58,10 +58,10 @@ public class DelayedTyper{
     }
 
     public void type( char key ) {
-        if( !cli.getLastLine().limitReached() ){
-            cli.getLastLine().add( new String( String.valueOf( key ) ) );
-        } else {
+        if( key == ' ' && cli.getLastLine().limitReachedOffset() ){
             cli.newLine();
+        } else {
+            cli.getLastLine().add( new String( String.valueOf( key ) ) );
         }
     }
 
