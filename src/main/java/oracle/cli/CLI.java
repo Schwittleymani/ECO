@@ -167,4 +167,8 @@ public class CLI{
     public int getTextSize() {
         return textSize;
     }
+
+    public boolean isActive() {
+        return !delayedTyper.isEmpty();
+    }
 }

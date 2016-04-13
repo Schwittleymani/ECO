@@ -20,7 +20,7 @@ public class LacunaLabOracle extends PApplet{
     OracleLogger logger ;
 
     long millisLastInteraction;
-    long idleDelay = 5 * 60 * 1000; // 2 minutes
+    long idleDelay = 5 * 60 * 1000; // 5 minutes
 
     Webserver server;
     private boolean intercept;
@@ -109,7 +109,7 @@ public class LacunaLabOracle extends PApplet{
                     cli.reset();
                     break;
                 default:
-                    if( cli.getLastLine().getText( false ).length() < Line.CHAR_LIMIT ){
+                    if( cli.getLastLine().getText( false ).length() < Line.CHAR_LIMIT && !cli.isActive() ){
                         cli.type( key );
                     }
                     break;
