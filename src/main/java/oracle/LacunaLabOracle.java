@@ -58,6 +58,9 @@ public class LacunaLabOracle extends PApplet{
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
+        if(cli.isActive())
+            return;
+
         if( key == CODED ){
             switch ( keyCode ) {
                 case KeyEvent.VK_F1:
@@ -109,7 +112,7 @@ public class LacunaLabOracle extends PApplet{
                     cli.reset();
                     break;
                 default:
-                    if( cli.getLastLine().getText( false ).length() < Line.CHAR_LIMIT && !cli.isActive() ){
+                    if(!cli.inputLimitReached() && !cli.isActive()){
                         cli.type( key );
                     }
                     break;
