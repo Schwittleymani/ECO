@@ -7,8 +7,9 @@ public class MonologueEasterEgg extends EasterEgg {
 
     int alpha;
 
-    public MonologueEasterEgg(Jesus.EASTEREGG_TYPE type) {
-        super(type);
+    public MonologueEasterEgg() {
+
+        super(Jesus.EASTEREGG_TYPE.MONOLOG);
     }
 
     @Override

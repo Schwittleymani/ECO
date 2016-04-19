@@ -2,6 +2,7 @@ package oracle.ostern;
 
 import processing.core.PApplet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -11,39 +12,39 @@ import java.util.Optional;
  */
 public class Jesus {
 
-    public enum EASTEREGG_TYPE {EMOJI}
+    public enum EASTEREGG_TYPE {MONOLOG, EMOJI}
 
     PApplet parent;
 
     protected static long jesusTime;
 
     private HashMap< EASTEREGG_TYPE, EasterEgg > easterEggs = new HashMap<>();
-    Optional<EasterEgg> runningEgg;
+    ArrayList<EasterEgg> runningEggs = new ArrayList<>();
 
     public Jesus(PApplet p) {
         parent = p;
-        runningEgg = Optional.empty();
+
         EasterEgg.parent = p;
         EasterEgg.jesus = this;
         new EmojiEasterEgg();
     }
 
     public void start(EASTEREGG_TYPE type, long durationSeconds) {
-        if(!runningEgg.isPresent()) {
-            runningEgg = Optional.of(easterEggs.get(type).start(durationSeconds*1000));
-        }
+        runningEggs.add(easterEggs.get(type).start(durationSeconds*1000));
     }
 
     public void drawBeforeEaster() {
         jesusTime = System.currentTimeMillis();
-        if(runningEgg.isPresent())
-                runningEgg.get().drawBefore();
+        for(EasterEgg egg : runningEggs)
+            egg.drawBefore();
     }
 
     public void drawAfterEaster() {
-        if(runningEgg.isPresent())
-            if(!runningEgg.get().drawAfter())
-                runningEgg = Optional.empty();
+        ArrayList<EasterEgg> removeEggs = new ArrayList<>();
+        for(EasterEgg egg : runningEggs)
+            if(!egg.drawAfter())
+                removeEggs.add(egg);
+        runningEggs.removeAll(removeEggs);
     }
 
     public void addEasterEgg(EasterEgg egg) {
