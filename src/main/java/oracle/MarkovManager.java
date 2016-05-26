@@ -22,7 +22,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public MarkovManager() {
     }
 
-    public String getAnswer( String input ) {
+    public String getAnswer( String input ) throws Exception {
         String answer = "";
 
         input.replace( "?", "" )
@@ -45,10 +45,15 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         String[] inputWords = input.split( " " );
         answer = check( inputWords );
 
-        if( answer.equals( "nothing" ) ){
+        if( answer.equals( "nothing" ) ) {
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
+            //noAnswer = check( get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
+
             answer = noAnswer;
+            throw new Exception(  );
         }
+
+        //System.out.println( "New answer: " + get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
 
         if( answer.length() > maxAnswerLength ){
             answer = answer.substring( 0, maxAnswerLength );
@@ -79,19 +84,19 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return result;
     }
 
-    public void save() {
+    public void save( String fileName ) {
         for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
             MarkovChain chain = new MarkovChain( i );
-            chain.train( loadText( "lacuna_lab_texts.txt" ) );
+            chain.train( loadText( "data" + File.separator + fileName ) );
             add( chain );
             System.out.println( "Training chain with order " + i );
         }
 
         for ( MarkovChain chain : this ) {
-            String fileName = "data" + File.separator + "lacuna_chain-" + chain.getOrder() + ".data";
+            String _fileName = "data" + File.separator + LacunaLabOracle.EXPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
             try {
                 ObjectOutputStream obj_out = new ObjectOutputStream(
-                        new FileOutputStream( fileName )
+                        new FileOutputStream( _fileName )
                 );
                 obj_out.writeObject( chain );
             } catch ( FileNotFoundException e ) {
@@ -99,14 +104,14 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
-            System.out.println( "Saved markov chain to " + fileName );
+            System.out.println( "Saved markov chain to " + _fileName );
         }
     }
 
     public void load() {
         try {
             for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
-                String fileName = "data" + File.separator + "lacuna_chain-" + i + ".data";
+                String fileName = "data" + File.separator + LacunaLabOracle.EXPORT_FILENAME_PREFIX + i + ".data";
                 FileInputStream f_in = new FileInputStream( fileName );
                 ObjectInputStream obj_in = new ObjectInputStream( f_in );
                 Object obj = obj_in.readObject();

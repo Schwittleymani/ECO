@@ -12,12 +12,12 @@ import java.awt.event.KeyEvent;
  */
 public class LacunaLabOracle extends PApplet{
 
-    public static String EXPORT_FILENAME_PREFIX = "lacuna_markov_export-order";
+    public static String EXPORT_FILENAME_PREFIX = "romantic-order";
     public static int MAX_INPUT_WORDS = 4;
     private CLI cli;
     private MarkovManager markov;
 
-    OracleLogger logger ;
+    OracleLogger logger;
 
     long millisLastInteraction;
     long idleDelay = 5 * 60 * 1000; // 5 minutes
@@ -25,23 +25,22 @@ public class LacunaLabOracle extends PApplet{
     Webserver server;
     private boolean intercept;
 
-
     public void settings() {
         size( 640, 480 );
-        logger = new OracleLogger(this);
+        logger = new OracleLogger( this );
 
-        //fullScreen( );
+        //fullScreen();
 
         millisLastInteraction = System.currentTimeMillis();
-        server = new Webserver(this);
+        server = new Webserver( this );
     }
 
     public void setup() {
         cli = new CLI( this );
         markov = new MarkovManager();
 
-        //markov.save();
-        markov.load();
+        markov.save("romantic_kamasutra.txt");
+        //markov.load();
 
         noCursor();
     }
@@ -58,7 +57,7 @@ public class LacunaLabOracle extends PApplet{
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
-        if(cli.isActive())
+        if( cli.isActive() )
             return;
 
         if( key == CODED ){
@@ -77,8 +76,8 @@ public class LacunaLabOracle extends PApplet{
                         return;
                     }
 
-                    String inputWordsString = cli.getLastLine().getText(true).trim();
-                    while( inputWordsString.startsWith( "." ) ||
+                    String inputWordsString = cli.getLastLine().getText( true ).trim();
+                    while ( inputWordsString.startsWith( "." ) ||
                             inputWordsString.startsWith( "," ) ||
                             inputWordsString.startsWith( ";" ) ||
                             inputWordsString.startsWith( ":" ) ||
@@ -88,20 +87,28 @@ public class LacunaLabOracle extends PApplet{
                         inputWordsString = inputWordsString.substring( 1 );
                     }
                     inputWordsString = inputWordsString.trim();
-                    System.out.println(inputWordsString);
-                    if(intercept) {
-                        server.sendInput(inputWordsString);
-                        logger.logInput(inputWordsString);
+                    System.out.println( inputWordsString );
+                    if( intercept ){
+                        server.sendInput( inputWordsString );
+                        logger.logInput( inputWordsString );
                         cli.waitForAnswer();
                         return;
                     } else {
-                        String result = markov.getAnswer(inputWordsString);
-                        if (result.contains("lacuna")) {
-                            cli.startEmojiEasterEgg();
+                        String result = null;
+                        try {
+                            result = markov.getAnswer( inputWordsString );
+                            cli.finish( result, calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
+                            if( result.contains( "lacuna" ) ){
+                                cli.startEmojiEasterEgg();
+                            }
+                        } catch ( Exception e ) {
+                            e.printStackTrace();
+                            cli.finish( "oh", calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
                         }
-                        logger.log(inputWordsString,result);
-                        System.out.println(result);
-                        cli.finish(result, calculateDelayByInputLength(inputWordsString.split(" ").length));
+
+
+                        logger.log( inputWordsString, result );
+                        System.out.println( result );
                     }
                     break;
                 case TAB:
@@ -112,7 +119,7 @@ public class LacunaLabOracle extends PApplet{
                     cli.reset();
                     break;
                 default:
-                    if(!cli.inputLimitReached() && !cli.isActive()){
+                    if( !cli.inputLimitReached() && !cli.isActive() ){
                         cli.type( key );
                     }
                     break;
@@ -126,19 +133,23 @@ public class LacunaLabOracle extends PApplet{
     }
 
     public boolean intercept() {
-        if(intercept)
+        if( intercept )
             return true;
         intercept = true;
         return false;
     }
 
-    public void responseFromTheWeb(String response) {
-        if (response.contains("lacuna")) {
+    public void responseFromTheWeb( String response ) {
+        if( response.contains( "lacuna" ) ){
             cli.startEmojiEasterEgg();
         }
         intercept = false;
-        logger.logResponse(response,false);
-        System.out.println(response);
-        cli.finishFromWeb(response);
+        logger.logResponse( response, false );
+        System.out.println( response );
+        cli.finishFromWeb( response );
+    }
+
+    public static void main( String[] args ) {
+        PApplet.main( "oracle.LacunaLabOracle" );
     }
 }
