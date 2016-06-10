@@ -1,11 +1,11 @@
 package oracle;
 
 import oracle.cli.CLI;
-import oracle.cli.Line;
 import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -16,8 +16,8 @@ import java.util.Enumeration;
  */
 public class LacunaLabOracle extends PApplet{
 
-    public static String EXPORT_FILENAME_PREFIX = "romantic-order";
-    public static int MAX_INPUT_WORDS = 4;
+    public static String EXPORT_FILENAME_PREFIX = "v2-order";
+    public static int MAX_INPUT_WORDS = 6;
     private CLI cli;
     private MarkovManager markov;
 
@@ -43,7 +43,8 @@ public class LacunaLabOracle extends PApplet{
         cli = new CLI( this );
         markov = new MarkovManager();
 
-        markov.save("romantic_kamasutra.txt");
+        //markov.trainAndExport( "romantic_kamasutra.txt" );
+        markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v2_combined.txt" );
         //markov.load();
 
         noCursor();
@@ -160,26 +161,26 @@ public class LacunaLabOracle extends PApplet{
     }
 
     public void printIps() {
-        System.out.println("*** Networks interfaces:");
+        System.out.println( "*** Networks interfaces:" );
         String ip;
         try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
+            Enumeration< NetworkInterface > interfaces = NetworkInterface.getNetworkInterfaces();
+            while ( interfaces.hasMoreElements() ) {
                 NetworkInterface iface = interfaces.nextElement();
                 // filters out 127.0.0.1 and inactive interfaces
-                if (iface.isLoopback() || !iface.isUp())
+                if( iface.isLoopback() || !iface.isUp() )
                     continue;
 
-                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                while(addresses.hasMoreElements()) {
+                Enumeration< InetAddress > addresses = iface.getInetAddresses();
+                while ( addresses.hasMoreElements() ) {
                     InetAddress addr = addresses.nextElement();
                     ip = addr.getHostAddress();
-                    System.out.println(iface.getDisplayName() + " " + ip);
+                    System.out.println( iface.getDisplayName() + " " + ip );
                 }
             }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
+        } catch ( SocketException e ) {
+            throw new RuntimeException( e );
         }
-        System.out.println("******");
+        System.out.println( "******" );
     }
 }

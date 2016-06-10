@@ -1,0 +1,3 @@
+[submodule "lib/RecurrentJava"]
+	path = lib/RecurrentJava
+	url = https://github.com/evolvingstuff/RecurrentJava

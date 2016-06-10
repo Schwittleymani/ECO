@@ -19,7 +19,7 @@ public class SimpleOracle{
     public void setup() {
         markov = new MarkovManager();
 
-        //markov.save( "romantic.txt" );
+        //markov.trainAndExport( "romantic.txt" );
         markov.load();
 
         osc = new OscP5( this, 12000 );

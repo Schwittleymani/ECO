@@ -45,12 +45,12 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         String[] inputWords = input.split( " " );
         answer = check( inputWords );
 
-        if( answer.equals( "nothing" ) ) {
+        if( answer.equals( "nothing" ) ){
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
             //noAnswer = check( get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
 
             answer = noAnswer;
-            throw new Exception(  );
+            throw new Exception();
         }
 
         //System.out.println( "New answer: " + get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
@@ -84,7 +84,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return result;
     }
 
-    public void save( String fileName ) {
+    public void trainAndExport( String fileName ) {
         for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
             MarkovChain chain = new MarkovChain( i );
             chain.train( loadText( "data" + File.separator + fileName ) );
@@ -134,13 +134,20 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
     private String loadText( String fileName ) {
         String completeText = "";
-        try ( Stream< String > stream = Files.lines( Paths.get( fileName ), StandardCharsets.UTF_8 ) ) {
 
-            String s = stream.collect( Collectors.joining() );
-            completeText += s;
+        try {
+            FileInputStream in = new FileInputStream( fileName );
+            BufferedReader br = new BufferedReader( new InputStreamReader( in ) );
+            String strLine;
 
-        } catch ( IOException e ) {
-            e.printStackTrace();
+            while ( ( strLine = br.readLine() ) != null ) {
+                if( !strLine.isEmpty() ){
+                    completeText += strLine;
+                }
+            }
+
+        } catch ( Exception e ) {
+            System.out.println( e );
         }
 
         return completeText.toLowerCase();
