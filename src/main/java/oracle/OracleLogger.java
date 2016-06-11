@@ -15,7 +15,7 @@ import java.util.logging.*;
 public class OracleLogger {
 
     static final String nl = System.getProperty("line.separator");
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("mm/dd/yyyy_HH:mm:ss");
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss");
     String completeLoggerFileName = "conversation.log";
     String sessionLoggerFileName = "session.log";
 
