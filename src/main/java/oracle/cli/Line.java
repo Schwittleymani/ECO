@@ -28,6 +28,10 @@ public class Line extends ArrayList< String > {
         return size( ) >= CHAR_LIMIT;
     }
 
+    /**
+     * special offset for char-by-char typing. hacky-hackhack :]
+     * @return
+     */
     public boolean limitReachedOffset() {
         return size() >= CHAR_LIMIT - 4;
     }
