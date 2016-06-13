@@ -44,8 +44,8 @@ public class LacunaLabOracle extends PApplet{
         markov = new MarkovManager();
 
         //markov.trainAndExport( "romantic_kamasutra.txt" );
-        markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v2_combined.txt" );
-        //markov.load();
+        //markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v2_combined.txt" );
+        markov.load();
 
         noCursor();
 
