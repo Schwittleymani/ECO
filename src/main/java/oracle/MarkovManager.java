@@ -86,8 +86,10 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
     public void trainAndExport( String fileName ) {
         for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
+            String text = loadText( "data" + File.separator + fileName );
             MarkovChain chain = new MarkovChain( i );
-            chain.train( loadText( "data" + File.separator + fileName ) );
+
+            chain.train( text );
             add( chain );
             System.out.println( "Training chain with order " + i );
         }
@@ -142,7 +144,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
             while ( ( strLine = br.readLine() ) != null ) {
                 if( !strLine.isEmpty() ){
-                    completeText += strLine;
+                    completeText += stripTextFromSpecialCharacters( strLine );
                 }
             }
 
@@ -152,4 +154,31 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
         return completeText.toLowerCase();
     }
+
+    private String stripTextFromSpecialCharacters( String line ) {
+
+        ArrayList< String > charactersToRemove = new ArrayList<>();
+        charactersToRemove.add( ")" );
+        charactersToRemove.add( "”" );
+        charactersToRemove.add( "\"" );
+        charactersToRemove.add( "(" );
+        charactersToRemove.add( "[" );
+        charactersToRemove.add( "]" );
+        charactersToRemove.add( "—" );
+        charactersToRemove.add( "-" );
+        charactersToRemove.add( "_" );
+        charactersToRemove.add( "“" );
+        charactersToRemove.add( "’" );
+        charactersToRemove.add( ":" );
+        charactersToRemove.add( ";" );
+
+        line = line.replaceAll( "\\(.*\\)", "" );
+
+        for ( String s : charactersToRemove ) {
+            line = line.replace( s, "" );
+        }
+
+        return line;
+    }
+
 }
