@@ -25,7 +25,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public String getAnswer( String input ) throws Exception {
         String answer = "";
 
-        input.replace( "?", "" )
+        input = input.replace( "?", "" )
                 .replace( "!", "" )
                 .replace( ".", "" )
                 .replace( ",", "" )
@@ -59,6 +59,18 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             answer = answer.substring( 0, maxAnswerLength );
         }
 
+        ArrayList< String > charsToRemove = new ArrayList<>(  );
+        charsToRemove.add( "€" );
+        charsToRemove.add( "˜" );
+        charsToRemove.add( "â" );
+        charsToRemove.add( "™" );
+        charsToRemove.add( "œ" );
+        charsToRemove.add( "¦" );
+
+        for( String s : charsToRemove ) {
+            answer = answer.replace( s, "" );
+        }
+
         return answer;
     }
 
@@ -85,6 +97,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     }
 
     public void trainAndExport( String fileName ) {
+        System.out.println( "Trainging with text from " + fileName );
         for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
             String text = loadText( "data" + File.separator + fileName );
             MarkovChain chain = new MarkovChain( i );
