@@ -186,6 +186,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         charactersToRemove.add( ";" );
 
         line = line.replaceAll( "\\(.*\\)", "" );
+        line = line.replaceAll( "\\[.*\\]", "" );
 
         for ( String s : charactersToRemove ) {
             line = line.replace( s, "" );
