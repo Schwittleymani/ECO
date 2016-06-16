@@ -6,10 +6,6 @@ import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -17,11 +13,11 @@ import java.util.Enumeration;
 public class Oracle extends PApplet{
 
     public static String EXPORT_FILENAME_PREFIX = "v2-order";
-    public static int MAX_INPUT_WORDS = 6;
     private CLI cli;
     private MarkovManager markov;
 
     OracleLogger logger;
+    Settings settings;
 
     long millisLastInteraction;
     long idleDelay = 5 * 60 * 1000; // 5 minutes
@@ -35,10 +31,11 @@ public class Oracle extends PApplet{
         logger = new OracleLogger( this );
 
         fullScreen( 1 );
+        settings = new Settings();
 
         millisLastInteraction = System.currentTimeMillis();
-        if(startWebserver) {
-            server = new Webserver(this);
+        if( startWebserver ){
+            server = new Webserver( this );
         }
     }
 
@@ -50,7 +47,7 @@ public class Oracle extends PApplet{
         markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v4_combined.txt" );
         //markov.load();
         noCursor();
-        printIps();
+        Settings.printIps();
     }
 
     public void draw() {
@@ -104,15 +101,15 @@ public class Oracle extends PApplet{
                     } else {
                         String result = null;
                         //try {
-                            result = markov.getAnswer( inputWordsString );
+                        result = markov.getAnswer( inputWordsString );
 
-                            cli.finish( result );
-                            //if( result.contains( "lacuna" ) ){
-                            //    cli.startEmojiEasterEgg();
-                            //}
+                        cli.finish( result );
+                        //if( result.contains( "lacuna" ) ){
+                        //    cli.startEmojiEasterEgg();
+                        //}
                         //} catch ( Exception e ) {
                         //    e.printStackTrace();
-                        //    cli.finish( "oh", calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
+                        //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
                         //}
 
 
@@ -155,30 +152,6 @@ public class Oracle extends PApplet{
     }
 
     public static void main( String[] args ) {
-        PApplet.main( "oracle.LacunaLabOracle" );
-    }
-
-    public void printIps() {
-        System.out.println( "*** Networks interfaces:" );
-        String ip;
-        try {
-            Enumeration< NetworkInterface > interfaces = NetworkInterface.getNetworkInterfaces();
-            while ( interfaces.hasMoreElements() ) {
-                NetworkInterface iface = interfaces.nextElement();
-                // filters out 127.0.0.1 and inactive interfaces
-                if( iface.isLoopback() || !iface.isUp() )
-                    continue;
-
-                Enumeration< InetAddress > addresses = iface.getInetAddresses();
-                while ( addresses.hasMoreElements() ) {
-                    InetAddress addr = addresses.nextElement();
-                    ip = addr.getHostAddress();
-                    System.out.println( iface.getDisplayName() + " " + ip );
-                }
-            }
-        } catch ( SocketException e ) {
-            throw new RuntimeException( e );
-        }
-        System.out.println( "******" );
+        PApplet.main( "oracle.Oracle" );
     }
 }

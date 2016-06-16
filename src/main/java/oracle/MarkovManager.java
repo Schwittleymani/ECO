@@ -5,13 +5,8 @@ import oracle.markov.MarkovQueue;
 import processing.core.PApplet;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by mrzl on 06.04.2016.
@@ -73,6 +68,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         answer.replace( "“", "\"" );
         answer.replace( "”", "\"" );
         answer.replace( "’", "'" );
+        answer.replace( "?", "?" );
 
         answer = answer.trim();
         return answer;
@@ -116,7 +112,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
     public void trainAndExport( String fileName ) {
         System.out.println( "Trainging with text from " + fileName );
-        for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
+        for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
             String text = loadText( "data" + File.separator + fileName );
             MarkovChain chain = new MarkovChain( i );
 
@@ -126,7 +122,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
 
         for ( MarkovChain chain : this ) {
-            String _fileName = "data" + File.separator + LacunaLabOracle.EXPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
+            String _fileName = "data" + File.separator + Oracle.EXPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
             try {
                 ObjectOutputStream obj_out = new ObjectOutputStream(
                         new FileOutputStream( _fileName )
@@ -143,8 +139,8 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
     public void load() {
         try {
-            for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
-                String fileName = "data" + File.separator + LacunaLabOracle.EXPORT_FILENAME_PREFIX + i + ".data";
+            for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
+                String fileName = "data" + File.separator + Oracle.EXPORT_FILENAME_PREFIX + i + ".data";
                 FileInputStream f_in = new FileInputStream( fileName );
                 ObjectInputStream obj_in = new ObjectInputStream( f_in );
                 Object obj = obj_in.readObject();
@@ -162,7 +158,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        System.out.println( "Loaded markov chain from " + LacunaLabOracle.EXPORT_FILENAME_PREFIX );
+        System.out.println( "Loaded markov chain from " + Oracle.EXPORT_FILENAME_PREFIX );
     }
 
     private String loadText( String fileName ) {
@@ -226,10 +222,12 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         answers.add( "Do you think anthropology is important?" );
         answers.add( "Real virtuality or virtual reality?" );
         answers.add( "If you want, we can continue talking, but I'm not really interested anymore." );
+        answers.add( "I'm bored, I dont really feel like talking to you anymore." );
+        answers.add( "Can we please talk about something else?" );
         answers.add( "Let's rather talk about what you had for breakfast." );
         answers.add( "Is AI going to take over the world?" );
         answers.add( "How can we, together, fight the robots?" );
-        answers.add( "When you ask good questions, I will give good answers." );
+        answers.add( "You ask questions, I answer something. Shoot!" );
         answers.add( "I like VJing, too. LOL." );
 
         return answers.get( ( PApplet.floor( ( float ) Math.random() * answers.size() ) ) ).toLowerCase();
