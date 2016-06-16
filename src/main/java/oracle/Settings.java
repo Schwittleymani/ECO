@@ -1,27 +1,34 @@
 package oracle;
 
+import processing.core.PApplet;
+
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
 
 /**
  * Created by mrzl on 16.06.2016.
  */
-public class Settings {
+public class Settings{
     public static int MAX_INPUT_WORDS;
     public static int MIN_ANSWER_DELAY_COUNT, MAX_ANSWER_DELAY_COUNT;
 
     public static int CLI_PADDING_TOP, CLI_PADDING_LEFT;
     public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE, CLI_MAX_LINE_WIDTH;
 
+    public static ArrayList< String > RANDOM_ANSWERS = new ArrayList<>();
+
     public Settings() {
         Properties properties = new Properties();
         try {
-            properties.load(  new FileInputStream( "config.properties" ) );
+            properties.load( new FileInputStream( "config.properties" ) );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
@@ -34,6 +41,13 @@ public class Settings {
         CLI_LINE_HEIGTH = Integer.parseInt( properties.getProperty( "CLI_LINE_HEIGTH" ) );
         CLI_TEXT_SIZE = Integer.parseInt( properties.getProperty( "CL_TEXT_SIZE" ) );
         CLI_MAX_LINE_WIDTH = Integer.parseInt( properties.getProperty( "CLI_MAX_LINE_WIDTH" ) );
+
+        try {
+            String[] customAnswers = PApplet.loadStrings( new FileInputStream( "answers.txt" ) );
+            RANDOM_ANSWERS.addAll( Arrays.asList( customAnswers ) );
+        } catch ( FileNotFoundException e ) {
+            e.printStackTrace();
+        }
     }
 
     public static void printIps() {

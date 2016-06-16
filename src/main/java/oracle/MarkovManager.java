@@ -211,25 +211,6 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     }
 
     public String getRandomAnswer() {
-        ArrayList< String > answers = new ArrayList<>();
-
-        answers.add( "Do you like virtual reality?" );
-        answers.add( "Would you like to live in the cyberspace?" );
-        answers.add( "Let's talk about media art?" );
-        answers.add( "Do you think cybernetics are dead?" );
-        answers.add( "I hate art, you too?" );
-        answers.add( "Why don't you tell me your opinion of Dada?" );
-        answers.add( "Do you think anthropology is important?" );
-        answers.add( "Real virtuality or virtual reality?" );
-        answers.add( "If you want, we can continue talking, but I'm not really interested anymore." );
-        answers.add( "I'm bored, I dont really feel like talking to you anymore." );
-        answers.add( "Can we please talk about something else?" );
-        answers.add( "Let's rather talk about what you had for breakfast." );
-        answers.add( "Is AI going to take over the world?" );
-        answers.add( "How can we, together, fight the robots?" );
-        answers.add( "You ask questions, I answer something. Shoot!" );
-        answers.add( "I like VJing, too. LOL." );
-
-        return answers.get( ( PApplet.floor( ( float ) Math.random() * answers.size() ) ) ).toLowerCase();
+        return Settings.RANDOM_ANSWERS.get( ( PApplet.floor( ( float ) Math.random() * Settings.RANDOM_ANSWERS.size() ) ) ).toLowerCase();
     }
 }
