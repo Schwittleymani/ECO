@@ -14,10 +14,10 @@ import java.util.Enumeration;
 /**
  * Created by mrzl on 31.03.2016.
  */
-public class LacunaLabOracle extends PApplet{
+public class LacunaLabOracle extends PApplet {
 
     public static String EXPORT_FILENAME_PREFIX = "v2-order";
-    public static int MAX_INPUT_WORDS = 6;
+    public static int MAX_INPUT_WORDS = 2;
     private CLI cli;
     private MarkovManager markov;
 
@@ -26,24 +26,24 @@ public class LacunaLabOracle extends PApplet{
     long millisLastInteraction;
     long idleDelay = 5 * 60 * 1000; // 5 minutes
 
-    boolean startWebserver;
+    boolean startWebserver = true;
     Webserver server;
     private boolean intercept;
 
     public void settings() {
-        size( 640, 480 );
-        logger = new OracleLogger( this );
+        size(640, 480);
+        logger = new OracleLogger(this);
 
         //fullScreen( 1 );
 
         millisLastInteraction = System.currentTimeMillis();
-        if(startWebserver) {
+        if (startWebserver) {
             server = new Webserver(this);
         }
     }
 
     public void setup() {
-        cli = new CLI( this );
+        cli = new CLI(this);
         markov = new MarkovManager();
 
         //markov.trainAndExport( "romantic_kamasutra.txt" );
@@ -54,10 +54,10 @@ public class LacunaLabOracle extends PApplet{
     }
 
     public void draw() {
-        background( 0 );
+        background(0);
         cli.draw();
 
-        if( System.currentTimeMillis() > millisLastInteraction + idleDelay ){
+        if (System.currentTimeMillis() > millisLastInteraction + idleDelay) {
             cli.reset();
         }
     }
@@ -65,60 +65,60 @@ public class LacunaLabOracle extends PApplet{
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
-        if( cli.isActive() )
+        if (cli.isActive())
             return;
 
-        if( key == CODED ){
-            switch ( keyCode ) {
+        if (key == CODED) {
+            switch (keyCode) {
                 case KeyEvent.VK_F1:
                     cli.reset();
                     break;
             }
         } else {
-            switch ( key ) {
+            switch (key) {
                 case BACKSPACE:
                     cli.backspace();
                     break;
                 case ENTER:
-                    if( !cli.available() ){
+                    if (!cli.available()) {
                         return;
                     }
 
-                    String inputWordsString = cli.getLastLine().getText( true ).trim();
-                    while ( inputWordsString.startsWith( "." ) ||
-                            inputWordsString.startsWith( "," ) ||
-                            inputWordsString.startsWith( ";" ) ||
-                            inputWordsString.startsWith( ":" ) ||
-                            inputWordsString.startsWith( "-" ) ||
-                            inputWordsString.startsWith( "_" ) ) {
+                    String inputText = cli.getLastLine().getText(true).trim();
+                    while (inputText.startsWith(".") ||
+                            inputText.startsWith(",") ||
+                            inputText.startsWith(";") ||
+                            inputText.startsWith(":") ||
+                            inputText.startsWith("-") ||
+                            inputText.startsWith("_")) {
                         // removing some leading special characters
-                        inputWordsString = inputWordsString.substring( 1 );
+                        inputText = inputText.substring(1);
                     }
-                    inputWordsString = inputWordsString.trim();
-                    System.out.println( inputWordsString );
-                    if( intercept ){
-                        server.sendInput( inputWordsString );
-                        logger.logInput( inputWordsString );
+                    inputText = inputText.trim();
+                    System.out.println(inputText);
+
+                    String result = null;
+                    //try {
+                    result = markov.getAnswer(inputText);
+                    int delayMillis = cli.finish(result);
+                    if (startWebserver) {
+                        server.sendTexts(inputText,result,delayMillis);
+                        logger.logInput(inputText);
                         cli.waitForAnswer();
                         return;
-                    } else {
-                        String result = null;
-                        //try {
-                            result = markov.getAnswer( inputWordsString );
-
-                            cli.finish( result );
-                            //if( result.contains( "lacuna" ) ){
-                            //    cli.startEmojiEasterEgg();
-                            //}
-                        //} catch ( Exception e ) {
-                        //    e.printStackTrace();
-                        //    cli.finish( "oh", calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
-                        //}
-
-
-                        logger.log( inputWordsString, result );
-                        System.out.println( result );
                     }
+
+                    //if( result.contains( "lacuna" ) ){
+                    //    cli.startEmojiEasterEgg();
+                    //}
+                    //} catch ( Exception e ) {
+                    //    e.printStackTrace();
+                    //    cli.finish( "oh", calculateDelayByInputLength( inputText.split( " " ).length ) );
+                    //}
+
+
+                    logger.log(inputText, result);
+                    System.out.println(result);
                     break;
                 case TAB:
                 case DELETE:
@@ -128,8 +128,8 @@ public class LacunaLabOracle extends PApplet{
                     cli.reset();
                     break;
                 default:
-                    if( !cli.inputLimitReached() && !cli.isActive() ){
-                        cli.type( key );
+                    if (!cli.inputLimitReached() && !cli.isActive()) {
+                        cli.type(key);
                     }
                     break;
             }
@@ -138,47 +138,52 @@ public class LacunaLabOracle extends PApplet{
 
 
     public boolean intercept() {
-        if( intercept )
+        if (intercept)
             return true;
         intercept = true;
         return false;
     }
 
-    public void responseFromTheWeb( String response ) {
-        if( response.contains( "lacuna" ) ){
+    public void responseFromTheWeb(String response) {
+        if (response.contains("lacuna")) {
             cli.startEmojiEasterEgg();
         }
         intercept = false;
-        logger.logResponse( response, false );
-        System.out.println( response );
-        cli.finishFromWeb( response );
+        logger.logResponse(response, false);
+        System.out.println(response);
+        cli.finishFromWeb(response);
     }
 
-    public static void main( String[] args ) {
-        PApplet.main( "oracle.LacunaLabOracle" );
+    public static void main(String[] args) {
+        PApplet.main("oracle.LacunaLabOracle");
     }
 
     public void printIps() {
-        System.out.println( "*** Networks interfaces:" );
+        System.out.println("*** Networks interfaces:");
         String ip;
         try {
-            Enumeration< NetworkInterface > interfaces = NetworkInterface.getNetworkInterfaces();
-            while ( interfaces.hasMoreElements() ) {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
                 NetworkInterface iface = interfaces.nextElement();
                 // filters out 127.0.0.1 and inactive interfaces
-                if( iface.isLoopback() || !iface.isUp() )
+                if (iface.isLoopback() || !iface.isUp())
                     continue;
 
-                Enumeration< InetAddress > addresses = iface.getInetAddresses();
-                while ( addresses.hasMoreElements() ) {
+                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
                     InetAddress addr = addresses.nextElement();
                     ip = addr.getHostAddress();
-                    System.out.println( iface.getDisplayName() + " " + ip );
+                    System.out.println(iface.getDisplayName() + " " + ip);
                 }
             }
-        } catch ( SocketException e ) {
-            throw new RuntimeException( e );
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
         }
-        System.out.println( "******" );
+        System.out.println("******");
     }
+
+    public void webSocketServerEvent(String msg) {
+        server.webSocketServerEvent(msg);
+    }
+
 }

@@ -162,8 +162,10 @@
 	}
 
 	function suspend_timeout() {
-		start_timeout(timeout_suspend_time);
-		connection.send(JSON.stringify({"type":"suspend"}));
+		if(state == ORACLE_THINKS) {
+			start_timeout(timeout_suspend_time);
+			connection.send(JSON.stringify({"type":"suspend"}));
+		}
 	}
 
 	function checkEnter() {
@@ -204,11 +206,13 @@
 
 	// WEBSOCKET STUFF
 	//console.log(location);
+	// ***** global *****
 	var hostname = location.hostname;
 	if(hostname == "") {
 		hostname = "localhost"
 	}
 	var connection = new WebSocket("ws://" + hostname + ":8001/oracle");
+	// *********************** 
 
 	connection.onopen = function () {
 	  connection.send(JSON.stringify({"type":"connect"}));
@@ -234,6 +238,11 @@
 	  	set_state(ORACLE_THINKS);
 	  } else if(msg_obj.type == "status") {
 	  	console.log("status!"); // TODO
+	  } else if(msg_obj.type == "texts") {
+	  	append("user",msg_obj.input);
+	  	oracle_upcoming_span.innerHTML = msg_obj.result;
+	  	start_timeout(msg_obj.timeout / 1000);
+	  	set_state(ORACLE_THINKS);
 	  }
 	  console.log(msg_obj); 
 	};

@@ -12,28 +12,26 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+
 /**
  * Created by raminsoleymani on 09/04/16.
  */
 public class Webserver {
 
     SimpleHTTPServer server;
+    OracleWebsocketServer websocketServer;
     LacunaLabOracle Pparent;
 
-    String input = "";
-    boolean waitingForResponse;
 
     public Webserver(PApplet parent) {
         server = new SimpleHTTPServer(parent);
         this.Pparent = (LacunaLabOracle)parent;
 
-        server.createContext("getLog", new DynamicResponseHandler(new SessionLog(), "application/json"));
-        server.createContext("intercept", new DynamicResponseHandler(new Intercepter(), "application/json"));
+        websocketServer = new OracleWebsocketServer(parent);
     }
 
-    public void sendInput(String input) {
-        this.input = input;
-        waitingForResponse = true;
+    public void sendTexts(String input,String result,int timout) {
+        websocketServer.sendTexts(input,result,timout);
     }
 
 
@@ -52,41 +50,8 @@ public class Webserver {
         }
     }
 
-    class Intercepter extends ResponseBuilder {
-        public String getResponse(String requestBody) {
-            //Pparent.println("req body",requestBody);
-            if (!requestBody.equals("")) {
-                //Pparent.println("req:",requestBody);
-                JSONObject req = Pparent.parseJSONObject(requestBody);
-                if (req.hasKey("requestInput")) {
-                    //Pparent.println("-");
-                    JSONObject json = new JSONObject();
-                    json.setString("text", input);
-                    return json.toString();
-                } else if (req.hasKey("response")) {
-                    String response = req.getString("response");
-                    Pparent.responseFromTheWeb(response);
-                    waitingForResponse = false;
-                    JSONObject json = new JSONObject();
-                    json.setString("status", "okay");
-                    return json.toString();
-                }
-            }
-            JSONObject json = new JSONObject();
-            Pparent.intercept();
-            input = "";
-            waitingForResponse = false;
-            json.setString("status", "okay");
-            return json.toString();
-            /*if(Pparent.intercept() || input.equals("")) { // not yet intercepting
-                input = "";
-                waitingForResponse = false;
-                json.setString("status", "okay");
-                return json.toString();
-            } else { // input already typed in
 
-
-            }*/
-        }
+    public void webSocketServerEvent(String msg){
+        websocketServer.webSocketServerEvent(msg);
     }
 }
