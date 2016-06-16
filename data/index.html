@@ -133,37 +133,43 @@
 	}
 
 	var interval_tick,interval_countdown;
-	var timeout_suspend_time = 20;
+	var timeout_suspend_time = 20000;
 
-	function start_timeout(seconds) {
+	var total_time;
+	var timer;
+
+	function start_timeout(millis) {
 		
 		clearInterval(interval_tick);
 	 	clearInterval(interval_countdown);
 	  //var width = 10;
-		var millis = seconds * 1000;
-		var start_time = seconds * 1000;
+		var total_time = millis;
+		timer = millis;
 		interval_tick = setInterval(tick, 50);
 		interval_countdown = setInterval(function() {
-			millis-= 50;
-			//console.log(millis);
+			timer-= 50;
+			//console.log(timer);
 		},50);
 		function tick() {
-			if (millis <= 0) {
+			if (timer <= 0) {
 				clearInterval(interval_tick);
 			 	clearInterval(interval_countdown);
 			} else {
-				var width = millis / start_time;
+				var width = timer / total_time;
 				//console.log(width);
 			 	bar_div.style.width = (200 * width)+"px";
 			 	//console.log((200 * width)+"px");
-			 	timeout_div.innerHTML = (1 + (millis / 1000)) | 0;
+			 	timeout_div.innerHTML = (1 + (timer / 1000)) | 0;
 			}
 		}
 	}
 
 	function suspend_timeout() {
 		if(state == ORACLE_THINKS) {
-			start_timeout(timeout_suspend_time);
+			//start_timeout(timeout_suspend_time);
+			timer += timeout_suspend_time;
+			total_time = timer;
+			console.log(total_time);
 			connection.send(JSON.stringify({"type":"suspend"}));
 		}
 	}
@@ -227,12 +233,12 @@
 	connection.onmessage = function (e) {
 	  //console.log('Server: ' + e.data);
 	  msg_obj = JSON.parse(e.data);
-	  if(msg_obj.type == "userMessage") {
+	  if(msg_obj.type == "userMessage") { // not used atm
 	  	append("user",msg_obj.content);
 	  } else if(msg_obj.type == "oracleDone") {
 	  	append("oracle",msg_obj.content);
 	  	set_state(USERINPUT);
-	  } else if(msg_obj.type == "oracleThinks") {
+	  } else if(msg_obj.type == "oracleThinks") { // not used atm
 	  	oracle_upcoming_span.innerHTML = msg_obj.content;
 	  	start_timeout(msg_obj.timeout);
 	  	set_state(ORACLE_THINKS);
@@ -241,7 +247,7 @@
 	  } else if(msg_obj.type == "texts") {
 	  	append("user",msg_obj.input);
 	  	oracle_upcoming_span.innerHTML = msg_obj.result;
-	  	start_timeout(msg_obj.timeout / 1000);
+	  	start_timeout(msg_obj.timeout);
 	  	set_state(ORACLE_THINKS);
 	  }
 	  console.log(msg_obj); 

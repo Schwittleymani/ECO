@@ -1,5 +1,7 @@
 package oracle.cli;
 
+import oracle.web.OracleWebsocketServer;
+
 /**
  * Created by mrzl on 09.04.2016.
  */
@@ -7,30 +9,44 @@ public class DelayedTyper{
     private CLI cli;
 
     private String textToType;
-    private long startMillis, delayMillisPerCharacter, initDelayStartMillis, initDelayMillis;
+    private long timer;
+    private long delayMillisPerCharacter;
+    private long initDelayStartMillis;
+    private long initDelayMillis;
+    private boolean isWaiting;
+
 
     public DelayedTyper( CLI cli ) {
         textToType = "";
         this.cli = cli;
         delayMillisPerCharacter = 50;
-        startMillis = System.currentTimeMillis();
+        timer = System.currentTimeMillis();
         initDelayStartMillis = System.currentTimeMillis();
         initDelayMillis = 0;
     }
 
     public void addText( String text ) {
         textToType += text;
-        startMillis = System.currentTimeMillis();
+        timer = System.currentTimeMillis();
+        isWaiting = true;
     }
 
     public void addDelay( long millis ) {
-        startMillis += millis;
+        timer += millis;
         initDelayStartMillis = System.currentTimeMillis();
         initDelayMillis = millis;
+        System.out.println("delayedtyper.adddelay "+ timer);
     }
 
-    public boolean isNotWaiting() {
-        return System.currentTimeMillis() - startMillis > delayMillisPerCharacter;
+    public boolean isWaiting() {
+        if(isWaiting) {
+            isWaiting = System.currentTimeMillis() - timer < delayMillisPerCharacter;
+            if(!isWaiting) {
+                OracleWebsocketServer.sendOracleTimout();
+            }
+            return isWaiting;
+        } else
+            return false;
     }
 
     public boolean isInitDelay() {
@@ -42,11 +58,11 @@ public class DelayedTyper{
      */
     public boolean update() {
         if( !isEmpty() ){
-            if( isNotWaiting() ){
+            if( !isWaiting() ){
                 type( textToType.charAt( 0 ) );
                 textToType = textToType.substring( 1, textToType.length() );
 
-                startMillis = System.currentTimeMillis();
+                timer = System.currentTimeMillis();
             }
             if( isEmpty() ){
                 // if last character was typed

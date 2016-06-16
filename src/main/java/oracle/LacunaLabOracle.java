@@ -18,7 +18,7 @@ public class LacunaLabOracle extends PApplet {
 
     public static String EXPORT_FILENAME_PREFIX = "v2-order";
     public static int MAX_INPUT_WORDS = 2;
-    private CLI cli;
+    public CLI cli;
     private MarkovManager markov;
 
     OracleLogger logger;
@@ -27,7 +27,7 @@ public class LacunaLabOracle extends PApplet {
     long idleDelay = 5 * 60 * 1000; // 5 minutes
 
     boolean startWebserver = true;
-    Webserver server;
+    public Webserver server;
     private boolean intercept;
 
     public void settings() {
@@ -101,10 +101,11 @@ public class LacunaLabOracle extends PApplet {
                     //try {
                     result = markov.getAnswer(inputText);
                     int delayMillis = cli.finish(result);
+
                     if (startWebserver) {
                         server.sendTexts(inputText,result,delayMillis);
                         logger.logInput(inputText);
-                        cli.waitForAnswer();
+                        //cli.waitForAnswer();
                         return;
                     }
 
@@ -137,12 +138,6 @@ public class LacunaLabOracle extends PApplet {
     }
 
 
-    public boolean intercept() {
-        if (intercept)
-            return true;
-        intercept = true;
-        return false;
-    }
 
     public void responseFromTheWeb(String response) {
         if (response.contains("lacuna")) {
@@ -185,5 +180,6 @@ public class LacunaLabOracle extends PApplet {
     public void webSocketServerEvent(String msg) {
         server.webSocketServerEvent(msg);
     }
+
 
 }

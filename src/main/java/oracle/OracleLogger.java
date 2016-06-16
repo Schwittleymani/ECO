@@ -26,8 +26,8 @@ public class OracleLogger {
     public OracleLogger(PApplet parent) {
 
         this.parent = parent;
-        try {
 
+        try {
             FileHandler handler = new FileHandler(completeLoggerFileName,true);
             handler.setFormatter(new OracleFormatter());
             allknowingLogger.setUseParentHandlers(false);
@@ -42,6 +42,7 @@ public class OracleLogger {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private void removeLoggerGarbage() {

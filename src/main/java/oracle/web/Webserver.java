@@ -23,7 +23,7 @@ public class Webserver {
     LacunaLabOracle Pparent;
 
 
-    public Webserver(PApplet parent) {
+    public Webserver(LacunaLabOracle parent) {
         server = new SimpleHTTPServer(parent);
         this.Pparent = (LacunaLabOracle)parent;
 

@@ -1,5 +1,6 @@
 package oracle.cli;
 
+import oracle.LacunaLabOracle;
 import oracle.ostern.Jesus;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -15,7 +16,7 @@ public class CLI {
     private static final int PREF_WORD_LEN = LINE_PREFIX_CHARS.split(" ").length;
 
     private ArrayList<Line> lines = new ArrayList<>();
-    private PApplet parent;
+    private LacunaLabOracle parent;
     private PFont font;
 
     private Jesus jesus;
@@ -30,7 +31,10 @@ public class CLI {
     int paddingTop = 50;
     int paddingLeft = 40;
 
-    public CLI(PApplet p) {
+
+    //private int  defaulSuspendTime = 20000;
+
+    public CLI(LacunaLabOracle p) {
         this.parent = p;
         this.font = p.createFont("data" + File.separator + "Glass_TTY_VT220.ttf", textSize);
         this.parent.textFont(this.font);
@@ -191,6 +195,11 @@ public class CLI {
 
     public boolean inputLimitReached() {
         return getLastLine().getText(false).length() >= Line.CHAR_LIMIT;
+    }
+
+    public void suspendTyper(int millis) {
+        delayedTyper.addDelay(millis);
+        System.out.println();
     }
 }
 
