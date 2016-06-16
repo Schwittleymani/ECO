@@ -7,7 +7,7 @@ import oscP5.OscP5;
 /**
  * Created by mrzl on 31.03.2016.
  */
-public class SimpleOracle{
+public class OracleOsc{
 
     public static String EXPORT_FILENAME_PREFIX = "romantic-order";
     public static int MAX_INPUT_WORDS = 4;
@@ -61,7 +61,7 @@ public class SimpleOracle{
     }
 
     public static void main( String[] args ) {
-        SimpleOracle oracle = new SimpleOracle();
+        OracleOsc oracle = new OracleOsc();
         oracle.setup();
     }
 }
