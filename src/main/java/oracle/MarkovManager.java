@@ -53,13 +53,12 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             throw new Exception();
         }
 
-        //System.out.println( "New answer: " + get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
-
         if( answer.length() > maxAnswerLength ){
-            answer = answer.substring( 0, maxAnswerLength );
+            //answer = answer.substring( 0, maxAnswerLength );
+            answer = cropTooLongAnswer( answer, maxAnswerLength );
         }
 
-        ArrayList< String > charsToRemove = new ArrayList<>(  );
+        ArrayList< String > charsToRemove = new ArrayList<>();
         charsToRemove.add( "€" );
         charsToRemove.add( "˜" );
         charsToRemove.add( "â" );
@@ -67,8 +66,22 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         charsToRemove.add( "œ" );
         charsToRemove.add( "¦" );
 
-        for( String s : charsToRemove ) {
+        for ( String s : charsToRemove ) {
             answer = answer.replace( s, "" );
+        }
+
+        return answer;
+    }
+
+    private String cropTooLongAnswer( String answer, int maxAnswerLength ) {
+        int index = answer.indexOf( "." );
+        while ( index >= 0 ) {
+            System.out.println( index );
+            index = answer.indexOf( ".", index + 1 );
+            if( index > maxAnswerLength ) {
+                System.out.println( "cropping the answer at index " + index );
+                return answer.substring( 0, index );
+            }
         }
 
         return answer;
@@ -184,6 +197,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         charactersToRemove.add( "’" );
         charactersToRemove.add( ":" );
         charactersToRemove.add( ";" );
+        charactersToRemove.add( "," );
 
         line = line.replaceAll( "\\(.*\\)", "" );
         line = line.replaceAll( "\\[.*\\]", "" );
