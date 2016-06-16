@@ -11,8 +11,6 @@ import java.io.File;
  * Created by mrzl on 31.03.2016.
  */
 public class Oracle extends PApplet{
-
-    public static String EXPORT_FILENAME_PREFIX = "v2-order";
     private CLI cli;
     private MarkovManager markov;
 
@@ -20,7 +18,6 @@ public class Oracle extends PApplet{
     Settings settings;
 
     long millisLastInteraction;
-    long idleDelay = 5 * 60 * 1000; // 5 minutes
 
     boolean startWebserver;
     Webserver server;
@@ -47,14 +44,13 @@ public class Oracle extends PApplet{
         markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v4_combined.txt" );
         //markov.load();
         noCursor();
-        Settings.printIps();
     }
 
     public void draw() {
         background( 0 );
         cli.draw();
 
-        if( System.currentTimeMillis() > millisLastInteraction + idleDelay ){
+        if( System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS ){
             cli.reset();
         }
     }
@@ -132,7 +128,6 @@ public class Oracle extends PApplet{
             }
         }
     }
-
 
     public boolean intercept() {
         if( intercept )

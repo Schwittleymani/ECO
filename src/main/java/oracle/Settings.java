@@ -23,6 +23,10 @@ public class Settings{
     public static int CLI_PADDING_TOP, CLI_PADDING_LEFT;
     public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE, CLI_MAX_LINE_WIDTH;
 
+    public static int CLI_RESET_DELAY_MILLIS;
+
+    public static String EXPORT_IMPORT_FILENAME_PREFIX;
+
     public static ArrayList< String > RANDOM_ANSWERS = new ArrayList<>();
 
     public Settings() {
@@ -41,6 +45,8 @@ public class Settings{
         CLI_LINE_HEIGTH = Integer.parseInt( properties.getProperty( "CLI_LINE_HEIGTH" ) );
         CLI_TEXT_SIZE = Integer.parseInt( properties.getProperty( "CL_TEXT_SIZE" ) );
         CLI_MAX_LINE_WIDTH = Integer.parseInt( properties.getProperty( "CLI_MAX_LINE_WIDTH" ) );
+        CLI_RESET_DELAY_MILLIS = Integer.parseInt( properties.getProperty( "CLI_RESET_DELAY_MILLIS" ) );
+        EXPORT_IMPORT_FILENAME_PREFIX = properties.getProperty( "EXPORT_IMPORT_FILENAME_PREFIX" );
 
         try {
             String[] customAnswers = PApplet.loadStrings( new FileInputStream( "answers.txt" ) );

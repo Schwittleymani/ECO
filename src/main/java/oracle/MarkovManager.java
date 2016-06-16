@@ -122,7 +122,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
 
         for ( MarkovChain chain : this ) {
-            String _fileName = "data" + File.separator + Oracle.EXPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
+            String _fileName = "data" + File.separator + Settings.EXPORT_IMPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
             try {
                 ObjectOutputStream obj_out = new ObjectOutputStream(
                         new FileOutputStream( _fileName )
@@ -140,7 +140,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public void load() {
         try {
             for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
-                String fileName = "data" + File.separator + Oracle.EXPORT_FILENAME_PREFIX + i + ".data";
+                String fileName = "data" + File.separator + Settings.EXPORT_IMPORT_FILENAME_PREFIX + i + ".data";
                 FileInputStream f_in = new FileInputStream( fileName );
                 ObjectInputStream obj_in = new ObjectInputStream( f_in );
                 Object obj = obj_in.readObject();
@@ -158,7 +158,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        System.out.println( "Loaded markov chain from " + Oracle.EXPORT_FILENAME_PREFIX );
+        System.out.println( "Loaded markov chain from " + Settings.EXPORT_IMPORT_FILENAME_PREFIX );
     }
 
     private String loadText( String fileName ) {
