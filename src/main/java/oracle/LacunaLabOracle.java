@@ -33,7 +33,7 @@ public class LacunaLabOracle extends PApplet{
         size( 640, 480 );
         logger = new OracleLogger( this );
 
-        fullScreen( 1 );
+        //fullScreen( 1 );
 
         millisLastInteraction = System.currentTimeMillis();
         server = new Webserver( this );
@@ -100,16 +100,16 @@ public class LacunaLabOracle extends PApplet{
                         return;
                     } else {
                         String result = null;
-                        try {
+                        //try {
                             result = markov.getAnswer( inputWordsString );
                             cli.finish( result, calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
                             //if( result.contains( "lacuna" ) ){
                             //    cli.startEmojiEasterEgg();
                             //}
-                        } catch ( Exception e ) {
-                            e.printStackTrace();
-                            cli.finish( "oh", calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
-                        }
+                        //} catch ( Exception e ) {
+                        //    e.printStackTrace();
+                        //    cli.finish( "oh", calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
+                        //}
 
 
                         logger.log( inputWordsString, result );

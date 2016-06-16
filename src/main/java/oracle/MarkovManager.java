@@ -2,6 +2,7 @@ package oracle;
 
 import oracle.markov.MarkovChain;
 import oracle.markov.MarkovQueue;
+import processing.core.PApplet;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +23,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public MarkovManager() {
     }
 
-    public String getAnswer( String input ) throws Exception {
+    public String getAnswer( String input ) {
         String answer = "";
 
         input = input.replace( "?", "" )
@@ -49,8 +50,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
             //noAnswer = check( get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
 
-            answer = noAnswer;
-            throw new Exception();
+            answer = getRandomAnswer();
         }
 
         if( answer.length() > maxAnswerLength ){
@@ -78,7 +78,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         while ( index >= 0 ) {
             System.out.println( index );
             index = answer.indexOf( ".", index + 1 );
-            if( index > maxAnswerLength ) {
+            if( index > maxAnswerLength ){
                 System.out.println( "cropping the answer at index " + index );
                 return answer.substring( 0, index );
             }
@@ -209,4 +209,24 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return line;
     }
 
+    public String getRandomAnswer() {
+        ArrayList< String > answers = new ArrayList<>();
+
+        answers.add( "Do you like virtual reality?" );
+        answers.add( "Would you like to live in the cyberspace?" );
+        answers.add( "Let's talk about media art?" );
+        answers.add( "Do you think cybernetics are dead?" );
+        answers.add( "I hate art, you too?" );
+        answers.add( "Why don't you tell me your opinion of Dada?" );
+        answers.add( "Do you think anthropology is important?" );
+        answers.add( "Real virtuality or virtual reality?" );
+        answers.add( "If you want, we can continue talking, but I'm not really interested anymore." );
+        answers.add( "Let's rather talk about what you had for breakfast." );
+        answers.add( "Is AI going to take over the world?" );
+        answers.add( "How can we, together, fight the robots?" );
+        answers.add( "When you ask good questions, I will give good answers." );
+        answers.add( "I like VJing. LOL." );
+
+        return answers.get( ( PApplet.floor( ( float ) Math.random() ) * answers.size() ) );
+    }
 }
