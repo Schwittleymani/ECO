@@ -26,6 +26,7 @@ public class LacunaLabOracle extends PApplet{
     long millisLastInteraction;
     long idleDelay = 5 * 60 * 1000; // 5 minutes
 
+    boolean startWebserver;
     Webserver server;
     private boolean intercept;
 
@@ -36,7 +37,9 @@ public class LacunaLabOracle extends PApplet{
         //fullScreen( 1 );
 
         millisLastInteraction = System.currentTimeMillis();
-        server = new Webserver( this );
+        if(startWebserver) {
+            server = new Webserver(this);
+        }
     }
 
     public void setup() {
@@ -102,7 +105,8 @@ public class LacunaLabOracle extends PApplet{
                         String result = null;
                         //try {
                             result = markov.getAnswer( inputWordsString );
-                            cli.finish( result, calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
+
+                            cli.finish( result );
                             //if( result.contains( "lacuna" ) ){
                             //    cli.startEmojiEasterEgg();
                             //}
@@ -132,10 +136,6 @@ public class LacunaLabOracle extends PApplet{
         }
     }
 
-
-    private long calculateDelayByInputLength( int length ) {
-        return ( long ) map( length, 1, 8, 400, 7000 );
-    }
 
     public boolean intercept() {
         if( intercept )

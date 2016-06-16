@@ -104,10 +104,17 @@ public class CLI {
         getLastLine().backspace();
     }
 
-    public void finish(String answer, long delayMillis) {
+    public void finish(String answer) {
         newLine();
         delayedTyper.addText(answer);
+        int words = answer.split( " " ).length;
+        long delayMillis = calculateDelayByInputLength(words);
         delayedTyper.addDelay(delayMillis);
+    }
+
+    public static long calculateDelayByInputLength( int length ) {
+        int inputDelayMaxWords = 30;
+        return ( long ) PApplet.map( PApplet.min(length, inputDelayMaxWords), 1, inputDelayMaxWords, 400, 7000 );
     }
 
     public void type(char c) {

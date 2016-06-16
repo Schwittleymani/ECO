@@ -65,11 +65,13 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         charsToRemove.add( "™" );
         charsToRemove.add( "œ" );
         charsToRemove.add( "¦" );
+        charsToRemove.add( "“" );
+        charsToRemove.add( "”" );
 
         for ( String s : charsToRemove ) {
             answer = answer.replace( s, "" );
         }
-
+        answer = answer.trim();
         return answer;
     }
 
