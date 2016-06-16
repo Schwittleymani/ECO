@@ -14,7 +14,7 @@ import java.util.Enumeration;
 /**
  * Created by mrzl on 31.03.2016.
  */
-public class LacunaLabOracle extends PApplet{
+public class Oracle extends PApplet{
 
     public static String EXPORT_FILENAME_PREFIX = "v2-order";
     public static int MAX_INPUT_WORDS = 6;
@@ -34,7 +34,7 @@ public class LacunaLabOracle extends PApplet{
         size( 640, 480 );
         logger = new OracleLogger( this );
 
-        //fullScreen( 1 );
+        fullScreen( 1 );
 
         millisLastInteraction = System.currentTimeMillis();
         if(startWebserver) {
@@ -47,8 +47,8 @@ public class LacunaLabOracle extends PApplet{
         markov = new MarkovManager();
 
         //markov.trainAndExport( "romantic_kamasutra.txt" );
-        //markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v3_combined.txt" );
-        markov.load();
+        markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v4_combined.txt" );
+        //markov.load();
         noCursor();
         printIps();
     }
