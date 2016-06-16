@@ -65,12 +65,15 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         charsToRemove.add( "™" );
         charsToRemove.add( "œ" );
         charsToRemove.add( "¦" );
-        charsToRemove.add( "“" );
-        charsToRemove.add( "”" );
 
         for ( String s : charsToRemove ) {
             answer = answer.replace( s, "" );
         }
+
+        answer.replace( "“", "\"" );
+        answer.replace( "”", "\"" );
+        answer.replace( "’", "'" );
+
         answer = answer.trim();
         return answer;
     }
@@ -227,8 +230,8 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         answers.add( "Is AI going to take over the world?" );
         answers.add( "How can we, together, fight the robots?" );
         answers.add( "When you ask good questions, I will give good answers." );
-        answers.add( "I like VJing. LOL." );
+        answers.add( "I like VJing, too. LOL." );
 
-        return answers.get( ( PApplet.floor( ( float ) Math.random() ) * answers.size() ) ).toLowerCase();
+        return answers.get( ( PApplet.floor( ( float ) Math.random() * answers.size() ) ) ).toLowerCase();
     }
 }
