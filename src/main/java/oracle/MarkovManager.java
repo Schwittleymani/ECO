@@ -229,6 +229,6 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         answers.add( "When you ask good questions, I will give good answers." );
         answers.add( "I like VJing. LOL." );
 
-        return answers.get( ( PApplet.floor( ( float ) Math.random() ) * answers.size() ) );
+        return answers.get( ( PApplet.floor( ( float ) Math.random() ) * answers.size() ) ).toLowerCase();
     }
 }
