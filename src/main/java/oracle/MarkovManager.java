@@ -2,6 +2,7 @@ package oracle;
 
 import oracle.markov.MarkovChain;
 import oracle.markov.MarkovQueue;
+import processing.core.PApplet;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -22,10 +23,10 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public MarkovManager() {
     }
 
-    public String getAnswer( String input ) throws Exception {
+    public String getAnswer( String input ) {
         String answer = "";
 
-        input.replace( "?", "" )
+        input = input.replace( "?", "" )
                 .replace( "!", "" )
                 .replace( ".", "" )
                 .replace( ",", "" )
@@ -49,14 +50,38 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
             //noAnswer = check( get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
 
-            answer = noAnswer;
-            throw new Exception();
+            answer = getRandomAnswer();
         }
 
-        //System.out.println( "New answer: " + get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
-
         if( answer.length() > maxAnswerLength ){
-            answer = answer.substring( 0, maxAnswerLength );
+            //answer = answer.substring( 0, maxAnswerLength );
+            answer = cropTooLongAnswer( answer, maxAnswerLength );
+        }
+
+        ArrayList< String > charsToRemove = new ArrayList<>();
+        charsToRemove.add( "€" );
+        charsToRemove.add( "˜" );
+        charsToRemove.add( "â" );
+        charsToRemove.add( "™" );
+        charsToRemove.add( "œ" );
+        charsToRemove.add( "¦" );
+
+        for ( String s : charsToRemove ) {
+            answer = answer.replace( s, "" );
+        }
+
+        return answer;
+    }
+
+    private String cropTooLongAnswer( String answer, int maxAnswerLength ) {
+        int index = answer.indexOf( "." );
+        while ( index >= 0 ) {
+            System.out.println( index );
+            index = answer.indexOf( ".", index + 1 );
+            if( index > maxAnswerLength ){
+                System.out.println( "cropping the answer at index " + index );
+                return answer.substring( 0, index );
+            }
         }
 
         return answer;
@@ -85,9 +110,12 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     }
 
     public void trainAndExport( String fileName ) {
+        System.out.println( "Trainging with text from " + fileName );
         for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
+            String text = loadText( "data" + File.separator + fileName );
             MarkovChain chain = new MarkovChain( i );
-            chain.train( loadText( "data" + File.separator + fileName ) );
+
+            chain.train( text );
             add( chain );
             System.out.println( "Training chain with order " + i );
         }
@@ -142,7 +170,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
             while ( ( strLine = br.readLine() ) != null ) {
                 if( !strLine.isEmpty() ){
-                    completeText += strLine;
+                    completeText += stripTextFromSpecialCharacters( strLine );
                 }
             }
 
@@ -151,5 +179,54 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
 
         return completeText.toLowerCase();
+    }
+
+    private String stripTextFromSpecialCharacters( String line ) {
+
+        ArrayList< String > charactersToRemove = new ArrayList<>();
+        charactersToRemove.add( ")" );
+        charactersToRemove.add( "”" );
+        charactersToRemove.add( "\"" );
+        charactersToRemove.add( "(" );
+        charactersToRemove.add( "[" );
+        charactersToRemove.add( "]" );
+        charactersToRemove.add( "—" );
+        charactersToRemove.add( "-" );
+        charactersToRemove.add( "_" );
+        charactersToRemove.add( "“" );
+        charactersToRemove.add( "’" );
+        charactersToRemove.add( ":" );
+        charactersToRemove.add( ";" );
+        charactersToRemove.add( "," );
+
+        line = line.replaceAll( "\\(.*\\)", "" );
+        line = line.replaceAll( "\\[.*\\]", "" );
+
+        for ( String s : charactersToRemove ) {
+            line = line.replace( s, "" );
+        }
+
+        return line;
+    }
+
+    public String getRandomAnswer() {
+        ArrayList< String > answers = new ArrayList<>();
+
+        answers.add( "Do you like virtual reality?" );
+        answers.add( "Would you like to live in the cyberspace?" );
+        answers.add( "Let's talk about media art?" );
+        answers.add( "Do you think cybernetics are dead?" );
+        answers.add( "I hate art, you too?" );
+        answers.add( "Why don't you tell me your opinion of Dada?" );
+        answers.add( "Do you think anthropology is important?" );
+        answers.add( "Real virtuality or virtual reality?" );
+        answers.add( "If you want, we can continue talking, but I'm not really interested anymore." );
+        answers.add( "Let's rather talk about what you had for breakfast." );
+        answers.add( "Is AI going to take over the world?" );
+        answers.add( "How can we, together, fight the robots?" );
+        answers.add( "When you ask good questions, I will give good answers." );
+        answers.add( "I like VJing. LOL." );
+
+        return answers.get( ( PApplet.floor( ( float ) Math.random() ) * answers.size() ) );
     }
 }

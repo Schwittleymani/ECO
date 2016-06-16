@@ -33,7 +33,7 @@ public class LacunaLabOracle extends PApplet{
         size( 640, 480 );
         logger = new OracleLogger( this );
 
-        //fullScreen();
+        //fullScreen( 1 );
 
         millisLastInteraction = System.currentTimeMillis();
         server = new Webserver( this );
@@ -44,11 +44,9 @@ public class LacunaLabOracle extends PApplet{
         markov = new MarkovManager();
 
         //markov.trainAndExport( "romantic_kamasutra.txt" );
-        //markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v2_combined.txt" );
+        //markov.trainAndExport( "text" + File.separator + "oraclev2" + File.separator + "v3_combined.txt" );
         markov.load();
-
         noCursor();
-
         printIps();
     }
 
@@ -102,16 +100,16 @@ public class LacunaLabOracle extends PApplet{
                         return;
                     } else {
                         String result = null;
-                        try {
+                        //try {
                             result = markov.getAnswer( inputWordsString );
                             cli.finish( result, calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
-                            if( result.contains( "lacuna" ) ){
-                                cli.startEmojiEasterEgg();
-                            }
-                        } catch ( Exception e ) {
-                            e.printStackTrace();
-                            cli.finish( "oh", calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
-                        }
+                            //if( result.contains( "lacuna" ) ){
+                            //    cli.startEmojiEasterEgg();
+                            //}
+                        //} catch ( Exception e ) {
+                        //    e.printStackTrace();
+                        //    cli.finish( "oh", calculateDelayByInputLength( inputWordsString.split( " " ).length ) );
+                        //}
 
 
                         logger.log( inputWordsString, result );

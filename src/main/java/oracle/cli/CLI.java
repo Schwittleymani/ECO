@@ -22,13 +22,13 @@ public class CLI {
     private BlinkingRectangle blinker;
     private DelayedTyper delayedTyper;
 
-    private int maxLineWidth = 540;
+    private int maxLineWidth = 460;
     private int textSize = 20;
 
     private int currentY;
     int lineHeight = 30;
-    int paddingTop = 25;
-    int paddingLeft = 15;
+    int paddingTop = 50;
+    int paddingLeft = 40;
 
     public CLI(PApplet p) {
         this.parent = p;
@@ -56,6 +56,13 @@ public class CLI {
 
     public void draw() {
         parent.fill(0, 255, 0);
+
+        parent.pushStyle();
+        parent.noFill();
+        parent.stroke(0, 255, 0 );
+        parent.strokeWeight( 5 );
+        parent.rect( 15, 15, 610, 450 );
+        parent.popStyle();
 
         jesus.drawBeforeEaster();
 
