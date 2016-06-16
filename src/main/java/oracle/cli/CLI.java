@@ -74,7 +74,7 @@ public class CLI {
         lines.forEach(Line::draw);
 
         // draws blinking square, rotating or not
-        blinker.draw(delayedTyper.isInitDelay());
+        blinker.draw(delayedTyper.isWaiting());
 
         // types the text in delayed manner
         if (delayedTyper.update()) {
@@ -113,7 +113,7 @@ public class CLI {
         delayedTyper.addText(answer);
         int words = answer.split( " " ).length;
         int delayMillis = calculateDelayByInputLength(words);
-        delayedTyper.addDelay(delayMillis);
+        delayedTyper.startTimout(delayMillis);
         return delayMillis;
     }
 
@@ -124,17 +124,6 @@ public class CLI {
 
     public void type(char c) {
         delayedTyper.type(c);
-    }
-
-    public void finishFromWeb(String answer) {
-        delayedTyper.addText(answer);
-        delayedTyper.addDelay(0);
-    }
-
-    // waits for the interception answer
-    public void waitForAnswer() {
-        newLine();
-        delayedTyper.addDelay(Long.MAX_VALUE);
     }
 
     public void newLine() {
@@ -199,7 +188,15 @@ public class CLI {
 
     public void suspendTyper(int millis) {
         delayedTyper.addDelay(millis);
-        System.out.println();
+        System.out.println("cli.suspendTyper: "+millis);
+    }
+
+    public void interceptTypeNow(String content) {
+        delayedTyper.typeNow(content);
+    }
+
+    public void typeNow() {
+        delayedTyper.typeNow();
     }
 }
 

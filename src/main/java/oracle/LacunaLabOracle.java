@@ -105,8 +105,6 @@ public class LacunaLabOracle extends PApplet {
                     if (startWebserver) {
                         server.sendTexts(inputText,result,delayMillis);
                         logger.logInput(inputText);
-                        //cli.waitForAnswer();
-                        return;
                     }
 
                     //if( result.contains( "lacuna" ) ){
@@ -116,7 +114,6 @@ public class LacunaLabOracle extends PApplet {
                     //    e.printStackTrace();
                     //    cli.finish( "oh", calculateDelayByInputLength( inputText.split( " " ).length ) );
                     //}
-
 
                     logger.log(inputText, result);
                     System.out.println(result);
@@ -137,17 +134,6 @@ public class LacunaLabOracle extends PApplet {
         }
     }
 
-
-
-    public void responseFromTheWeb(String response) {
-        if (response.contains("lacuna")) {
-            cli.startEmojiEasterEgg();
-        }
-        intercept = false;
-        logger.logResponse(response, false);
-        System.out.println(response);
-        cli.finishFromWeb(response);
-    }
 
     public static void main(String[] args) {
         PApplet.main("oracle.LacunaLabOracle");

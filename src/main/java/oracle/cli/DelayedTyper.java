@@ -9,38 +9,36 @@ public class DelayedTyper{
     private CLI cli;
 
     private String textToType;
-    private long timer;
-    private long delayMillisPerCharacter;
-    private long initDelayStartMillis;
-    private long initDelayMillis;
+    private long delayTimeout;
+    private long timeoutStart;
     private boolean isWaiting;
 
 
     public DelayedTyper( CLI cli ) {
         textToType = "";
         this.cli = cli;
-        delayMillisPerCharacter = 50;
-        timer = System.currentTimeMillis();
-        initDelayStartMillis = System.currentTimeMillis();
-        initDelayMillis = 0;
+        //delayTimeout = System.currentTimeMillis();
+        //initDelayStartMillis = System.currentTimeMillis();
     }
 
     public void addText( String text ) {
         textToType += text;
-        timer = System.currentTimeMillis();
         isWaiting = true;
     }
 
+    public void startTimout(long millis) {
+        timeoutStart = System.currentTimeMillis();
+        delayTimeout = millis;
+    }
+
     public void addDelay( long millis ) {
-        timer += millis;
-        initDelayStartMillis = System.currentTimeMillis();
-        initDelayMillis = millis;
-        System.out.println("delayedtyper.adddelay "+ timer);
+        delayTimeout += millis;
+        System.out.println("delayedtyper.adddelay "+ millis);
     }
 
     public boolean isWaiting() {
         if(isWaiting) {
-            isWaiting = System.currentTimeMillis() - timer < delayMillisPerCharacter;
+            isWaiting = System.currentTimeMillis() - timeoutStart < delayTimeout;
             if(!isWaiting) {
                 OracleWebsocketServer.sendOracleTimout();
             }
@@ -49,9 +47,9 @@ public class DelayedTyper{
             return false;
     }
 
-    public boolean isInitDelay() {
+    /*public boolean isInitDelay() {
         return System.currentTimeMillis() - initDelayStartMillis < initDelayMillis;
-    }
+    }*/
 
     /**
      * @return whether a new line should be set
@@ -62,7 +60,7 @@ public class DelayedTyper{
                 type( textToType.charAt( 0 ) );
                 textToType = textToType.substring( 1, textToType.length() );
 
-                timer = System.currentTimeMillis();
+                delayTimeout = System.currentTimeMillis();
             }
             if( isEmpty() ){
                 // if last character was typed
@@ -103,5 +101,15 @@ public class DelayedTyper{
 
     public String getText() {
         return textToType;
+    }
+
+    public void typeNow(String content) {
+        textToType = content;
+        typeNow();
+    }
+
+    public void typeNow() {
+        System.out.println("delayedTimer.now");
+        delayTimeout = 0;
     }
 }

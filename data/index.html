@@ -128,7 +128,7 @@
 
 	function edit() {
 		console.log("edit");
-		var oracle_text = oracle_upcoming_div.innerHTML;
+		var oracle_text = oracle_answer_text.innerHTML;
 		input_textfield.value = oracle_text;
 	}
 
@@ -137,13 +137,14 @@
 
 	var total_time;
 	var timer;
+	var maximal_total_time = 20000;
 
 	function start_timeout(millis) {
 		
 		clearInterval(interval_tick);
 	 	clearInterval(interval_countdown);
 	  //var width = 10;
-		var total_time = millis;
+		total_time = millis;
 		timer = millis;
 		interval_tick = setInterval(tick, 50);
 		interval_countdown = setInterval(function() {
@@ -156,7 +157,7 @@
 			 	clearInterval(interval_countdown);
 			} else {
 				var width = timer / total_time;
-				//console.log(width);
+				//console.log(timer+"/"+total_time+":"+	width);
 			 	bar_div.style.width = (200 * width)+"px";
 			 	//console.log((200 * width)+"px");
 			 	timeout_div.innerHTML = (1 + (timer / 1000)) | 0;
@@ -167,10 +168,13 @@
 	function suspend_timeout() {
 		if(state == ORACLE_THINKS) {
 			//start_timeout(timeout_suspend_time);
-			timer += timeout_suspend_time;
+			var suspend_time =  timeout_suspend_time;
+			if(timer + timeout_suspend_time > maximal_total_time)
+				suspend_time = maximal_total_time - timer;
+			timer += suspend_time;
 			total_time = timer;
 			console.log(total_time);
-			connection.send(JSON.stringify({"type":"suspend"}));
+			connection.send(JSON.stringify({"type":"suspend","time":suspend_time}));
 		}
 	}
 
@@ -184,6 +188,7 @@
 	}
 
 	function send() {
+		console.log(input_textfield.value);
 		connection.send(JSON.stringify({"type":"answer", "content" : input_textfield.value}));
 		input_textfield.value = "";
 	}
