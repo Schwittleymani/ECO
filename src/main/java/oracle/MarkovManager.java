@@ -50,8 +50,8 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
             //noAnswer = check( get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
 
-            //answer = getRandomAnswer();
-            return answer;
+            answer = getRandomAnswer();
+            //return answer;
         }
 
         if( answer.length() > maxAnswerLength ){
@@ -83,10 +83,8 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     private String cropTooLongAnswer( String answer, int maxAnswerLength ) {
         int index = answer.indexOf( "." );
         while ( index >= 0 ) {
-            System.out.println( index );
             index = answer.indexOf( ".", index + 1 );
             if( index > maxAnswerLength ){
-                System.out.println( "cropping the answer at index " + index );
                 return answer.substring( 0, index );
             }
         }
@@ -94,6 +92,11 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return answer;
     }
 
+    /**
+     * TODO: merge this method with getMarkovDepthOrder()
+     * @param input
+     * @return
+     */
     private String check( String[] input ) {
         MarkovQueue queue = new MarkovQueue( input.length );
         if( queue.getOrder() - 1 >= size() ){
@@ -117,6 +120,12 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return result;
     }
 
+    /**
+     * TODO: merge this function with check()
+     *
+     * @param input
+     * @return
+     */
     public int getMarkovDepthOrder( String[] input ) {
         MarkovQueue queue = new MarkovQueue( input.length );
         if( queue.getOrder() - 1 >= size() ){
@@ -129,16 +138,16 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
         String result = get( queue.getOrder() - 1 ).generateSentence( queue );
 
+        int depth = input.length;
         if( result.equals( "nothing" ) ){
             if( input.length < 2 ){
                 return 0;
-                //return "nothing";
             }
 
             String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
-            getMarkovDepthOrder( subarray );
+            depth = getMarkovDepthOrder( subarray );
         }
-        return input.length;
+        return depth;
     }
 
     MarkovResult query( String[] input ) {

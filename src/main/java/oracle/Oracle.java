@@ -1,5 +1,6 @@
 package oracle;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import oracle.cli.CLI;
 import oracle.markov.MarkovChain;
 import oracle.web.Webserver;
@@ -141,42 +142,19 @@ public class Oracle extends PApplet{
                         return;
                     } else {
                         String result = null;
-                        //try {
 
                         ArrayList< Integer > markovDepths = new ArrayList<>();
+                        ArrayList< String > answers = new ArrayList<>();
 
                         for ( MarkovManager m : markovs ) {
                             int depth = m.getMarkovDepthOrder( m.strip( inputWordsString ) );
+                            String answer = m.getAnswer( inputWordsString );
                             markovDepths.add( depth );
-                            System.out.println( "depth: " + depth );
-                            System.out.println( m.getAnswer( inputWordsString ) );
+                            answers.add( answer );
                         }
 
-                        Collections.sort( markovDepths );
-
-                        result = markovs.get(markovDepths.get(markovDepths.size() - 1 ) ) .getAnswer( inputWordsString );
+                        result = answers.get( Settings.maxIndex( markovDepths ) );
                         cli.finish( result );
-                        /*
-                        int count = 0;
-                        int randomMarkovId = ( int ) random( markovs.size() );
-                        result = markovs.get( randomMarkovId ).getAnswer( inputWordsString );
-                        while ( result.equals( "nothing" ) && count < 50 ) {
-                            System.out.println( "No answer from this markov. Trying new one. " + count );
-                            randomMarkovId = ( int ) random( markovs.size() );
-                            result = markovs.get( randomMarkovId ).getAnswer( inputWordsString );
-
-                            count++;
-                        }
-
-                        if( count == 50 ){
-                            result = markovs.get( 0 ).getRandomAnswer();
-                        }
-
-
-                        */
-
-
-                        //result = markov.getAnswer( inputWordsString );
 
                         //if( result.contains( "lacuna" ) ){
                         //    cli.startEmojiEasterEgg();
@@ -185,7 +163,6 @@ public class Oracle extends PApplet{
                         //    e.printStackTrace();
                         //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
                         //}
-
 
                         logger.log( inputWordsString, result );
                         System.out.println( result );

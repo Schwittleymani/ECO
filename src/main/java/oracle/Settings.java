@@ -8,10 +8,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by mrzl on 16.06.2016.
@@ -78,5 +75,17 @@ public class Settings{
             throw new RuntimeException( e );
         }
         System.out.println( "******" );
+    }
+
+    public static int maxIndex( List< Integer > list ) {
+        Integer i = 0, maxIndex = -1, max = null;
+        for ( Integer x : list ) {
+            if( ( x != null ) && ( ( max == null ) || ( x > max ) ) ){
+                max = x;
+                maxIndex = i;
+            }
+            i++;
+        }
+        return maxIndex;
     }
 }
