@@ -134,6 +134,8 @@ public class Oracle extends PApplet{
             return true;
         intercept = true;
         return false;
+
+
     }
 
     public void responseFromTheWeb( String response ) {
