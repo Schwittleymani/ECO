@@ -19,7 +19,7 @@ public class OracleOsc{
     public void setup() {
         markov = new MarkovManager();
 
-        //markov.trainAndExport( "romantic.txt" );
+        //markov.train( "romantic.txt" );
         markov.load();
 
         osc = new OscP5( this, 12000 );

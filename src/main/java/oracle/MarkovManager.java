@@ -45,7 +45,8 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
             //noAnswer = check( get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
 
-            answer = getRandomAnswer();
+            //answer = getRandomAnswer();
+            return answer;
         }
 
         if( answer.length() > maxAnswerLength ){
@@ -110,7 +111,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return result;
     }
 
-    public void trainAndExport( String fileName ) {
+    public void train( String fileName, boolean doExport ) {
         System.out.println( "Trainging with text from " + fileName );
         for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
             String text = loadText( "data" + File.separator + fileName );
@@ -120,20 +121,21 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             add( chain );
             System.out.println( "Training chain with order " + i );
         }
-
-        for ( MarkovChain chain : this ) {
-            String _fileName = "data" + File.separator + Settings.EXPORT_IMPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
-            try {
-                ObjectOutputStream obj_out = new ObjectOutputStream(
-                        new FileOutputStream( _fileName )
-                );
-                obj_out.writeObject( chain );
-            } catch ( FileNotFoundException e ) {
-                e.printStackTrace();
-            } catch ( IOException e ) {
-                e.printStackTrace();
+        if( doExport ){
+            for ( MarkovChain chain : this ) {
+                String _fileName = "data" + File.separator + Settings.EXPORT_IMPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
+                try {
+                    ObjectOutputStream obj_out = new ObjectOutputStream(
+                            new FileOutputStream( _fileName )
+                    );
+                    obj_out.writeObject( chain );
+                } catch ( FileNotFoundException e ) {
+                    e.printStackTrace();
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+                System.out.println( "Saved markov chain to " + _fileName );
             }
-            System.out.println( "Saved markov chain to " + _fileName );
         }
     }
 
