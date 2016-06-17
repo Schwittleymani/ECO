@@ -2,6 +2,7 @@ package oracle;
 
 import oracle.markov.MarkovChain;
 import oracle.markov.MarkovQueue;
+import oracle.markov.MarkovResult;
 import processing.core.PApplet;
 
 import java.io.*;
@@ -88,7 +89,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return answer;
     }
 
-    String check( String[] input ) {
+    private String check( String[] input ) {
         MarkovQueue queue = new MarkovQueue( input.length );
         if( queue.getOrder() - 1 >= size() ){
             input = Arrays.copyOfRange( input, 0, size() - 1 );
@@ -107,7 +108,36 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
             result = check( subarray );
         }
+
         return result;
+    }
+
+    public int getMarkovDepthOrder( String[] input ) {
+        MarkovQueue queue = new MarkovQueue( input.length );
+        if( queue.getOrder() - 1 >= size() ){
+            input = Arrays.copyOfRange( input, 0, size() - 1 );
+            queue = new MarkovQueue( input.length );
+        }
+
+        for ( String s : input ) {
+            queue.addLast( s );
+        }
+        String result = get( queue.getOrder() - 1 ).generateSentence( queue );
+
+        if( result.equals( "nothing" ) ){
+            if( input.length < 2 ){
+                return 0;
+                //return "nothing";
+            }
+
+            String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
+            getMarkovDepthOrder( subarray );
+        }
+        return input.length;
+    }
+
+    MarkovResult query( String[] input ) {
+        return new MarkovResult( check( input ), getMarkovDepthOrder( input ) );
     }
 
     public void trainAndExport( String fileName ) {

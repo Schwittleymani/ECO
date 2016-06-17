@@ -1,11 +1,13 @@
 package oracle;
 
 import oracle.cli.CLI;
+import oracle.markov.MarkovChain;
 import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -27,7 +29,7 @@ public class Oracle extends PApplet{
         size( 640, 480 );
         logger = new OracleLogger( this );
 
-        fullScreen( 1 );
+        //fullScreen( 1 );
         settings = new Settings();
 
         millisLastInteraction = System.currentTimeMillis();
@@ -97,6 +99,7 @@ public class Oracle extends PApplet{
                     } else {
                         String result = null;
                         //try {
+
                         result = markov.getAnswer( inputWordsString );
 
                         cli.finish( result );
