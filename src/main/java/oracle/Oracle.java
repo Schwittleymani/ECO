@@ -1,12 +1,14 @@
 package oracle;
 
 import oracle.cli.CLI;
+import oracle.markov.MarkovChain;
 import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -77,7 +79,7 @@ public class Oracle extends PApplet{
         files.add( "wark_mckenzie.txt" );
         files.add( "wjt_mitchell.txt" );
 
-        markovs = new ArrayList<>(  );
+        markovs = new ArrayList<>();
 
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
@@ -141,10 +143,24 @@ public class Oracle extends PApplet{
                         String result = null;
                         //try {
 
+                        ArrayList< Integer > markovDepths = new ArrayList<>();
+
+                        for ( MarkovManager m : markovs ) {
+                            int depth = m.getMarkovDepthOrder( m.strip( inputWordsString ) );
+                            markovDepths.add( depth );
+                            System.out.println( "depth: " + depth );
+                            System.out.println( m.getAnswer( inputWordsString ) );
+                        }
+
+                        Collections.sort( markovDepths );
+
+                        result = markovs.get(markovDepths.get(markovDepths.size() - 1 ) ) .getAnswer( inputWordsString );
+                        cli.finish( result );
+                        /*
                         int count = 0;
                         int randomMarkovId = ( int ) random( markovs.size() );
                         result = markovs.get( randomMarkovId ).getAnswer( inputWordsString );
-                        while( result.equals( "nothing" ) && count < 50 ) {
+                        while ( result.equals( "nothing" ) && count < 50 ) {
                             System.out.println( "No answer from this markov. Trying new one. " + count );
                             randomMarkovId = ( int ) random( markovs.size() );
                             result = markovs.get( randomMarkovId ).getAnswer( inputWordsString );
@@ -155,9 +171,13 @@ public class Oracle extends PApplet{
                         if( count == 50 ){
                             result = markovs.get( 0 ).getRandomAnswer();
                         }
+
+
+                        */
+
+
                         //result = markov.getAnswer( inputWordsString );
 
-                        cli.finish( result );
                         //if( result.contains( "lacuna" ) ){
                         //    cli.startEmojiEasterEgg();
                         //}

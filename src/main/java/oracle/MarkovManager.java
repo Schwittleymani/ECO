@@ -2,6 +2,7 @@ package oracle;
 
 import oracle.markov.MarkovChain;
 import oracle.markov.MarkovQueue;
+import oracle.markov.MarkovResult;
 import processing.core.PApplet;
 
 import java.io.*;
@@ -18,9 +19,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public MarkovManager() {
     }
 
-    public String getAnswer( String input ) {
-        String answer = "";
-
+    String[] strip( String input ) {
         input = input.replace( "?", "" )
                 .replace( "!", "" )
                 .replace( ".", "" )
@@ -39,7 +38,13 @@ public class MarkovManager extends ArrayList< MarkovChain >{
                 .replace( "_", "" )
                 .toLowerCase();
         String[] inputWords = input.split( " " );
-        answer = check( inputWords );
+        return inputWords;
+    }
+
+    public String getAnswer( String input ) {
+        String answer = "";
+
+        answer = check( strip( input ) );
 
         if( answer.equals( "nothing" ) ){
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
@@ -89,7 +94,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return answer;
     }
 
-    String check( String[] input ) {
+    private String check( String[] input ) {
         MarkovQueue queue = new MarkovQueue( input.length );
         if( queue.getOrder() - 1 >= size() ){
             input = Arrays.copyOfRange( input, 0, size() - 1 );
@@ -108,7 +113,36 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
             result = check( subarray );
         }
+
         return result;
+    }
+
+    public int getMarkovDepthOrder( String[] input ) {
+        MarkovQueue queue = new MarkovQueue( input.length );
+        if( queue.getOrder() - 1 >= size() ){
+            input = Arrays.copyOfRange( input, 0, size() - 1 );
+            queue = new MarkovQueue( input.length );
+        }
+
+        for ( String s : input ) {
+            queue.addLast( s );
+        }
+        String result = get( queue.getOrder() - 1 ).generateSentence( queue );
+
+        if( result.equals( "nothing" ) ){
+            if( input.length < 2 ){
+                return 0;
+                //return "nothing";
+            }
+
+            String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
+            getMarkovDepthOrder( subarray );
+        }
+        return input.length;
+    }
+
+    MarkovResult query( String[] input ) {
+        return new MarkovResult( check( input ), getMarkovDepthOrder( input ) );
     }
 
     public void train( String fileName, boolean doExport ) {
