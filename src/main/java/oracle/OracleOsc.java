@@ -4,17 +4,12 @@ import netP5.NetAddress;
 import oscP5.OscMessage;
 import oscP5.OscP5;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
  * Created by mrzl on 31.03.2016.
  */
 public class OracleOsc{
-
-    public static String EXPORT_FILENAME_PREFIX = "romantic-order";
-    public static int MAX_INPUT_WORDS = 4;
-    //private MarkovManager markov;
 
     OscP5 osc;
     NetAddress addr;
@@ -23,11 +18,6 @@ public class OracleOsc{
     private ArrayList< MarkovManager > markovs;
 
     public void setup() {
-        //markov = new MarkovManager();
-
-        //markov.train( "romantic.txt" );
-        //markov.load();
-
         settings = new Settings();
 
         osc = new OscP5( this, 12000 );
@@ -68,9 +58,16 @@ public class OracleOsc{
 
         markovs = new ArrayList<>();
 
+        /*
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
-            m.train( "text" + File.separator + "oraclev2" + File.separator + author, false );
+            m.train( "text" + File.separator + "oraclev2" + File.separator + author, author, false );
+            markovs.add( m );
+        }
+        */
+        for ( String author : files ) {
+            MarkovManager m = new MarkovManager();
+            m.load( author );
             markovs.add( m );
         }
     }

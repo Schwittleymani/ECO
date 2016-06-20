@@ -154,7 +154,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return new MarkovResult( check( input ), getMarkovDepthOrder( input ) );
     }
 
-    public void train( String fileName, boolean doExport ) {
+    public void train( String fileName, String authorName, boolean doExport ) {
         System.out.println( "Trainging with text from " + fileName );
         for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
             String text = loadText( "data" + File.separator + fileName );
@@ -166,7 +166,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
         if( doExport ){
             for ( MarkovChain chain : this ) {
-                String _fileName = "data" + File.separator + Settings.EXPORT_IMPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
+                String _fileName = "data" + File.separator + "bin" + File.separator + authorName + "_" + chain.getOrder() + ".data";
                 try {
                     ObjectOutputStream obj_out = new ObjectOutputStream(
                             new FileOutputStream( _fileName )
@@ -182,10 +182,10 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
     }
 
-    public void load() {
+    public void load( String authorName ) {
         try {
             for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
-                String fileName = "data" + File.separator + Settings.EXPORT_IMPORT_FILENAME_PREFIX + i + ".data";
+                String fileName = "data" + File.separator + "bin" + File.separator + authorName + "_" + i + ".data";
                 FileInputStream f_in = new FileInputStream( fileName );
                 ObjectInputStream obj_in = new ObjectInputStream( f_in );
                 Object obj = obj_in.readObject();
@@ -203,7 +203,6 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        System.out.println( "Loaded markov chain from " + Settings.EXPORT_IMPORT_FILENAME_PREFIX );
     }
 
     private String loadText( String fileName ) {

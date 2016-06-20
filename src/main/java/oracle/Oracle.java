@@ -1,22 +1,19 @@
 package oracle;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import oracle.cli.CLI;
-import oracle.markov.MarkovChain;
 import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by mrzl on 31.03.2016.
+ *
+ * This is the main starting point for the Electronic Chaos Oracle (ECO)
  */
 public class Oracle extends PApplet{
     private CLI cli;
-    private MarkovManager markov;
     private ArrayList< MarkovManager > markovs;
 
     OracleLogger logger;
@@ -43,10 +40,6 @@ public class Oracle extends PApplet{
 
     public void setup() {
         cli = new CLI( this );
-        //markov = new MarkovManager();
-
-        //markov.train( "text" + File.separator + "oraclev2" + File.separator + "v4_combined.txt", true );
-
         ArrayList< String > files = new ArrayList<>();
         files.add( "admin_medosch.txt" );
         files.add( "allan_watts.txt" );
@@ -82,13 +75,20 @@ public class Oracle extends PApplet{
 
         markovs = new ArrayList<>();
 
+        /*
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
-            m.train( "text" + File.separator + "oraclev2" + File.separator + author, false );
+            m.train( "text" + File.separator + "oraclev2" + File.separator + author, author, true );
+            markovs.add( m );
+        }
+        */
+
+        for ( String author : files ) {
+            MarkovManager m = new MarkovManager();
+            m.load( author );
             markovs.add( m );
         }
 
-        //markov.load();
         noCursor();
     }
 
@@ -141,7 +141,7 @@ public class Oracle extends PApplet{
                         cli.waitForAnswer();
                         return;
                     } else {
-                        String result = null;
+                        String result;
 
                         ArrayList< Integer > markovDepths = new ArrayList<>();
                         ArrayList< String > answers = new ArrayList<>();
