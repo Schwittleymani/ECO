@@ -40,7 +40,7 @@ public class DelayedTyper{
         if(isWaiting) {
             isWaiting = System.currentTimeMillis() - timeoutStart < delayTimeout;
             if(!isWaiting) {
-                OracleWebsocketServer.sendOracleTimout();
+                OracleWebsocketServer.oracleThinksTimeout();
             }
             return isWaiting;
         } else
@@ -59,7 +59,6 @@ public class DelayedTyper{
             if( !isWaiting() ){
                 type( textToType.charAt( 0 ) );
                 textToType = textToType.substring( 1, textToType.length() );
-
                 delayTimeout = System.currentTimeMillis();
             }
             if( isEmpty() ){
@@ -67,7 +66,6 @@ public class DelayedTyper{
                 return true;
             }
         }
-
         return false;
     }
 
@@ -111,5 +109,16 @@ public class DelayedTyper{
     public void typeNow() {
         System.out.println("delayedTimer.now");
         delayTimeout = 0;
+    }
+
+    public CLI.CliState getState() {
+        if(isWaiting)
+            return CLI.CliState.ORACLE_THINKING;
+        else {
+            if(isEmpty())
+                return CLI.CliState.USER_INPUT;
+            else
+                return CLI.CliState.ORACLE_TYPING;
+        }
     }
 }

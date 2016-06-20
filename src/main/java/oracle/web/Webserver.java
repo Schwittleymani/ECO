@@ -1,10 +1,9 @@
 package oracle.web;
 
-import http.DynamicResponseHandler;
+
 import http.ResponseBuilder;
 import http.SimpleHTTPServer;
 import oracle.LacunaLabOracle;
-import processing.core.PApplet;
 import processing.data.JSONObject;
 
 import java.io.IOException;

@@ -28,7 +28,7 @@ public class LacunaLabOracle extends PApplet {
 
     boolean startWebserver = true;
     public Webserver server;
-    private boolean intercept;
+
 
     public void settings() {
         size(640, 480);

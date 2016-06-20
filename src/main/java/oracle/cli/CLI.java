@@ -19,6 +19,16 @@ public class CLI {
     private LacunaLabOracle parent;
     private PFont font;
 
+
+    public enum CliState{
+        USER_INPUT,
+        ORACLE_THINKING,
+        ORACLE_TYPING
+    };
+
+
+    public CliState state = CliState.USER_INPUT;
+
     private Jesus jesus;
     private BlinkingRectangle blinker;
     private DelayedTyper delayedTyper;
@@ -81,6 +91,9 @@ public class CLI {
             newLine(true);
         }
 
+        state = delayedTyper.getState();
+        //System.out.println(state.name());
+
         jesus.drawAfterEaster();
     }
 
@@ -114,6 +127,7 @@ public class CLI {
         int words = answer.split( " " ).length;
         int delayMillis = calculateDelayByInputLength(words);
         delayedTyper.startTimout(delayMillis);
+        state = CliState.ORACLE_THINKING;
         return delayMillis;
     }
 
@@ -191,8 +205,13 @@ public class CLI {
         System.out.println("cli.suspendTyper: "+millis);
     }
 
-    public void interceptTypeNow(String content) {
-        delayedTyper.typeNow(content);
+    public boolean interceptTypeNow(String content) {
+        if(state == CliState.ORACLE_THINKING) {
+            delayedTyper.typeNow(content);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void typeNow() {

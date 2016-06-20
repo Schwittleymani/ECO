@@ -106,11 +106,10 @@
 </div>
 </div>
 <div id="control">
-	<textarea rows="1" cols="50" id="input" onkeypress="checkEnter()"></textarea>
+	<textarea rows="3" cols="50" id="input" onkeypress="checkEnter()"></textarea>
 	<button onclick="send()">Send ✉️</button>
 	<button onclick="edit()">Edit 📝</button>
 	<button id="cancel" onclick="cancel()">cancel 🔮</button>
-
 </div>
 
 <script type="text/javascript">
@@ -123,14 +122,8 @@
 
 	var bar_total_width = bar_div.width;
 
-	var USERINPUT = 0, ORACLE_THINKS = 1;
-	var state = USERINPUT;
-
-	function edit() {
-		console.log("edit");
-		var oracle_text = oracle_answer_text.innerHTML;
-		input_textfield.value = oracle_text;
-	}
+	var USER_INPUT = 0, ORACLE_THINKS = 1;
+	var state = USER_INPUT;
 
 	var interval_tick,interval_countdown;
 	var timeout_suspend_time = 20000;
@@ -139,10 +132,10 @@
 	var timer;
 	var maximal_total_time = 20000;
 
+	var alt_pressed = false;
+
 	function start_timeout(millis) {
-		
-		clearInterval(interval_tick);
-	 	clearInterval(interval_countdown);
+		killIntervals();
 	  //var width = 10;
 		total_time = millis;
 		timer = millis;
@@ -163,6 +156,11 @@
 			 	timeout_div.innerHTML = (1 + (timer / 1000)) | 0;
 			}
 		}
+	}
+
+	function killIntervals() {
+		clearInterval(interval_tick);
+	 	clearInterval(interval_countdown);
 	}
 
 	function suspend_timeout() {
@@ -187,15 +185,42 @@
     	}
 	}
 
+	function onkeydown(e) {
+    	var evtobj = window.event ? event : e;
+    	if(evtobj.altKey) {
+			if (evtobj.keyCode == 83) { // send
+				send();
+			} else if(evtobj.keyCode == 69) { // edit
+				edit();
+			} else if(evtobj.keyCode == 67) { // cancel
+				cancel();
+			}
+    	}
+    	console.log("d "+evtobj.keyCode + " ");
+    	console.log(evtobj);
+      //if (evtobj.keyCode == 90 && evtobj.ctrlKey) alert("Ctrl+z");
+	}
+
+	document.onkeydown = onkeydown;
+
 	function send() {
-		console.log(input_textfield.value);
-		connection.send(JSON.stringify({"type":"answer", "content" : input_textfield.value}));
-		input_textfield.value = "";
+		if(state == ORACLE_THINKS) {
+			console.log(input_textfield.value);
+			connection.send(JSON.stringify({"type":"answer", "content" : input_textfield.value}));
+			input_textfield.value = "";
+			state = USER_INPUT;
+		}
 	}
 
 	function cancel() {
 		connection.send(JSON.stringify({"type":"cancel"}));
 		input_textfield.value = "";		
+	}
+
+	function edit() {
+		console.log("edit");
+		var oracle_text = oracle_answer_text.innerHTML;
+		input_textfield.value = oracle_text;
 	}
 
 	function append(from,msg) {
@@ -208,10 +233,13 @@
 		state = new_state;
 		if(state == ORACLE_THINKS) {
 
-		} else if(state == USERINPUT) {
+		} else if(state == USER_INPUT) {
+			console.log("done");
+			killIntervals();
 			timeout_div.innerHTML = "waiting";
 			oracle_upcoming_span.innerHTML = "";
 			bar_div.style.width = "200px";
+			input_textfield.value = "";
 		}
 	}
 
@@ -242,19 +270,22 @@
 	  	append("user",msg_obj.content);
 	  } else if(msg_obj.type == "oracleDone") {
 	  	append("oracle",msg_obj.content);
-	  	set_state(USERINPUT);
+	  	set_state(USER_INPUT);
 	  } else if(msg_obj.type == "oracleThinks") { // not used atm
 	  	oracle_upcoming_span.innerHTML = msg_obj.content;
 	  	start_timeout(msg_obj.timeout);
 	  	set_state(ORACLE_THINKS);
 	  } else if(msg_obj.type == "status") {
 	  	console.log("status!"); // TODO
+	  	/*if(msg_obj.status == "USER_INPUT") {
+
+	  	}*/
 	  } else if(msg_obj.type == "texts") {
 	  	append("user",msg_obj.input);
 	  	oracle_upcoming_span.innerHTML = msg_obj.result;
 	  	start_timeout(msg_obj.timeout);
 	  	set_state(ORACLE_THINKS);
-	  }
+	  } 
 	  console.log(msg_obj); 
 	};
 
