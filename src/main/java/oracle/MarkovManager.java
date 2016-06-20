@@ -2,16 +2,12 @@ package oracle;
 
 import oracle.markov.MarkovChain;
 import oracle.markov.MarkovQueue;
+import oracle.markov.MarkovResult;
 import processing.core.PApplet;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by mrzl on 06.04.2016.
@@ -23,9 +19,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public MarkovManager() {
     }
 
-    public String getAnswer( String input ) {
-        String answer = "";
-
+    String[] strip( String input ) {
         input = input.replace( "?", "" )
                 .replace( "!", "" )
                 .replace( ".", "" )
@@ -44,13 +38,20 @@ public class MarkovManager extends ArrayList< MarkovChain >{
                 .replace( "_", "" )
                 .toLowerCase();
         String[] inputWords = input.split( " " );
-        answer = check( inputWords );
+        return inputWords;
+    }
+
+    public String getAnswer( String input ) {
+        String answer = "";
+
+        answer = check( strip( input ) );
 
         if( answer.equals( "nothing" ) ){
             String noAnswer = "i don't care about this. let's talk about \"" + get( 0 ).generateSentence().split( " " )[ 0 ] + "\" instead?";
             //noAnswer = check( get( 0 ).generateSentence().split( " " )[ 0 ].split( " " ) );
 
             answer = getRandomAnswer();
+            //return answer;
         }
 
         if( answer.length() > maxAnswerLength ){
@@ -65,12 +66,16 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         charsToRemove.add( "™" );
         charsToRemove.add( "œ" );
         charsToRemove.add( "¦" );
-        charsToRemove.add( "“" );
-        charsToRemove.add( "”" );
 
         for ( String s : charsToRemove ) {
             answer = answer.replace( s, "" );
         }
+
+        answer.replace( "“", "\"" );
+        answer.replace( "”", "\"" );
+        answer.replace( "’", "'" );
+        answer.replace( "?", "?" );
+
         answer = answer.trim();
         return answer;
     }
@@ -78,10 +83,8 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     private String cropTooLongAnswer( String answer, int maxAnswerLength ) {
         int index = answer.indexOf( "." );
         while ( index >= 0 ) {
-            System.out.println( index );
             index = answer.indexOf( ".", index + 1 );
             if( index > maxAnswerLength ){
-                System.out.println( "cropping the answer at index " + index );
                 return answer.substring( 0, index );
             }
         }
@@ -89,7 +92,12 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         return answer;
     }
 
-    String check( String[] input ) {
+    /**
+     * TODO: merge this method with getMarkovDepthOrder()
+     * @param input
+     * @return
+     */
+    private String check( String[] input ) {
         MarkovQueue queue = new MarkovQueue( input.length );
         if( queue.getOrder() - 1 >= size() ){
             input = Arrays.copyOfRange( input, 0, size() - 1 );
@@ -108,12 +116,47 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
             result = check( subarray );
         }
+
         return result;
     }
 
-    public void trainAndExport( String fileName ) {
+    /**
+     * TODO: merge this function with check()
+     *
+     * @param input
+     * @return
+     */
+    public int getMarkovDepthOrder( String[] input ) {
+        MarkovQueue queue = new MarkovQueue( input.length );
+        if( queue.getOrder() - 1 >= size() ){
+            input = Arrays.copyOfRange( input, 0, size() - 1 );
+            queue = new MarkovQueue( input.length );
+        }
+
+        for ( String s : input ) {
+            queue.addLast( s );
+        }
+        String result = get( queue.getOrder() - 1 ).generateSentence( queue );
+
+        int depth = input.length;
+        if( result.equals( "nothing" ) ){
+            if( input.length < 2 ){
+                return 0;
+            }
+
+            String[] subarray = Arrays.copyOfRange( input, 0, input.length - 1 );
+            depth = getMarkovDepthOrder( subarray );
+        }
+        return depth;
+    }
+
+    MarkovResult query( String[] input ) {
+        return new MarkovResult( check( input ), getMarkovDepthOrder( input ) );
+    }
+
+    public void train( String fileName, String authorName, boolean doExport ) {
         System.out.println( "Trainging with text from " + fileName );
-        for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
+        for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
             String text = loadText( "data" + File.separator + fileName );
             MarkovChain chain = new MarkovChain( i );
 
@@ -121,27 +164,28 @@ public class MarkovManager extends ArrayList< MarkovChain >{
             add( chain );
             System.out.println( "Training chain with order " + i );
         }
-
-        for ( MarkovChain chain : this ) {
-            String _fileName = "data" + File.separator + LacunaLabOracle.EXPORT_FILENAME_PREFIX + chain.getOrder() + ".data";
-            try {
-                ObjectOutputStream obj_out = new ObjectOutputStream(
-                        new FileOutputStream( _fileName )
-                );
-                obj_out.writeObject( chain );
-            } catch ( FileNotFoundException e ) {
-                e.printStackTrace();
-            } catch ( IOException e ) {
-                e.printStackTrace();
+        if( doExport ){
+            for ( MarkovChain chain : this ) {
+                String _fileName = "data" + File.separator + "bin" + File.separator + authorName + "_" + chain.getOrder() + ".data";
+                try {
+                    ObjectOutputStream obj_out = new ObjectOutputStream(
+                            new FileOutputStream( _fileName )
+                    );
+                    obj_out.writeObject( chain );
+                } catch ( FileNotFoundException e ) {
+                    e.printStackTrace();
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+                System.out.println( "Saved markov chain to " + _fileName );
             }
-            System.out.println( "Saved markov chain to " + _fileName );
         }
     }
 
-    public void load() {
+    public void load( String authorName ) {
         try {
-            for ( int i = 1; i < LacunaLabOracle.MAX_INPUT_WORDS + 1; i++ ) {
-                String fileName = "data" + File.separator + LacunaLabOracle.EXPORT_FILENAME_PREFIX + i + ".data";
+            for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
+                String fileName = "data" + File.separator + "bin" + File.separator + authorName + "_" + i + ".data";
                 FileInputStream f_in = new FileInputStream( fileName );
                 ObjectInputStream obj_in = new ObjectInputStream( f_in );
                 Object obj = obj_in.readObject();
@@ -159,7 +203,6 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        System.out.println( "Loaded markov chain from " + LacunaLabOracle.EXPORT_FILENAME_PREFIX );
     }
 
     private String loadText( String fileName ) {
@@ -212,23 +255,6 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     }
 
     public String getRandomAnswer() {
-        ArrayList< String > answers = new ArrayList<>();
-
-        answers.add( "Do you like virtual reality?" );
-        answers.add( "Would you like to live in the cyberspace?" );
-        answers.add( "Let's talk about media art?" );
-        answers.add( "Do you think cybernetics are dead?" );
-        answers.add( "I hate art, you too?" );
-        answers.add( "Why don't you tell me your opinion of Dada?" );
-        answers.add( "Do you think anthropology is important?" );
-        answers.add( "Real virtuality or virtual reality?" );
-        answers.add( "If you want, we can continue talking, but I'm not really interested anymore." );
-        answers.add( "Let's rather talk about what you had for breakfast." );
-        answers.add( "Is AI going to take over the world?" );
-        answers.add( "How can we, together, fight the robots?" );
-        answers.add( "When you ask good questions, I will give good answers." );
-        answers.add( "I like VJing. LOL." );
-
-        return answers.get( ( PApplet.floor( ( float ) Math.random() ) * answers.size() ) ).toLowerCase();
+        return Settings.RANDOM_ANSWERS.get( ( PApplet.floor( ( float ) Math.random() * Settings.RANDOM_ANSWERS.size() ) ) ).toLowerCase();
     }
 }

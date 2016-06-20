@@ -120,9 +120,8 @@ public class MarkovChain implements Serializable {
             Weighttable weights = chain.get(words);
 
             // Sometimes the chain doesn't have any start states for the word in question
-            // So it should just be trainAndExport to cut it off here
+            // So it should just be train to cut it off here
             if(weights == null) {
-                System.err.println( "No Words for this." );
                 return "nothing";
             }
 
@@ -182,7 +181,7 @@ public class MarkovChain implements Serializable {
 
     /**
      * Saves this instance of a Markov chain to a JSON-encoded file.
-     * @param path the location to trainAndExport to
+     * @param path the location to train to
      * @throws IOException
      */
     @SuppressWarnings("unchecked")

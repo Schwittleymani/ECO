@@ -1,6 +1,6 @@
 package oracle.web;
 
-import oracle.LacunaLabOracle;
+import oracle.Oracle;
 import processing.core.PApplet;
 import processing.data.JSONObject;
 import websockets.*;
@@ -22,9 +22,9 @@ public class OracleWebsocketServer {
     String last_input = "";
     String last_result = "";
 
-    LacunaLabOracle oracle;
+    Oracle oracle;
 
-    public OracleWebsocketServer(LacunaLabOracle oracle) {
+    public OracleWebsocketServer(Oracle oracle) {
         ws = new WebsocketServer(oracle, 8001, "/oracle");
         me = this;
         this.oracle = oracle;

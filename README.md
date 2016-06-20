@@ -1,4 +1,4 @@
-# The Oracle
+# ECO (Electronic Chaos Oracle)
 
 ## Facebook version
 - Change this line to contain your facebook plain text login data: https://github.com/mrzl/TheOracle/blob/master/src/node/facebook-advanced-echo.js#L16

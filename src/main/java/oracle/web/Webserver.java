@@ -3,7 +3,10 @@ package oracle.web;
 
 import http.ResponseBuilder;
 import http.SimpleHTTPServer;
-import oracle.LacunaLabOracle;
+
+import oracle.Oracle;
+import oracle.Settings;
+import processing.core.PApplet;
 import processing.data.JSONObject;
 
 import java.io.IOException;
@@ -19,14 +22,12 @@ public class Webserver {
 
     SimpleHTTPServer server;
     OracleWebsocketServer websocketServer;
-    LacunaLabOracle Pparent;
+    Oracle Pparent;
 
 
-    public Webserver(LacunaLabOracle parent) {
+    public Webserver(Oracle parent) {
         server = new SimpleHTTPServer(parent);
-        this.Pparent = (LacunaLabOracle)parent;
-
-        websocketServer = new OracleWebsocketServer(parent);
+        this.Pparent = parent;
     }
 
     public void sendTexts(String input,String result,int timout) {
