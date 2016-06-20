@@ -192,20 +192,19 @@
 				send();
 			} else if(evtobj.keyCode == 69) { // edit
 				edit();
+				/*if(input_textfield.value.endsWidth == "€") {
+					input_textfield.value = input_textfield.value.substring(0,input_textfield.value.length-1);
+				}*/
 			} else if(evtobj.keyCode == 67) { // cancel
 				cancel();
 			}
     	}
-    	console.log("d "+evtobj.keyCode + " ");
-    	console.log(evtobj);
-      //if (evtobj.keyCode == 90 && evtobj.ctrlKey) alert("Ctrl+z");
 	}
 
 	document.onkeydown = onkeydown;
 
 	function send() {
 		if(state == ORACLE_THINKS) {
-			console.log(input_textfield.value);
 			connection.send(JSON.stringify({"type":"answer", "content" : input_textfield.value}));
 			input_textfield.value = "";
 			state = USER_INPUT;
@@ -218,9 +217,11 @@
 	}
 
 	function edit() {
-		console.log("edit");
-		var oracle_text = oracle_answer_text.innerHTML;
-		input_textfield.value = oracle_text;
+		if(state == ORACLE_THINKS) {
+			var oracle_text = oracle_answer_text.innerHTML;
+			input_textfield.value = oracle_text;		
+			input_textfield.focus();	
+		}	
 	}
 
 	function append(from,msg) {
