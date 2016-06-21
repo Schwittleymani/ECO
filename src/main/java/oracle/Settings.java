@@ -22,6 +22,8 @@ public class Settings{
 
     public static int CLI_RESET_DELAY_MILLIS;
 
+    public static int CHARACTER_DELAY_TIMEOUT;
+
     public static ArrayList< String > RANDOM_ANSWERS = new ArrayList<>();
 
     public Settings() {
@@ -41,6 +43,7 @@ public class Settings{
         CLI_TEXT_SIZE = Integer.parseInt( properties.getProperty( "CL_TEXT_SIZE" ) );
         CLI_MAX_LINE_WIDTH = Integer.parseInt( properties.getProperty( "CLI_MAX_LINE_WIDTH" ) );
         CLI_RESET_DELAY_MILLIS = Integer.parseInt( properties.getProperty( "CLI_RESET_DELAY_MILLIS" ) );
+        CHARACTER_DELAY_TIMEOUT = Integer.parseInt(properties.getProperty("CHARACTER_DELAY_TIMEOUT")) ;
 
         try {
             String[] customAnswers = PApplet.loadStrings( new FileInputStream( "answers.txt" ) );

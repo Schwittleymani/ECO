@@ -1,5 +1,6 @@
 package oracle.cli;
 
+import oracle.Settings;
 import oracle.web.OracleWebsocketServer;
 
 /**
@@ -12,6 +13,9 @@ public class DelayedTyper{
     private long delayTimeout;
     private long timeoutStart;
     private boolean isWaiting;
+
+    private long characterDelayStart;
+    private long characterDelayTimeout = Settings.CHARACTER_DELAY_TIMEOUT;
 
 
     public DelayedTyper( CLI cli ) {
@@ -57,9 +61,13 @@ public class DelayedTyper{
     public boolean update() {
         if( !isEmpty() ){
             if( !isWaiting() ){
-                type( textToType.charAt( 0 ) );
-                textToType = textToType.substring( 1, textToType.length() );
-                delayTimeout = System.currentTimeMillis();
+                long now = System.currentTimeMillis();
+                if(System.currentTimeMillis() - characterDelayStart > characterDelayTimeout) {
+                    type(textToType.charAt(0));
+                    textToType = textToType.substring(1, textToType.length());
+                    delayTimeout = System.currentTimeMillis();
+                    characterDelayStart = now;
+                }
             }
             if( isEmpty() ){
                 // if last character was typed
