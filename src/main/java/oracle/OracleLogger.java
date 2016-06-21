@@ -12,6 +12,7 @@ public class OracleLogger{
 
     public OracleLogger() {
         sessionLogFile = new File( "logs" + File.separator + "session_" + timestamp() + ".log" );
+        sessionLogFile.mkdirs();
     }
 
     private String timestamp() {
