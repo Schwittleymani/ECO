@@ -110,6 +110,15 @@ public class OracleWebsocketServer {
         //System.out.println("intercept done");
     }
 
+    static public void sendTyping(char character) {
+        if(me != null) {
+            JSONObject msg_obj = new JSONObject();
+            msg_obj.setString("type", "typing");
+            msg_obj.setString("content", "" + character);
+            me.ws.sendMessage(msg_obj.toString());
+        }
+    }
+
     private void cancel() {
         oracle.cli.typeNow();
     }
