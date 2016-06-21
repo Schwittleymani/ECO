@@ -17,7 +17,7 @@ public class CLI{
     public static final String LINE_PREFIX_CHARS = "[ ] ";
     private static final int PREF_WORD_LEN = LINE_PREFIX_CHARS.split( " " ).length;
 
-    private ArrayList<Line> lines = new ArrayList<>();
+    private ArrayList< Line > lines = new ArrayList<>();
     private Oracle parent;
 
     private PFont font;
@@ -27,7 +27,9 @@ public class CLI{
         USER_INPUT,
         ORACLE_THINKING,
         ORACLE_TYPING
-    };
+    }
+
+    ;
 
 
     public CliState state = CliState.USER_INPUT;
@@ -39,7 +41,7 @@ public class CLI{
     private int currentY;
 
 
-    public CLI(Oracle p) {
+    public CLI( Oracle p ) {
 
         this.parent = p;
         this.font = p.createFont( "data" + File.separator + "Glass_TTY_VT220.ttf", Settings.CLI_TEXT_SIZE );
@@ -80,7 +82,7 @@ public class CLI{
         lines.forEach( Line::draw );
 
         // draws blinking square, rotating or not
-        blinker.draw(delayedTyper.isWaiting());
+        blinker.draw( delayedTyper.isWaiting() );
 
         // types the text in delayed manner
         if( delayedTyper.update() ){
@@ -117,12 +119,12 @@ public class CLI{
         getLastLine().backspace();
     }
 
-    public int finish(String answer) {
+    public int finish( String answer ) {
         newLine();
         delayedTyper.addText( answer );
         int words = answer.split( " " ).length;
-        int delayMillis = calculateDelayByResponseWordCount(words);
-        delayedTyper.startTimout(delayMillis);
+        int delayMillis = calculateDelayByResponseWordCount( words );
+        delayedTyper.startTimout( delayMillis );
         state = CliState.ORACLE_THINKING;
         return delayMillis;
     }
@@ -130,7 +132,7 @@ public class CLI{
 
     public int calculateDelayByResponseWordCount( int length ) {
         int inputDelayMaxWords = 30;
-        return (int) PApplet.map( PApplet.min( length, inputDelayMaxWords ), 1, inputDelayMaxWords, Settings.MIN_ANSWER_DELAY_COUNT, Settings.MAX_ANSWER_DELAY_COUNT );
+        return ( int ) PApplet.map( PApplet.min( length, inputDelayMaxWords ), 1, inputDelayMaxWords, Settings.MIN_ANSWER_DELAY_COUNT, Settings.MAX_ANSWER_DELAY_COUNT );
     }
 
     public void type( char c ) {
@@ -195,17 +197,17 @@ public class CLI{
     }
 
     public boolean inputLimitReached() {
-        return getLastLine().getText( false ).length() >= Line.CHAR_LIMIT;
+        return getLastLine().getText( false ).length() >= Settings.CLI_MAX_INPUT_CHARACTERS;
     }
 
-    public void suspendTyper(int millis) {
-        delayedTyper.addDelay(millis);
-        System.out.println("cli.suspendTyper: "+millis);
+    public void suspendTyper( int millis ) {
+        delayedTyper.addDelay( millis );
+        System.out.println( "cli.suspendTyper: " + millis );
     }
 
-    public boolean interceptTypeNow(String content) {
-        if(state == CliState.ORACLE_THINKING) {
-            delayedTyper.typeNow(content);
+    public boolean interceptTypeNow( String content ) {
+        if( state == CliState.ORACLE_THINKING ){
+            delayedTyper.typeNow( content );
             return true;
         } else {
             return false;

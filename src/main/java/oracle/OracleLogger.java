@@ -1,97 +1,46 @@
 package oracle;
 
-import processing.core.PApplet;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.logging.*;
+import java.io.*;
+import java.util.Calendar;
 
 /**
- * Created by raminsoleymani on 03/04/16.
+ * Created by mrzl on 21.06.2016.
  */
-public class OracleLogger {
+public class OracleLogger{
 
-    static final String nl = System.getProperty("line.separator");
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss");
-    String completeLoggerFileName = "conversation.log";
-    String sessionLoggerFileName = "session.log";
+    private File sessionLogFile;
 
-    Logger allknowingLogger = Logger.getLogger("complete");
+    public OracleLogger() {
+        sessionLogFile = new File( "logs" + File.separator + "session_" + timestamp() + ".log" );
+    }
 
-    PApplet parent;
+    private String timestamp() {
+        Calendar now = Calendar.getInstance();
+        return String.format( "%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", now );
+    }
 
-    public OracleLogger(PApplet parent) {
-
-        this.parent = parent;
+    public void log( String input, String answer ) {
+        BufferedWriter bw = null;
 
         try {
-            FileHandler handler = new FileHandler(completeLoggerFileName,true);
-            handler.setFormatter(new OracleFormatter());
-            allknowingLogger.setUseParentHandlers(false);
-            allknowingLogger.addHandler(handler);
-
-            FileHandler sessionhandler = new FileHandler(sessionLoggerFileName,false);
-            sessionhandler.setFormatter(new WebFormatter());
-            allknowingLogger.addHandler(sessionhandler);
-
-            removeLoggerGarbage();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void removeLoggerGarbage() {
-        File file = new File(parent.sketchPath());
-        File[] files = file.listFiles();
-        Arrays.stream(files)
-                .filter(f -> {
-                    String name = f.getName();
-                    boolean readyToDie = (name.startsWith(completeLoggerFileName)
-                        && name.length() > completeLoggerFileName.length()) // "conversation.log".length
-                        || (name.startsWith(sessionLoggerFileName)
-                            && name.length() > sessionLoggerFileName.length());
-                    return readyToDie;
-                })
-                .forEach(f -> f.deleteOnExit());
-    }
-
-    public void logInput(String input) {
-        allknowingLogger.severe("u:::" + input);
-    }
-
-    public void logResponse(String response,boolean oracle_or_server) {
-        allknowingLogger.severe((oracle_or_server ?"o" : "web")+":::" + response);
-    }
-
-    public void log(String input, String result) {
-        allknowingLogger.severe("u:::" + input);
-        allknowingLogger.severe("o:::" + result);
-    }
-
-    public void close() {
-        for( Handler h : allknowingLogger.getHandlers() ) {
-            h.flush();
-            h.close();
-        }
-    }
-
-    class OracleFormatter extends Formatter {
-        @Override
-        public String format(LogRecord record) {
-            String dateString  = dateFormatter.format(new Date());
-            return dateString + ":::"+ record.getMessage() + nl;
-        }
-    }
-
-    class WebFormatter extends Formatter {
-        @Override
-        public String format(LogRecord record) {
-            return "|||"+ record.getMessage() + nl;
+            try {
+                bw = new BufferedWriter( new FileWriter( sessionLogFile.getAbsolutePath(), true ) );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+            bw.write( "u:::" + input );
+            bw.newLine();
+            bw.write( "o:::" + answer );
+            bw.newLine();
+            bw.flush();
+        } catch ( IOException ioe ) {
+            ioe.printStackTrace();
+        } finally {
+            if( bw != null ) try {
+                bw.close();
+            } catch ( IOException ioe2 ) {
+                ioe2.printStackTrace();
+            }
         }
     }
 }
