@@ -32,7 +32,7 @@ public class Oracle extends PApplet{
         size( 640, 480 );
         logger = new OracleLogger();
 
-        //fullScreen( 1 );
+        fullScreen( 0 );
         settings = new Settings();
 
         millisLastInteraction = System.currentTimeMillis();

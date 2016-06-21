@@ -1,12 +1,9 @@
 package oracle.web;
 
-
 import http.ResponseBuilder;
 import http.SimpleHTTPServer;
 
 import oracle.Oracle;
-import oracle.Settings;
-import processing.core.PApplet;
 import processing.data.JSONObject;
 
 import java.io.IOException;
@@ -33,7 +30,6 @@ public class Webserver{
     public void sendTexts( String input, String result, int timout ) {
         websocketServer.sendTexts( input, result, timout );
     }
-
 
     class SessionLog extends ResponseBuilder{
 
