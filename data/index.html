@@ -6,8 +6,8 @@
 	<style type="text/css">
 	#log {
 		position: absolute;
-		width: 84%;
-		height: 90%;
+		width: 96%;
+		height: 80%;
 		padding-top: 20px;
 		padding-bottom: 30px;
 		overflow: scroll;
@@ -88,6 +88,16 @@
 	  color: white;
 	}
 
+	#custom-answers {
+		position: absolute;
+		right: 0px;
+		width: 25%;
+		height: 80%;
+		position: absolute;
+	    border: blue solid 0.5px;
+	    padding-left: 5px;
+	}
+
 	</style>
 </head>
 <body>
@@ -104,14 +114,19 @@
 		</div>
 	</div>
 </div>
+<div id="custom-answers">
+
+
+</div>
 </div>
 <div id="control">
-	<textarea rows="3" cols="50" id="input" onkeypress="checkEnter()"></textarea>
+	<textarea rows="3" cols="50" id="input" onkeypress="input_()"></textarea>
 	<button onclick="send()">Send ✉️</button>
 	<button onclick="edit()">Edit 📝</button>
 	<button id="cancel" onclick="cancel()">cancel 🔮</button>
 </div>
 
+<script type="text/javascript" src="pre-texts.js"></script>
 <script type="text/javascript">
 
 	var input_textfield = document.getElementById("input");
@@ -119,6 +134,7 @@
 	var timeout_div = document.getElementById("timeout");
 	var oracle_upcoming_span = document.getElementById("oracle_answer_text");
 	var bar_div = document.getElementById("bar");
+	var custom_answers_div = document.getElementById("custom-answers");
 
 	var bar_total_width = bar_div.width;
 
@@ -176,13 +192,23 @@
 		}
 	}
 
-	function checkEnter() {
+	function input_() {
 		var key = window.event.keyCode;
 	    if (key == 13) {
 			send();
     	} else {
     		suspend_timeout();
     	}
+    	if(key == 32) { // space
+    		text = input_textfield.value;
+    		if(text.startsWith("#")) {
+    			var select = parseInt(text.substring(1, text.length)) - 1;
+    			if(texts.length >= select && select >= 0) {
+    				input_textfield.value = texts[select];
+    			}
+    		}
+    	}
+    	//console.log(evtobj.keyCode);
 	}
 
 	function onkeydown(e) {
@@ -289,6 +315,19 @@
 	  } 
 	  console.log(msg_obj); 
 	};
+
+	function fillPreTexts() {
+		for (i in texts) {
+			//console.log(texts[i]);
+			var div = document.createElement("div");
+			var ind = parseInt(i) + 1;
+			div.innerHTML = "#"+ind+":"+texts[i];
+			custom_answers_div.appendChild(div); 	
+		}
+	}
+
+	fillPreTexts();
+	input_textfield.focus();
 
 </script>
 </body>
