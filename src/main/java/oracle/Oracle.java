@@ -13,7 +13,7 @@ import java.util.Enumeration;
 
 /**
  * Created by mrzl on 31.03.2016.
- *
+ * <p>
  * This is the main starting point for the Electronic Chaos Oracle (ECO)
  */
 
@@ -28,15 +28,13 @@ public class Oracle extends PApplet{
     boolean startWebserver = true;
     private ArrayList< MarkovManager > markovs;
 
-    public static void main(String[] args) {
-        PApplet.main("oracle.Oracle");
+    public static void main( String[] args ) {
+        PApplet.main( "oracle.Oracle" );
     }
 
     public void settings() {
-        size(640, 480);
-        logger = new OracleLogger(this);
-
-
+        size( 640, 480 );
+        logger = new OracleLogger( this );
 
 
         //fullScreen( 1 );
@@ -59,7 +57,7 @@ public class Oracle extends PApplet{
     }
 
     private void loadMarkovs() {
-        String[] files = loadStrings("authors.txt");
+        String[] files = loadStrings( "authors.txt" );
 
         markovs = new ArrayList<>();
 
@@ -79,7 +77,7 @@ public class Oracle extends PApplet{
     }
 
     public void draw() {
-        background(0);
+        background( 0 );
         cli.draw();
 
 
@@ -91,67 +89,67 @@ public class Oracle extends PApplet{
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
-        if (cli.isActive())
+        if( cli.isActive() )
             return;
 
-        if (key == CODED) {
-            switch (keyCode) {
+        if( key == CODED ){
+            switch ( keyCode ) {
                 case KeyEvent.VK_F1:
                     cli.reset();
                     break;
             }
         } else {
-            switch (key) {
+            switch ( key ) {
                 case BACKSPACE:
                     cli.backspace();
                     break;
                 case ENTER:
-                    if (!cli.available()) {
+                    if( !cli.available() ){
                         return;
                     }
 
-                    String inputText = cli.getLastLine().getText(true).trim();
-                    while (inputText.startsWith(".") ||
-                            inputText.startsWith(",") ||
-                            inputText.startsWith(";") ||
-                            inputText.startsWith(":") ||
-                            inputText.startsWith("-") ||
-                            inputText.startsWith("_")) {
+                    String inputText = cli.getLastLine().getText( true ).trim();
+                    while ( inputText.startsWith( "." ) ||
+                            inputText.startsWith( "," ) ||
+                            inputText.startsWith( ";" ) ||
+                            inputText.startsWith( ":" ) ||
+                            inputText.startsWith( "-" ) ||
+                            inputText.startsWith( "_" ) ) {
                         // removing some leading special characters
-                        inputText = inputText.substring(1);
+                        inputText = inputText.substring( 1 );
                     }
 
-                        inputText = inputText.trim();
+                    inputText = inputText.trim();
                     System.out.println( inputText );
 
-                        String result;
+                    String result;
 
-                        ArrayList< Integer > markovDepths = new ArrayList<>();
-                        ArrayList< String > answers = new ArrayList<>();
+                    ArrayList< Integer > markovDepths = new ArrayList<>();
+                    ArrayList< String > answers = new ArrayList<>();
 
-                        for ( MarkovManager m : markovs ) {
-                            int depth = m.getMarkovDepthOrder( m.strip( inputText ) );
-                            String answer = m.getAnswer( inputText );
-                            markovDepths.add( depth );
-                            answers.add( answer );
-                        }
+                    for ( MarkovManager m : markovs ) {
+                        int depth = m.getMarkovDepthOrder( m.strip( inputText ) );
+                        String answer = m.getAnswer( inputText );
+                        markovDepths.add( depth );
+                        answers.add( answer );
+                    }
 
-                        result = answers.get( Settings.maxIndex( markovDepths ) );
+                    result = answers.get( Settings.maxIndex( markovDepths ) );
 
-                        int delayMillis =  cli.finish( result );
-                        if (startWebserver) {
-                            server.sendTexts(inputText, result, delayMillis);
-                        }
-                        //if( result.contains( "lacuna" ) ){
-                        //    cli.startEmojiEasterEgg();
-                        //}
-                        //} catch ( Exception e ) {
-                        //    e.printStackTrace();
-                        //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
-                        //}
+                    int delayMillis = cli.finish( result );
+                    if( startWebserver ){
+                        server.sendTexts( inputText, result, delayMillis );
+                    }
+                    //if( result.contains( "lacuna" ) ){
+                    //    cli.startEmojiEasterEgg();
+                    //}
+                    //} catch ( Exception e ) {
+                    //    e.printStackTrace();
+                    //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
+                    //}
 
-                        logger.log( inputText, result );
-                        System.out.println( result );
+                    logger.log( inputText, result );
+                    System.out.println( result );
 
                     //if( result.contains( "lacuna" ) ){
                     //    cli.startEmojiEasterEgg();
@@ -161,8 +159,8 @@ public class Oracle extends PApplet{
                     //    cli.finish( "oh", calculateDelayByInputLength( inputText.split( " " ).length ) );
                     //}
 
-                    logger.log(inputText, result);
-                    System.out.println(result);
+                    logger.log( inputText, result );
+                    System.out.println( result );
                     break;
                 case TAB:
                 case DELETE:
@@ -172,8 +170,8 @@ public class Oracle extends PApplet{
                     cli.reset();
                     break;
                 default:
-                    if (!cli.inputLimitReached() && !cli.isActive()) {
-                        cli.type(key);
+                    if( !cli.inputLimitReached() && !cli.isActive() ){
+                        cli.type( key );
                     }
                     break;
             }
@@ -181,34 +179,32 @@ public class Oracle extends PApplet{
     }
 
     public void printIps() {
-        System.out.println("*** Networks interfaces:");
+        System.out.println( "*** Networks interfaces:" );
         String ip;
         try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
+            Enumeration< NetworkInterface > interfaces = NetworkInterface.getNetworkInterfaces();
+            while ( interfaces.hasMoreElements() ) {
                 NetworkInterface iface = interfaces.nextElement();
                 // filters out 127.0.0.1 and inactive interfaces
-                if (iface.isLoopback() || !iface.isUp())
+                if( iface.isLoopback() || !iface.isUp() )
                     continue;
 
-                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                while (addresses.hasMoreElements()) {
+                Enumeration< InetAddress > addresses = iface.getInetAddresses();
+                while ( addresses.hasMoreElements() ) {
                     InetAddress addr = addresses.nextElement();
                     ip = addr.getHostAddress();
-                    System.out.println(iface.getDisplayName() + " " + ip);
+                    System.out.println( iface.getDisplayName() + " " + ip );
                 }
             }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
+        } catch ( SocketException e ) {
+            throw new RuntimeException( e );
         }
-        System.out.println("******");
+        System.out.println( "******" );
     }
 
 
-
-
-    public void webSocketServerEvent(String msg) {
-        server.webSocketServerEvent(msg);
+    public void webSocketServerEvent( String msg ) {
+        server.webSocketServerEvent( msg );
     }
 
 
