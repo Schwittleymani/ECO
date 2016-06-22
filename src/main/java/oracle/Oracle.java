@@ -5,6 +5,7 @@ import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -115,21 +116,30 @@ public class Oracle extends PApplet{
                     }
 
                     inputText = inputText.trim();
-                    System.out.println( inputText );
+                    System.out.println( "u:::" + inputText );
 
                     String result;
 
                     ArrayList< Integer > markovDepths = new ArrayList<>();
                     ArrayList< String > answers = new ArrayList<>();
+                    ArrayList< String > authors = new ArrayList<>();
 
                     for ( MarkovManager m : markovs ) {
                         int depth = m.getMarkovDepthOrder( m.strip( inputText ) );
                         String answer = m.getAnswer( inputText );
                         markovDepths.add( depth );
                         answers.add( answer );
+                        authors.add( m.getAuthorName() );
                     }
 
-                    result = answers.get( Settings.maxIndex( markovDepths ) );
+                    // if the depth of the selected answer is 0, that means
+                    // there was no proper answer of any author
+                    int index = Settings.maxIndex( markovDepths );
+                    result = answers.get( index );
+                    String authorName = authors.get( index );
+                    if( markovDepths.get( index ) == 0 ){
+                        authorName = "pre_defined_answer";
+                    }
 
                     int delayMillis = cli.finish( result );
                     if( startWebserver ){
@@ -143,8 +153,9 @@ public class Oracle extends PApplet{
                     //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
                     //}
 
-                    logger.log( inputText, result );
-                    System.out.println( result );
+                    logger.log( inputText, result, authorName );
+                    System.out.println( "o:::" + result );
+                    System.out.println( "a:::" + authorName );
                     break;
                 case TAB:
                 case DELETE:

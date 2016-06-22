@@ -2,6 +2,7 @@ package oracle;
 
 import processing.core.PApplet;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class Settings{
     public Settings() {
         Properties properties = new Properties();
         try {
-            properties.load( new FileInputStream( "config.properties" ) );
+            properties.load( new FileInputStream( "data" + File.separator + "config.properties" ) );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
@@ -47,7 +48,7 @@ public class Settings{
         CHARACTER_DELAY_TIMEOUT = Integer.parseInt( properties.getProperty( "CHARACTER_DELAY_TIMEOUT" ) );
 
         try {
-            String[] customAnswers = PApplet.loadStrings( new FileInputStream( "answers.txt" ) );
+            String[] customAnswers = PApplet.loadStrings( new FileInputStream( "data" + File.separator + "answers.txt" ) );
             RANDOM_ANSWERS.addAll( Arrays.asList( customAnswers ) );
         } catch ( FileNotFoundException e ) {
             e.printStackTrace();

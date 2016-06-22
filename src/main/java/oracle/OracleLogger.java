@@ -11,8 +11,8 @@ public class OracleLogger{
     private File sessionLogFile;
 
     public OracleLogger() {
+        new File( "logs" ).mkdirs();
         sessionLogFile = new File( "logs" + File.separator + "session_" + timestamp() + ".log" );
-        sessionLogFile.mkdirs();
     }
 
     private String timestamp() {
@@ -20,7 +20,7 @@ public class OracleLogger{
         return String.format( "%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", now );
     }
 
-    public void log( String input, String answer ) {
+    public void log( String input, String answer, String authorName ) {
         BufferedWriter bw = null;
 
         try {
@@ -29,9 +29,12 @@ public class OracleLogger{
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
-            bw.write( "u:::" + input );
+            String timeStamp = timestamp();
+            bw.write( timeStamp + ":::u:::" + input );
             bw.newLine();
-            bw.write( "o:::" + answer );
+            bw.write( timeStamp + ":::o:::" + answer );
+            bw.newLine();
+            bw.write( timeStamp + ":::a:::" + authorName );
             bw.newLine();
             bw.flush();
         } catch ( IOException ioe ) {

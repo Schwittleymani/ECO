@@ -15,6 +15,7 @@ import java.util.Arrays;
 public class MarkovManager extends ArrayList< MarkovChain >{
 
     private int maxAnswerLength = 150;
+    private String authorName;
 
     public MarkovManager() {
     }
@@ -155,9 +156,11 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     }
 
     public void train( String fileName, String authorName, boolean doExport ) {
-        System.out.println( "Trainging with text from " + fileName );
+        this.authorName = authorName;
+
+        System.out.println( "Trainging with text from " + fileName + ".txt" );
         for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
-            String text = loadText( "data" + File.separator + fileName );
+            String text = loadText( "data" + File.separator + fileName + ".txt" );
             MarkovChain chain = new MarkovChain( i );
 
             chain.train( text );
@@ -183,6 +186,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     }
 
     public void load( String authorName ) {
+        this.authorName = authorName;
         try {
             for ( int i = 1; i < Settings.MAX_INPUT_WORDS + 1; i++ ) {
                 String fileName = "data" + File.separator + "bin" + File.separator + authorName + "_" + i + ".data";
@@ -256,5 +260,9 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
     public String getRandomAnswer() {
         return Settings.RANDOM_ANSWERS.get( ( PApplet.floor( ( float ) Math.random() * Settings.RANDOM_ANSWERS.size() ) ) ).toLowerCase();
+    }
+
+    public String getAuthorName() {
+        return authorName;
     }
 }

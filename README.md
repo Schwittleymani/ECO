@@ -11,3 +11,4 @@ node facebook-advanced-echo.js
 
 # Raspbian setup
 - auto start application via ~/.config/lxsession/LXDE-pi/autostart
+- config.txt documentation: https://www.raspberrypi.org/documentation/configuration/config-txt.md

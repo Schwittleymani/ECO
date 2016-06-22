@@ -8,8 +8,6 @@ server.on("message", function (msg, rinfo) {
 });
 
 var login = require("facebook-chat-api");
-// Simple echo bot. He'll repeat anything that you say.
-// Will stop when you say '/stop'
 
 login({email: "email", password: "password", pageID: 1728943587378130}, function callback (err, api) {
     if(err) return console.error(err);
