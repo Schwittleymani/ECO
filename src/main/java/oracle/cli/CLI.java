@@ -28,7 +28,7 @@ public class CLI{
         USER_INPUT,
         ORACLE_THINKING,
         ORACLE_TYPING
-    };
+    }
 
     public CliState state = CliState.USER_INPUT;
 
@@ -134,10 +134,10 @@ public class CLI{
     }
 
     public void type( char c ) {
-        if(state == CliState.USER_INPUT) {
+        if( state == CliState.USER_INPUT ){
             // should be true anyway, since cli.isActive() is in the oracle keypressed
-            delayedTyper.type(c);
-            OracleWebsocketServer.sendTyping(c);
+            delayedTyper.type( c );
+            OracleWebsocketServer.sendTyping( c );
         }
     }
 
