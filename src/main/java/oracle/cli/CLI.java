@@ -71,7 +71,7 @@ public class CLI{
         parent.noFill();
         parent.stroke( 0, 255, 0 );
         parent.strokeWeight( 5 );
-        parent.rect( 15, 15, 610, 450 );
+        parent.rect( Settings.CLI_BORDER_X, Settings.CLI_BORDER_Y, Settings.CLI_BORDER_WIDTH, Settings.CLI_BORDER_HEIGHT );
         parent.popStyle();
 
         jesus.drawBeforeEaster();
