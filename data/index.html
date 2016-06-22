@@ -6,8 +6,8 @@
 	<style type="text/css">
 	#log {
 		position: absolute;
-		width: 84%;
-		height: 90%;
+		width: 96%;
+		height: 80%;
 		padding-top: 20px;
 		padding-bottom: 30px;
 		overflow: scroll;
@@ -39,6 +39,15 @@
 	    padding-left: 3px;
 	    margin-left:15px;
 	    background:white;
+	}
+
+	#user_input {
+		width:45px;
+		padding-left: 3px;
+	    margin-left:15px;
+	    background-color: rgba(100, 100, 100, 0.6);
+	    margin-bottom: 10px; 
+	    width: 70%;
 	}
 
 	#oracle_answer {
@@ -88,12 +97,24 @@
 	  color: white;
 	}
 
+	#custom-answers {
+		position: absolute;
+		right: 0px;
+		width: 25%;
+		height: 80%;
+		position: absolute;
+	    border: blue solid 0.5px;
+	    padding-left: 5px;
+	    margin-bottom: 10px;
+	}
+
 	</style>
 </head>
 <body>
 <div id="log">
 <div id="logged"></div>
 <div id="upcoming">
+	<div id="user_input"> </div>
 	<div id="oracle_answer">
 	<div id="oracle_title">Oracle</div>
 		<span id="oracle_answer_text"style="padding-left:5px">  </span>
@@ -104,14 +125,19 @@
 		</div>
 	</div>
 </div>
+<div id="custom-answers">
+
+
+</div>
 </div>
 <div id="control">
-	<textarea rows="3" cols="50" id="input" onkeypress="checkEnter()"></textarea>
+	<textarea rows="3" cols="50" id="input" onkeypress="input_()"></textarea>
 	<button onclick="send()">Send ✉️</button>
 	<button onclick="edit()">Edit 📝</button>
 	<button id="cancel" onclick="cancel()">cancel 🔮</button>
 </div>
 
+<script type="text/javascript" src="pre-texts.js"></script>
 <script type="text/javascript">
 
 	var input_textfield = document.getElementById("input");
@@ -119,6 +145,8 @@
 	var timeout_div = document.getElementById("timeout");
 	var oracle_upcoming_span = document.getElementById("oracle_answer_text");
 	var bar_div = document.getElementById("bar");
+	var custom_answers_div = document.getElementById("custom-answers");
+	var user_input_div = document.getElementById("user_input");
 
 	var bar_total_width = bar_div.width;
 
@@ -176,13 +204,23 @@
 		}
 	}
 
-	function checkEnter() {
+	function input_() {
 		var key = window.event.keyCode;
 	    if (key == 13) {
 			send();
     	} else {
     		suspend_timeout();
     	}
+    	if(key == 32) { // space
+    		text = input_textfield.value;
+    		if(text.startsWith("#")) {
+    			var select = parseInt(text.substring(1, text.length)) - 1;
+    			if(texts.length >= select && select >= 0) {
+    				input_textfield.value = texts[select];
+    			}
+    		}
+    	}
+    	//console.log(evtobj.keyCode);
 	}
 
 	function onkeydown(e) {
@@ -192,6 +230,7 @@
 				send();
 			} else if(evtobj.keyCode == 69) { // edit
 				edit();
+				suspend_timeout();
 				/*if(input_textfield.value.endsWidth == "€") {
 					input_textfield.value = input_textfield.value.substring(0,input_textfield.value.length-1);
 				}*/
@@ -267,16 +306,10 @@
 	connection.onmessage = function (e) {
 	  //console.log('Server: ' + e.data);
 	  msg_obj = JSON.parse(e.data);
-	  if(msg_obj.type == "userMessage") { // not used atm
-	  	append("user",msg_obj.content);
-	  } else if(msg_obj.type == "oracleDone") {
+	  if(msg_obj.type == "oracleDone") {
 	  	append("oracle",msg_obj.content);
 	  	set_state(USER_INPUT);
-	  } else if(msg_obj.type == "oracleThinks") { // not used atm
-	  	oracle_upcoming_span.innerHTML = msg_obj.content;
-	  	start_timeout(msg_obj.timeout);
-	  	set_state(ORACLE_THINKS);
-	  } else if(msg_obj.type == "status") {
+	  } if(msg_obj.type == "status") {
 	  	console.log("status!"); // TODO
 	  	/*if(msg_obj.status == "USER_INPUT") {
 
@@ -284,11 +317,28 @@
 	  } else if(msg_obj.type == "texts") {
 	  	append("user",msg_obj.input);
 	  	oracle_upcoming_span.innerHTML = msg_obj.result;
+	  	user_input_div.innerHTML = "";
 	  	start_timeout(msg_obj.timeout);
 	  	set_state(ORACLE_THINKS);
-	  } 
+	  } else if(msg_obj.type == "typing") {
+	  	console.log("typing");
+	  	user_input_div.innerHTML = user_input_div.innerHTML + msg_obj.content; 
+	  }
 	  console.log(msg_obj); 
-	};
+	}
+
+	function fillPreTexts() {
+		for (i in texts) {
+			//console.log(texts[i]);
+			var div = document.createElement("div");
+			var ind = parseInt(i) + 1;
+			div.innerHTML = "#"+ind+":"+texts[i];
+			custom_answers_div.appendChild(div); 	
+		}
+	}
+
+	fillPreTexts();
+	input_textfield.focus();
 
 </script>
 </body>

@@ -23,6 +23,7 @@ public class Webserver{
 
     public Webserver( Oracle parent ) {
         server = new SimpleHTTPServer( parent );
+        server.serve("pre-texts.js");
         websocketServer = new OracleWebsocketServer( parent );
         this.Pparent = parent;
     }

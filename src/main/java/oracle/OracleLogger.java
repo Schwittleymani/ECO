@@ -1,7 +1,9 @@
 package oracle;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by mrzl on 21.06.2016.
@@ -10,9 +12,13 @@ public class OracleLogger{
 
     private File sessionLogFile;
 
+    SimpleDateFormat dateFormatter = new SimpleDateFormat( "MM/dd/yyyy_HH:mm:ss" );
+
+
     public OracleLogger() {
         new File( "logs" ).mkdirs();
         sessionLogFile = new File( "logs" + File.separator + "session_" + timestamp() + ".log" );
+        new File( "logs" ).mkdir();
     }
 
     private String timestamp() {
@@ -29,12 +35,13 @@ public class OracleLogger{
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
-            String timeStamp = timestamp();
-            bw.write( timeStamp + ":::u:::" + input );
+
+            String dateString = dateFormatter.format( new Date() );
+            bw.write( dateString + ":::u:::" + input );
             bw.newLine();
-            bw.write( timeStamp + ":::o:::" + answer );
+            bw.write( dateString + ":::o:::" + answer );
             bw.newLine();
-            bw.write( timeStamp + ":::a:::" + authorName );
+            bw.write( dateString + ":::a:::" + authorName );
             bw.newLine();
             bw.flush();
         } catch ( IOException ioe ) {
