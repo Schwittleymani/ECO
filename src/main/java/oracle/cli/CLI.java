@@ -159,7 +159,8 @@ public class CLI{
             delayedTyper.type( LINE_PREFIX_CHARS );
         } else {
             // a little bit of more offset on the left
-            newLine.setPos( Settings.CLI_PADDING_LEFT + 40, currentY );
+            float extraPadding = parent.textWidth(LINE_PREFIX_CHARS);
+            newLine.setPos( Settings.CLI_PADDING_LEFT + (int) extraPadding, currentY );
         }
     }
 
