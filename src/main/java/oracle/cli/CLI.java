@@ -114,7 +114,11 @@ public class CLI{
     }
 
     public void backspace() {
-        getLastLine().backspace();
+        if( state == CliState.USER_INPUT ) {
+            // should be true anyway, since cli.isActive() is in the oracle keypressed
+            getLastLine().backspace();
+            OracleWebsocketServer.sendTypingBackspace();
+        }
     }
 
     public int finish( String answer ) {

@@ -119,6 +119,14 @@ public class OracleWebsocketServer {
         }
     }
 
+    static public void sendTypingBackspace() {
+        if(me != null) {
+            JSONObject msg_obj = new JSONObject();
+            msg_obj.setString("type", "typing_backspace");
+            me.ws.sendMessage(msg_obj.toString());
+        }
+    }
+
     private void cancel() {
         oracle.cli.typeNow();
     }

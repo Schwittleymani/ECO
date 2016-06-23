@@ -323,6 +323,11 @@
 	  } else if(msg_obj.type == "typing") {
 	  	console.log("typing");
 	  	user_input_div.innerHTML = user_input_div.innerHTML + msg_obj.content; 
+	  } else if(msg_obj.type == "typing_backspace") {
+	  	var le = user_input_div.innerHTML.length;
+	  	if(le > 0) {
+	  		user_input_div.innerHTML = user_input_div.innerHTML.substring(0,le-1);
+	  	}
 	  }
 	  console.log(msg_obj); 
 	}
