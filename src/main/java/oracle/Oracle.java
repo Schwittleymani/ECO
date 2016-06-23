@@ -5,7 +5,6 @@ import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +29,7 @@ public class Oracle extends PApplet{
     }
 
     public void settings() {
-        size( 640, 480 );
+        size( 640, 480, P2D );
         logger = new OracleLogger();
 
         fullScreen( 0 );
@@ -85,8 +84,10 @@ public class Oracle extends PApplet{
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
-        if( cli.isActive() )
+        if( cli.isActive() ){
+            key = 0;
             return;
+        }
 
         if( key == CODED ){
             switch ( keyCode ) {
