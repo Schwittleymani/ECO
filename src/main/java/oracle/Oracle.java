@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Oracle extends PApplet{
     public CLI cli;
-    public Webserver server;
+    Webserver server;
     OracleLogger logger;
     Settings settings;
 
@@ -154,7 +154,9 @@ public class Oracle extends PApplet{
                     //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
                     //}
 
-                    logger.log( inputText, result, authorName );
+                    logger.log(logger.USER, inputText);
+                    logger.log(logger.ORACLE, "("+authorName+") "+result);
+
                     System.out.println( "o:::" + result );
                     System.out.println( "a:::" + authorName );
                     break;
@@ -178,5 +180,10 @@ public class Oracle extends PApplet{
         server.webSocketServerEvent( msg );
     }
 
+    public void intercept(String message) {
+        if(cli.interceptTypeNow(message)) {
+            logger.log(logger.INTERCEPTION,message);
+        }
+    }
 
 }

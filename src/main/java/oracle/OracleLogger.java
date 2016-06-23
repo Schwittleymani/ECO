@@ -10,6 +10,11 @@ import java.util.Date;
  */
 public class OracleLogger{
 
+    public static final String USER = ":::u:::";
+    public static final String ORACLE = ":::o:::";
+    public static final String INTERCEPTION = ":::i:::";
+
+
     private File sessionLogFile;
 
     SimpleDateFormat dateFormatter = new SimpleDateFormat( "MM/dd/yyyy_HH:mm:ss" );
@@ -26,7 +31,7 @@ public class OracleLogger{
         return String.format( "%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", now );
     }
 
-    public void log( String input, String answer, String authorName ) {
+    public void log(String sourceString, String text)  {
         BufferedWriter bw = null;
 
         try {
@@ -37,11 +42,7 @@ public class OracleLogger{
             }
 
             String dateString = dateFormatter.format( new Date() );
-            bw.write( dateString + ":::u:::" + input );
-            bw.newLine();
-            bw.write( dateString + ":::o:::" + answer );
-            bw.newLine();
-            bw.write( dateString + ":::a:::" + authorName );
+            bw.write( dateString + sourceString + text );
             bw.newLine();
             bw.flush();
         } catch ( IOException ioe ) {
@@ -54,4 +55,6 @@ public class OracleLogger{
             }
         }
     }
+
+
 }

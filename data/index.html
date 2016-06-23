@@ -98,11 +98,10 @@
 	}
 
 	#custom-answers {
-		position: absolute;
-		right: 0px;
+		position: fixed;
+		right: 10px;
 		width: 25%;
 		height: 80%;
-		position: absolute;
 	    border: blue solid 0.5px;
 	    padding-left: 5px;
 	    margin-bottom: 10px;
@@ -112,24 +111,21 @@
 </head>
 <body>
 <div id="log">
-<div id="logged"></div>
-<div id="upcoming">
-	<div id="user_input"> </div>
-	<div id="oracle_answer">
-	<div id="oracle_title">Oracle</div>
-		<span id="oracle_answer_text"style="padding-left:5px">  </span>
-	</div>
-	<div id="progress">
-		<div id="bar">
-			<div id="timeout">waiting</div>
+	<div id="logged"></div>
+	<div id="upcoming">
+		<div id="user_input"> </div>
+		<div id="oracle_answer">
+		<div id="oracle_title">Oracle</div>
+			<span id="oracle_answer_text"style="padding-left:5px">  </span>
+		</div>
+		<div id="progress">
+			<div id="bar">
+				<div id="timeout">waiting</div>
+			</div>
 		</div>
 	</div>
 </div>
-<div id="custom-answers">
-
-
-</div>
-</div>
+<div id="custom-answers"></div>
 <div id="control">
 	<textarea rows="3" cols="50" id="input" onkeypress="input_()"></textarea>
 	<button onclick="send()">Send ✉️</button>
@@ -141,7 +137,8 @@
 <script type="text/javascript">
 
 	var input_textfield = document.getElementById("input");
-	var log_div = document.getElementById("logged");
+	var log_div = document.getElementById("log");
+	var logged_div = document.getElementById("logged");
 	var timeout_div = document.getElementById("timeout");
 	var oracle_upcoming_span = document.getElementById("oracle_answer_text");
 	var bar_div = document.getElementById("bar");
@@ -240,8 +237,6 @@
     	}
 	}
 
-	document.onkeydown = onkeydown;
-
 	function send() {
 		if(state == ORACLE_THINKS) {
 			connection.send(JSON.stringify({"type":"answer", "content" : input_textfield.value}));
@@ -266,7 +261,10 @@
 	function append(from,msg) {
 		var p = document.createElement("p");
 		p.innerHTML = from + " : "+msg;
-		log_div.appendChild(p);   
+		logged_div.appendChild(p);
+		var scrollTo = log_div.scrollHeight - 00; //  - 800 ; // - document.documentElement.clientHeight;
+		//console.log(scrollTo);
+  		log_div.scrollTop = scrollTo;   
 	}
 
 	function set_state(new_state) {
@@ -323,6 +321,11 @@
 	  } else if(msg_obj.type == "typing") {
 	  	console.log("typing");
 	  	user_input_div.innerHTML = user_input_div.innerHTML + msg_obj.content; 
+	  } else if(msg_obj.type == "typing_backspace") {
+	  	var le = user_input_div.innerHTML.length;
+	  	if(le > 0) {
+	  		user_input_div.innerHTML = user_input_div.innerHTML.substring(0,le-1);
+	  	}
 	  }
 	  console.log(msg_obj); 
 	}
@@ -337,8 +340,13 @@
 		}
 	}
 
+	document.onkeydown = onkeydown;
 	fillPreTexts();
 	input_textfield.focus();
+
+	/*var testInterval = setInterval(function() {
+		append("user","blabla");
+	},500);*/
 
 </script>
 </body>

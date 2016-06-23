@@ -106,7 +106,7 @@ public class OracleWebsocketServer {
 
     void interceptReceived(String message) {
         me.last_result = message;
-        oracle.cli.interceptTypeNow(message);
+        oracle.intercept(message);
         //System.out.println("intercept done");
     }
 
@@ -115,6 +115,14 @@ public class OracleWebsocketServer {
             JSONObject msg_obj = new JSONObject();
             msg_obj.setString("type", "typing");
             msg_obj.setString("content", "" + character);
+            me.ws.sendMessage(msg_obj.toString());
+        }
+    }
+
+    static public void sendTypingBackspace() {
+        if(me != null) {
+            JSONObject msg_obj = new JSONObject();
+            msg_obj.setString("type", "typing_backspace");
             me.ws.sendMessage(msg_obj.toString());
         }
     }
