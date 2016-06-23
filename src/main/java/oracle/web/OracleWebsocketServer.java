@@ -106,7 +106,7 @@ public class OracleWebsocketServer {
 
     void interceptReceived(String message) {
         me.last_result = message;
-        oracle.cli.interceptTypeNow(message);
+        oracle.intercept(message);
         //System.out.println("intercept done");
     }
 
