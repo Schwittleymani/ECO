@@ -3,6 +3,9 @@ import sys
 
 
 def correct(text,recursive = True):
+	"""
+	recursiveness can't be deactivated from outside atm
+	"""
 	tool = grammar_check.LanguageTool('en-GB')
 	matches = tool.check(text)
 	while len(matches) > 0:
@@ -10,6 +13,8 @@ def correct(text,recursive = True):
 		for co in matches:
 			print co
 		text = grammar_check.correct(text, matches)
+		if not recursive:
+			break
 		matches = tool.check(text)
 	return text
 
@@ -19,3 +24,5 @@ if __name__ == "__main__":
 		print "ERROR: just one string as parameter, bitch"
 	else:
 		print correct(sys.argv[1])
+
+
