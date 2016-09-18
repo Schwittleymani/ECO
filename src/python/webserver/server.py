@@ -1,31 +1,35 @@
 from flask import Flask, render_template, send_file, safe_join, request,jsonify
 import imp, sys
-import time
+
 from threading import Thread
 
 import settings
 from StandardAnswers import get_answer
 grammar = imp.load_source('grammar', '../../tests/grammar.py')
+from Spellchek import spell_check
 
 app = Flask(__name__)
 app.config.from_object('settings')
 
 
-def grammar_check(input):
+def text_preproccess(input):
     print input
     if input.startswith('\"'):
         input = input[1:-1]
-    output = grammar.correct(input)
-    output_json = jsonify(**{"grammar_corrected": output})
-    print ">> ", output
+    # grammar
+    grammar_correct_out = grammar.correct(input)
+    spell_check_out = spell_check(input)
+    output_json = jsonify(**{"grammar_corrected" : grammar_correct_out, "spell_check" : spell_check_out})
+    print ">> ", output_json
     return output_json
 
 @app.route('/', methods=['GET', "POST"])
 def index():
     # grammar test
-    input = request.args.get('grammar')
-    if input:
-        return grammar_check(input())
+    text = request.args.get('preProc')
+    print text
+    if text:
+        return text_preproccess(text)
     else:
         return render_template('index.html')
 

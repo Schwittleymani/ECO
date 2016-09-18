@@ -6,14 +6,11 @@
 </head>
 <body>
     <div>
-        Grammar check: <input id="input" type="text" name="grammar" value="these is cool!"><br>
         <p>
-        <input value="send" type="button" onclick="submit()" />
-
+            Grammar check: <input id="input" type="text" name="input" value="these is cool!"><br>
+            <input value="send" type="button" onclick="submit()">
             <span>Result:  </span>
-          <span id="output">
-
-          </span>
+            <span id="output"></span>
         </p>
     </div>
 
@@ -21,13 +18,13 @@
         function submit() {
             xhr = new XMLHttpRequest();
             var text = document.getElementById("input").value
-            var url = "?grammar="+text;
+            var url = "?preProc=" + text;
             xhr.open("POST", url, true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var json = JSON.parse(xhr.responseText);
                     //console.log(json.grammar_corrected);
-                    output.innerHTML = json.grammar_corrected;
+                    output.innerHTML = "Grammar: " + json.grammar_corrected + " // Spell check: " + json.spell_check;
                 }
             }
             xhr.send();
