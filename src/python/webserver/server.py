@@ -10,6 +10,16 @@ grammar = imp.load_source('grammar', '../../tests/grammar.py')
 app = Flask(__name__)
 app.config.from_object('settings')
 
+'''
+not crazy robust so I'll leave the issue open.
+the ml thread is not killed.
+you don't just kill threads in python...
+... how to behave when another input is sent...
+
+also fails and sents status 400 when sent data does not contain 'inputS'
+
+
+'''
 
 def grammar_check(input):
     print input
