@@ -1,15 +1,15 @@
 from keras.models import Sequential
-from keras.models import load_model
+from keras.models import load_model, model_from_json
 from keras.layers import Dense, Activation, Dropout
 from keras.layers import LSTM
 from keras.optimizers import RMSprop
 import numpy as np
 import pickle
-import os
 
 class LSTMWrapper(object):
-    def __init__(self, maxlen):
+    def __init__(self, maxlen, step):
         self.maxlen = maxlen
+        self.step = step
 
     def load(self, path):
         text = open(path).read().lower()
@@ -21,10 +21,9 @@ class LSTMWrapper(object):
         self.indices_char = dict((i, c) for i, c in enumerate(self.chars))
 
         # cut the text in semi-redundant sequences of maxlen characters
-        step = 3
         sentences = []
         next_chars = []
-        for i in range(0, len(text) - self.maxlen, step):
+        for i in range(0, len(text) - self.maxlen, self.step):
             sentences.append(text[i: i + self.maxlen])
             next_chars.append(text[i + self.maxlen])
         print('nb sequences:', len(sentences))
@@ -49,7 +48,7 @@ class LSTMWrapper(object):
 
     def train(self, iterations, epochs):
         # train the model, output generated text after each iteration
-        for iteration in range(1, iterations):
+        for iteration in xrange(iterations):
             print('Iteration ' + str(iteration) + ' / ' + str(iterations))
             self.model.fit(self.X, self.y, batch_size=128, nb_epoch=epochs)
 
@@ -71,32 +70,42 @@ class LSTMWrapper(object):
 
         return output_text
 
-    def save_model(self, save_path, filename):
-        output_path = save_path + '/' + filename + '.h5'
-        print('output_path:' + output_path)
-        self.model.save(output_path)
+    def save_model(self, path):
+        print('Saving model to' + path)
 
-        with open(save_path + '/' + filename + '_chars.pkl', 'wb') as file:
+        model_json = self.model.to_json()
+        with open(path + '.json', 'w') as json_file:
+            json_file.write(model_json)
+        self.model.save_weights(path)
+
+        with open(path + '_chars.pkl', 'wb') as file:
             pickle.dump(self.chars, file, pickle.HIGHEST_PROTOCOL)
 
-        with open(save_path + '/' + filename + '_char_indices.pkl', 'wb') as file:
+        with open(path + '_char_indices.pkl', 'wb') as file:
             pickle.dump(self.char_indices, file, pickle.HIGHEST_PROTOCOL)
 
-        with open(save_path + '/' + filename + '_indices_char.pkl', 'wb') as file:
+        with open(path + '_indices_char.pkl', 'wb') as file:
             pickle.dump(self.indices_char, file, pickle.HIGHEST_PROTOCOL)
 
-    def load_model(self, path, filename):
-        print('loading: ' + path + filename)
-        self.model = load_model(path + filename)
-        print('loading here:')
-        print(path + filename[:-3] + '_chars.pkl')
-        with open(path + filename[:-3] + '_chars.pkl', 'rb') as file:
+    def load_model(self, path):
+        print('Loading model from  ' + path)
+
+        json_file = open(path + '.json', 'r')
+        loaded_model_json = json_file.read()
+        json_file.close()
+        self.model = model_from_json(loaded_model_json)
+        self.model.load_weights(path)
+
+        optimizer = RMSprop(lr=0.01)
+        self.model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+
+        with open(path + '_chars.pkl', 'rb') as file:
             self.chars = pickle.load(file)
 
-        with open(path + filename[:-3] + '_char_indices.pkl', 'rb') as file:
+        with open(path + '_char_indices.pkl', 'rb') as file:
             self.char_indices = pickle.load(file)
 
-        with open(path + filename[:-3] + '_indices_char.pkl', 'rb') as file:
+        with open(path + '_indices_char.pkl', 'rb') as file:
             self.indices_char = pickle.load(file)
 
     def __sample_character(self, preds, temperature=1.0):
