@@ -11,3 +11,6 @@ run server with server.py
 
 flask server runs on port 8090
 so it's reachable over the www on: http://lyrik.ddns.net:8090/
+
+Use
+src/test/client_communication.pde for testing
