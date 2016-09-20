@@ -19,6 +19,8 @@ if __name__ == '__main__':
 
     text_file = open(input, 'r')
     text = text_file.read()
+    
+    text = text.lower()
 
     removed_chars = []
     removed_chars.append('0')
@@ -45,11 +47,30 @@ if __name__ == '__main__':
     for char in removed_chars:
         text = text.replace(char, ' ')
 
+    # this part is taken from: https://github.com/yoonkim/CNN_sentence/blob/master/process_data.py
+    text = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", text)
+    text = re.sub(r"\'s", " \'s", text)
+    text = re.sub(r"\'ve", " \'ve", text)
+    text = re.sub(r"n\'t", " n\'t", text)
+    text = re.sub(r"\'re", " \'re", text)
+    text = re.sub(r"\'d", " \'d", text)
+    text = re.sub(r"\'ll", " \'ll", text)
+    text = re.sub(r",", " , ", text)
+    text = re.sub(r"!", " ! ", text)
+    text = re.sub(r"\(", " \( ", text)
+    text = re.sub(r"\)", " \) ", text)
+    text = re.sub(r"\?", " \? ", text)
+    text = re.sub(r"\s{2,}", " ", text)
+
     # remove all doubled spaces
-    #re.sub(' +', ' ', text)
     text = ' '.join(text.split())
 
+    # replacing some character-space combinations properly
+    # needs to be done after the other pre-processing
+    text = text.replace(' . ', '. ')
+    text = text.replace(' , ', ', ')
+
     with open(output, 'w') as output_file:
-        output_file.write(text.lower())
+        output_file.write(text)
 
     output_file.close()
