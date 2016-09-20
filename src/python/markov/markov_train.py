@@ -34,5 +34,8 @@ if __name__ == '__main__':
         input = raw_input('input: ')
         print(markov.sample_short(140))
 
-        print('markov.sample')
-        print(markov.sample(prime=input, length=140))
+        try:
+            print('markov.sample')
+            print(markov.sample(prime=input, length=140))
+        except KeyError:
+            print('KeyError')
