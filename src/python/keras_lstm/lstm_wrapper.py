@@ -46,11 +46,15 @@ class LSTMWrapper(object):
         optimizer = RMSprop(lr=0.01)
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 
-    def train(self, iterations, epochs):
-        # train the model, output generated text after each iteration
+    def train(self, iterations, epochs, model_save_path, save_every=0):
+        # train the model
         for iteration in xrange(iterations):
             print('Iteration ' + str(iteration) + ' / ' + str(iterations))
             self.model.fit(self.X, self.y, batch_size=128, nb_epoch=epochs)
+
+            if save_every != 0 and iteration % save_every == 0:
+                output_path = model_save_path + '_iteration' + str(iteration)
+                self.save_model(output_path)
 
     def sample(self, diversity, seed, output_length):
         output_text = seed
