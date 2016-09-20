@@ -37,4 +37,4 @@ if __name__ == '__main__':
     lstm.load(path=input_text_path)
     lstm.train(iterations=iterations, epochs=epochs)
 
-    lstm.save_model(save_path=model_save_path)
+    lstm.save_model(path=model_save_path)
