@@ -9,7 +9,7 @@ def process_arguments(args):
 
     # training parameters
     parser.add_argument('--input', action='store', help='the path to the input text file')
-    parser.add_argument('--prime', action='store', help='what is the beginning of the sampled text')
+    parser.add_argument('--prime', action='store', default=None, help='what is the beginning of the sampled text')
     parser.add_argument('--model_save_path', action='store', default=None, help='path to save the exported models to')
     params = vars(parser.parse_args(args))
 
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     print('Running LSTM with parameters:')
     print('----------------------------------------')
     print('Training input file: ' + input_text_path)
-    print('Sampling with prime text: ' + prime)
+    print('Sampling with prime text: ' + str(prime))
     print('----------------------------------------')
 
     markov = MarkovWrapper()
@@ -36,6 +36,6 @@ if __name__ == '__main__':
 
         try:
             print('markov.sample')
-            print(markov.sample(prime=input, length=140))
+            print(markov.sample(prime=input))
         except KeyError:
             print('KeyError')

@@ -15,5 +15,5 @@ class MarkovWrapper(object):
     def sample_short(self, length):
         return self.text_model.make_short_sentence(char_limit=length, tries=100)
 
-    def sample(self, prime, length):
-        return self.text_model.make_sentence_with_start(beginning=prime, tries=10)
+    def sample(self, prime):
+        return self.text_model.make_sentence_with_start(beginning=prime, tries=100)
