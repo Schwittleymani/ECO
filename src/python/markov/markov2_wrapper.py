@@ -20,16 +20,17 @@ def process_arguments(args):
 class Markov2Wrapper(object):
 
     def __init__(self, input_path):
+        self.name = None
+        print('Loading from ' + input_path)
         self.markov = Markov(open(input_path))
 
     def sample(self, input_text, length):
         input_text_list = input_text.split()
 
-        # the input needs to be at least one word
-        assert len(input_text_list) > 0
-
         # there need to be at least two words input
-        if len(input_text_list) < 2:
+        if len(input_text_list) == 0:
+            input_text_list.append(self.markov.get_random_word())
+        if len(input_text_list) == 1:
             input_text_list.append(self.markov.get_random_word())
 
         times_to_try = 10
@@ -42,9 +43,9 @@ class Markov2Wrapper(object):
             times_to_try -= 1
 
         if output is None:
-            return ' '.join(input_text_list), 'There was really no answer to find.'
+            return 'There was really no answer to find.'
         else:
-            return ' '.join(input_text_list), output
+            return output
 
     def __sample_implementation(self, input_text_list, length):
         try:

@@ -11,6 +11,7 @@ class LSTMWrapper(object):
     def __init__(self, maxlen, step):
         self.maxlen = maxlen
         self.step = step
+        self.name = None
 
     def load(self, path):
         text = open(path).read().lower()
