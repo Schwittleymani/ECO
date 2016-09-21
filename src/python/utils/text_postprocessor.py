@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys
 import argparse
 import re
@@ -41,11 +43,44 @@ if __name__ == '__main__':
     removed_chars.append('%')
     removed_chars.append(';')
     removed_chars.append('*')
+    removed_chars.append('p..')
+    removed_chars.append("http://")
+    removed_chars.append("http:")
+    removed_chars.append("http")
+    removed_chars.append("www.")
+    removed_chars.append("-.")
+    removed_chars.append(".php")
+    removed_chars.append("#,")
+    removed_chars.append("<U+00AD>")
+    removed_chars.append(" : ‐")
+
     removed_chars.append('\n')
 
     # replace special chars with space
     for char in removed_chars:
-        text = text.replace(char, ' ')
+        text = text.replace(char, '')
+
+    text = text.replace('“', '"')
+    text = text.replace('”', '"')
+    text = text.replace('’', '\'')
+
+    text = text.replace('ﬃc', 'ffic')
+    text = text.replace('ﬀ', 'ff')
+    text = text.replace(',”', '"')
+    text = text.replace('\?', '?')
+    text = text.replace('--', '-')
+    text = text.replace(',,', ',')
+    text = text.replace('- - - -', '-')
+    text = text.replace(',.', '.')
+    text = text.replace('..', '.')
+    text = text.replace('...', '.')
+    text = text.replace('....', '.')
+    text = text.replace('.....', '.')
+    text = text.replace('. .', '.')
+    text = text.replace(' ,. .', '.')
+    text = text.replace(',. .', '.')
+    text = text.replace(',.', '.')
+    text = text.replace("  ", " ")
 
     # this part is taken from: https://github.com/yoonkim/CNN_sentence/blob/master/process_data.py
     #text = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", text)
