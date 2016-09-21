@@ -30,6 +30,6 @@ if __name__ == '__main__':
 
     while True:
        input = raw_input('input: ')
-       output = lstm.sample(diversity=diversity, seed=input.rjust(maxlen), output_length=output_length)
+       output = lstm.sample(diversity=diversity, seed=input, output_length=output_length)
        output = output[maxlen - len(input):]
        print(output)

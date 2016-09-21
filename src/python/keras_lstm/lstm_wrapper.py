@@ -6,6 +6,7 @@ from keras.optimizers import RMSprop
 import numpy as np
 import pickle
 
+
 class LSTMWrapper(object):
     def __init__(self, maxlen, step):
         self.maxlen = maxlen
@@ -46,7 +47,7 @@ class LSTMWrapper(object):
         optimizer = RMSprop(lr=0.01)
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 
-    def train(self, iterations, epochs, model_save_path, save_every=0):
+    def train(self, iterations, epochs, model_save_path=None, save_every=0):
         # train the model
         for iteration in xrange(iterations):
             print('Iteration ' + str(iteration) + ' / ' + str(iterations))
@@ -57,8 +58,8 @@ class LSTMWrapper(object):
                 self.save_model(output_path)
 
     def sample(self, diversity, seed, output_length):
-        output_text = seed
-        input_text = seed
+        output_text = seed.rjust(self.maxlen)
+        input_text = seed.rjust(self.maxlen)
         for i in range(output_length):
             x = np.zeros((1, self.maxlen, len(self.chars)))
             for t, char in enumerate(input_text):
