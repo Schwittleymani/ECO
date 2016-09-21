@@ -23,15 +23,46 @@ class Markov2Wrapper(object):
         self.markov = Markov(open(input_path))
 
     def sample(self, input_text, length):
-        text = self.markov.generate_markov_text(input_text.split(), length)
+        input_text_list = input_text.split()
 
-        input = input_text.split()
-        del input[-1]
-        del input[-1]
+        # the input needs to be at least one word
+        assert len(input_text_list) > 0
 
-        output = ' '.join(input)
-        output += ' ' + text
-        return output
+        # copy list
+        input_text_list_original = input_text_list[:]
+
+        # there need to be at least two words input
+        if len(input_text_list) < 2:
+            input_text_list.append(self.markov.get_random_word())
+
+        times_to_try = 10
+
+        output = self.__sample_implementation(input_text_list, length=length)
+
+        while times_to_try > 0 and output is None:
+            input_text_list[1] = self.markov.get_random_word()
+            output = self.__sample_implementation(input_text_list=input_text_list, length=length)
+            times_to_try -= 1
+
+        if output is None:
+            return ' '.join(input_text_list_original), 'There was really no answer to find.'
+        else:
+            return ' '.join(input_text_list_original), output
+
+    def __sample_implementation(self, input_text_list, length):
+        try:
+            text = self.markov.generate_markov_text(input_text_list, length)
+
+            # remove the last two words from the input string because they'll be doubled otherwise
+            del input_text_list[-1]
+            del input_text_list[-1]
+
+            output = ' '.join(input_text_list)
+            output += ' ' + text
+            return output
+        except KeyError:
+            return  None
+
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
