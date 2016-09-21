@@ -31,7 +31,7 @@ class Generator(object):
     steps: how many character combinations to check
     save_every: after how many iterations to save the model temporary (0 -> not saving)
     '''
-    def init_keras_lstm(self, input_text_path, maxlen=100, iterations=3, epochs=5, steps=2, save_every=0):
+    def init_keras_lstm(self, input_text_path, maxlen=100, iterations=3, epochs=2, steps=4, save_every=0):
         self.lstm = keras_lstm.lstm_wrapper.LSTMWrapper(maxlen=maxlen, step=steps)
         self.lstm.load(path=input_text_path)
         self.lstm.train(iterations=iterations, epochs=epochs, model_save_path=None, save_every=save_every)
