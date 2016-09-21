@@ -59,14 +59,15 @@ if __name__ == '__main__':
 
     generator = Generator()
     generator.init_markov(input_text_path=input_text_path)
-    generator.init_keras_lstm(input_text_path=input_text_path)
+    #generator.init_keras_lstm(input_text_path=input_text_path)
 
     while True:
         input = raw_input('input: ')
 
-        markov_result = generator.sample_markov(input=input)
-        keras_lstm_result = generator.sample_keras_lstm(input=input)
+        markov_input, markov_result = generator.sample_markov(input=input)
+        #keras_lstm_result = generator.sample_keras_lstm(input=input)
 
         print('--- Result ---')
-        print('Markov Chain: ' + markov_result)
-        print('Keras LSTM: ' + keras_lstm_result)
+        print('Markov Chain input: ' + markov_input)
+        print(markov_result)
+        #print('Keras LSTM: ' + keras_lstm_result)

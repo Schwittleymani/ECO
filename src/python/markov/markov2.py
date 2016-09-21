@@ -38,6 +38,9 @@ class Markov(object):
             else:
                 self.cache[key] = [w3]
 
+    def get_random_word(self):
+        return self.words[random.randint(0, self.word_size-3)]
+
     def generate_markov_text(self, input_list, size=25):
         w1, w2 = input_list[-2], input_list[-1]
         gen_words = []
