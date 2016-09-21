@@ -46,6 +46,10 @@ class Generator(object):
 '''
 ## this is the main entry point for the software running on lyrik
 
+* currently training the keras char-lstm when running
+
+start via:
+
     KERAS_BACKEND=tensorflow python run.py --input *textfile*
 '''
 if __name__ == '__main__':
