@@ -28,9 +28,6 @@ class Markov2Wrapper(object):
         # the input needs to be at least one word
         assert len(input_text_list) > 0
 
-        # copy list
-        input_text_list_original = input_text_list[:]
-
         # there need to be at least two words input
         if len(input_text_list) < 2:
             input_text_list.append(self.markov.get_random_word())
@@ -45,9 +42,9 @@ class Markov2Wrapper(object):
             times_to_try -= 1
 
         if output is None:
-            return ' '.join(input_text_list_original), 'There was really no answer to find.'
+            return ' '.join(input_text_list), 'There was really no answer to find.'
         else:
-            return ' '.join(input_text_list_original), output
+            return ' '.join(input_text_list), output
 
     def __sample_implementation(self, input_text_list, length):
         try:
