@@ -81,7 +81,7 @@ class Generator(object):
 
     def sample_word_level_lstm(self, input, sample=1, output_length=200):
         random_word_lstm_index = random.randint(0, len(self.word_lstms) - 1)
-        selected_word_lstm = self.lstms[random_word_lstm_index]
+        selected_word_lstm = self.word_lstms[random_word_lstm_index]
         return 'NO AUTHOR YET', selected_word_lstm.sample(input=input, sample=sample, output_length=output_length)
 
 if __name__ == '__main__':
@@ -92,24 +92,24 @@ if __name__ == '__main__':
     word_lstm_models_path = params['word_lstm_models_path']
 
     generator = Generator()
-    generator.init_markov(text_files_path=markov_texts_path)
-    generator.init_keras_lstm(models_path=keras_lstm_models_path)
+    #generator.init_markov(text_files_path=markov_texts_path)
+    #generator.init_keras_lstm(models_path=keras_lstm_models_path)
     generator.init_word_level_lstm(models_path=word_lstm_models_path)
 
     while True:
         input = raw_input('input: ')
 
-        markov_author, markov_result = generator.sample_markov(input=input)
-        keras_lstm_author, keras_lstm_result = generator.sample_keras_lstm(input=input)
+        #markov_author, markov_result = generator.sample_markov(input=input)
+        #keras_lstm_author, keras_lstm_result = generator.sample_keras_lstm(input=input)
         word_level_lstm_author, word_level_lstm_result = generator.sample_word_level_lstm(input=input)
 
         print('--- Result ---')
 
-        print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
-        print(markov_result.strip())
+        #print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
+        #print(markov_result.strip())
 
-        print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
-        print(keras_lstm_result.strip())
+        #print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
+        #print(keras_lstm_result.strip())
 
         print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
         print(word_level_lstm_result)
