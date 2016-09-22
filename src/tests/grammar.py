@@ -7,6 +7,7 @@ def correct(text,recursive = True):
 	"""
 	recursiveness can't be deactivated from outside atm
 	"""
+	text = unicode(text,"utf-8").encode('ascii','replace')
 	tool = grammar_check.LanguageTool('en-GB')
 	matches = tool.check(text)
 	recs = 0

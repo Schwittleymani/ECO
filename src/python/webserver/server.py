@@ -1,27 +1,17 @@
 from flask import Flask, render_template, send_file, safe_join, request,jsonify
-import imp, sys
-
 from threading import Thread
+from flask_socketio import SocketIO
 
 import settings
 from StandardAnswers import get_answer
-grammar = imp.load_source('grammar', '../../tests/grammar.py')
-from Spellchek import spell_check
+
+import http_calls
 
 app = Flask(__name__)
 app.config.from_object('settings')
+socketio = SocketIO(app)
 
 
-def text_preproccess(input):
-    print input
-    if input.startswith('\"'):
-        input = input[1:-1]
-    # grammar
-    grammar_correct_out = grammar.correct(input)
-    spell_check_out = spell_check(input)
-    output_json = jsonify(**{"grammar_corrected" : grammar_correct_out, "spell_check" : spell_check_out})
-    print ">> ", output_json
-    return output_json
 
 @app.route('/', methods=['GET', "POST"])
 def index():
@@ -29,52 +19,32 @@ def index():
     text = request.args.get('preProc')
     print text
     if text:
-        return text_preproccess(text)
+        return http_calls.text_preproccess(text)
     else:
         return render_template('index.html')
+
+@app.route('/inter', methods=['GET'])
+def interception():
+    return render_template('inter.html')
 
 
 @app.route('/input', methods=["POST"])
 def input():
-    '''
-    main function to get a return from machine
-    :return:
-    '''
-    values = request.values
-    #print values
-    inputS = None
-    try:
-        inputS = values['inputS']
-    except TypeError:
-        return jsonify({'status': 'no-input', 'response': get_answer()})
-    print inputS
-    response = {}
-    def ml_magic(inputS):
+    http_calls.input()
 
-        try:
-            print "CALL ML MAGIC HERE... for: ",inputS
-            ## when its cool
-            response['status'] = 'ml-response'
-            response['response'] = "ML RESPONSE"
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
-            response['status'] = 'error'
 
-    ml_thread = Thread(target=ml_magic, args=(inputS,))
-    ml_thread.start()
-    ml_thread.join(settings.MAX_MACHINE_TIME)
-    if ml_thread.is_alive:
-        return jsonify(response)
-    else:
-        return jsonify({'status': 'ml-timeout', 'response': get_answer()})
 
+@socketio.on('key')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
 
 def launch():
-    #global logger
+    def start_websocket_server():
 
-    #logger = get_std_logger("server")
-    #logger.debug("Starting Server")
+        socketio.run(app, port=app.config['PORT_WEBSOCKET'])
+    Thread(target=start_websocket_server).start()
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
     #logger.debug("Application terminates")
 
 # RUN APP
