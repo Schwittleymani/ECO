@@ -34,28 +34,35 @@ class Generator(object):
 
         self.mode = self.MARKOV
 
-    def init_markov(self, text_files_path):
+    def init_markov(self, text_files_path, max_models=100):
         self.markovs = []
+        loaded_count = 0
         for root, dirs, files in os.walk(text_files_path):
             for f in files:
-                file_name = os.path.join(root, f)
-                markov_instance = markov.markov2_wrapper.Markov2Wrapper(file_name)
-                markov_instance.name = f[:20]
-                self.markovs.append(markov_instance)
+                if loaded_count < max_models:
+                    file_name = os.path.join(root, f)
+                    markov_instance = markov.markov2_wrapper.Markov2Wrapper(file_name)
+                    markov_instance.name = f[:20]
+                    self.markovs.append(markov_instance)
+                    loaded_count += 1
 
-    def init_keras_lstm(self, models_path):
+    def init_keras_lstm(self, models_path, max_models=100):
         self.lstms = []
+        loaded_count = 0
         for root, dirs, files in os.walk(models_path):
             for dir in dirs:
                 path = os.path.join(root, dir)
                 for _root, _dirs, _files in os.walk(path):
                     for file in _files:
                         if file.endswith('.h5'):
-                            final_model_path = os.path.join(path, file)
-                            lstm = keras_lstm.lstm_wrapper.LSTMWrapper(maxlen=100, step=2)
-                            lstm.load_model(final_model_path)
-                            lstm.name = dir # setting the name of this lstm instance
-                            self.lstms.append(lstm)
+                            if loaded_count < max_models:
+                                final_model_path = os.path.join(path, file)
+                                lstm = keras_lstm.lstm_wrapper.LSTMWrapper(maxlen=100, step=2)
+                                lstm.load_model(final_model_path)
+                                lstm.name = dir # setting the name of this lstm instance
+                                self.lstms.append(lstm)
+
+                                loaded_count += 1
 
     def init_word_level_lstm(self, models_path):
         self.word_lstms = []
@@ -116,6 +123,15 @@ class Generator(object):
 
         return word_level_lstm_result
 
+
+def get_random_answer():
+    file = open('pre_defined_answers.txt', 'r')
+    lines = []
+    for line in file.readlines():
+        lines.append(line.rstrip())
+
+    return lines[random.randint(0, len(lines) - 1)]
+
 if __name__ == '__main__':
 
     params = process_arguments(sys.argv[1:])
@@ -124,30 +140,37 @@ if __name__ == '__main__':
     word_lstm_models_path = params['word_lstm_models_path']
 
     generator = Generator()
-    generator.init_markov(text_files_path=markov_texts_path)
+    generator.init_markov(text_files_path=markov_texts_path, max_models=1)
     generator.init_word_level_lstm(models_path=word_lstm_models_path)
-    generator.init_keras_lstm(models_path=keras_lstm_models_path)
+    generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=1)
 
 
     spell_checker = postpreprocess.spell_check.PreProcessor()
 
     while True:
-        input = raw_input('input: ')
+        try:
+            input = raw_input('input: ')
 
-        # 1. preprocess
-        input_checked, input_spellchecked, input_grammarchecked = spell_checker.process(input, return_to_lower=True)
+            # 1. preprocess
+            input_checked, input_spellchecked, input_grammarchecked = spell_checker.process(input, return_to_lower=True)
 
-        # 2. apply technique
-        result = ''
-        generator.mode = generator.WORD_RNN
-        if generator.mode is generator.MARKOV:
-            result = generator.print_markov_result(input=input_checked)
-        if generator.mode is generator.KERAS_LSTM:
-            result = generator.print_keras_lstm_result(input=input_checked)
-        if generator.mode is generator.WORD_RNN:
-            result = generator.print_word_rnn_result(input=input_checked)
+            # 2. apply technique
+            result = ''
+            generator.mode = generator.WORD_RNN
+            if generator.mode is generator.MARKOV:
+                result = generator.print_markov_result(input=input_checked)
+            if generator.mode is generator.KERAS_LSTM:
+                result = generator.print_keras_lstm_result(input=input_checked)
+            if generator.mode is generator.WORD_RNN:
+                result = generator.print_word_rnn_result(input=input_checked)
 
-        # 3. postprocess
-        output_checked, _, __ = spell_checker.process(result, return_to_lower=False)
-        print('--- Final Result ---')
-        print(output_checked)
+            # temp hack- works only for word_level_rnn
+            if result == 'no answer':
+                result = get_random_answer()
+
+            # 3. postprocess
+            output_checked, _, __ = spell_checker.process(result, return_to_lower=False)
+            print('--- Final Result ---')
+            print(output_checked)
+        except:
+            print('Error')
