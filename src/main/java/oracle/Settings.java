@@ -26,6 +26,8 @@ public class Settings{
 
     public static int CHARACTER_DELAY_TIMEOUT;
 
+    public static String LYRIK_URL;
+
     public static ArrayList< String > RANDOM_ANSWERS = new ArrayList<>();
 
     public Settings() {
@@ -53,6 +55,8 @@ public class Settings{
         CLI_BORDER_Y = Integer.parseInt( properties.getProperty( "CLI_BORDER_Y" ) );
         CLI_BORDER_WIDTH = Integer.parseInt( properties.getProperty( "CLI_BORDER_WIDTH" ) );
         CLI_BORDER_HEIGHT = Integer.parseInt( properties.getProperty( "CLI_BORDER_HEIGHT" ) );
+
+        LYRIK_URL = properties.getProperty( "LYRIK_URL" );
 
         try {
             String[] customAnswers = PApplet.loadStrings( new FileInputStream( "data" + File.separator + "answers.txt" ) );
