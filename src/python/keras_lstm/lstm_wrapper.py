@@ -5,6 +5,7 @@ from keras.layers import LSTM
 from keras.optimizers import RMSprop
 import numpy as np
 import pickle
+import os
 
 
 class LSTMWrapper(object):
@@ -77,6 +78,9 @@ class LSTMWrapper(object):
         return output_text
 
     def save_model(self, path):
+        directory, filename = os.path.split(path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         print('Saving model to' + path)
 
         model_json = self.model.to_json()
