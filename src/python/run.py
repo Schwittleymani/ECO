@@ -1,6 +1,9 @@
 import markov.markov2_wrapper
 import keras_lstm.lstm_wrapper
 import word_level_rnn.word_lstm_wrapper
+
+import postpreprocess.spell_check
+
 import webserver
 
 import argparse
@@ -96,8 +99,12 @@ if __name__ == '__main__':
     generator.init_keras_lstm(models_path=keras_lstm_models_path)
     generator.init_word_level_lstm(models_path=word_lstm_models_path)
 
+    spell_checker = postpreprocess.spell_check.PreProcessor()
+
     while True:
         input = raw_input('input: ')
+
+        input = spell_checker.spell_check(input)
 
         markov_author, markov_result = generator.sample_markov(input=input)
         keras_lstm_author, keras_lstm_result = generator.sample_keras_lstm(input=input)
