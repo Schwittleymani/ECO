@@ -1,10 +1,15 @@
 package oracle;
 
+import gifAnimation.Gif;
+import http.requests.PostRequest;
 import oracle.cli.CLI;
 import oracle.web.Webserver;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +29,8 @@ public class Oracle extends PApplet{
     boolean startWebserver = true;
     private ArrayList< MarkovManager > markovs;
 
+    Gif testGif;
+
     public static void main( String[] args ) {
         PApplet.main( "oracle.Oracle" );
     }
@@ -32,7 +39,8 @@ public class Oracle extends PApplet{
         size( 640, 480, P2D );
         logger = new OracleLogger();
 
-        fullScreen( 0 );
+        //fullScreen( P2D, SPAN );
+
         settings = new Settings();
 
         millisLastInteraction = System.currentTimeMillis();
@@ -45,8 +53,12 @@ public class Oracle extends PApplet{
 
     public void setup() {
 
+        testGif = new Gif( this, "gif" + File.separator + "1469549376342.gif" );
+        testGif.play();
+
         cli = new CLI( this );
         loadMarkovs();
+
 
         noCursor();
     }
@@ -56,25 +68,27 @@ public class Oracle extends PApplet{
 
         markovs = new ArrayList<>();
 
-        /*
+                /*
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
             m.train( "text" + File.separator + "oraclev2" + File.separator + author, author, true );
             markovs.add( m );
         }
-        */
+            */
 
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
             m.load( author );
             markovs.add( m );
         }
+
     }
 
     public void draw() {
         background( 0 );
         cli.draw();
 
+        image( testGif, mouseX, mouseY );
 
         if( System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS ){
             cli.reset();
@@ -117,8 +131,17 @@ public class Oracle extends PApplet{
                     }
 
                     inputText = inputText.trim();
+
+                    String result = remoteRequest( inputText );
+
+                    int delayMillis = cli.finish( result );
+                    if( startWebserver ){
+                        server.sendTexts( inputText, result, delayMillis );
+                    }
+
                     System.out.println( "u:::" + inputText );
 
+                    /*
                     String result;
 
                     ArrayList< Integer > markovDepths = new ArrayList<>();
@@ -142,6 +165,9 @@ public class Oracle extends PApplet{
                         authorName = "pre_defined_answer";
                     }
 
+                    // debugging
+                    result = markovs.get( 0 ).getAnswer( inputText );
+
                     int delayMillis = cli.finish( result );
                     if( startWebserver ){
                         server.sendTexts( inputText, result, delayMillis );
@@ -154,11 +180,13 @@ public class Oracle extends PApplet{
                     //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
                     //}
 
-                    logger.log(logger.USER, inputText);
-                    logger.log(logger.ORACLE, "("+authorName+") "+result);
+                    logger.log( logger.USER, inputText );
+                    logger.log( logger.ORACLE, "(" + authorName + ") " + result );
 
                     System.out.println( "o:::" + result );
                     System.out.println( "a:::" + authorName );
+
+                    */
                     break;
                 case TAB:
                 case DELETE:
@@ -176,13 +204,44 @@ public class Oracle extends PApplet{
         }
     }
 
+    private String remoteRequest( String text ) {
+        text = text.replaceAll( "\\s+", "%20" );
+        PostRequest post = new PostRequest( Settings.LYRIK_URL + text );
+
+        post.addData( "inputS", "hello ECO" );
+        try {
+            long millis = millis();
+            post.send();
+
+            if( post != null ){
+                println( "Reponse Content: " + post.getContent() );
+                println( "Reponse Content-Length Header: " + post.getHeader( "Content-Length" ) );
+                long millisDiff = millis() - millis;
+                println( "That took " + millisDiff + "ms" );
+
+                JSONParser json = new JSONParser();
+                Object obj = json.parse( post.getContent() );
+                JSONObject mainJson = (JSONObject ) (obj);
+                String result = ( String ) mainJson.get("combined");
+
+                System.out.println( "Received result: " + result );
+
+                return result;
+            }
+        } catch ( Exception exc ) {
+            exc.printStackTrace();
+        }
+
+        return "nothing";
+    }
+
     public void webSocketServerEvent( String msg ) {
         server.webSocketServerEvent( msg );
     }
 
-    public void intercept(String message) {
-        if(cli.interceptTypeNow(message)) {
-            logger.log(logger.INTERCEPTION,message);
+    public void intercept( String message ) {
+        if( cli.interceptTypeNow( message ) ){
+            logger.log( logger.INTERCEPTION, message );
         }
     }
 

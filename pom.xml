@@ -150,6 +150,15 @@
             <artifactId>websocket-servlet</artifactId>
             <version>9.3.6.v20151106</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
