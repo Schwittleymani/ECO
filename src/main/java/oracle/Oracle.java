@@ -1,10 +1,12 @@
 package oracle;
 
+import gifAnimation.Gif;
 import oracle.cli.CLI;
 import oracle.web.Webserver;
 import processing.core.PApplet;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +26,8 @@ public class Oracle extends PApplet{
     boolean startWebserver = true;
     private ArrayList< MarkovManager > markovs;
 
+    Gif testGif;
+
     public static void main( String[] args ) {
         PApplet.main( "oracle.Oracle" );
     }
@@ -32,7 +36,7 @@ public class Oracle extends PApplet{
         size( 640, 480, P2D );
         logger = new OracleLogger();
 
-        fullScreen( 0 );
+        fullScreen( P2D, SPAN );
         settings = new Settings();
 
         millisLastInteraction = System.currentTimeMillis();
@@ -45,8 +49,13 @@ public class Oracle extends PApplet{
 
     public void setup() {
 
+        testGif = new Gif( this, "gif" + File.separator + "1469549376342.gif" );
+        testGif.play();
+
         cli = new CLI( this );
         loadMarkovs();
+
+
 
         noCursor();
     }
@@ -56,25 +65,31 @@ public class Oracle extends PApplet{
 
         markovs = new ArrayList<>();
 
-        /*
+        MarkovManager m1 = new MarkovManager();
+        m1.train( "text" + File.separator + "oraclev2" + File.separator + "armin_medosch-technological_determinism_in_media_art", "armin_medosch-technological_determinism_in_media_art", false );
+        markovs.add( m1 );
+
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
             m.train( "text" + File.separator + "oraclev2" + File.separator + author, author, true );
             markovs.add( m );
         }
-        */
+        /*
 
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
             m.load( author );
             markovs.add( m );
         }
+            */
+
     }
 
     public void draw() {
         background( 0 );
         cli.draw();
 
+        image(testGif, mouseX, mouseY );
 
         if( System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS ){
             cli.reset();
@@ -142,6 +157,9 @@ public class Oracle extends PApplet{
                         authorName = "pre_defined_answer";
                     }
 
+                    // debugging
+                    result = markovs.get( 0 ).getAnswer( inputText );
+
                     int delayMillis = cli.finish( result );
                     if( startWebserver ){
                         server.sendTexts( inputText, result, delayMillis );
@@ -154,8 +172,8 @@ public class Oracle extends PApplet{
                     //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
                     //}
 
-                    logger.log(logger.USER, inputText);
-                    logger.log(logger.ORACLE, "("+authorName+") "+result);
+                    logger.log( logger.USER, inputText );
+                    logger.log( logger.ORACLE, "(" + authorName + ") " + result );
 
                     System.out.println( "o:::" + result );
                     System.out.println( "a:::" + authorName );
@@ -180,9 +198,9 @@ public class Oracle extends PApplet{
         server.webSocketServerEvent( msg );
     }
 
-    public void intercept(String message) {
-        if(cli.interceptTypeNow(message)) {
-            logger.log(logger.INTERCEPTION,message);
+    public void intercept( String message ) {
+        if( cli.interceptTypeNow( message ) ){
+            logger.log( logger.INTERCEPTION, message );
         }
     }
 
