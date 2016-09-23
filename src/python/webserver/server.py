@@ -5,8 +5,7 @@ from threading import Thread
 
 import settings
 from StandardAnswers import get_answer
-grammar = imp.load_source('grammar', '../../tests/grammar.py')
-from Spellchek import spell_check
+spell_check = imp.load_source('spell_check', '../postpreprocess/spell_check.py')
 
 app = Flask(__name__)
 app.config.from_object('settings')
@@ -27,9 +26,10 @@ def text_preproccess(input):
     if input.startswith('\"'):
         input = input[1:-1]
     # grammar
-    grammar_correct_out = grammar.correct(input)
-    spell_check_out = spell_check(input)
-    output_json = jsonify(**{"grammar_corrected" : grammar_correct_out, "spell_check" : spell_check_out})
+    #grammar_correct_out = grammar.correct(input)
+    spell_checker = spell_check.PreProcessor()
+    combined, spell_checked, grammar_checked = spell_checker.process(input)
+    output_json = jsonify(**{"grammar_corrected" : grammar_checked, "spell_check" : spell_checked, "combined" : combined})
     print ">> ", output_json
     return output_json
 
