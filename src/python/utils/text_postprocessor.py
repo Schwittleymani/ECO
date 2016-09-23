@@ -66,6 +66,7 @@ if __name__ == '__main__':
 
     text = text.replace('ﬃc', 'ffic')
     text = text.replace('ﬀ', 'ff')
+    text = text.replace('ﬁ', 'fi')
     text = text.replace(',”', '"')
     text = text.replace('\?', '?')
     text = text.replace('--', '-')
