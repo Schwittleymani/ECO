@@ -4,8 +4,6 @@ import word_level_rnn.word_lstm_wrapper
 
 import postpreprocess.spell_check
 
-import webserver
-
 import argparse
 import sys
 import os
@@ -29,6 +27,12 @@ class Generator(object):
     def __init__(self):
         self.markov = None
         self.lstm = None
+
+        self.MARKOV = 0
+        self.KERAS_LSTM = 1
+        self.WORD_RNN = 2
+
+        self.mode = self.MARKOV
 
     def init_markov(self, text_files_path):
         self.markovs = []
@@ -87,6 +91,31 @@ class Generator(object):
         selected_word_lstm = self.word_lstms[random_word_lstm_index]
         return 'NO AUTHOR YET', selected_word_lstm.sample(input=input, sample=sample, output_length=output_length)
 
+    def print_markov_result(self, input):
+        markov_author, markov_result = generator.sample_markov(input=input)
+        #print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
+
+        result = markov_result.strip()
+        #print(result)
+
+        return result
+
+    def print_keras_lstm_result(self, input):
+        keras_lstm_author, keras_lstm_result = generator.sample_keras_lstm(input=input)
+        #print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
+
+        result = keras_lstm_result.strip()
+        #print(result)
+
+        return result
+
+    def print_word_rnn_result(self, input):
+        word_level_lstm_author, word_level_lstm_result = generator.sample_word_level_lstm(input=input)
+        #print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
+        #print(word_level_lstm_result)
+
+        return word_level_lstm_result
+
 if __name__ == '__main__':
 
     params = process_arguments(sys.argv[1:])
@@ -95,31 +124,30 @@ if __name__ == '__main__':
     word_lstm_models_path = params['word_lstm_models_path']
 
     generator = Generator()
-    #generator.init_markov(text_files_path=markov_texts_path)
-    #generator.init_keras_lstm(models_path=keras_lstm_models_path)
+    generator.init_markov(text_files_path=markov_texts_path)
     generator.init_word_level_lstm(models_path=word_lstm_models_path)
+    generator.init_keras_lstm(models_path=keras_lstm_models_path)
+
 
     spell_checker = postpreprocess.spell_check.PreProcessor()
 
     while True:
         input = raw_input('input: ')
 
-        input, input_spellchecked, input_grammarchecked = spell_checker.process(input, return_to_lower=True)
+        # 1. preprocess
+        input_checked, input_spellchecked, input_grammarchecked = spell_checker.process(input, return_to_lower=True)
 
-        #markov_author, markov_result = generator.sample_markov(input=input)
-        #keras_lstm_author, keras_lstm_result = generator.sample_keras_lstm(input=input)
-        word_level_lstm_author, word_level_lstm_result = generator.sample_word_level_lstm(input=input)
-        world_level_lstm_result_postprocessed, world_level_lstm_result_spellchecked, \
-        world_level_lstm_result_grammarchecked = spell_checker.process(
-            word_level_lstm_result, return_to_lower=False)
+        # 2. apply technique
+        result = ''
+        generator.mode = generator.WORD_RNN
+        if generator.mode is generator.MARKOV:
+            result = generator.print_markov_result(input=input_checked)
+        if generator.mode is generator.KERAS_LSTM:
+            result = generator.print_keras_lstm_result(input=input_checked)
+        if generator.mode is generator.WORD_RNN:
+            result = generator.print_word_rnn_result(input=input_checked)
 
-        print('--- Result ---')
-
-        #print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
-        #print(markov_result.strip())
-
-        #print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
-        #print(keras_lstm_result.strip())
-
-        print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
-        print(world_level_lstm_result_postprocessed)
+        # 3. postprocess
+        output_checked, _, __ = spell_checker.process(result, return_to_lower=False)
+        print('--- Final Result ---')
+        print(output_checked)
