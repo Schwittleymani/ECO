@@ -1,28 +1,34 @@
 import enchant.checker
 import grammar_check
 
+import unicodedata
+
 
 class PreProcessor(object):
     def __init__(self):
         self.chkr = enchant.checker.SpellChecker("en_US")
         self.MAX_GRAMMAR_RECURSION = 20
 
-    def process(self, text):
+    def process(self, text, return_to_lower=True):
         """
         run spell check first, then grammar check on the output of that
 
         :param text:
         :return:
         """
+        unicode_input = unicode(text.decode('ascii', 'ignore'))
+        ascii_input = unicodedata.normalize('NFKD', unicode_input).encode('ascii', 'ignore')
 
-        ascii_input = text.encode('ascii', 'ignore').decode('ascii')
+        spell_checked = self.__spell_check(ascii_input)
+        grammar_checked = self.__grammar_check(ascii_input)
+        combined = self.__grammar_check(spell_checked)
 
-        spell_checked = self.spell_check(ascii_input)
-        grammar_checked = self.grammar_check(ascii_input)
-        combined = self.grammar_check(spell_checked)
-        return combined, spell_checked, grammar_checked
+        if return_to_lower:
+            return combined.lower(), spell_checked.lower(), grammar_checked.lower()
+        else:
+            return combined, spell_checked, grammar_checked
 
-    def grammar_check(self, text, recursive = True):
+    def __grammar_check(self, text, recursive=True):
         """
         recursiveness can't be deactivated from outside atm
 
@@ -34,9 +40,10 @@ class PreProcessor(object):
         matches = tool.check(text)
         recs = 0
         while len(matches) > 0:
-            print 'grammar correct: ', len(matches)
+            #print 'grammar correct: ', len(matches)
             for co in matches:
-                print co
+                pass
+                #print co
             text = grammar_check.correct(text, matches)
             recs += 1
             if not recursive or recs > self.MAX_GRAMMAR_RECURSION:
@@ -44,10 +51,10 @@ class PreProcessor(object):
             matches = tool.check(text)
         return text
 
-    def spell_check(self, text):
+    def __spell_check(self, text):
         self.chkr.set_text(text)
         for err in self.chkr:
-            print("ERROR:", err.word)
+            #print("ERROR:", err.word)
             suggestions = self.chkr.suggest(err.word)
             if self.chkr.suggest(len(err.word) > 0):
                 err.replace(suggestions[0])
