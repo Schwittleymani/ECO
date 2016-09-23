@@ -14,8 +14,11 @@ class PreProcessor(object):
         :param text:
         :return:
         """
-        spell_checked = self.spell_check(text)
-        grammar_checked = self.grammar_check(text)
+
+        ascii_input = text.encode('ascii', 'ignore').decode('ascii')
+
+        spell_checked = self.spell_check(ascii_input)
+        grammar_checked = self.grammar_check(ascii_input)
         combined = self.grammar_check(spell_checked)
         return combined, spell_checked, grammar_checked
 
