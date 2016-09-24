@@ -93,7 +93,7 @@ class Generator(object):
         selected_lstm = self.lstms[random_lstm_index]
         return selected_lstm.name, selected_lstm.sample(diversity=diversity, seed=input, output_length=length)
 
-    def sample_word_level_lstm(self, input, sample=1, output_length=200):
+    def sample_word_level_lstm(self, input, sample=1, output_length=50):
         random_word_lstm_index = random.randint(0, len(self.word_lstms) - 1)
         selected_word_lstm = self.word_lstms[random_word_lstm_index]
         return 'NO AUTHOR YET', selected_word_lstm.sample(input=input, sample=sample, output_length=output_length)
@@ -117,7 +117,7 @@ class Generator(object):
         return result
 
     def print_word_rnn_result(self, input):
-        word_level_lstm_author, word_level_lstm_result = generator.sample_word_level_lstm(input=input)
+        word_level_lstm_author, word_level_lstm_result = generator.sample_word_level_lstm(input=input, output_length=10)
         #print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
         #print(word_level_lstm_result)
 
