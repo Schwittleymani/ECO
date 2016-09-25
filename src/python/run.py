@@ -1,7 +1,7 @@
 import markov.markov2_wrapper
 import keras_lstm.lstm_wrapper
 import word_level_rnn.word_lstm_wrapper
-
+import facebook_osc_connect
 import postpreprocess.spell_check
 
 import argparse
@@ -99,7 +99,7 @@ class Generator(object):
         return 'NO AUTHOR YET', selected_word_lstm.sample(input=input, sample=sample, output_length=output_length)
 
     def print_markov_result(self, input):
-        markov_author, markov_result = generator.sample_markov(input=input)
+        markov_author, markov_result = self.sample_markov(input=input)
         #print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
 
         result = markov_result.strip()
@@ -108,16 +108,16 @@ class Generator(object):
         return result
 
     def print_keras_lstm_result(self, input):
-        keras_lstm_author, keras_lstm_result = generator.sample_keras_lstm(input=input)
-        #print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
+        keras_lstm_author, keras_lstm_result = self.sample_keras_lstm(input=input)
+        print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
 
         result = keras_lstm_result.strip()
-        #print(result)
+        print(result)
 
         return result
 
     def print_word_rnn_result(self, input):
-        word_level_lstm_author, word_level_lstm_result = generator.sample_word_level_lstm(input=input, output_length=10)
+        word_level_lstm_author, word_level_lstm_result = self.sample_word_level_lstm(input=input, output_length=10)
         #print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
         #print(word_level_lstm_result)
 
@@ -132,45 +132,84 @@ def get_random_answer():
 
     return lines[random.randint(0, len(lines) - 1)]
 
+
+class Main(object):
+    def __init__(self, params):
+
+        self.spell_checker = postpreprocess.spell_check.PreProcessor()
+
+        markov_texts_path = params['markov_texts_path']
+        keras_lstm_models_path = params['keras_models_path']
+        word_lstm_models_path = params['word_lstm_models_path']
+
+        self.generator = Generator()
+        self.generator.init_markov(text_files_path=markov_texts_path, max_models=20)
+
+        #self.generator.init_word_level_lstm(models_path=word_lstm_models_path)
+        self.generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=20)
+
+        self.facebook = facebook_osc_connect.OscFacebook()
+        self.facebook.add_callback('/get', self.process_from_facebook)
+
+        self.queue = []
+        self.threadids = []
+
+    def process(self, input):
+        # 1. preprocess
+        input_checked, input_spellchecked, input_grammarchecked = self.spell_checker.process(input,
+                                                                                             return_to_lower=True)
+        print('done pre-checking')
+        # 2. apply technique
+        result = ''
+        self.generator.mode = self.generator.KERAS_LSTM
+        if self.generator.mode is self.generator.MARKOV:
+            result = self.generator.print_markov_result(input=input_checked)
+        if self.generator.mode is self.generator.KERAS_LSTM:
+            result = self.generator.print_keras_lstm_result(input=input_checked)
+        if self.generator.mode is self.generator.WORD_RNN:
+            result = self.generator.print_word_rnn_result(input=input_checked)
+
+        # temp hack- works only for word_level_rnn
+        if result == 'no answer':
+            result = get_random_answer()
+
+        # 3. postprocess
+        output_checked, _, __ = self.spell_checker.process(result, return_to_lower=False)
+        print('--- Final Result ---')
+        print(output_checked)
+        return output_checked
+
+    def process_from_facebook(self, addr, tags, stuff, source):
+        print(addr, tags, stuff)
+        raw_input = stuff[0]
+        thread_id = stuff[1]
+        print('raw: ' + raw_input)
+        self.threadids.append(thread_id)
+        self.queue.append(raw_input)
+        #print('thread: ' + thread_id)
+        #answer = self.process(input=raw_input)
+        #self.facebook.send(answer, threadid=thread_id)
+
 if __name__ == '__main__':
 
     params = process_arguments(sys.argv[1:])
-    markov_texts_path = params['markov_texts_path']
-    keras_lstm_models_path = params['keras_models_path']
-    word_lstm_models_path = params['word_lstm_models_path']
 
-    generator = Generator()
-    generator.init_markov(text_files_path=markov_texts_path, max_models=1)
-    generator.init_word_level_lstm(models_path=word_lstm_models_path)
-    generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=1)
-
-
-    spell_checker = postpreprocess.spell_check.PreProcessor()
+    main = Main(params=params)
 
     while True:
-        try:
-            input = raw_input('input: ')
-
-            # 1. preprocess
-            input_checked, input_spellchecked, input_grammarchecked = spell_checker.process(input, return_to_lower=True)
-
-            # 2. apply technique
-            result = ''
-            generator.mode = generator.WORD_RNN
-            if generator.mode is generator.MARKOV:
-                result = generator.print_markov_result(input=input_checked)
-            if generator.mode is generator.KERAS_LSTM:
-                result = generator.print_keras_lstm_result(input=input_checked)
-            if generator.mode is generator.WORD_RNN:
-                result = generator.print_word_rnn_result(input=input_checked)
-
-            # temp hack- works only for word_level_rnn
-            if result == 'no answer':
-                result = get_random_answer()
-
-            # 3. postprocess
-            output_checked, _, __ = spell_checker.process(result, return_to_lower=False)
-            print('--- Final Result ---')
-            print(output_checked)
-        except:
-            print('Error')
+        if len(main.queue) > 0:
+            try:
+                input = main.queue[0]
+                threadid = main.threadids[0]
+                main.threadids.remove(threadid)
+                main.queue.remove(input)
+                answer = main.process(input=input)
+                main.facebook.send(answer, threadid)
+            except:
+                print('Error')
+        #else:
+        #    try:
+        #        input = raw_input('input: ')
+        #        answer = main.process(input=input)
+        #    except:
+        #        print('Error')
