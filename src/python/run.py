@@ -17,6 +17,7 @@ def process_arguments(args):
     parser.add_argument('--keras_models_path', action='store', help='the path to the folder that contains all trained keras lstm models')
     parser.add_argument('--markov_texts_path', action='store', help='the path where text files lie in order to train the markov chains')
     parser.add_argument('--word_lstm_models_path', action='store', help='the path where the models are stored in subfolders')
+    parser.add_argument('--interactive', action='store', help='interactive mode', default=False)
 
     params = vars(parser.parse_args(args))
 
@@ -41,7 +42,7 @@ if __name__ == '__main__':
 
     generator = Generator()
     generator.init_markov(text_files_path=markov_texts_path, max_models=1)
-    generator.init_word_level_lstm(models_path=word_lstm_models_path)
+    #generator.init_word_level_lstm(models_path=word_lstm_models_path)
     generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=1)
 
     interactive = params['interactive']
