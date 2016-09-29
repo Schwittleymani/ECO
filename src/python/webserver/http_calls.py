@@ -2,9 +2,10 @@ from threading import Thread
 from flask import request,jsonify
 import imp
 
-import settings
-grammar = imp.load_source('grammar', '../../tests/grammar.py')
-from Spellchek import spell_check
+import webserver.settings
+from postpreprocess.spell_check import PreProcessor
+
+preProc = PreProcessor()
 
 def input():
     '''
@@ -44,9 +45,11 @@ def text_preproccess(input):
     print input
     if input.startswith('\"'):
         input = input[1:-1]
-    # grammar
-    grammar_correct_out = grammar.correct(input)
-    spell_check_out = spell_check(input)
-    output_json = jsonify(**{"grammar_corrected" : grammar_correct_out, "spell_check" : spell_check_out})
+    # process
+    processed,  spell_checked, grammar_checked = preProc.process(input)
+
+    output_json = jsonify(**{"grammar_corrected" : grammar_checked, 
+        "spell_checked" : spell_checked, 
+        "combined" : processed})
     print ">> ", output_json
     return output_json

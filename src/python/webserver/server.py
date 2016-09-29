@@ -2,12 +2,13 @@ from flask import Flask, render_template, send_file, safe_join, request,jsonify
 from threading import Thread
 from flask_socketio import SocketIO
 
+import http_calls
 import settings
 from StandardAnswers import get_answer
-import http_calls
+
 
 app = Flask(__name__)
-app.config.from_object('settings')
+app.config.from_object('webserver.settings')
 socketio = SocketIO(app)
 
 '''
