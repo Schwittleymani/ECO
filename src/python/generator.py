@@ -1,3 +1,7 @@
+import markov.markov2_wrapper
+import keras_lstm.lstm_wrapper
+import word_level_rnn.word_lstm_wrapper
+
 class Generator(object):
     def __init__(self):
         self.markov = None
