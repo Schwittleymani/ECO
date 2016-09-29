@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lacuna oracle master</title>
+	<meta charset="UTF-8"> </meta>
+	<style type="text/css">
+	#log {
+		position: absolute;
+		width: 96%;
+		height: 80%;
+		padding-top: 20px;
+		padding-bottom: 30px;
+		overflow: scroll;
+	}
+
+	#control {
+		position: fixed;
+		bottom: 0px;
+		left: 1px;
+		width:98%;
+		padding: 10px;
+		border:solid 1px;
+	}
+
+	#send {
+		position: relative;
+		margin-left: 20px;
+	}
+
+	#input {
+		width: 700px;
+		position: relative;
+		top: 7px;
+	}
+
+	#oracle_title{
+	    width:45px;
+	    margin-top:-14px;
+	    padding-left: 3px;
+	    margin-left:15px;
+	    background:white;
+	}
+
+	#user_input {
+		width:45px;
+		padding-left: 3px;
+	    margin-left:15px;
+	    background-color: rgba(100, 100, 100, 0.6);
+	    margin-bottom: 10px; 
+	    width: 70%;
+	}
+
+	#oracle_answer {
+		border-style: ridge;
+		min-height: 18px;
+		padding: 3px;
+		width: 70%;
+	}
+
+	#progress {
+	  margin-left: 10px;
+	  margin-top: 10px;
+	  width: 200px;
+	  background: orange;
+	  display: inline-block;
+	  border-radius: 0px 50px 50px 0px;
+	}
+
+
+	@-webkit-keyframes bar_animation {
+	    0%{background-position:0% 91%}
+	    50%{background-position:100% 10%}
+	    100%{background-position:0% 91%}
+	}
+	@-moz-keyframes bar_animation {
+	    0%{background-position:0% 91%}
+	    50%{background-position:100% 10%}
+	    100%{background-position:0% 91%}
+	}
+	@keyframes bar_animation { 
+	    0%{background-position:0% 91%}
+	    50%{background-position:100% 10%}
+	    100%{background-position:0% 91%}
+	}
+
+	#bar {
+		width: 200px;
+		border-radius: 0px 450px 450px 0px;
+		background: linear-gradient(132deg, #16c79a, #2a1b46, #e03d3d);
+		-webkit-animation: bar_animation 4s ease infinite reverse;
+		moz-animation: bar_animation 4s ease infinite reverse;
+		animation: bar_animation 4s ease infinite reverse;
+	}
+
+	#timeout {
+	  text-align: center;
+	  color: white;
+	}
+
+	#custom-answers {
+		position: fixed;
+		right: 10px;
+		width: 25%;
+		height: 80%;
+	    border: blue solid 0.5px;
+	    padding-left: 5px;
+	    margin-bottom: 10px;
+	}
+
+	</style>
+</head>
+<body>
+<div id="log">
+	<div id="logged"></div>
+	<div id="upcoming">
+		<div id="user_input"> </div>
+		<div id="oracle_answer">
+		<div id="oracle_title">Oracle</div>
+			<span id="oracle_answer_text"style="padding-left:5px">  </span>
+		</div>
+		<div id="progress">
+			<div id="bar">
+				<div id="timeout">waiting</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="custom-answers"></div>
+<div id="control">
+	<textarea rows="3" cols="50" id="input" onkeypress="input_()"></textarea>
+	<button onclick="send()">Send ✉️</button>
+	<button onclick="edit()">Edit 📝</button>
+	<button id="cancel" onclick="cancel()">cancel 🔮</button>
+</div>
+
+<script type="text/javascript" src="pre-texts.js"></script>
+<script type="text/javascript">
+
+	var input_textfield = document.getElementById("input");
+	var log_div = document.getElementById("log");
+	var logged_div = document.getElementById("logged");
+	var timeout_div = document.getElementById("timeout");
+	var oracle_upcoming_span = document.getElementById("oracle_answer_text");
+	var bar_div = document.getElementById("bar");
+	var custom_answers_div = document.getElementById("custom-answers");
+	var user_input_div = document.getElementById("user_input");
+
+	var bar_total_width = bar_div.width;
+
+	var USER_INPUT = 0, ORACLE_THINKS = 1;
+	var state = USER_INPUT;
+
+	var interval_tick,interval_countdown;
+	var timeout_suspend_time = 20000;
+
+	var total_time;
+	var timer;
+	var maximal_total_time = 20000;
+
+	var alt_pressed = false;
+
+	function start_timeout(millis) {
+		killIntervals();
+	  //var width = 10;
+		total_time = millis;
+		timer = millis;
+		interval_tick = setInterval(tick, 50);
+		interval_countdown = setInterval(function() {
+			timer-= 50;
+			//console.log(timer);
+		},50);
+		function tick() {
+			if (timer <= 0) {
+				clearInterval(interval_tick);
+			 	clearInterval(interval_countdown);
+			} else {
+				var width = timer / total_time;
+				//console.log(timer+"/"+total_time+":"+	width);
+			 	bar_div.style.width = (200 * width)+"px";
+			 	//console.log((200 * width)+"px");
+			 	timeout_div.innerHTML = (1 + (timer / 1000)) | 0;
+			}
+		}
+	}
+
+	function killIntervals() {
+		clearInterval(interval_tick);
+	 	clearInterval(interval_countdown);
+	}
+
+	function suspend_timeout() {
+		if(state == ORACLE_THINKS) {
+			//start_timeout(timeout_suspend_time);
+			var suspend_time =  timeout_suspend_time;
+			if(timer + timeout_suspend_time > maximal_total_time)
+				suspend_time = maximal_total_time - timer;
+			timer += suspend_time;
+			total_time = timer;
+			console.log(total_time);
+			connection.send(JSON.stringify({"type":"suspend","time":suspend_time}));
+		}
+	}
+
+	function input_() {
+		var key = window.event.keyCode;
+	    if (key == 13) {
+			send();
+    	} else {
+    		suspend_timeout();
+    	}
+    	if(key == 32) { // space
+    		text = input_textfield.value;
+    		if(text.startsWith("#")) {
+    			var select = parseInt(text.substring(1, text.length)) - 1;
+    			if(texts.length >= select && select >= 0) {
+    				input_textfield.value = texts[select];
+    			}
+    		}
+    	}
+    	//console.log(evtobj.keyCode);
+	}
+
+	function onkeydown(e) {
+    	var evtobj = window.event ? event : e;
+    	if(evtobj.altKey) {
+			if (evtobj.keyCode == 83) { // send
+				send();
+			} else if(evtobj.keyCode == 69) { // edit
+				edit();
+				suspend_timeout();
+				/*if(input_textfield.value.endsWidth == "€") {
+					input_textfield.value = input_textfield.value.substring(0,input_textfield.value.length-1);
+				}*/
+			} else if(evtobj.keyCode == 67) { // cancel
+				cancel();
+			}
+    	}
+	}
+
+	function send() {
+		if(state == ORACLE_THINKS) {
+			connection.send(JSON.stringify({"type":"answer", "content" : input_textfield.value}));
+			input_textfield.value = "";
+			state = USER_INPUT;
+		}
+	}
+
+	function cancel() {
+		connection.send(JSON.stringify({"type":"cancel"}));
+		input_textfield.value = "";		
+	}
+
+	function edit() {
+		if(state == ORACLE_THINKS) {
+			var oracle_text = oracle_answer_text.innerHTML;
+			input_textfield.value = oracle_text;		
+			input_textfield.focus();	
+		}	
+	}
+
+	function append(from,msg) {
+		var p = document.createElement("p");
+		p.innerHTML = from + " : "+msg;
+		logged_div.appendChild(p);
+		var scrollTo = log_div.scrollHeight - 00; //  - 800 ; // - document.documentElement.clientHeight;
+		//console.log(scrollTo);
+  		log_div.scrollTop = scrollTo;   
+	}
+
+	function set_state(new_state) {
+		state = new_state;
+		if(state == ORACLE_THINKS) {
+
+		} else if(state == USER_INPUT) {
+			console.log("done");
+			killIntervals();
+			timeout_div.innerHTML = "waiting";
+			oracle_upcoming_span.innerHTML = "";
+			bar_div.style.width = "200px";
+			input_textfield.value = "";
+		}
+	}
+
+	// WEBSOCKET STUFF
+	//console.log(location);
+	// ***** global *****
+	var hostname = location.hostname;
+	if(hostname == "") {
+		hostname = "localhost"
+	}
+	var connection = new WebSocket("ws://" + hostname + ":8001/oracle");
+	// *********************** 
+
+	connection.onopen = function () {
+	  connection.send(JSON.stringify({"type":"connect"}));
+	};
+
+	// Log errors
+	connection.onerror = function (error) {
+	  console.log('WebSocket Error ' + error);
+	};
+
+	// Log messages from the server
+	connection.onmessage = function (e) {
+	  //console.log('Server: ' + e.data);
+	  msg_obj = JSON.parse(e.data);
+	  if(msg_obj.type == "oracleDone") {
+	  	append("oracle",msg_obj.content);
+	  	set_state(USER_INPUT);
+	  } if(msg_obj.type == "status") {
+	  	console.log("status!"); // TODO
+	  	/*if(msg_obj.status == "USER_INPUT") {
+
+	  	}*/
+	  } else if(msg_obj.type == "texts") {
+	  	append("user",msg_obj.input);
+	  	oracle_upcoming_span.innerHTML = msg_obj.result;
+	  	user_input_div.innerHTML = "";
+	  	start_timeout(msg_obj.timeout);
+	  	set_state(ORACLE_THINKS);
+	  } else if(msg_obj.type == "typing") {
+	  	console.log("typing");
+	  	user_input_div.innerHTML = user_input_div.innerHTML + msg_obj.content; 
+	  } else if(msg_obj.type == "typing_backspace") {
+	  	var le = user_input_div.innerHTML.length;
+	  	if(le > 0) {
+	  		user_input_div.innerHTML = user_input_div.innerHTML.substring(0,le-1);
+	  	}
+	  }
+	  console.log(msg_obj); 
+	}
+
+	function fillPreTexts() {
+		for (i in texts) {
+			//console.log(texts[i]);
+			var div = document.createElement("div");
+			var ind = parseInt(i) + 1;
+			div.innerHTML = "#"+ind+":"+texts[i];
+			custom_answers_div.appendChild(div); 	
+		}
+	}
+
+	document.onkeydown = onkeydown;
+	fillPreTexts();
+	input_textfield.focus();
+
+	/*var testInterval = setInterval(function() {
+		append("user","blabla");
+	},500);*/
+
+</script>
+</body>
+</html>
