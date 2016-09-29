@@ -2,37 +2,37 @@ from threading import Thread
 from flask import request,jsonify
 import imp
 
+import generatpr   
 import webserver.settings
 from postpreprocess.spell_check import PreProcessor
 
 preProc = PreProcessor()
+generator = None
 
-def input():
+def set_generator(gen):
+    global generator
+    generator = gen    
+
+def input(input):
+    global generator
     '''
     main function to get a return from machine
     :return:
     '''
-    values = request.values
-    #print values
-    inputS = None
-    try:
-        inputS = values['inputS']
-    except TypeError:
-        return jsonify({'status': 'no-input', 'response': get_answer()})
-    print inputS
+    processed_input, _, __ = preProc.process(input)
+
     response = {}
-    def ml_magic(inputS):
+    def ml_magic(input):
 
         try:
-            print "CALL ML MAGIC HERE... for: ",inputS
-            ## when its cool
+            print "CALL ML MAGIC HERE... for: ",input
             response['status'] = 'ml-response'
-            response['response'] = "ML RESPONSE"
+            response['response'] = 'cool' #generator.print_result(input)
         except:
             print("Unexpected error:", sys.exc_info()[0])
             response['status'] = 'error'
 
-    ml_thread = Thread(target=ml_magic, args=(inputS,))
+    ml_thread = Thread(target=ml_magic, args=(processed_input,))
     ml_thread.start()
     ml_thread.join(settings.MAX_MACHINE_TIME)
     if ml_thread.is_alive:

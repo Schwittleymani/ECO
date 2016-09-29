@@ -11,6 +11,7 @@ app = Flask(__name__)
 app.config.from_object('webserver.settings')
 socketio = SocketIO(app)
 
+
 '''
 not crazy robust so I'll leave the issue open.
 the ml thread is not killed.
@@ -21,7 +22,8 @@ also fails and sents status 400 when sent data does not contain 'inputS'
 
 
 '''
-
+def set_generator(generator):
+    http_calls.set_generator(generator)
 
 @app.route('/', methods=['GET', "POST"])
 def index():
@@ -40,7 +42,8 @@ def interception():
 
 @app.route('/input', methods=["POST"])
 def input():
-    http_calls.input()
+    text = request.args.get('input')
+    http_calls.input(input)
 
 
 
