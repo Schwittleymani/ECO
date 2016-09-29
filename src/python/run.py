@@ -1,7 +1,3 @@
-import markov.markov2_wrapper
-import keras_lstm.lstm_wrapper
-import word_level_rnn.word_lstm_wrapper
-
 import postpreprocess.spell_check
 
 import argparse
@@ -63,12 +59,14 @@ if __name__ == '__main__':
         try:
             input = raw_input('input: ')
 
+            if input == 'exit':
+                break
             # 1. preprocess
             input_checked, input_spellchecked, input_grammarchecked = spell_checker.process(input, return_to_lower=True)
 
             # 2. apply technique
             result = ''
-            generator.mode = generator.WORD_RNN
+            #generator.mode = generator.WORD_RNN
             if generator.mode is generator.MARKOV:
                 result = generator.print_markov_result(input=input_checked)
             if generator.mode is generator.KERAS_LSTM:

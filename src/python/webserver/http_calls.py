@@ -2,7 +2,7 @@ from threading import Thread
 from flask import request,jsonify
 import imp
 
-import generatpr   
+import generator   
 import webserver.settings
 from postpreprocess.spell_check import PreProcessor
 

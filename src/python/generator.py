@@ -1,6 +1,6 @@
 import markov.markov2_wrapper
 import keras_lstm.lstm_wrapper
-import word_level_rnn.word_lstm_wrapper
+import word_level_rnn.word_lstm_wrapper 
 
 class Generator(object):
     def __init__(self):
@@ -11,7 +11,7 @@ class Generator(object):
         self.KERAS_LSTM = 1
         self.WORD_RNN = 2
 
-        self.mode = self.MARKOV
+        self.mode = self.KERAS_LSTM
 
     def init_markov(self, text_files_path, max_models=100):
         self.markovs = []
