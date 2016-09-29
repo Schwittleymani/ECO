@@ -3,7 +3,6 @@ import keras_lstm.lstm_wrapper
 import word_level_rnn.word_lstm_wrapper 
 
 import os
-import random
 
 class Generator(object):
     def __init__(self):
@@ -85,12 +84,12 @@ class Generator(object):
         #print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
 
         result = markov_result.strip()
-        #print(result)
+        #print(result)dadad
 
         return result
 
     def print_keras_lstm_result(self, input):
-        keras_lstm_author, keras_lstm_result = self.sample_keras_lstm(input=input)
+        keras_lstm_author, keras_lstm_result = generator.sample_keras_lstm(input=input)
         #print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
 
         result = keras_lstm_result.strip()

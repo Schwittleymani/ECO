@@ -22,6 +22,7 @@ also fails and sents status 400 when sent data does not contain 'inputS'
 
 
 '''
+
 def set_generator(generator):
     http_calls.set_generator(generator)
 

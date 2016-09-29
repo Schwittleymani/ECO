@@ -5,13 +5,19 @@ import imp
 import generator   
 import webserver.settings
 from postpreprocess.spell_check import PreProcessor
+import settings
+
+import sys
+import traceback
 
 preProc = PreProcessor()
 generator = None
 
 def set_generator(gen):
     global generator
-    generator = gen    
+    print 'setting gen', gen
+    generator = gen
+
 
 def input(input):
     global generator
@@ -27,9 +33,10 @@ def input(input):
         try:
             print "CALL ML MAGIC HERE... for: ",input
             response['status'] = 'ml-response'
-            response['response'] = 'cool' #generator.print_result(input)
+            response['response'] = generator.print_result(input)
         except:
             print("Unexpected error:", sys.exc_info()[0])
+            traceback.print_exc()
             response['status'] = 'error'
 
     ml_thread = Thread(target=ml_magic, args=(processed_input,))

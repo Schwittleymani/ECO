@@ -50,13 +50,14 @@ if __name__ == '__main__':
         interactive = settings.INTERACTIVE
 
     if settings.START_WEBSERVER:
+        webserver.server.set_generator(generator)
         webserver.server.launch()
-        webserver.set_generator(generator)    
+
 
     spell_checker = postpreprocess.spell_check.PreProcessor()
 
 
-    while True:
+    while interactive:
         try:
             input = raw_input('input: ')
 
