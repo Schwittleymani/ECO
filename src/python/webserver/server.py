@@ -42,8 +42,8 @@ def interception():
 
 @app.route('/input', methods=["POST"])
 def input():
-    text = request.args.get('input')
-    http_calls.input(input)
+    text = request.json['inputS']
+    return http_calls.input(text)
 
 
 
