@@ -9,12 +9,13 @@ void setup() {
   while (true) {
     println("*********************");
     String text = "show me what you got!";
-    text = text.replaceAll("\\s+", "%20");
+    //PostRequest post = new PostRequest("http://localhost:8090/input");
     PostRequest post = new PostRequest("http://lyrik.ddns.net:8090/input");
-    post.addData("inputS", "hello ECO");
+    post.addData("inputS", text);
     try {
       long millis = millis();
       post.send();
+      println("sending...");
       
       println("Reponse Content: " + post.getContent());
       if (post != null) {
@@ -26,5 +27,6 @@ void setup() {
     catch(Exception exc) {
       exc.printStackTrace();
     }
-    delay(30000);
+    delay(5000);
   }
+}
