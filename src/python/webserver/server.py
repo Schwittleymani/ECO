@@ -42,9 +42,15 @@ def interception():
 
 @app.route('/input', methods=["POST"])
 def input():
-    text = request.json['inputS']
-    return http_calls.input(text)
-
+    values = request.values
+    #print values
+    inputS = None
+    try:
+        inputS = values['inputS']
+    except TypeError:
+        return jsonify({'status': 'no-input', 'response': get_answer()})
+    print inputS
+    return http_calls.input(inputS)
 
 
 @socketio.on('key')
