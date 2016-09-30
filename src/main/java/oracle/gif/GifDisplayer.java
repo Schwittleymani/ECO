@@ -3,15 +3,9 @@ package oracle.gif;
 import gifAnimation.Gif;
 import oracle.Oracle;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by raminsoleymani on 30/09/16.
@@ -20,9 +14,13 @@ public class GifDisplayer {
 
     Oracle oracle;
     String baseFolder = "gifs/";
-    public Gify gify;
+    Gify gify;
 
     public boolean downloadGifys;
+
+    //private boolean asynGifyRequestRunning = false;
+    private boolean asyncGifysAvailable = false;
+    private List<Gif> asyncGifys = new ArrayList<Gif>();
 
 
     public GifDisplayer(Oracle oracle) {
@@ -77,4 +75,27 @@ public class GifDisplayer {
         }
         return gg;
     }
+
+    public void getGiyGifsAsnyc(String[] searchWords, int number) {
+        Thread getGifysThread = new Thread(new Runnable() {
+            List<Gif> gg;
+            @Override
+            public void run() {
+                asyncGifysAvailable = false;
+                asyncGifys = getGiyGifs(searchWords,number);
+                asyncGifysAvailable = true;
+            }
+        });
+        getGifysThread.start();
+    }
+
+    public boolean getAsyncGifysAvailable() {
+        return asyncGifysAvailable;
+    }
+
+    public List<Gif> getAsyncGifys() {
+        asyncGifysAvailable = false;
+        return asyncGifys;
+    }
+
 }

@@ -13,6 +13,7 @@ import processing.core.PApplet;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -32,7 +33,7 @@ public class Oracle extends PApplet{
     private ArrayList< MarkovManager > markovs;
 
     GifDisplayer gifDisplayer;
-    Gif testGif;
+    List<Gif> testGifs = new ArrayList<Gif>();
 
     public static void main( String[] args ) {
         PApplet.main( "oracle.Oracle" );
@@ -57,9 +58,9 @@ public class Oracle extends PApplet{
 
     public void setup() {
         gifDisplayer = new GifDisplayer(this);
-        testGif = gifDisplayer.getGiyGifs(new String[]{"king"},2).get(0);
-        testGif.play();
+        gifDisplayer.getGiyGifsAsnyc(new String[]{"dog","king"},4);
 
+        imageMode(CENTER);
 
         cli = new CLI( this );
        // loadMarkovs();
@@ -92,7 +93,13 @@ public class Oracle extends PApplet{
         background( 0 );
         cli.draw();
 
-       image( testGif, mouseX, mouseY );
+        if(gifDisplayer.getAsyncGifysAvailable()) {
+            testGifs = gifDisplayer.getAsyncGifys();
+            testGifs.stream().forEach(Gif::play);
+        }
+        if(testGifs.size() > 0)
+            image( testGifs.get((frameCount/5) % testGifs.size()), mouseX, mouseY );
+
 
         if( System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS ){
             cli.reset();
