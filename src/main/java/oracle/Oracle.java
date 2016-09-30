@@ -3,10 +3,12 @@ package oracle;
 import gifAnimation.Gif;
 import http.requests.PostRequest;
 import oracle.cli.CLI;
+import oracle.gif.GifDisplayer;
 import oracle.web.Webserver;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processing.core.PApplet;
+
 
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -22,13 +24,14 @@ public class Oracle extends PApplet{
     public CLI cli;
     Webserver server;
     OracleLogger logger;
-    Settings settings;
+    public Settings settings;
 
     long millisLastInteraction;
 
     boolean startWebserver = true;
     private ArrayList< MarkovManager > markovs;
 
+    GifDisplayer gifDisplayer;
     Gif testGif;
 
     public static void main( String[] args ) {
@@ -51,14 +54,15 @@ public class Oracle extends PApplet{
         }
     }
 
-    public void setup() {
 
-        testGif = new Gif( this, "gif" + File.separator + "1469549376342.gif" );
+    public void setup() {
+        gifDisplayer = new GifDisplayer(this);
+        testGif = gifDisplayer.getGiyGifs(new String[]{"king"},2).get(0);
         testGif.play();
 
-        cli = new CLI( this );
-        loadMarkovs();
 
+        cli = new CLI( this );
+       // loadMarkovs();
 
         noCursor();
     }
@@ -88,7 +92,7 @@ public class Oracle extends PApplet{
         background( 0 );
         cli.draw();
 
-        image( testGif, mouseX, mouseY );
+       image( testGif, mouseX, mouseY );
 
         if( System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS ){
             cli.reset();

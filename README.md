@@ -19,3 +19,17 @@
 node facebook-advanced-echo.js
 ```
 - Run https://github.com/mrzl/TheOracle/blob/master/src/main/java/oracle/SimpleOracle.java (or an exported jar.)
+
+
+### for gifs
+create the folder in data:
+- gifs/clean
+- gifs/gify
+- gifs/*
+
+gifs are git-ignored and stored on lyrik...
+
+in the config.properties there is a new property called:
+DOWNLOAD_GIFY, guess what it does.
+You will get the Gif anyway but storing them might be more fun, and it sometimes constructing Gif Object
+with an URL seems to fail.
