@@ -19,3 +19,13 @@
 node facebook-advanced-echo.js
 ```
 - Run https://github.com/mrzl/TheOracle/blob/master/src/main/java/oracle/SimpleOracle.java (or an exported jar.)
+
+
+### for gifs
+create the folder in data:
+- gifs/clean
+- gifs/gify
+- gifs/*
+
+gifs are git-ignored and stored on lyrik...
+
