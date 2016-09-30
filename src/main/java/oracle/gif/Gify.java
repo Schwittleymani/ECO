@@ -1,8 +1,6 @@
 package oracle.gif;
 
 import http.requests.GetRequest;
-import http.requests.PostRequest;
-import oracle.Settings;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -25,7 +23,8 @@ public class Gify {
     final String searchPath = "/v1/gifs/search";
     // IMPORTANT. READ IT FROM A .gitignored file when not public anymore
     String apiKey = "dc6zaTOxFJmzC";
-    int maxGifDownload  = 2;
+
+    int maxDownload = -1; // probably not very usefull...   
 
     //
     String[] GifyQualities = {"fixed_width", "downsized_still", "fixed_height_small_still",
@@ -38,7 +37,7 @@ public class Gify {
     String useGifyQuality = "downsized";
     public String downloadFolder;
 
-    public List<String> getSearchURLs(String[] searchWords) {
+    public List<String> getSearchURLs(String[] searchWords, int searchLimit) {
         String searchURL = host + searchPath;
 
         String searchWordParam = buildParameter("q", searchWords);
@@ -48,7 +47,12 @@ public class Gify {
         joiner.add(searchWordParam);
         joiner.add(apiKeyParam);
 
-        System.out.println(searchURL + joiner.toString());
+        if(searchLimit != -1) {
+            String searchLimitParam = buildParameter("limit", String.valueOf(searchLimit));
+            joiner.add(searchLimitParam);
+        }
+
+        //System.out.println(searchURL + joiner.toString());
         GetRequest get = new GetRequest(searchURL + joiner.toString());
         get.send();
         try {
@@ -56,7 +60,7 @@ public class Gify {
                 JSONParser json = new JSONParser();
                 JSONObject obj = (JSONObject) json.parse(get.getContent());
                 Long status = (Long) ((JSONObject) obj.get("meta")).get("status");
-                System.out.println("Gify Search Status: " + status);
+                //System.out.println("Gify Search Status: " + status);
                 // lets get this party started
                 if (status == 200) {
                     JSONArray images = (JSONArray) obj.get("data");
@@ -82,7 +86,7 @@ public class Gify {
             downloadGif("data/" + filePath, address);
             paths.add(filePath);
             counter++;
-            if(counter == maxGifDownload)
+            if(counter == maxDownload)
                 break;
         }
         return paths;

@@ -22,11 +22,12 @@ public class GifDisplayer {
     String baseFolder = "gifs/";
     public Gify gify;
 
-
+    public boolean downloadGifys;
 
 
     public GifDisplayer(Oracle oracle) {
         this.oracle = oracle;
+        downloadGifys = oracle.settings.DOWNLOAD_GIFY;
         gify = new Gify();
         gify.downloadFolder = oracle.sketchPath() + "/data/gifs/gify/";
     }
@@ -50,12 +51,30 @@ public class GifDisplayer {
      * @return a list of gifs
      */
     public List<Gif> getGiyGifs(String[] searchWords, int number) {
-        List<String> gifs = gify.getSearchURLs(searchWords);
-        StringJoiner joiner = new StringJoiner("_");
-        Arrays.stream(searchWords).forEach(w -> joiner.add(w));
-        List<String> gifPaths = gify.downloadGifs(joiner.toString(), gifs);
-        gifPaths.stream().forEach(System.out::println);
-        return gifPaths.stream().limit(number).map(path ->
-                new Gif(oracle, path)).collect(Collectors.toList());
+        List<String> gifs = gify.getSearchURLs(searchWords, number);
+
+        //gifs.stream().forEach(System.out::println);
+        if(downloadGifys) {
+            StringJoiner joiner = new StringJoiner("_");
+            Arrays.stream(searchWords).forEach(w -> joiner.add(w));
+            gifs = gify.downloadGifs(joiner.toString(), gifs);
+        }
+
+        // this crap was nicer then the stream in the end cuz it allows to catch exceptions
+        ArrayList<Gif> gg= new ArrayList<Gif>();
+        int counter = 0;
+        for(String s : gifs) {
+            System.out.println(s);
+            try {
+                gg.add(new Gif(oracle, s));
+                if (++counter == number) {
+                    break;
+                }
+            } catch (NullPointerException damn) {
+                System.out.println("missing gif"+ counter);
+            }
+
+        }
+        return gg;
     }
 }

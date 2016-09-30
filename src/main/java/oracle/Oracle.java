@@ -24,7 +24,7 @@ public class Oracle extends PApplet{
     public CLI cli;
     Webserver server;
     OracleLogger logger;
-    Settings settings;
+    public Settings settings;
 
     long millisLastInteraction;
 
@@ -57,8 +57,7 @@ public class Oracle extends PApplet{
 
     public void setup() {
         gifDisplayer = new GifDisplayer(this);
-        //testGif = gifDisplayer.getGiyGifs(new String[]{"dog","king"},2).get(0);
-        testGif =  new Gif(this,"http://media1.giphy.com/media/13EqV5EkE2f8Os/giphy.gif");
+        testGif = gifDisplayer.getGiyGifs(new String[]{"king"},2).get(0);
         testGif.play();
 
 
