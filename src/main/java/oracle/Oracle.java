@@ -149,7 +149,7 @@ public class Oracle extends PApplet {
                     cli.reset();
                     break;
                 default:
-                    if (!cli.inputLimitReached() && !cli.isActive()) {
+                    if (!cli.isActive()) {
                         cli.type(key);
                     }
                     break;
@@ -158,7 +158,7 @@ public class Oracle extends PApplet {
     }
 
     private void processInput(){
-        String inputText = cli.getLastLine().getText(true).trim();
+        String inputText = cli.getUserInput().trim();
         String text = removeSpecialCharacters(inputText);
 
         String result = "";
@@ -169,6 +169,7 @@ public class Oracle extends PApplet {
             result = askLyrik(text);
             logResult = result;
         } else { // good old markov chain
+            println(text);
             String[] results =  askLocalMarkov(text);
             result = results[0];
             logResult = results[1];
@@ -259,8 +260,6 @@ public class Oracle extends PApplet {
         } else
             return input;
     }
-
-
 
     public void webSocketServerEvent(String msg) {
         server.webSocketServerEvent(msg);

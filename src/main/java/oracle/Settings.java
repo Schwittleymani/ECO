@@ -24,7 +24,7 @@ public class Settings{
     public static int MIN_ANSWER_DELAY_COUNT, MAX_ANSWER_DELAY_COUNT;
 
     public static int CLI_PADDING_TOP, CLI_PADDING_BOTTOM, CLI_PADDING_LEFT, CLI_PADDING_RIGHT;
-    public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE, CLI_MAX_LINE_WIDTH;
+    public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE;
     public static int CLI_RESET_DELAY_MILLIS, CLI_MAX_INPUT_CHARACTERS;
 
     public static int CLI_MARGIN_TOP, CLI_MARGIN_BOTTOM, CLI_MARGIN_LEFT, CLI_MARGIN_RIGHT;
@@ -54,7 +54,7 @@ public class Settings{
         CLI_PADDING_LEFT = Integer.parseInt( properties.getProperty( "CLI_PADDING_LEFT" ) );
         CLI_LINE_HEIGTH = Integer.parseInt( properties.getProperty( "CLI_LINE_HEIGTH" ) );
         CLI_TEXT_SIZE = Integer.parseInt( properties.getProperty( "CL_TEXT_SIZE" ) );
-        CLI_MAX_LINE_WIDTH = Integer.parseInt( properties.getProperty( "CLI_MAX_LINE_WIDTH" ) );
+
         CLI_RESET_DELAY_MILLIS = Integer.parseInt( properties.getProperty( "CLI_RESET_DELAY_MILLIS" ) );
         CLI_MAX_INPUT_CHARACTERS = Integer.parseInt( properties.getProperty( "CLI_MAX_INPUT_CHARACTERS" ) );
 
