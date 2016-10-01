@@ -79,6 +79,7 @@ public class CLI{
             widthTestString += "a";
         } while ( parent.textWidth( widthTestString ) < padding.width);
         Line.CHAR_LIMIT = widthTestString.length();
+       // System.out.println("debug: Line Limit: "+Line.CHAR_LIMIT);
     }
 
 
@@ -265,7 +266,7 @@ public class CLI{
         String txtForLastLine = "";
         int w = 0;
         for(; w < words.length; w++) {
-            if(txtFor2ndLast.length() + words[w].length() + 1 < Line.CHAR_LIMIT){
+            if(txtFor2ndLast.length() + words[w].length() + 1 < sndLast.limit()){
                 txtFor2ndLast += words[w] + " ";
             } else
                 break;

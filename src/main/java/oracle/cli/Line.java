@@ -39,8 +39,7 @@ public class Line extends ArrayList< String > {
 
     public boolean limitReached () {
         //System.out.println(size() + "," + CHAR_LIMIT);
-        int add = lineType != LineType.USER_START ? 4 : 0; // 4 magic number. length of "[ ] "
-        return size() + add >= CHAR_LIMIT;
+        return size() >= limit();
     }
 
 
@@ -66,4 +65,8 @@ public class Line extends ArrayList< String > {
         }
     }
 
+    public int limit(){
+        int add = lineType != LineType.USER_START ? 4 : 0; // 4 magic number. length of "[ ] "
+        return CHAR_LIMIT - add;
+    }
 }
