@@ -5,3 +5,4 @@ session.log
 conversation.log
 local_settings.py
 *.pyc
+data/gifs

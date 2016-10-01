@@ -77,27 +77,13 @@ public class DelayedTyper{
         return false;
     }
 
+    // user input
     public void type( char key ) {
-        if( key == ' ' && cli.getLastLine().limitReachedOffset() ){
+        boolean overflow = false;
+        cli.getLastLine().add(""+key);
+        if(cli.getLastLine().limitReached() ) {
             cli.newLine();
-        } else {
-            cli.getLastLine().add( new String( String.valueOf( key ) ) );
-        }
-    }
-
-    public void type( String string ) {
-        String[] words = string.split( " " );
-        Line act = cli.getLastLine();
-        float actWidth = cli.getTextWidth( act.getText( false ) );
-        for ( int i = 0; i < words.length; i++ ) {
-            if( actWidth + cli.getTextWidth( words[ i ] ) > cli.getMaxLineWidth() ){
-                cli.newLine();
-                act = cli.getLastLine();
-                actWidth = cli.getTextWidth( act.getText() );
-            } else {
-                act.add( words[ i ] + " " );
-                actWidth = cli.getTextWidth( act.getText() );
-            }
+            cli.wordLineSplit();
         }
     }
 

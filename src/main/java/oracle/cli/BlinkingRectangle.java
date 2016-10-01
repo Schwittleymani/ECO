@@ -20,27 +20,36 @@ public class BlinkingRectangle{
     }
 
     public void draw( boolean doRotate) {
+        float textWidth = parent.textWidth( cli.getLastLine().getText() );
         parent.pushMatrix();
+        parent.translate( textWidth, - cli.textSize);
+
+        float blockHeight = parent.constrain(cli.getTextSize() * parent.noise( parent.frameCount * 0.01f ) * 2,
+                cli.getTextSize() * 0.7f,cli.getTextSize() * 1.3f);
+        blockHeight = cli.textSize;
+
         if( doRotate ) {
             // rotates the blinking square when its thinking
-            float blockHeight = cli.getTextSize() + 10 * parent.noise( parent.frameCount * 0.01f );
-            PVector centerOfBlinkingBox = new PVector( cli.getLastLine().x + parent.textWidth( cli.getLastLine().getText() ) + ( cursorBlockWidth / 2 ), cli.getLastLine().y - ( cli.getTextSize() ) + ( blockHeight / 2 ) );
+            PVector centerOfBlinkingBox = new PVector(   cursorBlockWidth / 2 ,   blockHeight / 2  );
             parent.translate( centerOfBlinkingBox.x, centerOfBlinkingBox.y );
             parent.rotate( ( parent.frameCount ) );
-            parent.translate( -centerOfBlinkingBox.x, -centerOfBlinkingBox.y );
+            parent.translate( - centerOfBlinkingBox.x, - centerOfBlinkingBox.y );
         }
         parent.pushStyle();
         parent.strokeWeight( 2 );
 
         int textColor = ( parent.millis() % ( 255 * 4 ) ) / 4;
         parent.stroke( 0, textColor, 0 );
-        float textWidth = parent.textWidth( cli.getLastLine().getText() );
+
         if( parent.random( 1 ) < 0.04f ){
             parent.noFill();
         }
-        parent.rect( cli.getLastLine().x + textWidth, cli.getLastLine().y - ( cli.getTextSize() ),
-                cursorBlockWidth, cli.getTextSize() + 10 * parent.noise( parent.frameCount * 0.01f ) );
 
+         parent.rect(0, 0 ,
+                cursorBlockWidth,blockHeight);
+        // for debugging
+        //parent.fill(255);
+        //parent.ellipse(0,0,6,6);
 
         parent.popStyle();
         parent.popMatrix();
