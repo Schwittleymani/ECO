@@ -15,14 +15,20 @@ import java.util.*;
  * Created by mrzl on 16.06.2016.
  */
 public class Settings{
+
+    public static boolean USE_LYRIK;
+
+    public static boolean START_WEBSERVER;
+    public static boolean DO_LOGGING;
+
     public static int MAX_INPUT_WORDS;
     public static int MIN_ANSWER_DELAY_COUNT, MAX_ANSWER_DELAY_COUNT;
 
-    public static int CLI_PADDING_TOP, CLI_PADDING_LEFT;
-    public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE, CLI_MAX_LINE_WIDTH;
+    public static int CLI_PADDING_TOP, CLI_PADDING_BOTTOM, CLI_PADDING_LEFT, CLI_PADDING_RIGHT;
+    public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE;
     public static int CLI_RESET_DELAY_MILLIS, CLI_MAX_INPUT_CHARACTERS;
 
-    public static int CLI_BORDER_X, CLI_BORDER_Y, CLI_BORDER_WIDTH, CLI_BORDER_HEIGHT;
+    public static int CLI_MARGIN_TOP, CLI_MARGIN_BOTTOM, CLI_MARGIN_LEFT, CLI_MARGIN_RIGHT;
 
     public static int CHARACTER_DELAY_TIMEOUT;
 
@@ -40,6 +46,9 @@ public class Settings{
             e.printStackTrace();
         }
 
+        USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
+        START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
+
         MAX_INPUT_WORDS = Integer.parseInt( properties.getProperty( "MAX_INPUT_WORDS" ) );
         MIN_ANSWER_DELAY_COUNT = Integer.parseInt( properties.getProperty( "MIN_ANSWER_DELAY_COUNT" ) );
         MAX_ANSWER_DELAY_COUNT = Integer.parseInt( properties.getProperty( "MAX_ANSWER_DELAY_COUNT" ) );
@@ -47,20 +56,25 @@ public class Settings{
         CLI_PADDING_LEFT = Integer.parseInt( properties.getProperty( "CLI_PADDING_LEFT" ) );
         CLI_LINE_HEIGTH = Integer.parseInt( properties.getProperty( "CLI_LINE_HEIGTH" ) );
         CLI_TEXT_SIZE = Integer.parseInt( properties.getProperty( "CL_TEXT_SIZE" ) );
-        CLI_MAX_LINE_WIDTH = Integer.parseInt( properties.getProperty( "CLI_MAX_LINE_WIDTH" ) );
+
         CLI_RESET_DELAY_MILLIS = Integer.parseInt( properties.getProperty( "CLI_RESET_DELAY_MILLIS" ) );
         CLI_MAX_INPUT_CHARACTERS = Integer.parseInt( properties.getProperty( "CLI_MAX_INPUT_CHARACTERS" ) );
 
         CHARACTER_DELAY_TIMEOUT = Integer.parseInt( properties.getProperty( "CHARACTER_DELAY_TIMEOUT" ) );
 
-        CLI_BORDER_X = Integer.parseInt( properties.getProperty( "CLI_BORDER_X" ) );
-        CLI_BORDER_Y = Integer.parseInt( properties.getProperty( "CLI_BORDER_Y" ) );
-        CLI_BORDER_WIDTH = Integer.parseInt( properties.getProperty( "CLI_BORDER_WIDTH" ) );
-        CLI_BORDER_HEIGHT = Integer.parseInt( properties.getProperty( "CLI_BORDER_HEIGHT" ) );
+        CLI_MARGIN_TOP = Integer.parseInt( properties.getProperty( "CLI_MARGIN_TOP" ) );
+        CLI_MARGIN_BOTTOM = Integer.parseInt( properties.getProperty( "CLI_MARGIN_BOTTOM" ) );
+        CLI_MARGIN_LEFT = Integer.parseInt( properties.getProperty( "CLI_MARGIN_LEFT" ) );
+        CLI_MARGIN_RIGHT = Integer.parseInt( properties.getProperty( "CLI_MARGIN_RIGHT" ) );
+
+        CLI_PADDING_TOP = Integer.parseInt( properties.getProperty( "CLI_PADDING_TOP" ) );
+        CLI_PADDING_BOTTOM = Integer.parseInt( properties.getProperty( "CLI_PADDING_BOTTOM" ) );
+        CLI_PADDING_LEFT = Integer.parseInt( properties.getProperty( "CLI_PADDING_LEFT" ) );
+        CLI_PADDING_RIGHT = Integer.parseInt( properties.getProperty( "CLI_PADDING_RIGHT" ) );
 
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );
 
-        DOWNLOAD_GIFY = Boolean.parseBoolean(properties.getProperty( "DOWNLOAD_GIFY" ));
+        DOWNLOAD_GIFY = Boolean.valueOf(properties.getProperty( "DOWNLOAD_GIFY" ));
 
         try {
             String[] customAnswers = PApplet.loadStrings( new FileInputStream( "data" + File.separator + "answers.txt" ) );

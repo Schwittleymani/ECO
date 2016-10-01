@@ -32,6 +32,8 @@ public class OracleLogger{
     }
 
     public void log(String sourceString, String text)  {
+        if(!Settings.DO_LOGGING)
+            return;
         BufferedWriter bw = null;
 
         try {

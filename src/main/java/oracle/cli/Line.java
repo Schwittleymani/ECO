@@ -10,31 +10,38 @@ import java.util.ArrayList;
 public class Line extends ArrayList< String > {
 
     private PApplet parent;
-    public int x, y;
+
     public static int CHAR_LIMIT; // set by CLI
 
-    public Line ( PApplet p ) {
+    enum LineType {
+        USER_START, USER_LINE, BOT_LINE
+    }
+
+    public LineType lineType;
+
+
+    public Line ( PApplet p, LineType type ) {
         this.parent = p;
-    }
-
-    public void backspace () {
-
-        if ( getText( ).length( ) > CLI.LINE_PREFIX_CHARS.length( ) ) { // -1 is magic shit
-            remove( size( ) - 1 );
-        }
-    }
-
-    public boolean limitReached () {
-        return size( ) >= CHAR_LIMIT;
+        this.lineType = type;
     }
 
     /**
-     * special offset for char-by-char typing. hacky-hackhack :]
-     * @return
+     *
+     * @return end reached?
      */
-    public boolean limitReachedOffset() {
-        return size() >= CHAR_LIMIT - 4;
+    public boolean backspace () {
+        int limit = lineType == LineType.USER_START ? CLI.LINE_PREFIX_CHARS.length( ) : 0;
+        if ( getText( ).length( ) >  limit) {
+            remove( size( ) - 1 );
+        }
+        return getText().length() == limit;
     }
+
+    public boolean limitReached () {
+        //System.out.println(size() + "," + CHAR_LIMIT);
+        return size() >= limit();
+    }
+
 
     public String getText ( boolean cutPreChars ) {
         if ( cutPreChars )
@@ -48,15 +55,18 @@ public class Line extends ArrayList< String > {
     }
 
     public void draw () {
-        parent.text( getText( ), x, y );
+        parent.text( getText( ), 0,0);
     }
 
-    public void setPos ( int x, int y ) {
-        this.x = x;
-        this.y = y;
+    protected  void setText(String txt) {
+        clear();
+        for(char c :  txt.toCharArray()) {
+            this.add(""+c);
+        }
     }
 
-    public String toString () {
-        return x + " " + y;
+    public int limit(){
+        int add = lineType != LineType.USER_START ? 4 : 0; // 4 magic number. length of "[ ] "
+        return CHAR_LIMIT - add;
     }
 }

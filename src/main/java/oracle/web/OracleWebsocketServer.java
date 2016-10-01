@@ -30,13 +30,13 @@ public class OracleWebsocketServer {
         this.oracle = oracle;
     }
 
-    public void sendTexts(String input,String result,int timeout) {
+    public void sendTexts(String input,String result,long timeout) {
         JSONObject msg_obj = new JSONObject();
         msg_obj.setString("type", "texts");
         msg_obj.setString("input", input);
         last_input = input;
         msg_obj.setString("result", result);
-        msg_obj.setInt("timeout", timeout);
+        msg_obj.setLong("timeout", timeout);
         last_result = result;
         ws.sendMessage(msg_obj.toString());
     }
@@ -87,7 +87,11 @@ public class OracleWebsocketServer {
 
     // sent for std timeout
     static public void oracleThinksTimeout() {
-        oracleThinksTimeout(me.last_result);
+        // thats why static references kindof suck...
+        // this is null, when server has been started: Settings.START_WEBSERVER
+        if(me != null) {
+            oracleThinksTimeout(me.last_result);
+        }
     }
 
     // sent when intercept done
