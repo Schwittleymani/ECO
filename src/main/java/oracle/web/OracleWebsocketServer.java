@@ -87,7 +87,11 @@ public class OracleWebsocketServer {
 
     // sent for std timeout
     static public void oracleThinksTimeout() {
-        oracleThinksTimeout(me.last_result);
+        // thats why static references kindof suck...
+        // this is null, when server has been started: Settings.START_WEBSERVER
+        if(me != null) {
+            oracleThinksTimeout(me.last_result);
+        }
     }
 
     // sent when intercept done

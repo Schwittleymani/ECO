@@ -38,12 +38,19 @@ public class CLI{
 
     private int currentY;
 
+    BoxValues margin,padding;
+
 
     public CLI( Oracle p ) {
 
         this.parent = p;
         this.font = p.createFont( "data" + File.separator + "Glass_TTY_VT220.ttf", Settings.CLI_TEXT_SIZE );
         this.parent.textFont( this.font );
+
+        this.margin = new BoxValues(Settings.CLI_MARGIN_TOP,Settings.CLI_MARGIN_BOTTOM,
+                Settings.CLI_MARGIN_LEFT,Settings.CLI_MARGIN_RIGHT, p.width, p.height);
+        this.padding = new BoxValues(Settings.CLI_PADDING_TOP,Settings.CLI_PADDING_BOTTOM,
+                Settings.CLI_PADDING_LEFT,Settings.CLI_PADDING_RIGHT, margin.width, margin.height);
 
         jesus = new Jesus( p );
         blinker = new BlinkingRectangle( p, this );
@@ -66,17 +73,30 @@ public class CLI{
 
     public void draw() {
         parent.fill( 0, 255, 0 );
+        parent.pushMatrix();
+        parent.translate(margin.left,margin.top);
 
+        // BORDER
         parent.pushStyle();
         parent.noFill();
         parent.stroke( 0, 255, 0 );
         parent.strokeWeight( 5 );
-        parent.rect( Settings.CLI_BORDER_X, Settings.CLI_BORDER_Y, Settings.CLI_BORDER_WIDTH, Settings.CLI_BORDER_HEIGHT );
+        parent.rect( 0,0, margin.width,margin.height );
         parent.popStyle();
 
         jesus.drawBeforeEaster();
 
         pushLinesUp();
+        parent.pushMatrix();
+        parent.translate(padding.left, padding.top);
+
+        parent.pushStyle();
+        parent.noFill();
+        parent.stroke( 255, 0 , 0 );
+        parent.strokeWeight( 1 );
+        parent.rect( 0,0, padding.width, padding.height );
+        parent.popStyle();
+
         lines.forEach( Line::draw );
 
         // draws blinking square, rotating or not
@@ -90,10 +110,13 @@ public class CLI{
         state = delayedTyper.getState();
         //System.out.println(state.name());
 
+        parent.popMatrix();
+        parent.popMatrix();
         jesus.drawAfterEaster();
     }
 
     private void pushLinesUp() {
+        // sidenote: the nice effect that the lines animate up is
         int moveUp = 1;
         for (; moveUp > 0; moveUp-- ) {
             if( lines.get( lines.size() - ( moveUp ) ).y > parent.height )
@@ -106,7 +129,7 @@ public class CLI{
     }
 
     void resetYs() {
-        currentY = Settings.CLI_PADDING_TOP;
+        currentY = 0;//Settings.CLI_PADDING_TOP;
         for ( Line line : lines ) {
             line.y = currentY;
             currentY += Settings.CLI_LINE_HEIGTH;
@@ -153,7 +176,7 @@ public class CLI{
     private void newLine( boolean addLinePrefix ) {
         currentY += Settings.CLI_LINE_HEIGTH;
         Line newLine = new Line( this.parent );
-        newLine.setPos( Settings.CLI_PADDING_LEFT, currentY );
+        newLine.setPos( 0, currentY );
         lines.add( newLine );
         if( addLinePrefix ){
             delayedTyper.type( LINE_PREFIX_CHARS );
