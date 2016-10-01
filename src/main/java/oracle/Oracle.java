@@ -181,7 +181,7 @@ public class Oracle extends PApplet {
         System.out.println("u:::" + inputText);
         System.out.println("o:::" + logResult);
 
-        int delayMillis = cli.finish(result);
+        long delayMillis = cli.finish(result);
         if (startWebserver) {
             server.sendTexts(inputText, result, delayMillis);
         }

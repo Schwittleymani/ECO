@@ -44,7 +44,8 @@ public class CLI{
     private int currentY;
 
     BoxValues margin,padding;
-    int lineHeight;
+    protected int textSize;
+    protected int lineHeight;
     int maximumNumberOfLines;
 
     public CLI( Oracle p ) {
@@ -63,12 +64,13 @@ public class CLI{
         blinker = new BlinkingRectangle( p, this );
         delayedTyper = new DelayedTyper( this );
 
-        lineHeight = Settings.CLI_TEXT_SIZE;
-        parent.textSize(lineHeight);
+        lineHeight = Settings.CLI_LINE_HEIGTH;
+        textSize = Settings.CLI_TEXT_SIZE;
+        parent.textSize(textSize);
 
         LINE_PREFIX_WIDTH = getTextWidth(LINE_PREFIX_CHARS);
         setupWidth();
-        maximumNumberOfLines = (int)padding.height / Settings.CLI_TEXT_SIZE;
+        maximumNumberOfLines = (int)padding.height / Settings.CLI_LINE_HEIGTH;
         reset();
     }
 
@@ -169,17 +171,17 @@ public class CLI{
         }
     }
 
-    public int finish( String answer ) {
+    public long finish( String answer ) {
         newLine(Line.LineType.BOT_LINE);
         delayedTyper.addText( answer );
         int words = answer.split( " " ).length;
-        int delayMillis = calculateDelayByResponseWordCount( words );
+        long delayMillis = calculateDelayByResponseWordCount( words );
         delayedTyper.startTimout( delayMillis );
         state = CliState.ORACLE_THINKING;
         return delayMillis;
     }
 
-    public int calculateDelayByResponseWordCount( int length ) {
+    public long calculateDelayByResponseWordCount( int length ) {
         int inputDelayMaxWords = 30;
         return ( int ) PApplet.map( PApplet.min( length, inputDelayMaxWords ), 1, inputDelayMaxWords, Settings.MIN_ANSWER_DELAY_COUNT, Settings.MAX_ANSWER_DELAY_COUNT );
     }

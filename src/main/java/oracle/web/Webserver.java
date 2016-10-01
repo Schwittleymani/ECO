@@ -28,7 +28,7 @@ public class Webserver{
         this.Pparent = parent;
     }
 
-    public void sendTexts( String input, String result, int timout ) {
+    public void sendTexts( String input, String result, long timout ) {
         websocketServer.sendTexts( input, result, timout );
     }
 
