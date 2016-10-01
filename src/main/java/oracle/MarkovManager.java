@@ -20,6 +20,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public MarkovManager() {
     }
 
+    // TODO use a Regex (like in Oracle but with replace all)
     String[] strip( String input ) {
         input = input.replace( "?", "" )
                 .replace( "!", "" )
@@ -95,6 +96,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
 
     /**
      * TODO: merge this method with getMarkovDepthOrder()
+     * TODO> DO IT!!!
      * @param input
      * @return
      */
@@ -108,7 +110,10 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         for ( String s : input ) {
             queue.addLast( s );
         }
-        String result = get( queue.getOrder() - 1 ).generateSentence( queue );
+        String result = "nothing";
+        if(queue.getOrder() > 0)
+            result = get( queue.getOrder() - 1 ).generateSentence( queue );
+
         if( result.equals( "nothing" ) ){
             if( input.length < 2 ){
                 return "nothing";
@@ -137,7 +142,9 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         for ( String s : input ) {
             queue.addLast( s );
         }
-        String result = get( queue.getOrder() - 1 ).generateSentence( queue );
+        String result = "nothing";
+        if(queue.getOrder() > 0) // TODO MERGE WITH THE THING ABOVE
+            result = get( queue.getOrder() - 1 ).generateSentence( queue );
 
         int depth = input.length;
         if( result.equals( "nothing" ) ){
