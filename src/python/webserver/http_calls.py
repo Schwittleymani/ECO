@@ -33,7 +33,7 @@ def input(input):
         try:
             print "CALL ML MAGIC HERE... for: ",input
             response['status'] = 'ml-response'
-            response['response'] = generator.print_result(input)
+            response['response'] = generator.get_result(input)
         except:
             print("Unexpected error:", sys.exc_info()[0])
             traceback.print_exc()
@@ -45,7 +45,7 @@ def input(input):
     if ml_thread.is_alive:
         return jsonify(response)
     else:
-        return jsonify({'status': 'ml-timeout', 'response': get_answer()})
+        return jsonify({'status': 'ml-timeout', 'response': 'boomchickawaowao'})
 
 
 def text_preproccess(input):
