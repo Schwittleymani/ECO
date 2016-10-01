@@ -30,9 +30,10 @@ if __name__ == '__main__':
     word_lstm_models_path = params['word_lstm_models_path']
 
     generator = Generator()
-    generator.init_markov(text_files_path=markov_texts_path, max_models=1)
-    generator.init_word_level_lstm(models_path=word_lstm_models_path, max_models=1)
-    generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=1)
+
+    generator.init_markov(text_files_path=markov_texts_path, max_models=2)
+    generator.init_word_level_lstm(models_path=word_lstm_models_path, max_models=2)
+    generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=2)
 
     interactive = params['interactive']
     if not interactive:

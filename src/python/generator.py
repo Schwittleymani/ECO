@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 import markov.markov2_wrapper
 import keras_lstm.lstm_wrapper
 import word_level_rnn.word_lstm_wrapper 
@@ -14,7 +16,7 @@ class Generator(object):
         self.KERAS_LSTM = 1
         self.WORD_RNN = 2
 
-        self.mode = self.KERAS_LSTM
+        self.mode = self.WORD_RNN
 
     def init_markov(self, text_files_path, max_models=100):
         self.markovs = []
@@ -46,13 +48,17 @@ class Generator(object):
 
                                 loaded_count += 1
 
-    def init_word_level_lstm(self, models_path):
+    def init_word_level_lstm(self, models_path, max_models=100):
         self.word_lstms = []
+        loaded_count = 0
+
         for root, dirs, files in os.walk(models_path):
             for dir in dirs:
-                path = os.path.join(root, dir)
-                word_lstm = word_level_rnn.word_lstm_wrapper.WordLevelLSTM(load_dir=path)
-                self.word_lstms.append(word_lstm)
+                if loaded_count < max_models:
+                    path = os.path.join(root, dir)
+                    word_lstm = word_level_rnn.word_lstm_wrapper.WordLevelLSTM(load_dir=path, varscope=dir)
+                    self.word_lstms.append(word_lstm)
+                    loaded_count += 1
 
     def sample_markov(self, input, length=50):
         """
@@ -64,7 +70,7 @@ class Generator(object):
         selected_markov = self.markovs[random_markov_index]
         return selected_markov.name, selected_markov.sample(input_text=input, length=length)
 
-    def sample_keras_lstm(self, input, diversity=0.3, length=150):
+    def sample_keras_lstm(self, input, diversity=0.1, length=50):
         """
         :param input: the input text to continue with the lstm
         :param diversity: [0-1] the riskyness of the answer. 0 -> 1 increases riskyness
@@ -81,7 +87,7 @@ class Generator(object):
         return 'NO AUTHOR YET', selected_word_lstm.sample(input=input, sample=sample, output_length=output_length)
 
     def print_markov_result(self, input):
-        markov_author, markov_result = generator.sample_markov(input=input)
+        markov_author, markov_result = self.sample_markov(input=input)
         #print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
 
         result = markov_result.strip()
@@ -99,13 +105,13 @@ class Generator(object):
         return result
 
     def print_word_rnn_result(self, input):
-        word_level_lstm_author, word_level_lstm_result = generator.sample_word_level_lstm(input=input, output_length=10)
+        word_level_lstm_author, word_level_lstm_result = self.sample_word_level_lstm(input=input, output_length=10)
         #print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
         #print(word_level_lstm_result)
 
         return word_level_lstm_result
 
-    def print_result(self,input_checked):
+    def get_result(self, input_checked):
         result = ''
         if self.mode is self.MARKOV:
             result = self.print_markov_result(input=input_checked)
@@ -114,5 +120,15 @@ class Generator(object):
         if self.mode is self.WORD_RNN:
             result = self.print_word_rnn_result(input=input_checked)   
         if result == 'no answer':
-            result = get_random_answer()  
-        return result      
+            result = self.get_random_answer()
+
+        print("get_result: " + result)
+        return result
+
+    def get_random_answer(self):
+        file = open('pre_defined_answers.txt', 'r')
+        lines = []
+        for line in file.readlines():
+            lines.append(line.rstrip())
+
+        return lines[random.randint(0, len(lines) - 1)]

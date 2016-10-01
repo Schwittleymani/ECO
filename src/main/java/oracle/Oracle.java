@@ -63,7 +63,6 @@ public class Oracle extends PApplet {
         millisLastInteraction = System.currentTimeMillis();
     }
 
-
     public void setup() {
         gifDisplayer = new GifDisplayer(this);
         //gifDisplayer.getGiyGifsAsnyc(new String[]{"dog","king"},4);
@@ -177,7 +176,7 @@ public class Oracle extends PApplet {
         }
 
         logger.log(logger.USER, inputText);
-        logger.log(logger.ORACLE, logResult);
+        logger.log( logger.ORACLE, logResult );
 
         System.out.println("u:::" + inputText);
         System.out.println("o:::" + logResult);
@@ -197,10 +196,9 @@ public class Oracle extends PApplet {
     }
 
     private String askLyrik(String text) {
-        text = text.replaceAll("\\s+", "%20");
-        PostRequest post = new PostRequest(Settings.LYRIK_URL + text);
+        PostRequest post = new PostRequest(Settings.LYRIK_URL);
 
-        post.addData("inputS", "hello ECO");
+        post.addData("inputS", text );
         try {
             long millis = millis();
             post.send();
@@ -214,7 +212,7 @@ public class Oracle extends PApplet {
                 JSONParser json = new JSONParser();
                 Object obj = json.parse(post.getContent());
                 JSONObject mainJson = (JSONObject) (obj);
-                String result = (String) mainJson.get("combined");
+                String result = (String) mainJson.get("response");
 
                 System.out.println("Received result: " + result);
 
@@ -222,6 +220,7 @@ public class Oracle extends PApplet {
             }
         } catch (Exception exc) {
             exc.printStackTrace();
+            return "yeah";
         }
 
         return "nothing";
