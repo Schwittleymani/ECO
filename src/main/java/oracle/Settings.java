@@ -30,6 +30,8 @@ public class Settings{
 
     public static ArrayList< String > RANDOM_ANSWERS = new ArrayList<>();
 
+    public static boolean DOWNLOAD_GIFY = true;
+
     public Settings() {
         Properties properties = new Properties();
         try {
@@ -57,6 +59,8 @@ public class Settings{
         CLI_BORDER_HEIGHT = Integer.parseInt( properties.getProperty( "CLI_BORDER_HEIGHT" ) );
 
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );
+
+        DOWNLOAD_GIFY = Boolean.parseBoolean(properties.getProperty( "DOWNLOAD_GIFY" ));
 
         try {
             String[] customAnswers = PApplet.loadStrings( new FileInputStream( "data" + File.separator + "answers.txt" ) );

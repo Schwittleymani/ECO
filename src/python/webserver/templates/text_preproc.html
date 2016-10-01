@@ -24,7 +24,7 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var json = JSON.parse(xhr.responseText);
                     //console.log(json.grammar_corrected);
-                    output.innerHTML = "Grammar: " + json.grammar_corrected + " // Spell check: " + json.spell_check
+                    output.innerHTML = "Grammar: " + json.grammar_corrected + " // Spell check: " + json.spell_checked
                     + " // Combined: " + json.combined;
                 }
             }

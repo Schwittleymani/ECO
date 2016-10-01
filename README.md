@@ -21,12 +21,25 @@ Dependencies
 
 Configuration
 
-    
-
 - Change this line to contain your facebook plain text login data: https://github.com/mrzl/ECO/blob/master/src/node/facebook-advanced-echo.js#L16
 - Adjust the threadId of the person you want to chat with here: https://github.com/mrzl/ECO/blob/master/src/node/facebook-advanced-echo.js#L42 and https://github.com/mrzl/ECO/blob/master/src/node/facebook-advanced-echo.js#L23 (it's being printed when you receive a message. At the moment I haven't fount a better way of getting the threadId of one conversation.)
 - Run it via 
-```
-node facebook-advanced-echo.js
-```
+
+    node facebook-eco.js
+
+
 - Run https://github.com/mrzl/ECO/blob/master/src/main/java/oracle/SimpleOracle.java (or an exported jar.)
+
+
+### for gifs
+create the folder in data:
+- gifs/clean
+- gifs/gify
+- gifs/*
+
+gifs are git-ignored and stored on lyrik...
+
+in the config.properties there is a new property called:
+DOWNLOAD_GIFY, guess what it does.
+You will get the Gif anyway but storing them might be more fun, and it sometimes constructing Gif Object
+with an URL seems to fail.
