@@ -9,12 +9,11 @@ public class MonologueEasterEgg extends EasterEgg {
 
     public MonologueEasterEgg() {
 
-        super(Jesus.EASTEREGG_TYPE.MONOLOG);
+        super(Jesus.EASTEREGG_TYPE.PAUSE,null);
     }
 
-    @Override
     public EasterEgg start (long durationMillis) {
-        super.start(durationMillis);
+        super.start();
 
         alpha = 255;
 
@@ -26,11 +25,16 @@ public class MonologueEasterEgg extends EasterEgg {
         if( alpha > 0 ) {
             alpha--;
         }
-        parent.fill( 0, 255, 0, alpha );
+        oracle.fill( 0, 255, 0, alpha );
     }
 
     @Override
     public boolean drawAfter() {
         return false;
+    }
+
+    @Override
+    public void start(Object obj) {
+
     }
 }

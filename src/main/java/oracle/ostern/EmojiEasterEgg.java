@@ -32,10 +32,10 @@ public class EmojiEasterEgg extends
     PImage heart;
 
     public EmojiEasterEgg () {
-        super(Jesus.EASTEREGG_TYPE.EMOJI);
+        super(Jesus.EASTEREGG_TYPE.ANSWER,null);
         //emojiSheet = parent.loadImage("sheet_32.png");
         //emojiSet.add(getEmoji(3, 7)); // heart
-        heart = parent.loadImage("heart.png");
+        heart = oracle.loadImage("heart.png");
         for(int i=0; i < INIT_FLAKES;i++)
             flakes.add(new Flake());
     }
@@ -51,7 +51,7 @@ public class EmojiEasterEgg extends
             }
         }
         if(super.isRunning()) {
-            if (flakes.size() < MAX_FLAKES && parent.random(1) < FLAKE_CHANCE)
+            if (flakes.size() < MAX_FLAKES && oracle.random(1) < FLAKE_CHANCE)
                 flakes.add(new Flake());
         }
     }
@@ -76,6 +76,11 @@ public class EmojiEasterEgg extends
         return super.isRunning() || flakes.size() > 0;
     }
 
+    @Override
+    public void start(Object obj) {
+
+    }
+
     class Flake {
 
         PVector pos;
@@ -84,7 +89,7 @@ public class EmojiEasterEgg extends
         private int index;
         PImage emoji;
         float radius;
-        float phaseShift = parent.random(parent.TAU);
+        float phaseShift = oracle.random(oracle.TAU);
         float xMoveSpeed;
         float yMoveSpeed;
         float xMoveMax;
@@ -92,29 +97,29 @@ public class EmojiEasterEgg extends
 
         Flake() {
             radius = radiusRange.get();
-            pos = new PVector(parent.random(parent.width), -radius);
+            pos = new PVector(oracle.random(oracle.width), -radius);
             xMoveSpeed = xMoveSpeedRange.get();
             yMoveSpeed = yMoveSpeedRange.get();
             xMoveMax = xMoveMaxRange.get();
             index = nextIndex++;
             emoji = heart;//emojiSet.get((int)parent.random(emojiSet.size()));
-            foreground = parent.random(1) <0.5f;
+            foreground = oracle.random(1) <0.5f;
         }
 
         void updatePos() {
-            float xOff = parent.sin(phaseShift+(index+parent.frameCount)*xMoveSpeed) * xMoveMax
+            float xOff = oracle.sin(phaseShift+(index+oracle.frameCount)*xMoveSpeed) * xMoveMax
                     +xMoveRandomRange.get();
-            float yAdd = parent.map(parent.abs(xOff), 0, 1, 0.4f, -0.2f);
+            float yAdd = oracle.map(oracle.abs(xOff), 0, 1, 0.4f, -0.2f);
 
             pos.add(xOff, yMoveSpeed + yAdd);
-            if (pos.y > parent.height + radius) {
+            if (pos.y > oracle.height + radius) {
                 done = true;
             }
         }
 
         void draw() {
             updatePos();
-            parent.image(emoji,pos.x,pos.y,radius,radius);
+            oracle.image(emoji,pos.x,pos.y,radius,radius);
         }
     }
 
@@ -133,7 +138,7 @@ public class EmojiEasterEgg extends
         }
 
         float get() {
-            return parent.random(min, max);
+            return oracle.random(min, max);
         }
     }
 }

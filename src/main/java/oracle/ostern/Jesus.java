@@ -1,10 +1,10 @@
 package oracle.ostern;
 
-import processing.core.PApplet;
+import oracle.Oracle;
+import processing.data.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Created by raminsoleymani on 07/04/16.
@@ -12,26 +12,36 @@ import java.util.Optional;
  */
 public class Jesus {
 
-    public enum EASTEREGG_TYPE {MONOLOG, EMOJI}
+    public enum EASTEREGG_TYPE {PAUSE,INTERRUPT,ANSWER}
 
-    PApplet parent;
+    Oracle parent;
 
     protected static long jesusTime;
 
-    private HashMap< EASTEREGG_TYPE, EasterEgg > easterEggs = new HashMap<>();
+    private List<EasterEgg > easterEggs = new ArrayList<EasterEgg>();
     ArrayList<EasterEgg> runningEggs = new ArrayList<>();
 
-    public Jesus(PApplet p) {
+    public Jesus(Oracle p) {
         parent = p;
 
-        EasterEgg.parent = p;
+        EasterEgg.oracle = p;
         EasterEgg.jesus = this;
-        new EmojiEasterEgg();
+        loadEastereggConfig();
     }
 
-    public void start(EASTEREGG_TYPE type, long durationSeconds) {
-        runningEggs.add(easterEggs.get(type).start(durationSeconds*1000));
+    public void tryStartAnswer(String response) {
+        for(EasterEgg egg : easterEggs) {
+            if (egg.type == EASTEREGG_TYPE.ANSWER) {
+                boolean started = egg.tryStart();
+                egg.start(response);
+                if(started) {
+                    runningEggs.add(egg);
+                    return;
+                }
+            }
+        }
     }
+
 
     public void drawBeforeEaster() {
         jesusTime = System.currentTimeMillis();
@@ -47,8 +57,14 @@ public class Jesus {
         runningEggs.removeAll(removeEggs);
     }
 
-    public void addEasterEgg(EasterEgg egg) {
-        easterEggs.put(egg.type,egg);
+
+    private void loadEastereggConfig() {
+        JSONObject json = parent.loadJSONObject("eastereggs.json");
+        // gifs
+        new GifsEasterEgg(json.getJSONObject("Gifs"));
     }
 
+    protected void addEasterEgg(EasterEgg egg) {
+        easterEggs.add(egg);
+    }
 }

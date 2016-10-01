@@ -4,6 +4,7 @@ import gifAnimation.Gif;
 import http.requests.PostRequest;
 import oracle.cli.CLI;
 import oracle.gif.GifDisplayer;
+import oracle.ostern.Jesus;
 import oracle.web.Webserver;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,7 +12,6 @@ import processing.core.PApplet;
 
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -35,7 +35,8 @@ public class Oracle extends PApplet {
     boolean startWebserver = true;
     private ArrayList<MarkovManager> markovs;
 
-    GifDisplayer gifDisplayer;
+    public Jesus jesus ;
+    public GifDisplayer gifDisplayer;
     List<Gif> testGifs = new ArrayList<Gif>();
 
 
@@ -46,6 +47,7 @@ public class Oracle extends PApplet {
     public void settings() {
         size(640, 480, P2D);
         logger = new OracleLogger();
+
 
         //fullScreen( P2D, SPAN );
 
@@ -69,6 +71,7 @@ public class Oracle extends PApplet {
 
         imageMode(CENTER);
 
+        jesus = new Jesus(this);
         cli = new CLI(this);
         if (!useLyrik) {
             loadMarkovs();
@@ -185,6 +188,7 @@ public class Oracle extends PApplet {
         if (startWebserver) {
             server.sendTexts(inputText, result, delayMillis);
         }
+        jesus.tryStartAnswer(result);
         //if( result.contains( "lacuna" ) ){
         //    cli.startEmojiEasterEgg();
         //}

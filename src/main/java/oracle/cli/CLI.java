@@ -48,6 +48,7 @@ public class CLI{
     public CLI( Oracle p ) {
 
         this.parent = p;
+        this.jesus = p.jesus;
         this.font = p.createFont( "data" + File.separator + "Glass_TTY_VT220.ttf", Settings.CLI_TEXT_SIZE );
         this.parent.textFont( this.font );
 
@@ -57,7 +58,6 @@ public class CLI{
         this.padding = new BoxValues(Settings.CLI_PADDING_TOP,Settings.CLI_PADDING_BOTTOM,
                 Settings.CLI_PADDING_LEFT,Settings.CLI_PADDING_RIGHT, margin.width, margin.height);
 
-        jesus = new Jesus( p );
         blinker = new BlinkingRectangle( p, this );
         delayedTyper = new DelayedTyper( this );
 
@@ -237,7 +237,8 @@ public class CLI{
     }
 
     public void startEmojiEasterEgg() {
-        jesus.start( Jesus.EASTEREGG_TYPE.EMOJI, 10 );
+        // refactor
+        //jesus.start( Jesus.EASTEREGG_TYPE.EMOJI, 10 );
     }
 
     public int getTextWidth( String text ) {

@@ -1,5 +1,8 @@
 package oracle.ostern;
 
+import oracle.Oracle;
+import processing.data.JSONObject;
+
 import processing.core.PApplet;
 
 /**
@@ -8,24 +11,27 @@ import processing.core.PApplet;
 public abstract class EasterEgg {
 
     static Jesus jesus;
-    public final Jesus.EASTEREGG_TYPE type;
+    public Jesus.EASTEREGG_TYPE type;
 
-    protected static PApplet parent;
-    private long durationMillis;
+    protected static Oracle oracle;
     private long startedMillis;
 
-    public EasterEgg(Jesus.EASTEREGG_TYPE type) {
+    private float chance;
+    private long durationMillis;
+
+    public EasterEgg(Jesus.EASTEREGG_TYPE type, JSONObject config) {
         this.type = type;
-        jesus.addEasterEgg(this);
+        if(config.getBoolean("active")) {
+            jesus.addEasterEgg(this);
+            this.chance = config.getFloat("chance");
+        }
     }
 
     public abstract void drawBefore ();
 
     public abstract boolean drawAfter ();
 
-
-    public EasterEgg start (long durationMillis) {
-        this.durationMillis = durationMillis;
+    public EasterEgg start () {
         startedMillis = System.currentTimeMillis( );
         return this;
     }
@@ -34,4 +40,16 @@ public abstract class EasterEgg {
         return Jesus.jesusTime > startedMillis
                 && Jesus.jesusTime < startedMillis + durationMillis;
     }
+
+    public boolean tryStart(){
+        if(Math.random() < chance) {
+            start();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public abstract void start(Object obj);
 }
