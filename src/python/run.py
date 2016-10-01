@@ -64,13 +64,17 @@ class Generator(object):
 
                                 loaded_count += 1
 
-    def init_word_level_lstm(self, models_path):
+    def init_word_level_lstm(self, models_path, max_models=100):
         self.word_lstms = []
+        loaded_count = 0
         for root, dirs, files in os.walk(models_path):
             for dir in dirs:
-                path = os.path.join(root, dir)
-                word_lstm = word_level_rnn.word_lstm_wrapper.WordLevelLSTM(load_dir=path)
-                self.word_lstms.append(word_lstm)
+                if loaded_count < max_models:
+                    path = os.path.join(root, dir)
+                    word_lstm = word_level_rnn.word_lstm_wrapper.WordLevelLSTM(load_dir=path)
+                    self.word_lstms.append(word_lstm)
+
+                    loaded_count += 1
 
     def sample_markov(self, input, length=50):
         """
@@ -145,7 +149,7 @@ class Main(object):
         self.generator = Generator()
         self.generator.init_markov(text_files_path=markov_texts_path, max_models=20)
 
-        #self.generator.init_word_level_lstm(models_path=word_lstm_models_path)
+        self.generator.init_word_level_lstm(models_path=word_lstm_models_path, max_models=1)
         self.generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=20)
 
         self.facebook = facebook_osc_connect.OscFacebook()
