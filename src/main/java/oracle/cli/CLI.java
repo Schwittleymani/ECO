@@ -21,12 +21,10 @@ public class CLI{
     private float LINE_PREFIX_WIDTH;
 
     private ArrayList< Line > lines = new ArrayList<>();
+    private ArrayList< Line > hiddenLines = new ArrayList<>(); // for edge case of endless writer...
     private Oracle parent;
 
     private PFont font;
-
-
-    // TODO prevent user writing more then screensize. otherwise,USER_START line will be deleted
 
     public enum CliState{
         USER_INPUT,
@@ -90,7 +88,13 @@ public class CLI{
         String userInput = "";
         while(line.lineType == Line.LineType.USER_LINE) {
             userInput = line.getText() + userInput;
-            line = lines.get(--lineIndex);
+            lineIndex--;
+            if(lineIndex >= 0) {
+                line = lines.get(0);
+            }
+            else { // only for the edges case of an endless writer...
+                line = hiddenLines.get(hiddenLines.size() + lineIndex);
+            }
         }
         // USER_START line
         userInput = line.getText() + userInput;
@@ -152,7 +156,10 @@ public class CLI{
 
     private void pushLinesUp() {
         if(lines.size() >= maximumNumberOfLines) {
-            lines.remove(0);
+            Line removed = lines.remove(0);
+            if(state == CliState.USER_INPUT) {
+                hiddenLines.add(removed);
+            }
             return;
         }
     }
@@ -210,6 +217,9 @@ public class CLI{
             for(Character c : LINE_PREFIX_CHARS.toCharArray())
                 delayedTyper.type(c);
         }
+        if(type == Line.LineType.USER_START) {
+            hiddenLines.clear();
+        }
     }
 
     public Line getLastLine() {
@@ -222,7 +232,7 @@ public class CLI{
     }
 
     public boolean available() {
-        return getLastLine().getText().split( " " ).length >
+        return getUserInput().split( " " ).length >
                 PREF_WORD_LEN && delayedTyper.isEmpty();
     }
 
@@ -270,8 +280,19 @@ public class CLI{
         for(; w < words.length; w++) {
             if(txtFor2ndLast.length() + words[w].length() + 1 < sndLast.limit()){
                 txtFor2ndLast += words[w] + " ";
-            } else
-                break;
+            } else {
+                // might be the bizarre edge case that somebody wants to be funny
+                // not typing any spaces...
+                if(w == 0 || w == 2 && sndLast.lineType == Line.LineType.USER_START) {
+                    int firstPartLength = parent.min(words[w].length(),sndLast.limit());
+                    String wordSplit1 = words[w].substring(0,firstPartLength);
+                    String wordSplit2 = words[w].substring(firstPartLength);
+                    txtFor2ndLast += wordSplit1;
+                    txtForLastLine = wordSplit2;
+                } else
+                    break;
+            }
+
         }
         for(; w < words.length; w++) {
             txtForLastLine += words[w] + (w < words.length - 1 ? " " : "");

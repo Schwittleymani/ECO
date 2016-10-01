@@ -63,7 +63,6 @@ public class Oracle extends PApplet {
         millisLastInteraction = System.currentTimeMillis();
     }
 
-
     public void setup() {
         gifDisplayer = new GifDisplayer(this);
         //gifDisplayer.getGiyGifsAsnyc(new String[]{"dog","king"},4);
