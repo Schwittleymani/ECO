@@ -3,14 +3,17 @@ package oracle;
 import gifAnimation.Gif;
 import http.requests.PostRequest;
 import oracle.cli.CLI;
+import oracle.gif.GifDisplayer;
 import oracle.web.Webserver;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processing.core.PApplet;
 
+
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -22,14 +25,15 @@ public class Oracle extends PApplet{
     public CLI cli;
     Webserver server;
     OracleLogger logger;
-    Settings settings;
+    public Settings settings;
 
     long millisLastInteraction;
 
     boolean startWebserver = true;
     private ArrayList< MarkovManager > markovs;
 
-    Gif testGif;
+    GifDisplayer gifDisplayer;
+    List<Gif> testGifs = new ArrayList<Gif>();
 
     public static void main( String[] args ) {
         PApplet.main( "oracle.Oracle" );
@@ -51,14 +55,15 @@ public class Oracle extends PApplet{
         }
     }
 
-    public void setup() {
 
-        testGif = new Gif( this, "gif" + File.separator + "1469549376342.gif" );
-        testGif.play();
+    public void setup() {
+        gifDisplayer = new GifDisplayer(this);
+        gifDisplayer.getGiyGifsAsnyc(new String[]{"dog","king"},4);
+
+        imageMode(CENTER);
 
         cli = new CLI( this );
-        loadMarkovs();
-
+       // loadMarkovs();
 
         noCursor();
     }
@@ -88,7 +93,13 @@ public class Oracle extends PApplet{
         background( 0 );
         cli.draw();
 
-        image( testGif, mouseX, mouseY );
+        if(gifDisplayer.getAsyncGifysAvailable()) {
+            testGifs = gifDisplayer.getAsyncGifys();
+            testGifs.stream().forEach(Gif::play);
+        }
+        if(testGifs.size() > 0)
+            image( testGifs.get((frameCount/5) % testGifs.size()), mouseX, mouseY );
+
 
         if( System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS ){
             cli.reset();
