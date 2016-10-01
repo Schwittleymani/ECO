@@ -5,7 +5,6 @@ import oracle.Oracle;
 import oracle.Settings;
 import oracle.ostern.Jesus;
 import oracle.web.OracleWebsocketServer;
-import org.apache.commons.configuration.tree.DefaultConfigurationKey;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -118,12 +117,13 @@ public class CLI{
         parent.pushMatrix();
         parent.translate(padding.left, padding.top);
 
-        parent.pushStyle();
-        parent.noFill();
-        parent.stroke( 255, 0 , 0 );
-        parent.strokeWeight( 1 );
-        parent.rect( 0,0, padding.width, padding.height );
-        parent.popStyle();
+        // test draw of the padding
+        //parent.pushStyle();
+        //parent.noFill();
+        //parent.stroke( 255, 0 , 0 );
+        //parent.strokeWeight( 1 );
+        //parent.rect( 0,0, padding.width, padding.height );
+        //parent.popStyle();
 
         for(int li = 0; li < lines.size(); li++){
             parent.pushMatrix();
@@ -263,7 +263,7 @@ public class CLI{
         Line sndLast = lines.get(lines.size() - 2);
         String text = sndLast.getText() + last.getText() ;
         String[] words = text.split(" ");
-        System.out.println(Arrays.toString(words));
+        //System.out.println(Arrays.toString(words));
         String txtFor2ndLast = "";
         String txtForLastLine = "";
         int w = 0;

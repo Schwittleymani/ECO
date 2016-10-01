@@ -2,8 +2,6 @@ import postpreprocess.spell_check
 
 import argparse
 import sys
-import os
-import random
 
 from generator import Generator
 import webserver.server
@@ -24,15 +22,6 @@ def process_arguments(args):
     return params
 
 
-
-def get_random_answer():
-    file = open('pre_defined_answers.txt', 'r')
-    lines = []
-    for line in file.readlines():
-        lines.append(line.rstrip())
-
-    return lines[random.randint(0, len(lines) - 1)]
-
 if __name__ == '__main__':
 
     params = process_arguments(sys.argv[1:])
@@ -42,7 +31,7 @@ if __name__ == '__main__':
 
     generator = Generator()
     generator.init_markov(text_files_path=markov_texts_path, max_models=1)
-    #generator.init_word_level_lstm(models_path=word_lstm_models_path)
+    generator.init_word_level_lstm(models_path=word_lstm_models_path, max_models=1)
     generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=1)
 
     interactive = params['interactive']
@@ -53,9 +42,7 @@ if __name__ == '__main__':
         webserver.server.set_generator(generator)
         webserver.server.launch()
 
-
     spell_checker = postpreprocess.spell_check.PreProcessor()
-
 
     while interactive:
         try:
@@ -78,7 +65,7 @@ if __name__ == '__main__':
 
             # temp hack- works only for word_level_rnn
             if result == 'no answer':
-                result = get_random_answer()
+                result = generator.get_random_answer()
 
             # 3. postprocess
             output_checked, _, __ = spell_checker.process(result, return_to_lower=False)

@@ -103,6 +103,7 @@ public class Oracle extends PApplet {
         background(0);
         cli.draw();
 
+        // TODO just a test. not loaded in setup...
         if (gifDisplayer.getAsyncGifysAvailable()) {
             testGifs = gifDisplayer.getAsyncGifys();
             testGifs.stream().forEach(Gif::play);
