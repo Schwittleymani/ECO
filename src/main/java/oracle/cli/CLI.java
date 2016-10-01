@@ -263,7 +263,7 @@ public class CLI{
         Line sndLast = lines.get(lines.size() - 2);
         String text = sndLast.getText() + last.getText() ;
         String[] words = text.split(" ");
-        System.out.println(Arrays.toString(words));
+        //System.out.println(Arrays.toString(words));
         String txtFor2ndLast = "";
         String txtForLastLine = "";
         int w = 0;

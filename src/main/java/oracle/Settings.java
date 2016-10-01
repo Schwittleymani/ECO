@@ -19,6 +19,7 @@ public class Settings{
     public static boolean USE_LYRIK;
 
     public static boolean START_WEBSERVER;
+    public static boolean DO_LOGGING;
 
     public static int MAX_INPUT_WORDS;
     public static int MIN_ANSWER_DELAY_COUNT, MAX_ANSWER_DELAY_COUNT;
@@ -45,7 +46,8 @@ public class Settings{
             e.printStackTrace();
         }
 
-        USE_LYRIK = Boolean.getBoolean(properties.getProperty( "USE_LYRIK" ));
+        USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
+        START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
 
         MAX_INPUT_WORDS = Integer.parseInt( properties.getProperty( "MAX_INPUT_WORDS" ) );
         MIN_ANSWER_DELAY_COUNT = Integer.parseInt( properties.getProperty( "MIN_ANSWER_DELAY_COUNT" ) );
@@ -72,7 +74,7 @@ public class Settings{
 
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );
 
-        DOWNLOAD_GIFY = Boolean.parseBoolean(properties.getProperty( "DOWNLOAD_GIFY" ));
+        DOWNLOAD_GIFY = Boolean.valueOf(properties.getProperty( "DOWNLOAD_GIFY" ));
 
         try {
             String[] customAnswers = PApplet.loadStrings( new FileInputStream( "data" + File.separator + "answers.txt" ) );
