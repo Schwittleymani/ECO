@@ -12,9 +12,12 @@ def process_arguments(args):
     parser = argparse.ArgumentParser(description='using a lstm with text')
 
     # training parameters
-    parser.add_argument('--keras_models_path', action='store', help='the path to the folder that contains all trained keras lstm models')
-    parser.add_argument('--markov_texts_path', action='store', help='the path where text files lie in order to train the markov chains')
-    parser.add_argument('--word_lstm_models_path', action='store', help='the path where the models are stored in subfolders')
+    parser.add_argument('--keras_models_path', action='store',
+                        help='the path to the folder that contains all trained keras lstm models')
+    parser.add_argument('--markov_texts_path', action='store',
+                        help='the path where text files lie in order to train the markov chains')
+    parser.add_argument('--word_lstm_models_path', action='store',
+                        help='the path where the models are stored in subfolders')
     parser.add_argument('--interactive', action='store', help='interactive mode', default=False)
 
     params = vars(parser.parse_args(args))
@@ -30,9 +33,9 @@ if __name__ == '__main__':
     word_lstm_models_path = params['word_lstm_models_path']
 
     generator = Generator()
-    generator.init_markov(text_files_path=markov_texts_path, max_models=2)
-    generator.init_word_level_lstm(models_path=word_lstm_models_path, max_models=2)
-    generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=2)
+    generator.init_markov(text_files_path=markov_texts_path, max_models=40)
+    generator.init_word_level_lstm(models_path=word_lstm_models_path, max_models=40)
+    generator.init_keras_lstm(models_path=keras_lstm_models_path, max_models=40)
 
     interactive = params['interactive']
     if not interactive:
@@ -55,7 +58,7 @@ if __name__ == '__main__':
 
             # 2. apply technique
             result = ''
-            #generator.mode = generator.WORD_RNN
+            # generator.mode = generator.WORD_RNN
             if generator.mode is generator.MARKOV:
                 result = generator.print_markov_result(input=input_checked)
             if generator.mode is generator.KERAS_LSTM:
@@ -65,6 +68,7 @@ if __name__ == '__main__':
 
             # temp hack- works only for word_level_rnn
             if result == 'no answer':
+                print('WORDRNN: no answer')
                 result = generator.get_random_answer()
 
             # 3. postprocess
