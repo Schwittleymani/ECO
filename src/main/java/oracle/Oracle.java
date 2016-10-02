@@ -34,6 +34,8 @@ public class Oracle extends PApplet {
     boolean useLyrik = true;
     boolean startWebserver = true;
     private ArrayList<MarkovManager> markovs;
+    boolean lyrikRequestDone = false;
+    String newLyrikAnswer = "";
 
     GifDisplayer gifDisplayer;
     List<Gif> testGifs = new ArrayList<Gif>();
@@ -44,10 +46,10 @@ public class Oracle extends PApplet {
     }
 
     public void settings() {
-        size(640, 480, P2D);
+        size(640 * 3, 480, P2D);
         logger = new OracleLogger();
 
-        //fullScreen( P2D, SPAN );
+        fullScreen( P2D, SPAN );
 
         settings = new Settings();
 
@@ -99,18 +101,28 @@ public class Oracle extends PApplet {
     }
 
     public void draw() {
-        background(0);
+        background( 0 );
         cli.draw();
+
+        if ( lyrikRequestDone )
+        {
+            cli.interceptTypeNow( newLyrikAnswer );
+            lyrikRequestDone = false;
+        }
 
         // TODO just a test. not loaded in setup...
         if (gifDisplayer.getAsyncGifysAvailable()) {
             testGifs = gifDisplayer.getAsyncGifys();
             testGifs.stream().forEach(Gif::play);
         }
-        if (testGifs.size() > 0)
-            image(testGifs.get((frameCount / 5) % testGifs.size()), mouseX, mouseY);
+        if (testGifs.size() > 0){
+            int x = 1920 + 640 + 320;
+            int y = 240;
+            int w = 600;
+            int h = 440;
+            image( testGifs.get( ( frameCount / 5 ) % testGifs.size() ), x, y, w, h );
 
-
+        }
         if (System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS) {
             cli.reset();
         }
@@ -119,7 +131,7 @@ public class Oracle extends PApplet {
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
-        if (cli.isActive()) {
+        if (cli.isActive() || !cli.isReadyForInput()) {
             key = 0;
             return;
         }
@@ -157,6 +169,18 @@ public class Oracle extends PApplet {
         }
     }
 
+    private void askLyrikViaThread(String text ) {
+        cli.finishHack();
+        String[] textSplit = text.split("\\s+");
+        gifDisplayer.getGiyGifsAsnyc(textSplit,1);
+        Thread thread = new Thread( () -> {
+            lyrikRequestDone = false;
+            newLyrikAnswer = askLyrik( text );
+            lyrikRequestDone = true;
+        } );
+        thread.start();
+    }
+
     private void processInput(){
         String inputText = cli.getUserInput().trim();
         String text = removeSpecialCharacters(inputText);
@@ -166,7 +190,7 @@ public class Oracle extends PApplet {
 
         //inputText = inputText.trim();
         if (useLyrik) {
-            result = askLyrik(text);
+            askLyrikViaThread(text);
             logResult = result;
         } else { // good old markov chain
             println(text);
@@ -176,30 +200,21 @@ public class Oracle extends PApplet {
         }
 
         logger.log(logger.USER, inputText);
-        logger.log(logger.ORACLE, logResult);
+        logger.log( logger.ORACLE, logResult );
 
         System.out.println("u:::" + inputText);
         System.out.println("o:::" + logResult);
 
-        long delayMillis = cli.finish(result);
+        //long delayMillis = cli.finish(result);
         if (startWebserver) {
-            server.sendTexts(inputText, result, delayMillis);
+            //server.sendTexts(inputText, result, delayMillis);
         }
-        //if( result.contains( "lacuna" ) ){
-        //    cli.startEmojiEasterEgg();
-        //}
-        //} catch ( Exception e ) {
-        //    e.printStackTrace();
-        //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
-        //}
-
     }
 
     private String askLyrik(String text) {
-        text = text.replaceAll("\\s+", "%20");
-        PostRequest post = new PostRequest(Settings.LYRIK_URL + text);
+        PostRequest post = new PostRequest(Settings.LYRIK_URL);
 
-        post.addData("inputS", "hello ECO");
+        post.addData("inputS", text );
         try {
             long millis = millis();
             post.send();
@@ -213,7 +228,7 @@ public class Oracle extends PApplet {
                 JSONParser json = new JSONParser();
                 Object obj = json.parse(post.getContent());
                 JSONObject mainJson = (JSONObject) (obj);
-                String result = (String) mainJson.get("combined");
+                String result = (String) mainJson.get("response");
 
                 System.out.println("Received result: " + result);
 
@@ -221,6 +236,7 @@ public class Oracle extends PApplet {
             }
         } catch (Exception exc) {
             exc.printStackTrace();
+            return "yeah";
         }
 
         return "nothing";
