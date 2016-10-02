@@ -70,7 +70,17 @@ class Generator(object):
         selected_markov = self.markovs[random_markov_index]
         return selected_markov.name, selected_markov.sample(input_text=input, length=length)
 
-    def sample_keras_lstm(self, input, diversity=0.1, length=50):
+    def sample_markov2(self, input, length=50):
+        """
+        :param input: the input text to continue with the markov chain
+        :param length: the length in characters of the returned output
+        :return: the answer found via markov chain
+        """
+        random_markov_index = random.randint(0, len(self.markovs) - 1)
+        selected_markov = self.markovs[random_markov_index]
+        return selected_markov.name, selected_markov.sample_short(length=length)
+
+    def sample_keras_lstm(self, input, diversity=0.1, length=200):
         """
         :param input: the input text to continue with the lstm
         :param diversity: [0-1] the riskyness of the answer. 0 -> 1 increases riskyness
@@ -86,41 +96,92 @@ class Generator(object):
         selected_word_lstm = self.word_lstms[random_word_lstm_index]
         return 'NO AUTHOR YET', selected_word_lstm.sample(input=input, sample=sample, output_length=output_length)
 
+    def sample_word_level_lstm2(self, input, sample=1, output_length=50):
+        random_word_lstm_index = random.randint(0, len(self.word_lstms) - 1)
+        selected_word_lstm = self.word_lstms[random_word_lstm_index]
+        return 'NO AUTHOR YET', selected_word_lstm.sample2(input=input, sample=sample, output_length=output_length)
+
     def print_markov_result(self, input):
         markov_author, markov_result = self.sample_markov(input=input)
-        #print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
+        print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
 
         result = markov_result.strip()
-        #print(result)
+        print(result)
+
+        return result
+
+    def print_markov_result2(self, input):
+        markov_author, markov_result = self.sample_markov(input=input)
+        print('Markov Chain input: \"' + input + '\" - author: ' + markov_author)
+
+        result = markov_result.strip()
+        print(result)
 
         return result
 
     def print_keras_lstm_result(self, input):
         keras_lstm_author, keras_lstm_result = self.sample_keras_lstm(input=input)
-        #print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
+        print('Keras LSTM input: \"' + input + '\" - author: ' + keras_lstm_author)
 
         result = keras_lstm_result.strip()
-        #print(result)
+        print(result)
 
         return result
 
     def print_word_rnn_result(self, input):
-        word_level_lstm_author, word_level_lstm_result = self.sample_word_level_lstm(input=input, output_length=10)
-        #print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
-        #print(word_level_lstm_result)
+        random_length = random.randint(10, 25)
+        word_level_lstm_author, word_level_lstm_result = self.sample_word_level_lstm(input=input, output_length=random_length)
+        print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
+        print(word_level_lstm_result)
+
+        return word_level_lstm_result
+
+    def print_word_rnn_result2(self, input):
+        random_length = random.randint(10, 25)
+        word_level_lstm_author, word_level_lstm_result = self.sample_word_level_lstm2(input=input,
+                                                                                      output_length=random_length)
+        print('Word level LSTM input: \"' + input + '\" - author: ' + word_level_lstm_author)
+        print(word_level_lstm_result)
 
         return word_level_lstm_result
 
     def get_result(self, input_checked):
         result = ''
-        if self.mode is self.MARKOV:
-            result = self.print_markov_result(input=input_checked)
-        if self.mode is self.KERAS_LSTM:
-            result = self.print_keras_lstm_result(input=input_checked)
+
+        random_mode = random.randint(1, 3)
+        print('RANDOM: ' + str(random_mode))
+        if random_mode == 1:
+            self.mode = self.WORD_RNN
+        elif random_mode == 2:
+            self.mode = self.KERAS_LSTM
+        else:
+            self.mode = self.MARKOV
+
         if self.mode is self.WORD_RNN:
-            result = self.print_word_rnn_result(input=input_checked)   
-        if result == 'no answer':
+
+            result = self.print_word_rnn_result2(input=input_checked)
+        elif self.mode is self.KERAS_LSTM:
+            try:
+                result = self.print_keras_lstm_result(input=input_checked)
+            except KeyError:
+                print('KERAS_LSTM: keyerror happened. no idea why.')
+                result = 'no answer'
+        else:
+            try:
+                result = self.print_markov_result(input=input_checked)
+            except UnicodeDecodeError:
+                result = 'no_answer_markov'
+
+        count = 0
+        while result == 'no_answer_markov' and count < 20:
+            print('MARKOV: no answer. Generating one without seed')
+            result = self.print_markov_result2(input=input_checked)
+            count += 1
+
+        if result == 'no answer' or result == 'no_answer_markov':
+            print('WORD_RNN: no answer. Generating one without seed')
             result = self.get_random_answer()
+            result = self.print_word_rnn_result(input=input_checked)
 
         print("get_result: " + result)
         return result
