@@ -43,7 +43,7 @@ class Markov2Wrapper(object):
             times_to_try -= 1
 
         if output is None:
-            return 'There was really no answer to find.'
+            return 'no_answer_markov'
         else:
             return output
 
