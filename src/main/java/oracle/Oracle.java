@@ -34,6 +34,8 @@ public class Oracle extends PApplet {
     boolean useLyrik = true;
     boolean startWebserver = true;
     private ArrayList<MarkovManager> markovs;
+    boolean lyrikRequestDone = false;
+    String newLyrikAnswer = "";
 
     GifDisplayer gifDisplayer;
     List<Gif> testGifs = new ArrayList<Gif>();
@@ -44,12 +46,14 @@ public class Oracle extends PApplet {
     }
 
     public void settings() {
-        size(640, 480, P2D);
+        size(640 * 2, 480, P3D);
         logger = new OracleLogger();
 
-        //fullScreen( P2D, SPAN );
-
         settings = new Settings();
+
+        if( Settings.FULLSCREEN ){
+            fullScreen( SPAN );
+        }
 
         useLyrik = Settings.USE_LYRIK;
         // TODO connectivity check
@@ -84,13 +88,13 @@ public class Oracle extends PApplet {
 
         markovs = new ArrayList<>();
 
-                /*
+        /*
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
             m.train( "text" + File.separator + "oraclev2" + File.separator + author, author, true );
             markovs.add( m );
         }
-            */
+        */
 
         for (String author : files) {
             MarkovManager m = new MarkovManager();
@@ -101,18 +105,28 @@ public class Oracle extends PApplet {
     }
 
     public void draw() {
-        background(0);
+        background( 0 );
         cli.draw();
+
+        if ( lyrikRequestDone )
+        {
+            cli.interceptTypeNow( newLyrikAnswer );
+            lyrikRequestDone = false;
+        }
 
         // TODO just a test. not loaded in setup...
         if (gifDisplayer.getAsyncGifysAvailable()) {
             testGifs = gifDisplayer.getAsyncGifys();
             testGifs.stream().forEach(Gif::play);
         }
-        if (testGifs.size() > 0)
-            image(testGifs.get((frameCount / 5) % testGifs.size()), mouseX, mouseY);
+        if (testGifs.size() > 0){
+            int x = Settings.GIFY_X;
+            int y = Settings.GIFY_Y;
+            int w = Settings.GIFY_W;
+            int h = Settings.GIFY_H;
+            image( testGifs.get( ( frameCount / 5 ) % testGifs.size() ), x, y, w, h );
 
-
+        }
         if (System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS) {
             cli.reset();
         }
@@ -121,7 +135,7 @@ public class Oracle extends PApplet {
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
 
-        if (cli.isActive()) {
+        if (cli.isActive() || !cli.isReadyForInput()) {
             key = 0;
             return;
         }
@@ -159,6 +173,18 @@ public class Oracle extends PApplet {
         }
     }
 
+    private void askLyrikViaThread(String text ) {
+        cli.finishHack();
+        String[] textSplit = text.split("\\s+");
+        gifDisplayer.getGiyGifsAsnyc(textSplit,1);
+        Thread thread = new Thread( () -> {
+            lyrikRequestDone = false;
+            newLyrikAnswer = askLyrik( text )[0];
+            lyrikRequestDone = true;
+        } );
+        thread.start();
+    }
+
     private void processInput(){
         String inputText = cli.getUserInput().trim();
         String text = removeSpecialCharacters(inputText);
@@ -169,6 +195,7 @@ public class Oracle extends PApplet {
             results = askLyrik(text);
         } else { // good old local markov chain
             results =  askLocalMarkov(text);
+
         }
 
         String result = results[0];
@@ -180,10 +207,11 @@ public class Oracle extends PApplet {
         System.out.println("u:::" + inputText);
         System.out.println("o:::" + logResult);
 
-        long delayMillis = cli.finish(result);
+        //long delayMillis = cli.finish(result);
         if (startWebserver) {
-            server.sendTexts(inputText, result, delayMillis);
+            //server.sendTexts(inputText, result, delayMillis);
         }
+
         //if( result.contains( "lacuna" ) ){
         //    cli.startEmojiEasterEgg();
         //}
@@ -191,6 +219,7 @@ public class Oracle extends PApplet {
         //    e.printStackTrace();
         //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
         //}
+
     }
 
     private String[] askLyrik(String text) {

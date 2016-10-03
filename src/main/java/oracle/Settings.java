@@ -20,6 +20,7 @@ public class Settings{
 
     public static boolean START_WEBSERVER;
     public static boolean DO_LOGGING;
+    public static boolean FULLSCREEN;
 
     public static int MAX_INPUT_WORDS;
     public static int MIN_ANSWER_DELAY_COUNT, MAX_ANSWER_DELAY_COUNT;
@@ -29,6 +30,7 @@ public class Settings{
     public static int CLI_RESET_DELAY_MILLIS, CLI_MAX_INPUT_CHARACTERS;
 
     public static int CLI_MARGIN_TOP, CLI_MARGIN_BOTTOM, CLI_MARGIN_LEFT, CLI_MARGIN_RIGHT;
+    public static int GIFY_X, GIFY_Y, GIFY_W, GIFY_H;
 
     public static int CHARACTER_DELAY_TIMEOUT;
 
@@ -48,6 +50,7 @@ public class Settings{
 
         USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
         START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
+        FULLSCREEN = Boolean.valueOf(properties.getProperty( "FULLSCREEN" ));
 
         MAX_INPUT_WORDS = Integer.parseInt( properties.getProperty( "MAX_INPUT_WORDS" ) );
         MIN_ANSWER_DELAY_COUNT = Integer.parseInt( properties.getProperty( "MIN_ANSWER_DELAY_COUNT" ) );
@@ -71,6 +74,11 @@ public class Settings{
         CLI_PADDING_BOTTOM = Integer.parseInt( properties.getProperty( "CLI_PADDING_BOTTOM" ) );
         CLI_PADDING_LEFT = Integer.parseInt( properties.getProperty( "CLI_PADDING_LEFT" ) );
         CLI_PADDING_RIGHT = Integer.parseInt( properties.getProperty( "CLI_PADDING_RIGHT" ) );
+
+        GIFY_X = Integer.parseInt( properties.getProperty( "GIFY_X" ) );
+        GIFY_Y = Integer.parseInt( properties.getProperty( "GIFY_Y" ) );
+        GIFY_W = Integer.parseInt( properties.getProperty( "GIFY_W" ) );
+        GIFY_H = Integer.parseInt( properties.getProperty( "GIFY_H" ) );
 
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );
 

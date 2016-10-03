@@ -142,11 +142,17 @@ public class CLI{
         }
 
         // types the text in delayed manner
-        if( delayedTyper.update() ){
-            newLine(Line.LineType.USER_START );
+        try {
+            if( delayedTyper.update() ){
+                newLine( Line.LineType.USER_START );
+            }
+            state = delayedTyper.getState();
+        } catch (NullPointerException e ){
+            // hacky, but i dont understand the problem.
+            delayedTyper = new DelayedTyper( this );
+            reset();
         }
 
-        state = delayedTyper.getState();
         //System.out.println(state.name());
 
         parent.popMatrix();
@@ -186,6 +192,13 @@ public class CLI{
         delayedTyper.startTimout( delayMillis );
         state = CliState.ORACLE_THINKING;
         return delayMillis;
+    }
+
+    public void finishHack(){
+        newLine(Line.LineType.BOT_LINE);
+        delayedTyper.addText( "*yawn*" );
+        delayedTyper.startTimout( 15000 );
+        state = CliState.ORACLE_THINKING;
     }
 
     public long calculateDelayByResponseWordCount( int length ) {
@@ -250,6 +263,10 @@ public class CLI{
 
     public boolean isActive() {
         return !delayedTyper.isEmpty();
+    }
+
+    public boolean isReadyForInput() {
+        return state == CliState.USER_INPUT;
     }
 
     public void suspendTyper( int millis ) {

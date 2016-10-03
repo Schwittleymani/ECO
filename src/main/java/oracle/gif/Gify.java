@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -82,8 +83,8 @@ public class Gify {
         int counter = 0;
         ArrayList<String> paths = new ArrayList<String>();
         for(String address : addresses) {
-            String filePath = "gifs/gify/" + baseName + "_" + counter + ".gif";
-            downloadGif("data/" + filePath, address);
+            String filePath = "gifs"+ File.separator+"gify" + File.separator + baseName + "_" + counter + ".gif";
+            downloadGif("data" + File.separator + filePath, address);
             paths.add(filePath);
             counter++;
             if(counter == maxDownload)
