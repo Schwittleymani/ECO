@@ -57,6 +57,7 @@ class Generator(object):
                 if loaded_count < max_models:
                     path = os.path.join(root, dir)
                     word_lstm = word_level_rnn.word_lstm_wrapper.WordLevelLSTM(load_dir=path, varscope=dir)
+                    word_lstm.name = dir
                     self.word_lstms.append(word_lstm)
                     loaded_count += 1
 
@@ -94,12 +95,14 @@ class Generator(object):
     def sample_word_level_lstm(self, input, sample=1, output_length=50):
         random_word_lstm_index = random.randint(0, len(self.word_lstms) - 1)
         selected_word_lstm = self.word_lstms[random_word_lstm_index]
-        return 'NO AUTHOR YET', selected_word_lstm.sample(input=input, sample=sample, output_length=output_length)
+        return selected_word_lstm.name, selected_word_lstm.sample(input=input, sample=sample,
+                                                                 output_length=output_length)
 
     def sample_word_level_lstm2(self, input, sample=1, output_length=50):
         random_word_lstm_index = random.randint(0, len(self.word_lstms) - 1)
         selected_word_lstm = self.word_lstms[random_word_lstm_index]
-        return 'NO AUTHOR YET', selected_word_lstm.sample2(input=input, sample=sample, output_length=output_length)
+        return selected_word_lstm.name, selected_word_lstm.sample2(input=input, sample=sample,
+                                                                 output_length=output_length)
 
     def print_markov_result(self, input):
         markov_author, markov_result = self.sample_markov(input=input)
@@ -164,7 +167,10 @@ class Generator(object):
             try:
                 result = self.print_keras_lstm_result(input=input_checked)
             except KeyError:
-                print('KERAS_LSTM: keyerror happened. no idea why.')
+                print('KERAS_LSTM: KeyError happened. no idea why.')
+                result = 'no answer'
+            except UnicodeDecodeError:
+                print('KERAS_LSTM: UnicodeDecodeError happened. no idea why.')
                 result = 'no answer'
         else:
             try:
@@ -175,13 +181,23 @@ class Generator(object):
         count = 0
         while result == 'no_answer_markov' and count < 20:
             print('MARKOV: no answer. Generating one without seed')
-            result = self.print_markov_result2(input=input_checked)
+            try:
+                result = self.print_markov_result2(input=input_checked)
+            except UnicodeDecodeError:
+                result = 'no_answer_markov'
             count += 1
 
-        if result == 'no answer' or result == 'no_answer_markov':
+        count_word_rnn = 0
+        while (result == 'no answer' or result == 'no_answer_markov') and count_word_rnn < 10:
             print('WORD_RNN: no answer. Generating one without seed')
-            result = self.get_random_answer()
+            result = self.print_word_rnn_result2(input=input_checked)
+            count_word_rnn += 1
+
+        count_word_rnn = 0
+        while (result == 'no answer' or result == 'no_answer_markov') and count_word_rnn < 10:
+            print('WORD_RNN: no answer. Generating one without seed')
             result = self.print_word_rnn_result(input=input_checked)
+            count_word_rnn += 1
 
         print("get_result: " + result)
         return result
