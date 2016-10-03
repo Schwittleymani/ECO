@@ -47,7 +47,7 @@ public class Oracle extends PApplet {
     //GifDisplayer gifDisplayer;
 
     public static void main(String[] args) {
-        PApplet.main("oracle.Oracle");
+        PApplet.main( "oracle.Oracle" );
     }
 
     public void settings() {
@@ -198,9 +198,12 @@ public class Oracle extends PApplet {
         inputText = cli.getUserInput().trim();
         cli.setState(CLI.CliState.ORACLE_WAITING);
         lastInputText = removeSpecialCharacters(inputText);
-        println(lastInputText);
+        println( lastInputText );
 
         String[] results;
+
+        String[] textSplit = lastInputText.split("\\s+");
+        gif.getGiyGifsAsnyc(textSplit,1);
 
         if (useLyrik) {
             lyrik.askLyrikAsync(lastInputText);
