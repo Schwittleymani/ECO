@@ -70,9 +70,11 @@ public class Oracle extends PApplet {
         imageMode(CENTER);
 
         cli = new CLI(this);
-        if (!useLyrik) {
+        // load anyway. switch off if memory is a problem
+        // otherwise load async on demand for fast response
+        //if (!useLyrik) {
             loadMarkovs();
-        }
+        //}
 
         noCursor();
     }
@@ -160,23 +162,20 @@ public class Oracle extends PApplet {
     private void processInput(){
         String inputText = cli.getUserInput().trim();
         String text = removeSpecialCharacters(inputText);
+        println(text);
 
-        String result = "";
-        String logResult = "";
-
-        //inputText = inputText.trim();
+        String[] results;
         if (useLyrik) {
-            result = askLyrik(text);
-            logResult = result;
-        } else { // good old markov chain
-            println(text);
-            String[] results =  askLocalMarkov(text);
-            result = results[0];
-            logResult = results[1];
+            results = askLyrik(text);
+        } else { // good old local markov chain
+            results =  askLocalMarkov(text);
         }
 
+        String result = results[0];
+        String logResult = results[1];
+
         logger.log(logger.USER, inputText);
-        logger.log( logger.ORACLE, logResult );
+        logger.log(logger.ORACLE, logResult);
 
         System.out.println("u:::" + inputText);
         System.out.println("o:::" + logResult);
@@ -192,38 +191,39 @@ public class Oracle extends PApplet {
         //    e.printStackTrace();
         //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
         //}
-
     }
 
-    private String askLyrik(String text) {
-        PostRequest post = new PostRequest(Settings.LYRIK_URL);
-
-        post.addData("inputS", text );
+    private String[] askLyrik(String text) {
         try {
+
+            PostRequest post = new PostRequest(Settings.LYRIK_URL);
+            post.addData("inputS", text );
             long millis = millis();
             post.send();
 
             if (post != null) {
-                println("Reponse Content: " + post.getContent());
-                println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
+                //println("Reponse Content: " + post.getContent());
+                //println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
                 long millisDiff = millis() - millis;
-                println("That took " + millisDiff + "ms");
+                println("askLyrik took " + millisDiff + "ms");
 
                 JSONParser json = new JSONParser();
                 Object obj = json.parse(post.getContent());
                 JSONObject mainJson = (JSONObject) (obj);
                 String result = (String) mainJson.get("response");
-
+                String logResult = result;
                 System.out.println("Received result: " + result);
 
-                return result;
+                return new String[] {result,logResult};
             }
         } catch (Exception exc) {
-            exc.printStackTrace();
-            return "yeah";
-        }
+            //exc.printStackTrace();
+            useLyrik = false;
+            System.out.println("yeah. no lyrik. local markov for now");
+            return askLocalMarkov(text);
 
-        return "nothing";
+        }
+        return new String[] {"nothing","kindof lame exit"}; // TODO fix, make issue;
     }
 
     private String[] askLocalMarkov(String text) {
