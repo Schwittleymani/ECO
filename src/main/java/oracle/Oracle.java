@@ -46,12 +46,14 @@ public class Oracle extends PApplet {
     }
 
     public void settings() {
-        size(640 * 2, 480, P2D);
+        size(640 * 2, 480, P3D);
         logger = new OracleLogger();
 
-        //fullScreen( P2D, SPAN );
-
         settings = new Settings();
+
+        if( Settings.FULLSCREEN ){
+            fullScreen( SPAN );
+        }
 
         useLyrik = Settings.USE_LYRIK;
         // TODO connectivity check
@@ -84,13 +86,13 @@ public class Oracle extends PApplet {
 
         markovs = new ArrayList<>();
 
-                /*
+        /*
         for ( String author : files ) {
             MarkovManager m = new MarkovManager();
             m.train( "text" + File.separator + "oraclev2" + File.separator + author, author, true );
             markovs.add( m );
         }
-            */
+        */
 
         for (String author : files) {
             MarkovManager m = new MarkovManager();

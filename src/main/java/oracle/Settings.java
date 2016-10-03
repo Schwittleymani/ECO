@@ -20,6 +20,7 @@ public class Settings{
 
     public static boolean START_WEBSERVER;
     public static boolean DO_LOGGING;
+    public static boolean FULLSCREEN;
 
     public static int MAX_INPUT_WORDS;
     public static int MIN_ANSWER_DELAY_COUNT, MAX_ANSWER_DELAY_COUNT;
@@ -49,6 +50,7 @@ public class Settings{
 
         USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
         START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
+        FULLSCREEN = Boolean.valueOf(properties.getProperty( "FULLSCREEN" ));
 
         MAX_INPUT_WORDS = Integer.parseInt( properties.getProperty( "MAX_INPUT_WORDS" ) );
         MIN_ANSWER_DELAY_COUNT = Integer.parseInt( properties.getProperty( "MIN_ANSWER_DELAY_COUNT" ) );
