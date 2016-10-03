@@ -197,7 +197,7 @@ public class CLI{
     public void finishHack(){
         newLine(Line.LineType.BOT_LINE);
         delayedTyper.addText( "*yawn*" );
-        delayedTyper.startTimout( 10000 );
+        delayedTyper.startTimout( 15000 );
         state = CliState.ORACLE_THINKING;
     }
 

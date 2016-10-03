@@ -46,10 +46,10 @@ public class Oracle extends PApplet {
     }
 
     public void settings() {
-        size(640 * 3, 480, P2D);
+        size(640 * 2, 480, P2D);
         logger = new OracleLogger();
 
-        fullScreen( P2D, SPAN );
+        //fullScreen( P2D, SPAN );
 
         settings = new Settings();
 
@@ -116,10 +116,10 @@ public class Oracle extends PApplet {
             testGifs.stream().forEach(Gif::play);
         }
         if (testGifs.size() > 0){
-            int x = 1920 + 640 + 320;
-            int y = 240;
-            int w = 600;
-            int h = 440;
+            int x = Settings.GIFY_X;
+            int y = Settings.GIFY_Y;
+            int w = Settings.GIFY_W;
+            int h = Settings.GIFY_H;
             image( testGifs.get( ( frameCount / 5 ) % testGifs.size() ), x, y, w, h );
 
         }
