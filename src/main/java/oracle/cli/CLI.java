@@ -200,9 +200,9 @@ public class CLI{
         delayedTyper.addText( answer );
         int words = answer.split( " " ).length;
         long delayMillis = calculateDelayByResponseWordCount( words );
-        //System.out.println("finnish-Calculated delay"+","+delayMillis);
-        delayMillis -= (startTimeInState - System.currentTimeMillis());
-        //System.out.println("finnish-down to"+","+delayMillis);
+        System.out.println("finnish-Calculated delay"+","+delayMillis);
+        delayMillis -= (System.currentTimeMillis() - startTimeInState);
+        System.out.println("finnish-down to"+","+delayMillis);
 
         delayedTyper.startTimout( delayMillis );
         return delayMillis;

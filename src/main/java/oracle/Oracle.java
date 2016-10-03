@@ -61,16 +61,6 @@ public class Oracle extends PApplet {
         }
 
         useLyrik = Settings.USE_LYRIK;
-        // TODO connectivity check
-
-        startWebserver = Settings.START_WEBSERVER;
-        if (startWebserver) {
-            server = new Webserver(this);
-            Settings.printIps();
-        }
-
-        millisLastInteraction = System.currentTimeMillis();
-
     }
 
     public void setup() {
@@ -80,23 +70,19 @@ public class Oracle extends PApplet {
         startWebserver(Settings.START_WEBSERVER);
         useLyrik = Settings.USE_LYRIK; // TODO connectivity check
         gif = new GifDisplayer(this);
-
-        //gifDisplayer.getGiyGifsAsnyc(new String[]{"dog","king"},4);
-
-
         // load anyway. switch off if memory is a problem
         // otherwise load async on demand for fast response
         //if (!useLyrik) {
-
+        markov.loadMarkovs();
         //}
         noCursor();
         imageMode(CENTER);
         millisLastInteraction = System.currentTimeMillis();
     }
 
-
     public void startWebserver(boolean startWS){
         if (startWS) {
+            // TODO connectivity check
             server = new Webserver(this);
             Settings.printIps();
         }
@@ -104,6 +90,23 @@ public class Oracle extends PApplet {
 
     public void draw() {
         background( 0 );
+
+        // TODO just a test. not loaded in setup...
+        if (gif.getAsyncGifysAvailable()) {
+            testGifs = gif.getAsyncGifys();
+            testGifs.stream().forEach(Gif::play);
+        }
+        if (testGifs.size() > 0){
+            int x = Settings.GIFY_X;
+            int y = Settings.GIFY_Y;
+            int w = Settings.GIFY_W;
+            int h = Settings.GIFY_H;
+            tint(0,255,0);
+            image( testGifs.get( ( frameCount / 5 ) % testGifs.size() ), x, y, w, h );
+        }
+        filter(POSTERIZE, 8);
+
+
         cli.draw();
         //println(frameCount);
 
@@ -124,7 +127,7 @@ public class Oracle extends PApplet {
             results = markov.askLocalMarkov(inputText);
             askMarkov = false;
             if(!results.isPresent()){
-                System.err.println("even good old markov fail...");
+                System.err.println("even good old markov fails...");
             }
         }
         if(results.isPresent()){
@@ -133,18 +136,6 @@ public class Oracle extends PApplet {
         }
 
 
-        // TODO just a test. not loaded in setup...
-        if (gif.getAsyncGifysAvailable()) {
-            testGifs = gif.getAsyncGifys();
-            testGifs.stream().forEach(Gif::play);
-        }
-        if (testGifs.size() > 0){
-            int x = Settings.GIFY_X;
-            int y = Settings.GIFY_Y;
-            int w = Settings.GIFY_W;
-            int h = Settings.GIFY_H;
-            image( testGifs.get( ( frameCount / 5 ) % testGifs.size() ), x, y, w, h );
-        }
         if (System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS) {
             cli.reset();
         }
@@ -200,8 +191,6 @@ public class Oracle extends PApplet {
         lastInputText = removeSpecialCharacters(inputText);
         println( lastInputText );
 
-        String[] results;
-
         String[] textSplit = lastInputText.split("\\s+");
         gif.getGiyGifsAsnyc(textSplit,1);
 
@@ -255,9 +244,6 @@ public class Oracle extends PApplet {
         gif.getGiyGifsAsnyc(textSplit,1);
 
      */
-
-
-
 
     private String removeSpecialCharacters(String input) {
         Pattern p = Pattern.compile("\\W*");
