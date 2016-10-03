@@ -1,19 +1,18 @@
 package oracle;
 
 import gifAnimation.Gif;
-import http.requests.PostRequest;
 import oracle.cli.CLI;
 import oracle.gif.GifDisplayer;
+import oracle.lyrik.Lyrik;
+import oracle.markov.Markov;
 import oracle.web.Webserver;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processing.core.PApplet;
 
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,17 +28,23 @@ public class Oracle extends PApplet {
     OracleLogger logger;
     public Settings settings;
 
-    long millisLastInteraction;
+    long millisLastInteraction; // this timer should be part of a egg
 
-    boolean useLyrik = true;
+    Lyrik lyrik;
+    Markov markov;
+    GifDisplayer gif;
+    boolean useLyrik = true; // use lyrik in general
+    boolean askMarkov = !useLyrik; // switched on when input arrived. set false after asking
     boolean startWebserver = true;
-    private ArrayList<MarkovManager> markovs;
-    boolean lyrikRequestDone = false;
-    String newLyrikAnswer = "";
 
-    GifDisplayer gifDisplayer;
+
     List<Gif> testGifs = new ArrayList<Gif>();
+    private String inputText;
 
+    String lastInputText;
+    String[] lastResults;
+
+    //GifDisplayer gifDisplayer;
 
     public static void main(String[] args) {
         PApplet.main("oracle.Oracle");
@@ -65,58 +70,72 @@ public class Oracle extends PApplet {
         }
 
         millisLastInteraction = System.currentTimeMillis();
+
     }
 
     public void setup() {
-        gifDisplayer = new GifDisplayer(this);
+        cli = new CLI(this);
+        lyrik = new Lyrik();
+        markov = new Markov(this);
+        startWebserver(Settings.START_WEBSERVER);
+        useLyrik = Settings.USE_LYRIK; // TODO connectivity check
+        gif = new GifDisplayer(this);
+
         //gifDisplayer.getGiyGifsAsnyc(new String[]{"dog","king"},4);
 
-        imageMode(CENTER);
 
-        cli = new CLI(this);
         // load anyway. switch off if memory is a problem
         // otherwise load async on demand for fast response
         //if (!useLyrik) {
-            loadMarkovs();
-        //}
 
+        //}
         noCursor();
+        imageMode(CENTER);
+        millisLastInteraction = System.currentTimeMillis();
     }
 
-    private void loadMarkovs() {
-        String[] files = loadStrings("authors.txt");
 
-        markovs = new ArrayList<>();
-
-        /*
-        for ( String author : files ) {
-            MarkovManager m = new MarkovManager();
-            m.train( "text" + File.separator + "oraclev2" + File.separator + author, author, true );
-            markovs.add( m );
+    public void startWebserver(boolean startWS){
+        if (startWS) {
+            server = new Webserver(this);
+            Settings.printIps();
         }
-        */
-
-        for (String author : files) {
-            MarkovManager m = new MarkovManager();
-            m.load(author);
-            markovs.add(m);
-        }
-
     }
 
     public void draw() {
         background( 0 );
         cli.draw();
+        //println(frameCount);
 
-        if ( lyrikRequestDone )
-        {
-            cli.interceptTypeNow( newLyrikAnswer );
-            lyrikRequestDone = false;
+        Optional<String[]> results = Optional.empty();
+        if (useLyrik) {
+            Lyrik.LyrikState lyrikState = lyrik.getState();
+            if (lyrikState == Lyrik.LyrikState.DONE) {
+                results = lyrik.getNewAnswer();
+                lyrik.setState(Lyrik.LyrikState.IDLE);
+                if (!results.isPresent()) {
+                    askMarkov = true;
+                    useLyrik = false; // switch lyrik off for now
+                    System.out.println("Switching Lyrik off for now...");
+                }
+            }
+        }
+        if (askMarkov) {
+            results = markov.askLocalMarkov(inputText);
+            askMarkov = false;
+            if(!results.isPresent()){
+                System.err.println("even good old markov fail...");
+            }
+        }
+        if(results.isPresent()){
+            lastResults = results.get();
+            processAnswer();
         }
 
+
         // TODO just a test. not loaded in setup...
-        if (gifDisplayer.getAsyncGifysAvailable()) {
-            testGifs = gifDisplayer.getAsyncGifys();
+        if (gif.getAsyncGifysAvailable()) {
+            testGifs = gif.getAsyncGifys();
             testGifs.stream().forEach(Gif::play);
         }
         if (testGifs.size() > 0){
@@ -125,12 +144,12 @@ public class Oracle extends PApplet {
             int w = Settings.GIFY_W;
             int h = Settings.GIFY_H;
             image( testGifs.get( ( frameCount / 5 ) % testGifs.size() ), x, y, w, h );
-
         }
         if (System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS) {
             cli.reset();
         }
     }
+
 
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
@@ -173,33 +192,33 @@ public class Oracle extends PApplet {
         }
     }
 
-    private void askLyrikViaThread(String text ) {
-        cli.finishHack();
-        String[] textSplit = text.split("\\s+");
-        gifDisplayer.getGiyGifsAsnyc(textSplit,1);
-        Thread thread = new Thread( () -> {
-            lyrikRequestDone = false;
-            newLyrikAnswer = askLyrik( text )[0];
-            lyrikRequestDone = true;
-        } );
-        thread.start();
-    }
 
-    private void processInput(){
-        String inputText = cli.getUserInput().trim();
-        String text = removeSpecialCharacters(inputText);
-        println(text);
+
+    private void processInput() {
+        inputText = cli.getUserInput().trim();
+        cli.setState(CLI.CliState.ORACLE_WAITING);
+        lastInputText = removeSpecialCharacters(inputText);
+        println(lastInputText);
 
         String[] results;
-        if (useLyrik) {
-            results = askLyrik(text);
-        } else { // good old local markov chain
-            results =  askLocalMarkov(text);
 
+        if (useLyrik) {
+            lyrik.askLyrikAsync(lastInputText);
+        } else { // good old local markov chain
+            // just set the flag here so we gonna have it in the next draw
+            askMarkov = true;
         }
 
-        String result = results[0];
-        String logResult = results[1];
+        if (startWebserver) {
+            //server.sendTexts(inputText, result, -1); // TODO why commented out. remove 3. parameter
+        }
+
+    }
+
+    private void processAnswer() {
+
+        String result = lastResults[0];
+        String logResult = lastResults[1];
 
         logger.log(logger.USER, inputText);
         logger.log(logger.ORACLE, logResult);
@@ -207,10 +226,14 @@ public class Oracle extends PApplet {
         System.out.println("u:::" + inputText);
         System.out.println("o:::" + logResult);
 
+
         //long delayMillis = cli.finish(result);
-        if (startWebserver) {
+        if (startWebserver) { // TODO that should come back...
             //server.sendTexts(inputText, result, delayMillis);
         }
+        cli.finish(result);
+
+        // jesus easter egg....
 
         //if( result.contains( "lacuna" ) ){
         //    cli.startEmojiEasterEgg();
@@ -222,63 +245,16 @@ public class Oracle extends PApplet {
 
     }
 
-    private String[] askLyrik(String text) {
-        try {
+    /*
 
-            PostRequest post = new PostRequest(Settings.LYRIK_URL);
-            post.addData("inputS", text );
-            long millis = millis();
-            post.send();
+            cli.startThinkingState();
+        String[] textSplit = text.split("\\s+");
+        gif.getGiyGifsAsnyc(textSplit,1);
 
-            if (post != null) {
-                //println("Reponse Content: " + post.getContent());
-                //println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
-                long millisDiff = millis() - millis;
-                println("askLyrik took " + millisDiff + "ms");
+     */
 
-                JSONParser json = new JSONParser();
-                Object obj = json.parse(post.getContent());
-                JSONObject mainJson = (JSONObject) (obj);
-                String result = (String) mainJson.get("response");
-                String logResult = result;
-                System.out.println("Received result: " + result);
 
-                return new String[] {result,logResult};
-            }
-        } catch (Exception exc) {
-            //exc.printStackTrace();
-            useLyrik = false;
-            System.out.println("yeah. no lyrik. local markov for now");
-            return askLocalMarkov(text);
 
-        }
-        return new String[] {"nothing","kindof lame exit"}; // TODO fix, make issue;
-    }
-
-    private String[] askLocalMarkov(String text) {
-        ArrayList<Integer> markovDepths = new ArrayList<>();
-        ArrayList<String> answers = new ArrayList<>();
-        ArrayList<String> authors = new ArrayList<>();
-
-        for (MarkovManager m : markovs) {
-            int depth = m.getMarkovDepthOrder(m.strip(text));
-            String answer = m.getAnswer(text);
-            markovDepths.add(depth);
-            answers.add(answer);
-            authors.add(m.getAuthorName());
-        }
-
-        // if the depth of the selected answer is 0, that means
-        // there was no proper answer of any author
-        int index = Settings.maxIndex(markovDepths);
-        String result = answers.get(index);
-        String authorName = authors.get(index);
-        String logResult = "(" + authorName + ") " + result;
-        if (markovDepths.get(index) == 0) {
-            authorName = "pre_defined_answer";
-        }
-        return new String[]{result,logResult};
-    }
 
     private String removeSpecialCharacters(String input) {
         Pattern p = Pattern.compile("\\W*");
