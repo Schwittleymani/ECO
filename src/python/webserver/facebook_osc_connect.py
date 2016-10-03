@@ -1,11 +1,13 @@
 import OSC
 import threading
-
+import unicodedata
 
 class OscFacebook(object):
     def __init__(self):
         receive_address = ('localhost', 12000)
         send_address = 'localhost', 12001
+
+        print("Facebook service started")
 
         self.server = OSC.OSCServer(receive_address)
         self.client = OSC.OSCClient()
@@ -18,6 +20,11 @@ class OscFacebook(object):
         self.server_thread.start()
 
     def send(self, text, threadid):
+        print('trying to send ' + text + ' to ' + threadid)
+        print(type(text))
+        if isinstance(text, unicode):
+            print('input was unicode, so encodign in ascii')
+            text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore')
         msg = OSC.OSCMessage('/answer')
         msg.append(text)
         msg.append(int(threadid))
