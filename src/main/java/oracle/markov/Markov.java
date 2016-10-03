@@ -37,6 +37,8 @@ public class Markov {
         String[] files = oracle.loadStrings("authors.txt");
         markovs = new ArrayList<>();
         // I removed some load "oraclev2" comment here
+        // TODO this was training stuff. bring it back
+
         IntStream.range(0,files.length)
                 .filter(i -> number == -1 || i < number)
                 .forEach(i -> loadAuthor(files[i]));

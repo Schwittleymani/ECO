@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,14 +28,13 @@ public class Oracle extends PApplet {
     OracleLogger logger;
     public Settings settings;
 
-    long millisLastInteraction;
-
+    long millisLastInteraction; // this timer should be part of a egg
 
     Lyrik lyrik;
     Markov markov;
     GifDisplayer gif;
-    boolean useLyrik = true;
-    boolean askMarkov = !useLyrik; // switched on when input arrived. of in after asking
+    boolean useLyrik = true; // use lyrik in general
+    boolean askMarkov = !useLyrik; // switched on when input arrived. set false after asking
     boolean startWebserver = true;
 
     List<Gif> testGifs = new ArrayList<Gif>();
@@ -46,7 +44,6 @@ public class Oracle extends PApplet {
     String[] lastResults;
 
     //GifDisplayer gifDisplayer;
-
 
     public static void main(String[] args) {
         PApplet.main("oracle.Oracle");
@@ -91,12 +88,14 @@ public class Oracle extends PApplet {
     public void draw() {
         background(0);
         cli.draw();
+        //println(frameCount);
 
         Optional<String[]> results = Optional.empty();
         if (useLyrik) {
-            boolean lyrikRequestDone = lyrik.isRequestDone();
-            if (lyrikRequestDone) {
+            Lyrik.LyrikState lyrikState = lyrik.getState();
+            if (lyrikState == Lyrik.LyrikState.DONE) {
                 results = lyrik.getNewAnswer();
+                lyrik.setState(Lyrik.LyrikState.IDLE);
                 if (!results.isPresent()) {
                     askMarkov = true;
                     useLyrik = false; // switch lyrik off for now
@@ -106,6 +105,7 @@ public class Oracle extends PApplet {
         }
         if (askMarkov) {
             results = markov.askLocalMarkov(inputText);
+            askMarkov = false;
             if(!results.isPresent()){
                 System.err.println("even good old markov fail...");
             }
@@ -133,20 +133,6 @@ public class Oracle extends PApplet {
         }
     }
 
-    private void processAnswer() {
-
-
-        String result = lastResults[0];
-        String logResult = lastResults[1];
-
-        logger.log(logger.USER, inputText);
-        logger.log(logger.ORACLE, logResult);
-
-        System.out.println("u:::" + inputText);
-        System.out.println("o:::" + logResult);
-
-        cli.interceptTypeNow(result);
-    }
 
     public void keyPressed() {
         millisLastInteraction = System.currentTimeMillis();
@@ -190,31 +176,41 @@ public class Oracle extends PApplet {
     }
 
 
-    /*
-
-            cli.finishHack();
-        String[] textSplit = text.split("\\s+");
-        gif.getGiyGifsAsnyc(textSplit,1);
-
-     */
-
     private void processInput() {
         inputText = cli.getUserInput().trim();
-        String text = removeSpecialCharacters(inputText);
-        println(text);
+        cli.setState(CLI.CliState.ORACLE_WAITING);
+        lastInputText = removeSpecialCharacters(inputText);
+        println(lastInputText);
 
         String[] results;
+
         if (useLyrik) {
-            lyrik.askLyrikAsync(text);
+            lyrik.askLyrikAsync(lastInputText);
         } else { // good old local markov chain
-            markov.askLocalMarkov(text);
+            // just set the flag here so we gonna have it in the next draw
+            askMarkov = true;
         }
 
-
-        //long delayMillis = cli.finish(result);
         if (startWebserver) {
             //server.sendTexts(inputText, result, -1); // TODO why commented out. remove 3. parameter
         }
+
+    }
+
+    private void processAnswer() {
+
+        String result = lastResults[0];
+        String logResult = lastResults[1];
+
+        logger.log(logger.USER, inputText);
+        logger.log(logger.ORACLE, logResult);
+
+        System.out.println("u:::" + inputText);
+        System.out.println("o:::" + logResult);
+
+        cli.finish(result);
+
+        // jesus easter egg....
         //if( result.contains( "lacuna" ) ){
         //    cli.startEmojiEasterEgg();
         //}
@@ -223,6 +219,16 @@ public class Oracle extends PApplet {
         //    cli.finish( "oh", calculateDelayByResponseWordCount( inputWordsString.split( " " ).length ) );
         //}
     }
+
+    /*
+
+            cli.startThinkingState();
+        String[] textSplit = text.split("\\s+");
+        gif.getGiyGifsAsnyc(textSplit,1);
+
+     */
+
+
 
 
     private String removeSpecialCharacters(String input) {

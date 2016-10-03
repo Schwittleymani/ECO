@@ -13,21 +13,33 @@ import java.util.StringJoiner;
  */
 public class Lyrik {
 
-    boolean requestDone = false;
     Optional<String[]> newAnswer = Optional.empty();
 
+    public enum LyrikState{
+        IDLE,WAITING,DONE
+    }
 
-    public boolean isRequestDone() {
-        return requestDone;
+    private LyrikState state = LyrikState.IDLE;
+
+    public LyrikState getState() {
+        return state;
+    }
+
+    public void setState(LyrikState state){
+        this.state = state;
     }
 
     public void askLyrikAsync(String text ) {
         Thread thread = new Thread( () -> {
-            requestDone = false;
             newAnswer = askLyrik( text );
-            requestDone = true;
+            state = LyrikState.DONE;
         });
-        thread.start();
+        if(state == LyrikState.IDLE) {
+            thread.start();
+            state = LyrikState.IDLE.WAITING;
+        } else {
+            System.err.println("lyrik.askLyrikAsync got multiple requests...?");
+        }
     }
 
     public Optional<String[]> getNewAnswer(){
@@ -52,6 +64,10 @@ public class Lyrik {
                 Object obj = json.parse(post.getContent());
                 JSONObject mainJson = (JSONObject) (obj);
                 String result = (String) mainJson.get("response");
+                if(result == null) {
+                    System.err.println("Lyrik responds with null...");
+                    throw new Exception();
+                }
                 String logResult = result;
                 System.out.println("Received result: " + result);
                 String[] returns = {result,logResult};

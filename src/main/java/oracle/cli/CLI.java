@@ -10,7 +10,6 @@ import processing.core.PFont;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by mrzl on 31.03.2016.
@@ -28,17 +27,18 @@ public class CLI{
 
     public enum CliState{
         USER_INPUT,
-        ORACLE_THINKING,
-        ORACLE_TYPING
+        ORACLE_WAITING,
+        ORACLE_WRITING
     }
 
     public CliState state = CliState.USER_INPUT;
+    public long startTimeInState;
 
     private Jesus jesus;
     private BlinkingRectangle blinker;
     private DelayedTyper delayedTyper;
 
-    private int currentY;
+
 
     BoxValues margin,padding;
     protected int textSize;
@@ -103,6 +103,7 @@ public class CLI{
 
 
     public void draw() {
+        //System.out.println("CLI state: "+state);
         parent.fill( 0, 255, 0 );
         parent.pushMatrix();
         parent.translate(margin.left,margin.top);
@@ -136,27 +137,36 @@ public class CLI{
             if(line.lineType != Line.LineType.USER_START)
                 parent.translate(LINE_PREFIX_WIDTH,0);
             line.draw();
-            if(li == lines.size() - 1)
-                blinker.draw( delayedTyper.isWaiting() );
+            if(li == lines.size() - 1) {
+                //System.out.println("CLI"+","+state);
+                blinker.draw(state == CliState.ORACLE_WAITING);
+            }
             parent.popMatrix();
         }
 
         // types the text in delayed manner
         try {
-            if( delayedTyper.update() ){
-                newLine( Line.LineType.USER_START );
+            DelayedTyper.TyperState typerState= delayedTyper.update();
+            if(typerState == DelayedTyper.TyperState.WRITING){
+                state = CliState.ORACLE_WRITING;
             }
-            state = delayedTyper.getState();
+            if(typerState == DelayedTyper.TyperState.DONE){
+                newLine( Line.LineType.USER_START );
+                state = CliState.USER_INPUT;
+                delayedTyper.setIdle();
+            }
+
         } catch (NullPointerException e ){
             // hacky, but i dont understand the problem.
             delayedTyper = new DelayedTyper( this );
             reset();
         }
 
-        //System.out.println(state.name());
 
         parent.popMatrix();
         parent.popMatrix();
+
+
         jesus.drawAfterEaster();
     }
 
@@ -169,6 +179,7 @@ public class CLI{
             return;
         }
     }
+
 
 
     public void backspace() {
@@ -185,20 +196,27 @@ public class CLI{
     }
 
     public long finish( String answer ) {
-        newLine(Line.LineType.BOT_LINE);
+        state = CliState.ORACLE_WAITING;
         delayedTyper.addText( answer );
         int words = answer.split( " " ).length;
         long delayMillis = calculateDelayByResponseWordCount( words );
+        //System.out.println("finnish-Calculated delay"+","+delayMillis);
+        delayMillis -= (startTimeInState - System.currentTimeMillis());
+        //System.out.println("finnish-down to"+","+delayMillis);
+
         delayedTyper.startTimout( delayMillis );
-        state = CliState.ORACLE_THINKING;
         return delayMillis;
     }
 
-    public void finishHack(){
-        newLine(Line.LineType.BOT_LINE);
-        delayedTyper.addText( "*yawn*" );
-        delayedTyper.startTimout( 10000 );
-        state = CliState.ORACLE_THINKING;
+    // maybe just set state :)
+    public void setState(CliState state) {
+        this.state = state;
+        if(state == CliState.USER_INPUT){
+
+        } else if(state == CliState.ORACLE_WAITING){
+            startTimeInState = System.currentTimeMillis();
+            newLine(Line.LineType.BOT_LINE);
+        }
     }
 
     public long calculateDelayByResponseWordCount( int length ) {
@@ -242,6 +260,7 @@ public class CLI{
     public void reset() {
         lines.clear();
         newLine(Line.LineType.USER_START);
+        // mayeb set typer state as well..
     }
 
     public boolean available() {
@@ -275,7 +294,7 @@ public class CLI{
     }
 
     public boolean interceptTypeNow( String content ) {
-        if( state == CliState.ORACLE_THINKING ){
+        if( state == CliState.ORACLE_WAITING){
             delayedTyper.typeNow( content );
             return true;
         } else {
