@@ -63,7 +63,7 @@ public class Oracle extends PApplet {
         startWebserver(Settings.START_WEBSERVER);
         useLyrik = Settings.USE_LYRIK; // TODO connectivity check
         gif = new GifDisplayer(this);
-        
+
         noCursor();
         imageMode(CENTER);
         millisLastInteraction = System.currentTimeMillis();
@@ -104,12 +104,20 @@ public class Oracle extends PApplet {
             results = markov.askLocalMarkov(inputText);
             askMarkov = false;
             if(!results.isPresent()){
-                System.err.println("even good old markov fails...");
+                System.err.println( "even good old markov fails..." );
             }
         }
         if(results.isPresent()){
             lastResults = results.get();
-            gif.input(lastResults[0]);
+
+            // only using first 4 words of answer as giphy keywords
+            String[] words = lastResults[0].split( " ");
+            String keywords = "";
+            int max = 4;
+            for( int i = 0; i < words.length && i < max; i++ ) {
+                keywords += words[i] + " ";
+            }
+            gif.input(keywords);
             processAnswer();
         }
 
