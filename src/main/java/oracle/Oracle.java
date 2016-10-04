@@ -86,8 +86,11 @@ public class Oracle extends PApplet {
         cli.draw();
         //println(frameCount);
 
+
+
         Optional<String[]> results = Optional.empty();
-        if (useLyrik) {
+
+        if (useLyrik ) {
             Lyrik.LyrikState lyrikState = lyrik.getState();
             if (lyrikState == Lyrik.LyrikState.DONE) {
                 results = lyrik.getNewAnswer();
@@ -100,8 +103,9 @@ public class Oracle extends PApplet {
                 }
             }
         }
+
         if (askMarkov) {
-            results = markov.askLocalMarkov(inputText);
+            results = markov.askLocalMarkov(lastInputText);
             askMarkov = false;
             if(!results.isPresent()){
                 System.err.println( "even good old markov fails..." );
@@ -117,6 +121,7 @@ public class Oracle extends PApplet {
             for( int i = 0; i < words.length && i < max; i++ ) {
                 keywords += words[i] + " ";
             }
+            System.out.println( "SEARCHING GIPHY FOR " + keywords);
             gif.input(keywords);
             processAnswer();
         }
@@ -177,8 +182,10 @@ public class Oracle extends PApplet {
         println( lastInputText );
 
 
+        boolean useMarkovAnyways = random( 1 ) < Settings.USE_MARKOV_CHANCE;
+        System.out.println( "Using Markov anyways = " + useMarkovAnyways + " chance " + Settings.USE_MARKOV_CHANCE);
 
-        if (useLyrik) {
+        if (useLyrik && !useMarkovAnyways) {
             lyrik.askLyrikAsync(lastInputText);
         } else { // good old local markov chain
             // just set the flag here so we gonna have it in the next draw
