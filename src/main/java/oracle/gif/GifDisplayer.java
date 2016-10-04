@@ -2,6 +2,7 @@ package oracle.gif;
 
 import gifAnimation.Gif;
 import oracle.Oracle;
+import oracle.Settings;
 
 import java.io.File;
 import java.util.*;
@@ -20,8 +21,10 @@ public class GifDisplayer {
 
     //private boolean asynGifyRequestRunning = false;
     private boolean asyncGifysAvailable = false;
-    private List<Gif> asyncGifys = new ArrayList<Gif>();
+    private List<Gif> receivedGifs = new ArrayList<Gif>();
+    private List<Gif> runningGifs = new ArrayList<Gif>();
 
+    boolean doReset = false;
 
     public GifDisplayer(Oracle oracle) {
         this.oracle = oracle;
@@ -82,7 +85,7 @@ public class GifDisplayer {
             @Override
             public void run() {
                 asyncGifysAvailable = false;
-                asyncGifys = getGiyGifs(searchWords,number);
+                receivedGifs = getGiyGifs(searchWords,number);
                 asyncGifysAvailable = true;
             }
         });
@@ -93,9 +96,37 @@ public class GifDisplayer {
         return asyncGifysAvailable;
     }
 
-    public List<Gif> getAsyncGifys() {
-        asyncGifysAvailable = false;
-        return asyncGifys;
+    public void input(String input){
+        doReset = true;
+        String[] textSplit = input.split("\\s+");
+        getGiyGifsAsnyc(textSplit,1);
     }
+
+    public void result(String result) {
+        String[] textSplit = result.split("\\s+");
+        getGiyGifsAsnyc(textSplit,1);
+    }
+
+    public void update(){
+        if(doReset) {
+            runningGifs.clear();
+            doReset = false;
+        }
+        if (getAsyncGifysAvailable()) {
+            receivedGifs.stream().forEach(Gif::play);
+            runningGifs.addAll(receivedGifs);
+            receivedGifs.clear();
+        }
+        if (runningGifs.size() > 0){
+            int x = Settings.GIFY_X;
+            int y = Settings.GIFY_Y;
+            int w = Settings.GIFY_W;
+            int h = Settings.GIFY_H;
+            oracle.tint(0,255,0);
+            oracle.image( runningGifs.get( ( oracle.frameCount / 15 ) % runningGifs.size() ), x, y, w, h );
+        }
+        oracle.filter(oracle.POSTERIZE, 8);
+    }
+
 
 }
