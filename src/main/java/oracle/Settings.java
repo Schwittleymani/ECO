@@ -34,6 +34,8 @@ public class Settings{
 
     public static int CHARACTER_DELAY_TIMEOUT;
 
+    public static boolean DO_LOCAL_MARKOV_TRAINING, EXPORT_MARKOV_TRAINING;
+
     public static String LYRIK_URL;
 
     public static ArrayList< String > RANDOM_ANSWERS = new ArrayList<>();
@@ -51,6 +53,8 @@ public class Settings{
         USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
         START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
         FULLSCREEN = Boolean.valueOf(properties.getProperty( "FULLSCREEN" ));
+        DO_LOCAL_MARKOV_TRAINING = Boolean.valueOf(properties.getProperty( "DO_LOCAL_MARKOV_TRAINING" ));
+        EXPORT_MARKOV_TRAINING = Boolean.valueOf(properties.getProperty( "EXPORT_MARKOV_TRAINING" ));
 
         MAX_INPUT_WORDS = Integer.parseInt( properties.getProperty( "MAX_INPUT_WORDS" ) );
         MIN_ANSWER_DELAY_COUNT = Integer.parseInt( properties.getProperty( "MIN_ANSWER_DELAY_COUNT" ) );
