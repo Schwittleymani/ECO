@@ -32,6 +32,7 @@ public class Settings{
     public static int CLI_MARGIN_TOP, CLI_MARGIN_BOTTOM, CLI_MARGIN_LEFT, CLI_MARGIN_RIGHT;
     public static int GIFY_X, GIFY_Y, GIFY_W, GIFY_H;
     public static int GIF_SWAP_SPEED_MIN, GIF_SWAP_SPEED_MAX;
+    public static int GIFS_PER_PART;
 
     public static int CHARACTER_DELAY_TIMEOUT;
 

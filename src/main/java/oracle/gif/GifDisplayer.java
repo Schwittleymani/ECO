@@ -104,12 +104,12 @@ public class GifDisplayer {
     public void input(String input){
         doReset = true;
         String[] textSplit = input.split("\\s+");
-        getGiyGifsAsnyc(textSplit,2);
+        getGiyGifsAsnyc(textSplit,Settings.GIFS_PER_PART);
     }
 
     public void result(String result) {
         String[] textSplit = result.split("\\s+");
-        getGiyGifsAsnyc(textSplit,2);
+        getGiyGifsAsnyc(textSplit,Settings.GIFS_PER_PART);
     }
 
     public void setNewGifSwapSpeed(){
