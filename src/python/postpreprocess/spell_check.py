@@ -44,7 +44,10 @@ class PreProcessor(object):
         :return:
         """
         tool = grammar_check.LanguageTool('en-GB')
-        matches = tool.check(text)
+        try:
+            matches = tool.check(text)
+        except:
+            return text
         recs = 0
         while len(matches) > 0:
             #print 'grammar correct: ', len(matches)
