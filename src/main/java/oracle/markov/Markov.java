@@ -3,6 +3,7 @@ package oracle.markov;
 import oracle.MarkovManager;
 import oracle.Oracle;
 import oracle.Settings;
+import oracle.cli.CLI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ public class Markov {
     }
 
     public Optional<String[]> askLocalMarkov(String text) {
+        text = text.replace( CLI.LINE_PREFIX_CHARS, "");
         ArrayList<Integer> markovDepths = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
         ArrayList<String> authors = new ArrayList<>();
