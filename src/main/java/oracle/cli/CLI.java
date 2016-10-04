@@ -21,7 +21,7 @@ public class CLI{
 
     private ArrayList< Line > lines = new ArrayList<>();
     private ArrayList< Line > hiddenLines = new ArrayList<>(); // for edge case of endless writer...
-    private Oracle parent;
+    private Oracle oracle;
 
     private PFont font;
 
@@ -38,8 +38,6 @@ public class CLI{
     private BlinkingRectangle blinker;
     private DelayedTyper delayedTyper;
 
-
-
     BoxValues margin,padding;
     protected int textSize;
     protected int lineHeight;
@@ -47,9 +45,9 @@ public class CLI{
 
     public CLI( Oracle p ) {
 
-        this.parent = p;
+        this.oracle = p;
         this.font = p.createFont( "data" + File.separator + "Glass_TTY_VT220.ttf", Settings.CLI_TEXT_SIZE );
-        this.parent.textFont( this.font );
+        this.oracle.textFont( this.font );
 
 
         this.margin = new BoxValues(Settings.CLI_MARGIN_TOP,Settings.CLI_MARGIN_BOTTOM,
@@ -63,7 +61,7 @@ public class CLI{
 
         lineHeight = Settings.CLI_LINE_HEIGTH;
         textSize = Settings.CLI_TEXT_SIZE;
-        parent.textSize(textSize);
+        oracle.textSize(textSize);
 
         LINE_PREFIX_WIDTH = getTextWidth(LINE_PREFIX_CHARS);
         setupWidth();
@@ -76,7 +74,7 @@ public class CLI{
         String widthTestString = "";
         do {
             widthTestString += "a";
-        } while ( parent.textWidth( widthTestString ) < padding.width);
+        } while ( oracle.textWidth( widthTestString ) < padding.width);
         Line.CHAR_LIMIT = widthTestString.length();
        // System.out.println("debug: Line Limit: "+Line.CHAR_LIMIT);
     }
@@ -104,44 +102,44 @@ public class CLI{
 
     public void draw() {
         //System.out.println("CLI state: "+state);
-        parent.fill( 0, 255, 0 );
-        parent.pushMatrix();
-        parent.translate(margin.left,margin.top);
+        oracle.fill( 0, 255, 0 );
+        oracle.pushMatrix();
+        oracle.translate(margin.left,margin.top);
 
         // BORDER
-        parent.pushStyle();
-        parent.noFill();
-        parent.stroke( 0, 255, 0 );
-        parent.strokeWeight( 5 );
-        parent.rect( 0,0, margin.width,margin.height );
-        parent.popStyle();
+        oracle.pushStyle();
+        oracle.noFill();
+        oracle.stroke( 0, 255, 0 );
+        oracle.strokeWeight( 5 );
+        oracle.rect( 0,0, margin.width,margin.height );
+        oracle.popStyle();
 
         jesus.drawBeforeEaster();
 
         pushLinesUp();
-        parent.pushMatrix();
-        parent.translate(padding.left, padding.top);
+        oracle.pushMatrix();
+        oracle.translate(padding.left, padding.top);
 
         // test draw of the padding
-        //parent.pushStyle();
-        //parent.noFill();
-        //parent.stroke( 255, 0 , 0 );
-        //parent.strokeWeight( 1 );
-        //parent.rect( 0,0, padding.width, padding.height );
-        //parent.popStyle();
+        //oracle.pushStyle();
+        //oracle.noFill();
+        //oracle.stroke( 255, 0 , 0 );
+        //oracle.strokeWeight( 1 );
+        //oracle.rect( 0,0, padding.width, padding.height );
+        //oracle.popStyle();
 
         for(int li = 0; li < lines.size(); li++){
-            parent.pushMatrix();
-            parent.translate(0,(li + 1) * lineHeight);
+            oracle.pushMatrix();
+            oracle.translate(0,(li + 1) * lineHeight);
             Line line = lines.get(li);
             if(line.lineType != Line.LineType.USER_START)
-                parent.translate(LINE_PREFIX_WIDTH,0);
+                oracle.translate(LINE_PREFIX_WIDTH,0);
             line.draw();
             if(li == lines.size() - 1) {
                 //System.out.println("CLI"+","+state);
                 blinker.draw(state == CliState.ORACLE_WAITING);
             }
-            parent.popMatrix();
+            oracle.popMatrix();
         }
 
         // types the text in delayed manner
@@ -163,8 +161,8 @@ public class CLI{
             reset();
         }
 
-        parent.popMatrix();
-        parent.popMatrix();
+        oracle.popMatrix();
+        oracle.popMatrix();
 
 
         jesus.drawAfterEaster();
@@ -179,8 +177,6 @@ public class CLI{
             return;
         }
     }
-
-
 
     public void backspace() {
         if( state == CliState.USER_INPUT ) {
@@ -200,9 +196,9 @@ public class CLI{
         delayedTyper.addText( answer );
         int words = answer.split( " " ).length;
         long delayMillis = calculateDelayByResponseWordCount( words );
-        //System.out.println("finnish-Calculated delay"+","+delayMillis);
-        delayMillis -= (startTimeInState - System.currentTimeMillis());
-        //System.out.println("finnish-down to"+","+delayMillis);
+        System.out.println("finnish-Calculated delay"+","+delayMillis);
+        delayMillis -= (System.currentTimeMillis() - startTimeInState);
+        System.out.println("finnish-down to"+","+delayMillis);
 
         delayedTyper.startTimout( delayMillis );
         return delayMillis;
@@ -221,7 +217,10 @@ public class CLI{
 
     public long calculateDelayByResponseWordCount( int length ) {
         int inputDelayMaxWords = 30;
-        return ( int ) PApplet.map( PApplet.min( length, inputDelayMaxWords ), 1, inputDelayMaxWords, Settings.MIN_ANSWER_DELAY_COUNT, Settings.MAX_ANSWER_DELAY_COUNT );
+        return ( int ) PApplet.map(
+                PApplet.min(length,inputDelayMaxWords),
+                1, inputDelayMaxWords,
+                Settings.MIN_ANSWER_DELAY_COUNT, Settings.MAX_ANSWER_DELAY_COUNT );
     }
 
     public void type( char c ) {
@@ -242,7 +241,7 @@ public class CLI{
 
     public void newLine( Line.LineType type ) {
         //currentY += Settings.CLI_LINE_HEIGTH;
-        Line newLine = new Line( this.parent, type );
+        Line newLine = new Line( this.oracle, type );
         lines.add( newLine );
         if( type == Line.LineType.USER_START){
             for(Character c : LINE_PREFIX_CHARS.toCharArray())
@@ -273,7 +272,7 @@ public class CLI{
     }
 
     public int getTextWidth( String text ) {
-        return ( int ) parent.textWidth( text );
+        return ( int ) oracle.textWidth( text );
     }
 
     public int getTextSize() {
@@ -296,6 +295,7 @@ public class CLI{
     public boolean interceptTypeNow( String content ) {
         if( state == CliState.ORACLE_WAITING){
             delayedTyper.typeNow( content );
+            oracle.server.finnish(content);
             return true;
         } else {
             return false;
@@ -320,7 +320,7 @@ public class CLI{
                 // might be the bizarre edge case that somebody wants to be funny
                 // not typing any spaces...
                 if(w == 0 || w == 2 && sndLast.lineType == Line.LineType.USER_START) {
-                    int firstPartLength = parent.min(words[w].length(),sndLast.limit());
+                    int firstPartLength = oracle.min(words[w].length(),sndLast.limit());
                     String wordSplit1 = words[w].substring(0,firstPartLength);
                     String wordSplit2 = words[w].substring(firstPartLength);
                     txtFor2ndLast += wordSplit1;
@@ -339,6 +339,10 @@ public class CLI{
 
     public void typeNow() {
         delayedTyper.typeNow();
+    }
+
+    public long getDelayTimeout(){
+        return delayedTyper.getDelayTimeout();
     }
 }
 

@@ -183,6 +183,11 @@
 		}
 	}
 
+	function unknown_timeout() {
+		bar_div.style.width = 200+"px";
+		timeout_div.innerHTML = "input done"
+	}
+
 	function killIntervals() {
 		clearInterval(interval_tick);
 	 	clearInterval(interval_countdown);
@@ -312,13 +317,18 @@
 	  	/*if(msg_obj.status == "USER_INPUT") {
 
 	  	}*/
-	  } else if(msg_obj.type == "texts") {
+	  } else if(msg_obj.type == "input"){
 	  	append("user",msg_obj.input);
-	  	oracle_upcoming_span.innerHTML = msg_obj.result;
 	  	user_input_div.innerHTML = "";
-	  	start_timeout(msg_obj.timeout);
-	  	set_state(ORACLE_THINKS);
-	  } else if(msg_obj.type == "typing") {
+	  	unknown_timeout();
+	  } else if(msg_obj.type == "result"){
+		oracle_upcoming_span.innerHTML = msg_obj.result;
+		start_timeout(msg_obj.timeout);
+		set_state(ORACLE_THINKS);
+	  } else if(msg_obj.type == "finnish"){
+		append("user",msg_obj.result);
+		set_state(USER_INPUT);
+	  }	else if(msg_obj.type == "typing") {
 	  	console.log("typing");
 	  	user_input_div.innerHTML = user_input_div.innerHTML + msg_obj.content; 
 	  } else if(msg_obj.type == "typing_backspace") {

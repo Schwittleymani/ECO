@@ -46,7 +46,9 @@ public class DelayedTyper{
         state = TyperState.WAITING;
     }
 
-
+    public long getDelayTimeout(){
+        return delayTimeout;
+    }
     /*public boolean isInitDelay() {
         return System.currentTimeMillis() - initDelayStartMillis < initDelayMillis;
     }*/

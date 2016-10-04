@@ -22,14 +22,22 @@ public class Webserver{
     Oracle Pparent;
 
     public Webserver( Oracle parent ) {
-        server = new SimpleHTTPServer( parent );
+        server = new SimpleHTTPServer( parent,9000);
         server.serve("pre-texts.js");
         websocketServer = new OracleWebsocketServer( parent );
         this.Pparent = parent;
     }
 
-    public void sendTexts( String input, String result, long timout ) {
-        websocketServer.sendTexts( input, result, timout );
+    public void sendInput(String input) {
+        websocketServer.sendInput( input );
+    }
+
+    public void sendResult(String result, long timeout){
+        websocketServer.sendResult(result,timeout);
+    }
+
+    public void finnish(String answer){
+        websocketServer.sendFinnish(answer);
     }
 
     class SessionLog extends ResponseBuilder{
