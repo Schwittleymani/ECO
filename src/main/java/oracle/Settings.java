@@ -84,7 +84,7 @@ public class Settings{
 
         GIF_SWAP_SPEED_MIN = Integer.parseInt( properties.getProperty( "GIF_SWAP_SPEED_MIN" ) );
         GIF_SWAP_SPEED_MAX = Integer.parseInt( properties.getProperty( "GIF_SWAP_SPEED_MAX" ) );
-        GIF_SWAP_SPEED_MAX = Integer.parseInt( properties.getProperty( "GIFS_PER_PART" ) );
+        GIFS_PER_PART = Integer.parseInt( properties.getProperty( "GIFS_PER_PART" ) );
 
 
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );

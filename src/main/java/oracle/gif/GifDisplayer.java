@@ -58,7 +58,7 @@ public class GifDisplayer {
     public List<Gif> getGiyGifs(String[] searchWords, int number) {
         List<String> gifs = gify.getSearchURLs(searchWords, number * retreiveFactor);
         Collections.shuffle(gifs);
-        gifs.subList(0,number);
+        gifs = gifs.subList(0,number);
 
         //gifs.stream().forEach(System.out::println);
         if(downloadGifys) {
@@ -86,13 +86,10 @@ public class GifDisplayer {
     }
 
     public void getGiyGifsAsnyc(String[] searchWords, int number) {
-        Thread getGifysThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                asyncGifysAvailable = false;
-                receivedGifs = getGiyGifs(searchWords,number);
-                asyncGifysAvailable = true;
-            }
+        Thread getGifysThread = new Thread(() -> {
+            asyncGifysAvailable = false;
+            receivedGifs = getGiyGifs(searchWords, number);
+            asyncGifysAvailable = true;
         });
         getGifysThread.start();
     }
