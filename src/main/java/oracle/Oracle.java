@@ -37,8 +37,6 @@ public class Oracle extends PApplet {
     boolean askMarkov = !useLyrik; // switched on when input arrived. set false after asking
     boolean startWebserver = true;
 
-
-    List<Gif> testGifs = new ArrayList<Gif>();
     private String inputText;
 
     String lastInputText;
@@ -81,6 +79,7 @@ public class Oracle extends PApplet {
     }
 
     public void startWebserver(boolean startWS){
+        startWebserver = startWS;
         if (startWS) {
             // TODO connectivity check
             server = new Webserver(this);
@@ -91,21 +90,7 @@ public class Oracle extends PApplet {
     public void draw() {
         background( 0 );
 
-        // TODO just a test. not loaded in setup...
-        if (gif.getAsyncGifysAvailable()) {
-            testGifs = gif.getAsyncGifys();
-            testGifs.stream().forEach(Gif::play);
-        }
-        if (testGifs.size() > 0){
-            int x = Settings.GIFY_X;
-            int y = Settings.GIFY_Y;
-            int w = Settings.GIFY_W;
-            int h = Settings.GIFY_H;
-            tint(0,255,0);
-            image( testGifs.get( ( frameCount / 5 ) % testGifs.size() ), x, y, w, h );
-        }
-        filter(POSTERIZE, 8);
-
+        gif.update();
 
         cli.draw();
         //println(frameCount);
@@ -190,8 +175,7 @@ public class Oracle extends PApplet {
         lastInputText = removeSpecialCharacters(inputText);
         println( lastInputText );
 
-        String[] textSplit = lastInputText.split("\\s+");
-        gif.getGiyGifsAsnyc(textSplit,1);
+        gif.input(lastInputText);
 
         if (useLyrik) {
             lyrik.askLyrikAsync(lastInputText);
@@ -222,6 +206,8 @@ public class Oracle extends PApplet {
         if (startWebserver) { // TODO that should come back...
             server.sendResult(result, cli.getDelayTimeout());
         }
+
+        gif.result(result);
 
         // jesus easter egg....
 
