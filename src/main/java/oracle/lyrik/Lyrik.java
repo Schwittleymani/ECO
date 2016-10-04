@@ -30,6 +30,7 @@ public class Lyrik {
     }
 
     public void askLyrikAsync(String text ) {
+
         Thread thread = new Thread( () -> {
             newAnswer = askLyrik( text );
             state = LyrikState.DONE;
