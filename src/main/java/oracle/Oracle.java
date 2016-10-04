@@ -113,16 +113,6 @@ public class Oracle extends PApplet {
         }
         if(results.isPresent()){
             lastResults = results.get();
-
-            // only using first 4 words of answer as giphy keywords
-            String[] words = lastResults[0].split( " ");
-            String keywords = "";
-            int max = 4;
-            for( int i = 0; i < words.length && i < max; i++ ) {
-                keywords += words[i] + " ";
-            }
-            System.out.println( "SEARCHING GIPHY FOR " + keywords);
-            gif.input(keywords);
             processAnswer();
         }
 
@@ -215,7 +205,16 @@ public class Oracle extends PApplet {
             server.sendResult(result, cli.getDelayTimeout());
         }
 
-        gif.result(result);
+        // only using first 4 words of answer as giphy keywords
+        String[] words = result.split( " ");
+        String keywords = "";
+        int max = 4;
+        for( int i = 0; i < words.length && i < max; i++ ) {
+            keywords += words[i] + " ";
+        }
+        System.out.println( "SEARCHING GIPHY FOR " + keywords );
+
+        gif.result(keywords);
 
         // jesus easter egg....
 
