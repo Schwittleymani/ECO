@@ -28,8 +28,16 @@ public class Webserver{
         this.Pparent = parent;
     }
 
-    public void sendTexts( String input, String result, long timout ) {
-        websocketServer.sendTexts( input, result, timout );
+    public void sendInput(String input) {
+        websocketServer.sendInput( input );
+    }
+
+    public void sendResult(String result, long timeout){
+        websocketServer.sendResult(result,timeout);
+    }
+
+    public void finnish(String answer){
+        websocketServer.sendFinnish(answer);
     }
 
     class SessionLog extends ResponseBuilder{

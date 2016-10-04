@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class Oracle extends PApplet {
     public CLI cli;
-    Webserver server;
+    public Webserver server;
     OracleLogger logger;
     public Settings settings;
 
@@ -184,7 +184,6 @@ public class Oracle extends PApplet {
     }
 
 
-
     private void processInput() {
         inputText = cli.getUserInput().trim();
         cli.setState(CLI.CliState.ORACLE_WAITING);
@@ -202,7 +201,7 @@ public class Oracle extends PApplet {
         }
 
         if (startWebserver) {
-            //server.sendTexts(inputText, result, -1); // TODO why commented out. remove 3. parameter
+            server.sendInput(lastInputText); // TODO why commented out. remove 3. parameter
         }
 
     }
@@ -218,12 +217,11 @@ public class Oracle extends PApplet {
         System.out.println("u:::" + inputText);
         System.out.println("o:::" + logResult);
 
-
-        //long delayMillis = cli.finish(result);
-        if (startWebserver) { // TODO that should come back...
-            //server.sendTexts(inputText, result, delayMillis);
-        }
         cli.finish(result);
+
+        if (startWebserver) { // TODO that should come back...
+            server.sendResult(result, cli.getDelayTimeout());
+        }
 
         // jesus easter egg....
 
