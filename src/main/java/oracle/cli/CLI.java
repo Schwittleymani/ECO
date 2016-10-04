@@ -25,6 +25,8 @@ public class CLI{
 
     private PFont font;
 
+    private String result; // bot or intercept
+
     public enum CliState{
         USER_INPUT,
         ORACLE_WAITING,
@@ -147,12 +149,10 @@ public class CLI{
 
             DelayedTyper.TyperState typerState= delayedTyper.update();
             if(typerState == DelayedTyper.TyperState.WRITING){
-                state = CliState.ORACLE_WRITING;
+                setState(CliState.ORACLE_WRITING);
             }
             if(typerState == DelayedTyper.TyperState.DONE){
-                newLine( Line.LineType.USER_START );
-                state = CliState.USER_INPUT;
-                delayedTyper.setIdle();
+                setState(CliState.USER_INPUT);
             }
 
         } catch (NullPointerException e ){
@@ -193,6 +193,7 @@ public class CLI{
 
     public long finish( String answer ) {
         state = CliState.ORACLE_WAITING;
+        result = answer;
         delayedTyper.addText( answer );
         int words = answer.split( " " ).length;
         long delayMillis = calculateDelayByResponseWordCount( words );
@@ -208,10 +209,15 @@ public class CLI{
     public void setState(CliState state) {
         this.state = state;
         if(state == CliState.USER_INPUT){
-
+            newLine( Line.LineType.USER_START );
+            state = CliState.USER_INPUT;
+            delayedTyper.setIdle();
         } else if(state == CliState.ORACLE_WAITING){
+            // not sure if this is ever called...
             startTimeInState = System.currentTimeMillis();
             newLine(Line.LineType.BOT_LINE);
+        } else if(state == CliState.ORACLE_WRITING){
+            oracle.server.finnish(result);
         }
     }
 
@@ -295,7 +301,7 @@ public class CLI{
     public boolean interceptTypeNow( String content ) {
         if( state == CliState.ORACLE_WAITING){
             delayedTyper.typeNow( content );
-            oracle.server.finnish(content);
+            result = content;
             return true;
         } else {
             return false;
