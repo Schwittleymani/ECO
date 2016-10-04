@@ -5,6 +5,7 @@ import oracle.Oracle;
 import oracle.Settings;
 import oracle.cli.CLI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -15,31 +16,44 @@ import java.util.stream.IntStream;
  */
 public class Markov {
 
-    Oracle oracle;
+    private Oracle oracle;
     private ArrayList<MarkovManager> markovs = new ArrayList<>();
 
     public Markov(Oracle oracle) {
         this.oracle = oracle;
-        System.out.println("MARKOV");
-        loadMarkovs(); // can be changed if u wanna speed or selections... for just load all our stuff
+        this.markovs = new ArrayList<>();
+
+        boolean doTraining = Settings.DO_LOCAL_MARKOV_TRAINING;
+        if( doTraining ){
+            System.out.println( "Training Markov" );
+            trainMarkovs();
+        } else {
+            System.out.println( "Loading Markov" );
+            loadMarkovs(); // can be changed if u wanna speed or selections... for just load all our stuff
+        }
     }
 
-    public void loadMarkovs() {
+    private void trainMarkovs() {
+        MarkovManager m = new MarkovManager();
+        String[] files = oracle.loadStrings("authors.txt");
+        for( String s : files ){
+            m.train( "text/" + File.separator + s, s, Settings.EXPORT_MARKOV_TRAINING );
+        }
+        markovs.add(m);
+    }
+
+    private void loadMarkovs() {
         loadMarkovs(-1);
     }
 
-    public void loadAuthor(String author){
+    private void loadAuthor(String author){
         MarkovManager m = new MarkovManager();
         m.load(author);
         markovs.add(m);
     }
 
-    public void loadMarkovs(final int number) {
+    private void loadMarkovs(final int number) {
         String[] files = oracle.loadStrings("authors.txt");
-        markovs = new ArrayList<>();
-        // I removed some load "oraclev2" comment here
-        // TODO this was training stuff. bring it back
-
         IntStream.range(0,files.length)
                 .filter(i -> number == -1 || i < number)
                 .forEach(i -> loadAuthor(files[i]));
