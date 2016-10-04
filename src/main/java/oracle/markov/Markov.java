@@ -37,7 +37,7 @@ public class Markov {
         MarkovManager m = new MarkovManager();
         String[] files = oracle.loadStrings("authors.txt");
         for( String s : files ){
-            m.train( "text/" + File.separator + s, s, Settings.EXPORT_MARKOV_TRAINING );
+            m.train( "text" + File.separator + s, s, Settings.EXPORT_MARKOV_TRAINING );
         }
         markovs.add(m);
     }
