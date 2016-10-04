@@ -326,7 +326,7 @@
 		start_timeout(msg_obj.timeout);
 		set_state(ORACLE_THINKS);
 	  } else if(msg_obj.type == "finnish"){
-		append("user",msg_obj.result);
+		append("oracle",msg_obj.result);
 		set_state(USER_INPUT);
 	  }	else if(msg_obj.type == "typing") {
 	  	console.log("typing");

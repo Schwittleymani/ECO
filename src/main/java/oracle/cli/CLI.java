@@ -148,7 +148,8 @@ public class CLI{
         try {
 
             DelayedTyper.TyperState typerState= delayedTyper.update();
-            if(typerState == DelayedTyper.TyperState.WRITING){
+            if(typerState == DelayedTyper.TyperState.WRITING
+                    && state != CliState.ORACLE_WRITING){
                 setState(CliState.ORACLE_WRITING);
             }
             if(typerState == DelayedTyper.TyperState.DONE){
