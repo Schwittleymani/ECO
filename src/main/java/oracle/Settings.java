@@ -31,6 +31,7 @@ public class Settings{
 
     public static int CLI_MARGIN_TOP, CLI_MARGIN_BOTTOM, CLI_MARGIN_LEFT, CLI_MARGIN_RIGHT;
     public static int GIFY_X, GIFY_Y, GIFY_W, GIFY_H;
+    public static int GIF_SWAP_SPEED_MIN, GIF_SWAP_SPEED_MAX;
 
     public static int CHARACTER_DELAY_TIMEOUT;
 
@@ -79,6 +80,9 @@ public class Settings{
         GIFY_Y = Integer.parseInt( properties.getProperty( "GIFY_Y" ) );
         GIFY_W = Integer.parseInt( properties.getProperty( "GIFY_W" ) );
         GIFY_H = Integer.parseInt( properties.getProperty( "GIFY_H" ) );
+
+        GIF_SWAP_SPEED_MIN = Integer.parseInt( properties.getProperty( "GIF_SWAP_SPEED_MIN" ) );
+        GIF_SWAP_SPEED_MAX = Integer.parseInt( properties.getProperty( "GIF_SWAP_SPEED_MAX" ) );
 
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );
 

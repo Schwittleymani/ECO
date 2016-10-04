@@ -1,6 +1,5 @@
 package oracle;
 
-import gifAnimation.Gif;
 import oracle.cli.CLI;
 import oracle.gif.GifDisplayer;
 import oracle.lyrik.Lyrik;
@@ -10,8 +9,6 @@ import processing.core.PApplet;
 
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -68,11 +65,7 @@ public class Oracle extends PApplet {
         startWebserver(Settings.START_WEBSERVER);
         useLyrik = Settings.USE_LYRIK; // TODO connectivity check
         gif = new GifDisplayer(this);
-        // load anyway. switch off if memory is a problem
-        // otherwise load async on demand for fast response
-        //if (!useLyrik) {
-        markov.loadMarkovs();
-        //}
+
         noCursor();
         imageMode(CENTER);
         millisLastInteraction = System.currentTimeMillis();

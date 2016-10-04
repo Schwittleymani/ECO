@@ -26,6 +26,10 @@ public class GifDisplayer {
 
     boolean doReset = false;
 
+    int retreiveFactor = 2; // retreiveFactor number
+
+    int gifSwapSpeed = 15; // fps swap speed
+
     public GifDisplayer(Oracle oracle) {
         this.oracle = oracle;
         downloadGifys = oracle.settings.DOWNLOAD_GIFY;
@@ -52,7 +56,9 @@ public class GifDisplayer {
      * @return a list of gifs
      */
     public List<Gif> getGiyGifs(String[] searchWords, int number) {
-        List<String> gifs = gify.getSearchURLs(searchWords, number);
+        List<String> gifs = gify.getSearchURLs(searchWords, number * retreiveFactor);
+        Collections.shuffle(gifs);
+        gifs.subList(0,number);
 
         //gifs.stream().forEach(System.out::println);
         if(downloadGifys) {
@@ -81,7 +87,6 @@ public class GifDisplayer {
 
     public void getGiyGifsAsnyc(String[] searchWords, int number) {
         Thread getGifysThread = new Thread(new Runnable() {
-            List<Gif> gg;
             @Override
             public void run() {
                 asyncGifysAvailable = false;
@@ -99,21 +104,26 @@ public class GifDisplayer {
     public void input(String input){
         doReset = true;
         String[] textSplit = input.split("\\s+");
-        getGiyGifsAsnyc(textSplit,1);
+        getGiyGifsAsnyc(textSplit,2);
     }
 
     public void result(String result) {
         String[] textSplit = result.split("\\s+");
-        getGiyGifsAsnyc(textSplit,1);
+        getGiyGifsAsnyc(textSplit,2);
+    }
+
+    public void setNewGifSwapSpeed(){
+        gifSwapSpeed = (int) oracle.random(Settings.GIF_SWAP_SPEED_MIN,Settings.GIF_SWAP_SPEED_MAX);
     }
 
     public void update(){
-        if(doReset) {
-            runningGifs.clear();
-            doReset = false;
-        }
         if (getAsyncGifysAvailable()) {
             receivedGifs.stream().forEach(Gif::play);
+            if(doReset) {
+                runningGifs.clear();
+                doReset = false;
+                setNewGifSwapSpeed();
+            }
             runningGifs.addAll(receivedGifs);
             receivedGifs.clear();
         }
@@ -123,7 +133,7 @@ public class GifDisplayer {
             int w = Settings.GIFY_W;
             int h = Settings.GIFY_H;
             oracle.tint(0,255,0);
-            oracle.image( runningGifs.get( ( oracle.frameCount / 15 ) % runningGifs.size() ), x, y, w, h );
+            oracle.image( runningGifs.get( ( oracle.frameCount / gifSwapSpeed ) % runningGifs.size() ), x, y, w, h );
         }
         oracle.filter(oracle.POSTERIZE, 8);
     }
