@@ -37,6 +37,7 @@ public class Settings{
     public static int CHARACTER_DELAY_TIMEOUT;
 
     public static boolean DO_LOCAL_MARKOV_TRAINING, EXPORT_MARKOV_TRAINING;
+    public static float USE_MARKOV_CHANCE;
 
     public static String LYRIK_URL;
 
@@ -90,7 +91,7 @@ public class Settings{
         GIF_SWAP_SPEED_MAX = Integer.parseInt( properties.getProperty( "GIF_SWAP_SPEED_MAX" ) );
         GIFS_PER_PART = Integer.parseInt( properties.getProperty( "GIFS_PER_PART" ) );
 
-
+        USE_MARKOV_CHANCE = Float.parseFloat( properties.getProperty( "USE_MARKOV_CHANCE" ) );
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );
 
         DOWNLOAD_GIFY = Boolean.valueOf(properties.getProperty( "DOWNLOAD_GIFY" ));
