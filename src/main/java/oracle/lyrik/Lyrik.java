@@ -34,6 +34,7 @@ public class Lyrik {
         Thread thread = new Thread( () -> {
             newAnswer = askLyrik( text );
             state = LyrikState.DONE;
+
         });
         if(state == LyrikState.IDLE) {
             thread.start();
