@@ -42,8 +42,6 @@ public class Oracle extends PApplet {
     String lastInputText;
     String[] lastResults;
 
-    //GifDisplayer gifDisplayer;
-
     public static void main(String[] args) {
         PApplet.main( "oracle.Oracle" );
     }
@@ -68,11 +66,6 @@ public class Oracle extends PApplet {
         startWebserver(Settings.START_WEBSERVER);
         useLyrik = Settings.USE_LYRIK; // TODO connectivity check
         gif = new GifDisplayer(this);
-        // load anyway. switch off if memory is a problem
-        // otherwise load async on demand for fast response
-        //if (!useLyrik) {
-        markov.loadMarkovs();
-        //}
         noCursor();
         imageMode(CENTER);
         millisLastInteraction = System.currentTimeMillis();
@@ -100,6 +93,7 @@ public class Oracle extends PApplet {
             Lyrik.LyrikState lyrikState = lyrik.getState();
             if (lyrikState == Lyrik.LyrikState.DONE) {
                 results = lyrik.getNewAnswer();
+
                 lyrik.setState(Lyrik.LyrikState.IDLE);
                 if (!results.isPresent()) {
                     askMarkov = true;
@@ -117,6 +111,7 @@ public class Oracle extends PApplet {
         }
         if(results.isPresent()){
             lastResults = results.get();
+            gif.input(lastResults[0]);
             processAnswer();
         }
 
@@ -172,10 +167,10 @@ public class Oracle extends PApplet {
     private void processInput() {
         inputText = cli.getUserInput().trim();
         cli.setState(CLI.CliState.ORACLE_WAITING);
-        lastInputText = removeSpecialCharacters(inputText);
+        lastInputText = removeSpecialCharacters(inputText );
         println( lastInputText );
 
-        gif.input(lastInputText);
+
 
         if (useLyrik) {
             lyrik.askLyrikAsync(lastInputText);
@@ -199,7 +194,7 @@ public class Oracle extends PApplet {
         logger.log(logger.ORACLE, logResult);
 
         System.out.println("u:::" + inputText);
-        System.out.println("o:::" + logResult);
+        System.out.println("o:::" + logResult );
 
         cli.finish(result);
 
