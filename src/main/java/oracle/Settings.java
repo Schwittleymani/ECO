@@ -53,6 +53,8 @@ public class Settings{
             e.printStackTrace();
         }
 
+        DO_LOGGING = Boolean.valueOf(properties.getProperty("DO_LOGGING"));
+
         USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
         START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
         FULLSCREEN = Boolean.valueOf(properties.getProperty( "FULLSCREEN" ));
