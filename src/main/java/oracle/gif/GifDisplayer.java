@@ -137,4 +137,7 @@ public class GifDisplayer {
     }
 
 
+    public void reset() {
+        doReset = true;
+    }
 }

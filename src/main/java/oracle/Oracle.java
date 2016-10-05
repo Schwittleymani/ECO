@@ -119,6 +119,7 @@ public class Oracle extends PApplet {
 
         if (System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS) {
             cli.reset();
+            gif.reset();
         }
     }
 
