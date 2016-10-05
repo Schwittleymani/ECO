@@ -266,7 +266,8 @@ public class CLI{
     public void reset() {
         lines.clear();
         newLine(Line.LineType.USER_START);
-        // mayeb set typer state as well..
+        // mayeb set typer state as well.
+        state = CliState.USER_INPUT;
     }
 
     public boolean available() {
