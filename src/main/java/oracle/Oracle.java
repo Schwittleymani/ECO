@@ -34,7 +34,7 @@ public class Oracle extends PApplet {
     boolean askMarkov = !useLyrik; // switched on when input arrived. set false after asking
     boolean startWebserver = true;
 
-    private String inputText;
+    //private String inputText;
 
     String lastInputText;
     String[] lastResults;
@@ -166,7 +166,7 @@ public class Oracle extends PApplet {
 
 
     private void processInput() {
-        inputText = cli.getUserInput().trim();
+        String inputText = cli.getUserInput().trim();
         cli.setState(CLI.CliState.ORACLE_WAITING);
         lastInputText = removeSpecialCharacters(inputText );
         println( lastInputText );
@@ -193,10 +193,10 @@ public class Oracle extends PApplet {
         String result = lastResults[0];
         String logResult = lastResults[1];
 
-        logger.log(logger.USER, inputText);
+        logger.log(logger.USER, lastInputText);
         logger.log(logger.ORACLE, logResult);
 
-        System.out.println("u:::" + inputText);
+        System.out.println("u:::" + lastInputText);
         System.out.println("o:::" + logResult );
 
         cli.finish(result);

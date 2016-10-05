@@ -158,6 +158,7 @@ public class CLI{
 
         } catch (NullPointerException e ){
             // hacky, but i dont understand the problem.
+            e.printStackTrace();
             delayedTyper = new DelayedTyper( this );
             reset();
         }
