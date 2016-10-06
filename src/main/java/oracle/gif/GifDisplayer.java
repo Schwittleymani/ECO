@@ -3,6 +3,7 @@ package oracle.gif;
 import gifAnimation.Gif;
 import oracle.Oracle;
 import oracle.Settings;
+import processing.core.PImage;
 
 import java.io.File;
 import java.util.*;
@@ -133,8 +134,6 @@ public class GifDisplayer {
             oracle.tint(0,255,0);
             oracle.image( runningGifs.get( ( oracle.frameCount / gifSwapSpeed ) % runningGifs.size() ), x, y, w, h );
         }
-        oracle.filter(oracle.POSTERIZE, 8);
+        //oracle.filter(oracle.POSTERIZE, 8);
     }
-
-
 }
