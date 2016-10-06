@@ -17,6 +17,7 @@ import java.util.*;
 public class Settings{
 
     public static boolean USE_LYRIK;
+    public static long LYRIC_RETRY_TIMEOUT;
 
     public static boolean START_WEBSERVER;
     public static boolean DO_LOGGING;
@@ -27,7 +28,8 @@ public class Settings{
 
     public static int CLI_PADDING_TOP, CLI_PADDING_BOTTOM, CLI_PADDING_LEFT, CLI_PADDING_RIGHT;
     public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE;
-    public static int CLI_RESET_DELAY_MILLIS, CLI_MAX_INPUT_CHARACTERS;
+    public static int CLI_RESET_DELAY_MILLIS;
+    //CLI_MAX_INPUT_CHARACTERS; not used...
 
     public static int CLI_MARGIN_TOP, CLI_MARGIN_BOTTOM, CLI_MARGIN_LEFT, CLI_MARGIN_RIGHT;
     public static int GIFY_X, GIFY_Y, GIFY_W, GIFY_H;
@@ -56,6 +58,7 @@ public class Settings{
         DO_LOGGING = Boolean.valueOf(properties.getProperty("DO_LOGGING"));
 
         USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
+        LYRIC_RETRY_TIMEOUT = Long.valueOf(properties.getProperty( "LYRIC_RETRY_TIMEOUT" ));
         START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
         FULLSCREEN = Boolean.valueOf(properties.getProperty( "FULLSCREEN" ));
         DO_LOCAL_MARKOV_TRAINING = Boolean.valueOf(properties.getProperty( "DO_LOCAL_MARKOV_TRAINING" ));
@@ -70,7 +73,7 @@ public class Settings{
         CLI_TEXT_SIZE = Integer.parseInt( properties.getProperty( "CL_TEXT_SIZE" ) );
 
         CLI_RESET_DELAY_MILLIS = Integer.parseInt( properties.getProperty( "CLI_RESET_DELAY_MILLIS" ) );
-        CLI_MAX_INPUT_CHARACTERS = Integer.parseInt( properties.getProperty( "CLI_MAX_INPUT_CHARACTERS" ) );
+        //CLI_MAX_INPUT_CHARACTERS = Integer.parseInt( properties.getProperty( "CLI_MAX_INPUT_CHARACTERS" ) );
 
         CHARACTER_DELAY_TIMEOUT = Integer.parseInt( properties.getProperty( "CHARACTER_DELAY_TIMEOUT" ) );
 

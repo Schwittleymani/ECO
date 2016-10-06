@@ -115,4 +115,10 @@ public class DelayedTyper{
             System.err.println("strage that you call DelayedTyper.setIdle again...");
         }
     }
+
+    // hard. hot fix for retune. usefull?
+    public void reset(){
+        textToType = "";
+        state = TyperState.IDLE;
+    }
 }

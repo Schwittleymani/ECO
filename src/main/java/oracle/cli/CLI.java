@@ -154,6 +154,7 @@ public class CLI{
             }
             if(typerState == DelayedTyper.TyperState.DONE){
                 setState(CliState.USER_INPUT);
+                System.gc();
             }
 
         } catch (NullPointerException e ){
@@ -268,6 +269,9 @@ public class CLI{
         lines.clear();
         newLine(Line.LineType.USER_START);
         // mayeb set typer state as well..
+        state = CliState.USER_INPUT;
+        delayedTyper.reset();
+
     }
 
     public boolean available() {
