@@ -8,6 +8,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -55,8 +56,8 @@ public class Gify {
 
         //System.out.println(searchURL + joiner.toString());
         GetRequest get = new GetRequest(searchURL + joiner.toString());
-        get.send();
         try {
+            get.send();
             if (get != null) {
                 JSONParser json = new JSONParser();
                 JSONObject obj = (JSONObject) json.parse(get.getContent());
@@ -81,7 +82,7 @@ public class Gify {
 
     public List<String> downloadGifs(String baseName, List<String> addresses) {
         int counter = 0;
-        ArrayList<String> paths = new ArrayList<String>();
+        ArrayList<String> paths = new ArrayList<>();
         for(String address : addresses) {
             String filePath = "gifs"+ File.separator+"gify" + File.separator + baseName + "_" + counter + ".gif";
             downloadGif("data" + File.separator + filePath, address);

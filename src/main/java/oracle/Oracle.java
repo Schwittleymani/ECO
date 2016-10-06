@@ -33,7 +33,10 @@ public class Oracle extends PApplet {
     boolean useLyrik = true; // use lyrik in general
     boolean askMarkov = !useLyrik; // switched on when input arrived. set false after asking
     boolean startWebserver = true;
+    boolean lyricRetry = true;
 
+    long lyricRetryTimeoutStart;
+    long lyricRetryTimout;
     //private String inputText;
 
     String lastInputText;
@@ -53,7 +56,6 @@ public class Oracle extends PApplet {
             fullScreen( SPAN );
         }
 
-        useLyrik = Settings.USE_LYRIK;
     }
 
     public void setup() {
@@ -62,6 +64,8 @@ public class Oracle extends PApplet {
         markov = new Markov(this);
         startWebserver(Settings.START_WEBSERVER);
         useLyrik = Settings.USE_LYRIK; // TODO connectivity check
+        lyricRetry = useLyrik;
+        lyricRetryTimout = Settings.LYRIC_RETRY_TIMEOUT;
         gif = new GifDisplayer(this);
 
         noCursor();
@@ -90,7 +94,7 @@ public class Oracle extends PApplet {
 
         Optional<String[]> results = Optional.empty();
 
-        if (useLyrik ) {
+        if (useLyrik) {
             Lyrik.LyrikState lyrikState = lyrik.getState();
             if (lyrikState == Lyrik.LyrikState.DONE) {
                 results = lyrik.getNewAnswer();
@@ -99,12 +103,19 @@ public class Oracle extends PApplet {
                 if (!results.isPresent()) {
                     askMarkov = true;
                     useLyrik = false; // switch lyrik off for now
+                    lyricRetryTimeoutStart = System.currentTimeMillis();
                     System.out.println("Switching Lyrik off for now...");
                 }
+            }
+        } else if(lyricRetry){
+            if (System.currentTimeMillis() -  lyricRetryTimeoutStart > lyricRetryTimout){
+                useLyrik = true;
+                System.out.println("Retry Lyric next time");
             }
         }
 
         if (askMarkov) {
+            println("local markov");
             results = markov.askLocalMarkov(lastInputText);
             askMarkov = false;
             if(!results.isPresent()){
@@ -119,6 +130,12 @@ public class Oracle extends PApplet {
 
         if (System.currentTimeMillis() > millisLastInteraction + Settings.CLI_RESET_DELAY_MILLIS) {
             cli.reset();
+            gif.reset();
+        }
+
+        if(millis() % 60 * 1000 == 0 ){
+            String[] watchdogString = new String[] {""+System.currentTimeMillis()};
+            saveStrings("watchdog.txt",watchdogString);
         }
     }
 

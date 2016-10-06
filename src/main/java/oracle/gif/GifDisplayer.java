@@ -58,30 +58,33 @@ public class GifDisplayer {
      */
     public List<Gif> getGiyGifs(String[] searchWords, int number) {
         List<String> gifs = gify.getSearchURLs(searchWords, number * retreiveFactor);
-        Collections.shuffle(gifs);
-        gifs = gifs.subList(0,number);
+        ArrayList<Gif> gg = new ArrayList<Gif>();
+        if (gifs.size() > 0) {
+            Collections.shuffle(gifs);
+            gifs = gifs.subList(0, number);
 
-        //gifs.stream().forEach(System.out::println);
-        if(downloadGifys) {
-            StringJoiner joiner = new StringJoiner("_");
-            Arrays.stream(searchWords).forEach(w -> joiner.add(w));
-            gifs = gify.downloadGifs(joiner.toString(), gifs);
-        }
-
-        // this crap was nicer then the stream in the end cuz it allows to catch exceptions
-        ArrayList<Gif> gg= new ArrayList<Gif>();
-        int counter = 0;
-        for(String s : gifs) {
-            System.out.println(s);
-            try {
-                gg.add(new Gif(oracle, s));
-                if (++counter == number) {
-                    break;
-                }
-            } catch (NullPointerException damn) {
-                System.out.println("missing gif"+ counter);
+            //gifs.stream().forEach(System.out::println);
+            if (downloadGifys) {
+                StringJoiner joiner = new StringJoiner("_");
+                Arrays.stream(searchWords).forEach(w -> joiner.add(w));
+                gifs = gify.downloadGifs(joiner.toString(), gifs);
             }
 
+            // this crap was nicer then the stream in the end cuz it allows to catch exceptions
+
+            int counter = 0;
+            for (String s : gifs) {
+                System.out.println(s);
+                try {
+                    gg.add(new Gif(oracle, s));
+                    if (++counter == number) {
+                        break;
+                    }
+                } catch (NullPointerException damn) {
+                    System.out.println("missing gif" + counter);
+                }
+
+            }
         }
         return gg;
     }
@@ -99,26 +102,26 @@ public class GifDisplayer {
         return asyncGifysAvailable;
     }
 
-    public void input(String input){
+    public void input(String input) {
 
         String[] textSplit = input.split("\\s+");
-        getGiyGifsAsnyc(textSplit,Settings.GIFS_PER_PART);
+        getGiyGifsAsnyc(textSplit, Settings.GIFS_PER_PART);
     }
 
     public void result(String result) {
         doReset = true;
         String[] textSplit = result.split("\\s+");
-        getGiyGifsAsnyc(textSplit,Settings.GIFS_PER_PART);
+        getGiyGifsAsnyc(textSplit, Settings.GIFS_PER_PART);
     }
 
-    public void setNewGifSwapSpeed(){
-        gifSwapSpeed = (int) oracle.random(Settings.GIF_SWAP_SPEED_MIN,Settings.GIF_SWAP_SPEED_MAX);
+    public void setNewGifSwapSpeed() {
+        gifSwapSpeed = (int) oracle.random(Settings.GIF_SWAP_SPEED_MIN, Settings.GIF_SWAP_SPEED_MAX);
     }
 
-    public void update(){
+    public void update() {
         if (getAsyncGifysAvailable()) {
             receivedGifs.stream().forEach(Gif::play);
-            if(doReset) {
+            if (doReset) {
                 runningGifs.clear();
                 doReset = false;
                 setNewGifSwapSpeed();
@@ -126,14 +129,18 @@ public class GifDisplayer {
             runningGifs.addAll(receivedGifs);
             receivedGifs.clear();
         }
-        if (runningGifs.size() > 0){
+        if (runningGifs.size() > 0) {
             int x = Settings.GIFY_X;
             int y = Settings.GIFY_Y;
             int w = Settings.GIFY_W;
             int h = Settings.GIFY_H;
-            oracle.tint(0,255,0);
-            oracle.image( runningGifs.get( ( oracle.frameCount / gifSwapSpeed ) % runningGifs.size() ), x, y, w, h );
+            oracle.tint(0, 255, 0);
+            oracle.image(runningGifs.get((oracle.frameCount / gifSwapSpeed) % runningGifs.size()), x, y, w, h);
         }
         //oracle.filter(oracle.POSTERIZE, 8);
+    }
+
+    public void reset() {
+        doReset = true;
     }
 }
