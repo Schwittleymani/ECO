@@ -161,6 +161,7 @@ public class CLI{
             // hacky, but i dont understand the problem.
             e.printStackTrace();
             delayedTyper = new DelayedTyper( this );
+            System.gc();
             reset();
         }
 
