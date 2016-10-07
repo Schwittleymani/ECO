@@ -122,6 +122,9 @@ public class GifDisplayer {
         if (getAsyncGifysAvailable()) {
             receivedGifs.stream().forEach(Gif::play);
             if (doReset) {
+                for(Gif gif : runningGifs){
+                    gif.dispose();
+                }
                 runningGifs.clear();
                 doReset = false;
                 setNewGifSwapSpeed();
