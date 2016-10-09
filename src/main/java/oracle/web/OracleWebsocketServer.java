@@ -30,14 +30,29 @@ public class OracleWebsocketServer {
         this.oracle = oracle;
     }
 
-    public void sendTexts(String input,String result,long timeout) {
+
+    public void sendInput(String input) {
         JSONObject msg_obj = new JSONObject();
-        msg_obj.setString("type", "texts");
+        msg_obj.setString("type", "input");
         msg_obj.setString("input", input);
         last_input = input;
+        ws.sendMessage(msg_obj.toString());
+    }
+
+    public void sendResult(String result, long timeout) {
+        JSONObject msg_obj = new JSONObject();
+        msg_obj.setString("type", "result");
         msg_obj.setString("result", result);
         msg_obj.setLong("timeout", timeout);
         last_result = result;
+        ws.sendMessage(msg_obj.toString());
+    }
+
+
+    public void sendFinnish(String finalResult) {
+        JSONObject msg_obj = new JSONObject();
+        msg_obj.setString("type", "finnish");
+        msg_obj.setString("result", finalResult);
         ws.sendMessage(msg_obj.toString());
     }
 
@@ -111,6 +126,7 @@ public class OracleWebsocketServer {
     void interceptReceived(String message) {
         me.last_result = message;
         oracle.intercept(message);
+
         //System.out.println("intercept done");
     }
 
@@ -134,4 +150,5 @@ public class OracleWebsocketServer {
     private void cancel() {
         oracle.cli.typeNow();
     }
+
 }

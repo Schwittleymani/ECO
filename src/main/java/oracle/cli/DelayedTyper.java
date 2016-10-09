@@ -10,47 +10,45 @@ public class DelayedTyper{
     private CLI cli;
 
     private String textToType;
+
+
     private long delayTimeout;
     private long timeoutStart;
-    private boolean isWaiting;
-
     private long characterDelayStart;
     private long characterDelayTimeout = Settings.CHARACTER_DELAY_TIMEOUT;
 
 
+
+    enum TyperState{
+        IDLE,WAITING,WRITING,DONE
+    }
+
+    private TyperState state = TyperState.IDLE;
+
     public DelayedTyper( CLI cli ) {
         textToType = "";
         this.cli = cli;
-        //delayTimeout = System.currentTimeMillis();
-        //initDelayStartMillis = System.currentTimeMillis();
     }
 
     public void addText( String text ) {
         textToType += text;
-        isWaiting = true;
     }
 
     public void startTimout(long millis) {
         timeoutStart = System.currentTimeMillis();
         delayTimeout = millis;
+        state = TyperState.WAITING;
     }
 
     public void addDelay( long millis ) {
         delayTimeout += millis;
         System.out.println("delayedtyper.adddelay "+ millis);
+        state = TyperState.WAITING;
     }
 
-    public boolean isWaiting() {
-        if(isWaiting) {
-            isWaiting = System.currentTimeMillis() - timeoutStart < delayTimeout;
-            if(!isWaiting) {
-                OracleWebsocketServer.oracleThinksTimeout();
-            }
-            return isWaiting;
-        } else
-            return false;
+    public long getDelayTimeout(){
+        return delayTimeout;
     }
-
     /*public boolean isInitDelay() {
         return System.currentTimeMillis() - initDelayStartMillis < initDelayMillis;
     }*/
@@ -58,28 +56,33 @@ public class DelayedTyper{
     /**
      * @return whether a new line should be set
      */
-    public boolean update() {
-        if( !isEmpty() ){
-            if( !isWaiting() ){
-                long now = System.currentTimeMillis();
-                if(System.currentTimeMillis() - characterDelayStart > characterDelayTimeout) {
+    public TyperState update() {
+        //System.out.println("Typer: "+","+state);
+        long now = System.currentTimeMillis();;
+        switch (state){
+            case IDLE:
+                break;
+            case WAITING:
+                if(now - timeoutStart > delayTimeout) {
+                    state = TyperState.WRITING;
+                }
+                break;
+            case WRITING:
+                if(now - characterDelayStart > characterDelayTimeout) {
                     type(textToType.charAt(0));
                     textToType = textToType.substring(1, textToType.length());
-                    delayTimeout = System.currentTimeMillis();
                     characterDelayStart = now;
+                    if(isEmpty()) {
+                        state = TyperState.DONE;
+                    }
                 }
-            }
-            if( isEmpty() ){
-                // if last character was typed
-                return true;
-            }
+                break;
         }
-        return false;
+        return state;
     }
 
     // user input
     public void type( char key ) {
-        boolean overflow = false;
         cli.getLastLine().add(""+key);
         if(cli.getLastLine().limitReached() ) {
             cli.newLine();
@@ -105,14 +108,17 @@ public class DelayedTyper{
         delayTimeout = 0;
     }
 
-    public CLI.CliState getState() {
-        if(isWaiting)
-            return CLI.CliState.ORACLE_THINKING;
-        else {
-            if(isEmpty())
-                return CLI.CliState.USER_INPUT;
-            else
-                return CLI.CliState.ORACLE_TYPING;
+    public void setIdle() {
+        if(state == TyperState.DONE){
+            state = TyperState.IDLE;
+        } else {
+            System.err.println("strage that you call DelayedTyper.setIdle again...");
         }
+    }
+
+    // hard. hot fix for retune. usefull?
+    public void reset(){
+        textToType = "";
+        state = TyperState.IDLE;
     }
 }

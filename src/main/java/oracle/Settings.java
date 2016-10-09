@@ -17,6 +17,7 @@ import java.util.*;
 public class Settings{
 
     public static boolean USE_LYRIK;
+    public static long LYRIC_RETRY_TIMEOUT;
 
     public static boolean START_WEBSERVER;
     public static boolean DO_LOGGING;
@@ -27,12 +28,18 @@ public class Settings{
 
     public static int CLI_PADDING_TOP, CLI_PADDING_BOTTOM, CLI_PADDING_LEFT, CLI_PADDING_RIGHT;
     public static int CLI_LINE_HEIGTH, CLI_TEXT_SIZE;
-    public static int CLI_RESET_DELAY_MILLIS, CLI_MAX_INPUT_CHARACTERS;
+    public static int CLI_RESET_DELAY_MILLIS;
+    //CLI_MAX_INPUT_CHARACTERS; not used...
 
     public static int CLI_MARGIN_TOP, CLI_MARGIN_BOTTOM, CLI_MARGIN_LEFT, CLI_MARGIN_RIGHT;
     public static int GIFY_X, GIFY_Y, GIFY_W, GIFY_H;
+    public static int GIF_SWAP_SPEED_MIN, GIF_SWAP_SPEED_MAX;
+    public static int GIFS_PER_PART;
 
     public static int CHARACTER_DELAY_TIMEOUT;
+
+    public static boolean DO_LOCAL_MARKOV_TRAINING, EXPORT_MARKOV_TRAINING;
+    public static float USE_MARKOV_CHANCE;
 
     public static String LYRIK_URL;
 
@@ -48,9 +55,14 @@ public class Settings{
             e.printStackTrace();
         }
 
+        DO_LOGGING = Boolean.valueOf(properties.getProperty("DO_LOGGING"));
+
         USE_LYRIK = Boolean.valueOf(properties.getProperty( "USE_LYRIK" ));
+        LYRIC_RETRY_TIMEOUT = Long.valueOf(properties.getProperty( "LYRIC_RETRY_TIMEOUT" ));
         START_WEBSERVER = Boolean.valueOf(properties.getProperty( "START_WEBSERVER" ));
         FULLSCREEN = Boolean.valueOf(properties.getProperty( "FULLSCREEN" ));
+        DO_LOCAL_MARKOV_TRAINING = Boolean.valueOf(properties.getProperty( "DO_LOCAL_MARKOV_TRAINING" ));
+        EXPORT_MARKOV_TRAINING = Boolean.valueOf(properties.getProperty( "EXPORT_MARKOV_TRAINING" ));
 
         MAX_INPUT_WORDS = Integer.parseInt( properties.getProperty( "MAX_INPUT_WORDS" ) );
         MIN_ANSWER_DELAY_COUNT = Integer.parseInt( properties.getProperty( "MIN_ANSWER_DELAY_COUNT" ) );
@@ -61,7 +73,7 @@ public class Settings{
         CLI_TEXT_SIZE = Integer.parseInt( properties.getProperty( "CL_TEXT_SIZE" ) );
 
         CLI_RESET_DELAY_MILLIS = Integer.parseInt( properties.getProperty( "CLI_RESET_DELAY_MILLIS" ) );
-        CLI_MAX_INPUT_CHARACTERS = Integer.parseInt( properties.getProperty( "CLI_MAX_INPUT_CHARACTERS" ) );
+        //CLI_MAX_INPUT_CHARACTERS = Integer.parseInt( properties.getProperty( "CLI_MAX_INPUT_CHARACTERS" ) );
 
         CHARACTER_DELAY_TIMEOUT = Integer.parseInt( properties.getProperty( "CHARACTER_DELAY_TIMEOUT" ) );
 
@@ -80,6 +92,11 @@ public class Settings{
         GIFY_W = Integer.parseInt( properties.getProperty( "GIFY_W" ) );
         GIFY_H = Integer.parseInt( properties.getProperty( "GIFY_H" ) );
 
+        GIF_SWAP_SPEED_MIN = Integer.parseInt( properties.getProperty( "GIF_SWAP_SPEED_MIN" ) );
+        GIF_SWAP_SPEED_MAX = Integer.parseInt( properties.getProperty( "GIF_SWAP_SPEED_MAX" ) );
+        GIFS_PER_PART = Integer.parseInt( properties.getProperty( "GIFS_PER_PART" ) );
+
+        USE_MARKOV_CHANCE = Float.parseFloat( properties.getProperty( "USE_MARKOV_CHANCE" ) );
         LYRIK_URL = properties.getProperty( "LYRIK_URL" );
 
         DOWNLOAD_GIFY = Boolean.valueOf(properties.getProperty( "DOWNLOAD_GIFY" ));

@@ -20,8 +20,12 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     public MarkovManager() {
     }
 
+
+
+
     // TODO use a Regex (like in Oracle but with replace all)
-    String[] strip( String input ) {
+    public String[] strip( String input ) {
+        // todo remove this junk with regex
         input = input.replace( "?", "" )
                 .replace( "!", "" )
                 .replace( ".", "" )
@@ -62,6 +66,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         }
 
         ArrayList< String > charsToRemove = new ArrayList<>();
+        // todo regex
         charsToRemove.add( "€" );
         charsToRemove.add( "˜" );
         charsToRemove.add( "â" );
@@ -72,7 +77,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
         for ( String s : charsToRemove ) {
             answer = answer.replace( s, "" );
         }
-
+        // todo r
         answer.replace( "“", "\"" );
         answer.replace( "”", "\"" );
         answer.replace( "’", "'" );
@@ -240,6 +245,7 @@ public class MarkovManager extends ArrayList< MarkovChain >{
     private String stripTextFromSpecialCharacters( String line ) {
 
         ArrayList< String > charactersToRemove = new ArrayList<>();
+        // todo regex
         charactersToRemove.add( ")" );
         charactersToRemove.add( "”" );
         charactersToRemove.add( "\"" );
