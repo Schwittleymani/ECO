@@ -36,22 +36,23 @@ for s in parser2.proper_sentences:
 out2.close()
 
 ############################
+# Tika is bad, dont use it
 
-import tika
-tika.initVM()
-from tika import parser
+#import tika
+#tika.initVM()
+#from tika import parser
 
-text3 = parser.from_file('boris-magrini_confronting_the_machine.pdf')["content"]
-parser3 = textparser.TextParser()
+#text3 = parser.from_file('boris-magrini_confronting_the_machine.pdf')["content"]
+#parser3 = textparser.TextParser()
 
-print('Parsing text from Tika')
-parser3.parse(text3)
+#print('Parsing text from Tika')
+#parser3.parse(text3)
 
-out3 = open('out3.txt', 'w')
-for s in parser3.proper_sentences:
-    out3.write(s.string.encode('utf8'))
-    out3.write('\n')
-out3.close()
+#out3 = open('out3.txt', 'w')
+#for s in parser3.proper_sentences:
+#    out3.write(s.string.encode('utf8'))
+#    out3.write('\n')
+#out3.close()
 
 ############################
 
@@ -63,7 +64,7 @@ parser4 = textparser.TextParser()
 print('Parsing text from texttract')
 parser4.parse(text4)
 
-out4 = open('out4.txt', 'w')
+out4 = open('boris_magrini-confronting_the_machine.txt', 'w')
 for s in parser4.proper_sentences:
     out4.write(s.string.encode('utf8'))
     out4.write('\n')
