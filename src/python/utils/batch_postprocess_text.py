@@ -40,7 +40,7 @@ if __name__ == '__main__':
             parser = textparser.TextParser()
             parser.parse(text.decode('utf-8'))
 
-            output_filename = output_path + file[:-3] + '.txt'
+            output_filename = output_path + file[:-3] + 'txt'
             print('Saving to ' + output_filename)
             output_file = open(output_filename, 'w')
             for line in parser.proper_sentences:
