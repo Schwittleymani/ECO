@@ -83,17 +83,21 @@ def get_authors_list():
         authors.append(author)
     return authors
 
-from multiprocessing import Process
-from multiprocessing import Manager
+from threading import Thread
 
+class MarkovCalculator(Thread):
+    def __init__(self, lines, author):
+        self.lines = lines
+        self.author = author
+        super(MarkovCalculator, self).__init__()
 
-def process_markov(author, file, list):
-    markov_chain = markov.Markov(prefix=author)
+    def run(self):
+        self.markov_chain = markov.Markov(prefix=self.author)
 
-    for s in file:
-        markov_chain.add_line_to_index(s.split())
+        for s in self.lines:
+            print('trainging ' + self.author + ' with line ' + s)
+            self.markov_chain.add_line_to_index(s.split())
 
-    list.append(markov_chain)
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
@@ -102,43 +106,34 @@ if __name__ == '__main__':
     count = 0
     pool = pydle.ClientPool()
     processes = []
-    manager = Manager()
-    list = manager.list(range(50))
     for file in os.listdir(txts_path):
-        if not file.endswith('.txt'):
-            continue
-        if count >= 50:
+        if not file.endswith('.txt') or count >= 10:
             continue
 
         path = txts_path + file
 
         f = open(path, 'r')
         print('opened ' + path)
-        line_count = sum(1 for _ in f)
-        f.seek(0)
+        line_count = 0
+        lines = []
+        for line in f:
+            line_count += 1
+            lines.append(line)
 
         author = file.partition('-')[0]
 
-        #markov_chain = markov.Markov(prefix=path)
-
-        p = Process(target=process_markov, args=(author, f, list))
+        p = MarkovCalculator(lines, author)
         p.start()
         processes.append(p)
-        #for s in f:
-        #    markov_chain.add_line_to_index(s.split())
 
-        #client = EcoIrcClient(author)
-        #client.set_markov(author, markov_chain)
-        #client.connect('irc.schwittlick.net', tls=False)
-        #pool.add(client)
         count += 1
 
     for p in processes:
         p.join()
 
-    for markov in list:
-        client = EcoIrcClient(markov.prefix)
-        client.set_markov(markov.prefix, markov)
+    for p in processes:
+        client = EcoIrcClient(p.markov_chain.prefix)
+        client.set_markov(p.markov_chain.prefix, p.markov_chain)
         client.connect('irc.schwittlick.net', tls=False)
         pool.add(client)
 
