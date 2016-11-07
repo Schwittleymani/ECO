@@ -4,7 +4,7 @@ import pyPdf
 
 text1 = ""
 
-pdf = pyPdf.PdfFileReader(open('boris-magrini_confronting_the_machine.pdf', "rb"))
+pdf = pyPdf.PdfFileReader(open('nick_bostrom-the_ethics_of_artificial_intelligence.pdf', "rb"))
 for page in pdf.pages:
     text1 += page.extractText()
 
