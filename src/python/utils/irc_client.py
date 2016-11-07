@@ -86,6 +86,7 @@ def get_authors_list():
 from multiprocessing import Process
 from multiprocessing import Manager
 
+
 def process_markov(author, file, list):
     markov_chain = markov.Markov(prefix=author)
 
@@ -102,7 +103,7 @@ if __name__ == '__main__':
     pool = pydle.ClientPool()
     processes = []
     manager = Manager()
-    list = manager.list()
+    list = manager.list(range(50))
     for file in os.listdir(txts_path):
         if not file.endswith('.txt'):
             continue
