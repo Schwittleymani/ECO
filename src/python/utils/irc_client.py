@@ -17,7 +17,7 @@ class EcoIrcClient(pydle.Client):
     SEQUENCE_MATCH_LENGTH = 3
     MAX_GENERATOR_LENGTH_CHARACTERS = 100
     SIMILARITY_THRESHOLD_PERCENTAGE = 2 # 0-100
-    OWNER_NAME = 'mrzl'
+    OWNERS_NAME = ['mrzl', 'ra']
     ANSWER_DELAY_SECONDS = 15
     CHANNEL = '#eco'
 
@@ -86,8 +86,9 @@ class EcoIrcClient(pydle.Client):
         users = self.channels[channel]['users']
         if self.name in users:
             users.remove(self.name)
-        if self.OWNER_NAME in users:
-            users.remove(self.OWNER_NAME)
+        for owner in self.OWNERS_NAME:
+            if owner in users:
+                users.remove(owner)
 
         # get a random user from the channel to talk to
         next_bot = random.choice(tuple(users))
@@ -160,6 +161,7 @@ if __name__ == '__main__':
             continue
 
         author = file.partition('-')[0]
+        author.replace('.', '')
 
         p = MarkovCalculator(lines, author)
         p.start()
