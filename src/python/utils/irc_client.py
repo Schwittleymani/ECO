@@ -143,6 +143,7 @@ if __name__ == '__main__':
 
     count = 0
     processes = []
+    authors = []
     for file in os.listdir(txts_path):
         if not file.endswith('.txt') or count >= max_bots:
             continue
@@ -162,6 +163,9 @@ if __name__ == '__main__':
 
         author = file.partition('-')[0]
         author.replace('.', '')
+        if author in authors:
+            author += '_'
+        authors.append(author)
 
         p = MarkovCalculator(lines, author)
         p.start()
