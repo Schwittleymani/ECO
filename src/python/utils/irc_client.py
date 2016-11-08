@@ -16,10 +16,10 @@ class EcoIrcClient(pydle.Client):
 
     SEQUENCE_MATCH_LENGTH = 3
     MAX_GENERATOR_LENGTH_CHARACTERS = 100
-    SIMILARITY_THRESHOLD_PERCENTAGE = 30 # 0-100
+    SIMILARITY_THRESHOLD_PERCENTAGE = 2 # 0-100
     OWNER_NAME = 'mrzl'
     ANSWER_DELAY_SECONDS = 15
-    CHANNELS = ['#eco']
+    CHANNEL = '#eco'
 
     last_message = ()
 
@@ -30,13 +30,15 @@ class EcoIrcClient(pydle.Client):
 
     def on_connect(self):
         super().on_connect()
-        for channel in self.CHANNELS:
-            self.join(channel)
+        self.join('#eco')
 
     def on_notice(self, target, by, message):
         super().on_notice(target, by, message)
 
-        print(target, by, message)
+        if message == 'your turn':
+            print(target, by, message)
+            time.sleep(2)
+            self.write_to_channel('#eco')
 
     def on_private_message(self, by, message):
         super().on_private_message(by, message)
@@ -68,45 +70,43 @@ class EcoIrcClient(pydle.Client):
         super().on_message(target, by, message)
         self.last_message = (target, message)
 
-        # is this bot being talked to?
-        if self.name in message:
-            # remove own name from the message
-            message = message.replace(self.name, '')
+    def write_to_channel(self, channel):
+        scores = []
+        attempt_count = 100
+        for i in range(attempt_count):
+            # gets a new random sequence from the message
+            sequence = self.get_random_sequence(self.last_message[1], self.SEQUENCE_MATCH_LENGTH)
+            # calculates the score, of how likely this was generated from this bot
+            score = self.markov.score_for_line(sequence.split())
+            # stores sequence and score for calculating the best result
+            scores.append((sequence, score))
+        # calculates the best result contains (sequence, score)
+        best = self.get_best_score(scores)
 
-            scores = []
-            attempt_count = 100
-            for i in range(attempt_count):
-                # gets a new random sequence from the message
-                sequence = self.get_random_sequence(message, self.SEQUENCE_MATCH_LENGTH)
-                # calculates the score, of how likely this was generated from this bot
-                score = self.markov.score_for_line(sequence.split())
-                # stores sequence and score for calculating the best result
-                scores.append((sequence, score))
-            # calculates the best result contains (sequence, score)
-            best = self.get_best_score(scores)
+        users = self.channels[channel]['users']
+        if self.name in users:
+            users.remove(self.name)
+        if self.OWNER_NAME in users:
+            users.remove(self.OWNER_NAME)
 
-            users = self.channels[target]['users']
-            if self.name in users:
-                users.remove(self.name)
-            if self.OWNER_NAME in users:
-                users.remove(self.OWNER_NAME)
+        # get a random user from the channel to talk to
+        next_bot = random.choice(tuple(users))
+        # check if the best answer score is above some certain threshold
+        best_score = best[1]
+        if best_score > self.SIMILARITY_THRESHOLD_PERCENTAGE:
+            # if it is above some threshold, generate a message with that sequence as seed
+            answer = ' '.join(self.markov.generate(seed=best[0].split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
+        else:
+            # if is is below, generate a completely new message
+            answer = ' '.join(self.markov.generate(max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
 
-            # get a random user from the channel to talk to
-            next_bot = random.choice(tuple(users))
-            # check if the best answer score is above some certain threshold
-            best_score = best[1]
-            if best_score > self.SIMILARITY_THRESHOLD_PERCENTAGE:
-                # if it is above some threshold, generate a message with that sequence as seed
-                answer = ' '.join(self.markov.generate(seed=best[0].split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
-            else:
-                # if is is below, generate a completely new message
-                answer = ' '.join(self.markov.generate(max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
-
-            answer = next_bot + ' ' + answer
-            print(self.name + ' will interpret the message. best score for sentence: ', best)
-            print('new answer: ' + answer)
-            time.sleep(self.ANSWER_DELAY_SECONDS)
-            self.message(target, answer)
+        #answer = next_bot + ' ' + answer
+        print(self.name + ' will interpret the message. best score for sentence: ', best)
+        print('new answer: ' + answer)
+        time.sleep(self.ANSWER_DELAY_SECONDS)
+        self.message(channel, answer)
+        time.sleep(1)
+        self.notice(next_bot, 'your turn')
 
 
 class MarkovCalculator(threading.Thread):
@@ -174,4 +174,5 @@ if __name__ == '__main__':
         client.connect('irc.schwittlick.net', tls=False)
         pool.add(client)
 
+    print('Setup done.')
     pool.handle_forever()
