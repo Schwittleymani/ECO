@@ -1,6 +1,7 @@
 import pydle
 import markov
 
+import threading
 import argparse
 import sys
 import os
@@ -12,80 +13,103 @@ import time
 
 
 class EcoIrcClient(pydle.Client):
-    def set_markov(self, name, markov):
-        print('loading ' + name)
 
+    SEQUENCE_MATCH_LENGTH = 3
+    MAX_GENERATOR_LENGTH_CHARACTERS = 100
+    SIMILARITY_THRESHOLD_PERCENTAGE = 30 # 0-100
+    OWNER_NAME = 'mrzl'
+    ANSWER_DELAY_SECONDS = 15
+    CHANNELS = ['#eco']
+
+    last_message = ()
+
+    def set_markov(self, name, markov):
+        print('Starting IRC Client of ' + name)
         self.name = name
         self.markov = markov
 
     def on_connect(self):
         super().on_connect()
-        self.join('#eco')
+        for channel in self.CHANNELS:
+            self.join(channel)
+
+    def on_notice(self, target, by, message):
+        super().on_notice(target, by, message)
+
+        print(target, by, message)
 
     def on_private_message(self, by, message):
         super().on_private_message(by, message)
         self.message(by, 'Fuck off.')
 
-    def get_random_sequence(self, message, length):
-        split_msg = message.split()
+    def get_random_sequence(self, input, length=3):
+        """
+        generates a random sub-string from the passed input string. with a given length.
+        """
+        split_msg = input.split()
         start_index = 0
         if len(split_msg) > length + 1:
             start_index = random.randint(0, len(split_msg) - (length + 1))
         return ' '.join(split_msg[start_index:start_index+length])
 
     def get_best_score(self, scores):
+        """
+        calculates the best score of a passed tuple list. it contains (string, score)
+        """
+        # sorting reversed by second elements of the tuple list.
         scores.sort(key=lambda scores: scores[1], reverse=True)
+        # maximum is at first index
         return scores[0]
 
     def on_message(self, target, by, message):
+        """
+        called when a new message is posted in the channel
+        """
         super().on_message(target, by, message)
+        self.last_message = (target, message)
 
-        if (self.name + ' ') in message:
+        # is this bot being talked to?
+        if self.name in message:
+            # remove own name from the message
             message = message.replace(self.name, '')
 
             scores = []
-            for i in range(100):
-                sequence = self.get_random_sequence(message, 3)
+            attempt_count = 100
+            for i in range(attempt_count):
+                # gets a new random sequence from the message
+                sequence = self.get_random_sequence(message, self.SEQUENCE_MATCH_LENGTH)
+                # calculates the score, of how likely this was generated from this bot
                 score = self.markov.score_for_line(sequence.split())
+                # stores sequence and score for calculating the best result
                 scores.append((sequence, score))
+            # calculates the best result contains (sequence, score)
             best = self.get_best_score(scores)
 
+            users = self.channels[target]['users']
+            if self.name in users:
+                users.remove(self.name)
+            if self.OWNER_NAME in users:
+                users.remove(self.OWNER_NAME)
+
             # get a random user from the channel to talk to
-            users_in_channel = self.channels['#eco']['users']
-            users_in_channel.remove(self.name)
-            next_bot = random.choice(tuple(users_in_channel))
-            if best[1] > 30:
-                answer = ' '.join(self.markov.generate(seed=best[0].split(), max_words=100))
+            next_bot = random.choice(tuple(users))
+            # check if the best answer score is above some certain threshold
+            best_score = best[1]
+            if best_score > self.SIMILARITY_THRESHOLD_PERCENTAGE:
+                # if it is above some threshold, generate a message with that sequence as seed
+                answer = ' '.join(self.markov.generate(seed=best[0].split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
             else:
-                answer = ' '.join(self.markov.generate(max_words=100))
+                # if is is below, generate a completely new message
+                answer = ' '.join(self.markov.generate(max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
+
             answer = next_bot + ' ' + answer
             print(self.name + ' will interpret the message. best score for sentence: ', best)
             print('new answer: ' + answer)
-            time.sleep(15)
+            time.sleep(self.ANSWER_DELAY_SECONDS)
             self.message(target, answer)
 
-def process_arguments(args):
-    parser = argparse.ArgumentParser(description='configure the irc clients')
 
-    parser.add_argument('--txts_path', action='store', help='path to folder with txt files')
-    params = vars(parser.parse_args(args))
-
-    return params
-
-def get_authors_list():
-    authors = []
-    for file in os.listdir(txts_path):
-        if not file.endswith('.txt'):
-            continue
-        author = file.partition('-')[0]
-        if author in authors:
-            author += '_'
-        authors.append(author)
-    return authors
-
-from threading import Thread
-
-class MarkovCalculator(Thread):
+class MarkovCalculator(threading.Thread):
     def __init__(self, lines, author):
         self.lines = lines
         self.author = author
@@ -94,26 +118,38 @@ class MarkovCalculator(Thread):
     def run(self):
         self.markov_chain = markov.Markov(prefix=self.author)
 
+        print('Start training ' + self.author)
         for s in self.lines:
-            print('trainging ' + self.author + ' with line ' + s)
+            #print('trainging ' + self.author + ' with line ' + s)
             self.markov_chain.add_line_to_index(s.split())
+        print('Done training ' + self.author)
+
+
+def process_arguments(args):
+    parser = argparse.ArgumentParser(description='configure the irc clients')
+
+    parser.add_argument('--txts_path', action='store', help='path to folder with txt files')
+    parser.add_argument('--max_bots', action='store', help='the maximum number of bots to train and connect to IRC')
+    params = vars(parser.parse_args(args))
+
+    return params
 
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
     txts_path = params['txts_path']
+    max_bots = int(params['max_bots'])
 
     count = 0
-    pool = pydle.ClientPool()
     processes = []
     for file in os.listdir(txts_path):
-        if not file.endswith('.txt') or count >= 10:
+        if not file.endswith('.txt') or count >= max_bots:
             continue
 
         path = txts_path + file
 
         f = open(path, 'r')
-        print('opened ' + path)
+        print('Loaded ' + path)
         line_count = 0
         lines = []
         for line in f:
@@ -131,6 +167,7 @@ if __name__ == '__main__':
     for p in processes:
         p.join()
 
+    pool = pydle.ClientPool()
     for p in processes:
         client = EcoIrcClient(p.markov_chain.prefix)
         client.set_markov(p.markov_chain.prefix, p.markov_chain)
