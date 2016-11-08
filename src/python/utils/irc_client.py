@@ -162,6 +162,7 @@ if __name__ == '__main__':
             continue
 
         author = file.partition('-')[0]
+        author = author[:10]
         author.replace('.', '')
         if author in authors:
             author += '_'
