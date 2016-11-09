@@ -35,7 +35,7 @@ class EcoIrcClient(pydle.Client):
     SEQUENCE_MATCH_LENGTH = 3
     MAX_GENERATOR_LENGTH_CHARACTERS = 100
     SIMILARITY_THRESHOLD_PERCENTAGE = 2 # 0-100
-    OWNERS_NAME = ['mrzl', 'ra']
+    OWNERS_NAME = ['mrzl', 'ra', 'STATISTIC_BOT']
     ANSWER_DELAY_SECONDS = 15
     CHANNEL = '#eco'
     KEYWORD_NEXT_BOT = 'your turn'
@@ -57,11 +57,16 @@ class EcoIrcClient(pydle.Client):
         if message == self.KEYWORD_NEXT_BOT:
             print(target, by, message)
             time.sleep(2)
-            self.write_to_channel('#eco')
+            self.write_to_channel('#eco', self.last_message[1])
 
     def on_private_message(self, by, message):
         super().on_private_message(by, message)
-        self.message(by, 'Fuck off.')
+        best = self.calc_best_score(last_message=message)
+        best_result_string = best[0]
+        best_result_score = best[1]
+        answer = self.generate_answer(best_result_score=best_result_score, best_result_string=best_result_string)
+
+        self.message(by, answer)
 
     def get_random_sequence(self, input, length=3):
         """
@@ -78,7 +83,7 @@ class EcoIrcClient(pydle.Client):
         calculates the best score of a passed tuple list. it contains (string, score)
         """
         # sorting reversed by second elements of the tuple list.
-        scores.sort(key=lambda scores: scores[1], reverse=True)
+
         # maximum is at first index
         return scores[0]
 
@@ -114,18 +119,22 @@ class EcoIrcClient(pydle.Client):
             answer = random.choice(self.markov.lines)
         return answer
 
-    def write_to_channel(self, channel):
+    def calc_best_score(self, last_message):
         scores = []
         attempt_count = 100
         for i in range(attempt_count):
             # gets a new random sequence from the message
-            sequence = self.get_random_sequence(self.last_message[1], self.SEQUENCE_MATCH_LENGTH)
+            sequence = self.get_random_sequence(last_message, self.SEQUENCE_MATCH_LENGTH)
             # calculates the score, of how likely this was generated from this bot
             score = self.markov.score_for_line(sequence.split())
             # stores sequence and score for calculating the best result
             scores.append((sequence, score))
         # calculates the best result contains (sequence, score)
-        best = self.get_best_score(scores)
+        scores.sort(key=lambda scores: scores[1], reverse=True)
+        return scores[0]
+
+    def write_to_channel(self, channel, last):
+        best = self.calc_best_score(last_message=last)
 
         users = self.channels[channel]['users']
         if self.name in users:
@@ -170,6 +179,8 @@ def process_arguments(args):
 
     parser.add_argument('--txts_path', action='store', help='path to folder with txt files')
     parser.add_argument('--max_bots', action='store', help='the maximum number of bots to train and connect to IRC')
+    parser.add_argument('--server', action='store', help='the server to connect the bots to')
+
     params = vars(parser.parse_args(args))
 
     return params
@@ -179,9 +190,7 @@ if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
     txts_path = params['txts_path']
     max_bots = int(params['max_bots'])
-
-    #network = 'irc.schwittlick.net'
-    network = 'localhost'
+    server = params['server']
 
     count = 0
     processes = []
@@ -223,11 +232,11 @@ if __name__ == '__main__':
     for p in processes:
         client = EcoIrcClient(p.markov_chain.prefix)
         client.set_markov(p.markov_chain.prefix, p.markov_chain)
-        client.connect(network, tls=False)
+        client.connect(server, tls=False)
         pool.add(client)
 
     statistic_client = EcoStatistics('STATISTIC_BOT')
-    statistic_client.connect(network, tls=False)
+    statistic_client.connect(server, tls=False)
     pool.add(statistic_client)
     print('Setup done.')
     pool.handle_forever()
