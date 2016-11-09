@@ -23,9 +23,11 @@ class Markov(object):
         self.prefix = prefix or PREFIX
         self.key_length = key_length
         self.completion_length = completion_length
+        self.lines = []
 
     def add_line_to_index(self, line):
         add_line_to_index(line, self.client, self.key_length, self.completion_length, self.prefix)
+        self.lines.append(' '.join(line))
 
     def score_for_line(self, line):
         return score_for_line(line, self.client, self.key_length, self.completion_length, self.prefix)

@@ -12,6 +12,24 @@ import time
 # the end of a fixed potential
 
 
+class EcoStatistics(pydle.Client):
+    def on_connect(self):
+        super().on_connect()
+        self.join('#eco')
+        self.markov_used = 0
+        self.original_used = 0
+
+    def on_private_message(self, by, message):
+        super().on_private_message(by, message)
+        if 'markov' in message:
+            self.markov_used += 1
+        elif 'original' in message:
+            self.original_used += 1
+        elif 'statistic':
+            answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
+            self.message(by, answer)
+
+
 class EcoIrcClient(pydle.Client):
 
     SEQUENCE_MATCH_LENGTH = 3
@@ -20,6 +38,7 @@ class EcoIrcClient(pydle.Client):
     OWNERS_NAME = ['mrzl', 'ra']
     ANSWER_DELAY_SECONDS = 15
     CHANNEL = '#eco'
+    KEYWORD_NEXT_BOT = 'your turn'
 
     last_message = ()
 
@@ -35,7 +54,7 @@ class EcoIrcClient(pydle.Client):
     def on_notice(self, target, by, message):
         super().on_notice(target, by, message)
 
-        if message == 'your turn':
+        if message == self.KEYWORD_NEXT_BOT:
             print(target, by, message)
             time.sleep(2)
             self.write_to_channel('#eco')
@@ -70,6 +89,31 @@ class EcoIrcClient(pydle.Client):
         super().on_message(target, by, message)
         self.last_message = (target, message)
 
+    def generate_answer(self, best_result_string, best_result_score):
+
+        if best_result_score > self.SIMILARITY_THRESHOLD_PERCENTAGE:
+            # if it is above some threshold, generate a message with that sequence as seed
+            print('input: ' + best_result_string)
+            answer = ' '.join(self.markov.generate(seed=best_result_string.split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
+            print('Using Markov Method')
+            self.message('STATISTIC_BOT', 'markov')
+        else:
+            # if is is below, generate a completely new message
+            answer = self.get_original_sentence(best_result_string=best_result_string)
+            print('Sampling original input text')
+            self.message('STATISTIC_BOT', 'original')
+
+        return answer
+
+    def get_original_sentence(self, best_result_string):
+        answer = ''
+        for _line in self.markov.lines:
+            if best_result_string in ' '.join(_line):
+                answer = ' '.join(_line)
+        if answer == '':
+            answer = random.choice(self.markov.lines)
+        return answer
+
     def write_to_channel(self, channel):
         scores = []
         attempt_count = 100
@@ -93,21 +137,16 @@ class EcoIrcClient(pydle.Client):
         # get a random user from the channel to talk to
         next_bot = random.choice(tuple(users))
         # check if the best answer score is above some certain threshold
-        best_score = best[1]
-        if best_score > self.SIMILARITY_THRESHOLD_PERCENTAGE:
-            # if it is above some threshold, generate a message with that sequence as seed
-            answer = ' '.join(self.markov.generate(seed=best[0].split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
-        else:
-            # if is is below, generate a completely new message
-            answer = ' '.join(self.markov.generate(max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
+        best_result_string = best[0]
+        best_result_score = best[1]
+        answer = self.generate_answer(best_result_score=best_result_score, best_result_string=best_result_string)
 
-        #answer = next_bot + ' ' + answer
         print(self.name + ' will interpret the message. best score for sentence: ', best)
         print('new answer: ' + answer)
         time.sleep(self.ANSWER_DELAY_SECONDS)
         self.message(channel, answer)
         time.sleep(1)
-        self.notice(next_bot, 'your turn')
+        self.notice(next_bot, self.KEYWORD_NEXT_BOT)
 
 
 class MarkovCalculator(threading.Thread):
@@ -140,6 +179,9 @@ if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
     txts_path = params['txts_path']
     max_bots = int(params['max_bots'])
+
+    #network = 'irc.schwittlick.net'
+    network = 'localhost'
 
     count = 0
     processes = []
@@ -181,8 +223,11 @@ if __name__ == '__main__':
     for p in processes:
         client = EcoIrcClient(p.markov_chain.prefix)
         client.set_markov(p.markov_chain.prefix, p.markov_chain)
-        client.connect('irc.schwittlick.net', tls=False)
+        client.connect(network, tls=False)
         pool.add(client)
 
+    statistic_client = EcoStatistics('STATISTIC_BOT')
+    statistic_client.connect(network, tls=False)
+    pool.add(statistic_client)
     print('Setup done.')
     pool.handle_forever()
