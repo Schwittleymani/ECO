@@ -35,7 +35,7 @@ class EcoIrcClient(pydle.Client):
     SEQUENCE_MATCH_LENGTH = 3
     MAX_GENERATOR_LENGTH_CHARACTERS = 100
     SIMILARITY_THRESHOLD_PERCENTAGE = 2 # 0-100
-    OWNERS_NAME = ['mrzl', 'ra', 'STATISTIC_BOT']
+    OWNERS_NAME = ['mrzl', 'marmar', 'ra', 'STATISTIC_BOT']
     ANSWER_DELAY_SECONDS = 15
     CHANNEL = '#eco'
     KEYWORD_NEXT_BOT = 'your turn'
