@@ -48,3 +48,5 @@ if __name__ == '__main__':
                 output_file.write('\n')
         except TypeError as e:
             print(e)
+        except textract.exceptions.ShellError as e:
+            print(e)
