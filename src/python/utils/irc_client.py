@@ -24,7 +24,7 @@ class EcoStatistics(pydle.Client):
             self.markov_used += 1
         elif 'original' in message:
             self.original_used += 1
-        elif 'statistic':
+        elif '--statistic' in message:
             answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
             self.message(by, answer)
 
@@ -48,6 +48,10 @@ class EcoIrcClient(pydle.Client):
 
     def on_connect(self):
         super().on_connect()
+
+        self.markov_used = 0
+        self.original_used = 0
+
         self.join('#eco')
 
     def on_notice(self, target, by, message):
@@ -92,7 +96,11 @@ class EcoIrcClient(pydle.Client):
         called when a new message is posted in the channel
         """
         super().on_message(target, by, message)
-        self.last_message = (target, message)
+        if '--statistic' in message:
+            answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
+            self.message(by, answer)
+        else:
+            self.last_message = (target, message)
 
     def generate_answer(self, best_result_string, best_result_score):
 
@@ -102,11 +110,13 @@ class EcoIrcClient(pydle.Client):
             answer = ' '.join(self.markov.generate(seed=best_result_string.split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
             print('Using Markov Method')
             self.message('STATISTIC_BOT', 'markov')
+            self.markov_used += 1
         else:
             # if is is below, generate a completely new message
             answer = self.get_original_sentence(best_result_string=best_result_string)
             print('Sampling original input text')
             self.message('STATISTIC_BOT', 'original')
+            self.original_used += 1
 
         return answer
 
