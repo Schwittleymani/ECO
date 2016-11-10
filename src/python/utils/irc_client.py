@@ -64,10 +64,14 @@ class EcoIrcClient(pydle.Client):
 
     def on_private_message(self, by, message):
         super().on_private_message(by, message)
-        best = self.calc_best_score(last_message=message)
-        best_result_string = best[0]
-        best_result_score = best[1]
-        answer = self.generate_answer(best_result_score=best_result_score, best_result_string=best_result_string)
+        if '--statistic' in message:
+            answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
+            self.message(by, answer)
+        else:
+            best = self.calc_best_score(last_message=message)
+            best_result_string = best[0]
+            best_result_score = best[1]
+            answer = self.generate_answer(best_result_score=best_result_score, best_result_string=best_result_string)
 
         self.message(by, answer)
 
@@ -96,11 +100,16 @@ class EcoIrcClient(pydle.Client):
         called when a new message is posted in the channel
         """
         super().on_message(target, by, message)
-        if '--statistic' in message:
-            answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
-            self.message(by, answer)
-        else:
-            self.last_message = (target, message)
+
+        self.last_message = (target, message)
+
+    def send_original_sentence(self, best_result_string):
+        # if is is below, generate a completely new message
+        answer = self.get_original_sentence(best_result_string=best_result_string)
+        print('Sampling original input text')
+        self.message('STATISTIC_BOT', 'original')
+        self.original_used += 1
+        return answer
 
     def generate_answer(self, best_result_string, best_result_score):
 
@@ -108,15 +117,14 @@ class EcoIrcClient(pydle.Client):
             # if it is above some threshold, generate a message with that sequence as seed
             print('input: ' + best_result_string)
             answer = ' '.join(self.markov.generate(seed=best_result_string.split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
-            print('Using Markov Method')
-            self.message('STATISTIC_BOT', 'markov')
-            self.markov_used += 1
+            if answer == best_result_string:
+                answer = self.send_original_sentence(best_result_string=best_result_string)
+            else:
+                print('Using Markov Method')
+                self.message('STATISTIC_BOT', 'markov')
+                self.markov_used += 1
         else:
-            # if is is below, generate a completely new message
-            answer = self.get_original_sentence(best_result_string=best_result_string)
-            print('Sampling original input text')
-            self.message('STATISTIC_BOT', 'original')
-            self.original_used += 1
+            answer = self.send_original_sentence(best_result_string=best_result_string)
 
         return answer
 
