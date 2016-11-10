@@ -210,7 +210,7 @@ if __name__ == '__main__':
             line_count += 1
             lines.append(line)
 
-        if line_count < 300:
+        if line_count < 100:
             continue
 
         author = file.partition('-')[0]
