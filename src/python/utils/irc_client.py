@@ -9,7 +9,6 @@ import random
 import time
 
 # this contemporary celebration of doing-things-for-yourself in all aspects of life from politics to music
-# the end of a fixed potential
 
 
 class EcoStatistics(pydle.Client):
@@ -73,6 +72,7 @@ class EcoIrcClient(pydle.Client):
         generates a random sub-string from the passed input string. with a given length.
         """
         split_msg = input.split()
+        random.shuffle(split_msg)
         start_index = 0
         if len(split_msg) > length + 1:
             start_index = random.randint(0, len(split_msg) - (length + 1))
@@ -121,7 +121,7 @@ class EcoIrcClient(pydle.Client):
 
     def calc_best_score(self, last_message):
         scores = []
-        attempt_count = 100
+        attempt_count = 200
         for i in range(attempt_count):
             # gets a new random sequence from the message
             sequence = self.get_random_sequence(last_message, self.SEQUENCE_MATCH_LENGTH)
@@ -129,6 +129,7 @@ class EcoIrcClient(pydle.Client):
             score = self.markov.score_for_line(sequence.split())
             # stores sequence and score for calculating the best result
             scores.append((sequence, score))
+
         # calculates the best result contains (sequence, score)
         scores.sort(key=lambda scores: scores[1], reverse=True)
         return scores[0]
