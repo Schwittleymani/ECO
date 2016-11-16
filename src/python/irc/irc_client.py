@@ -61,36 +61,12 @@ if __name__ == '__main__':
 
         if line_count < 100:
             continue
-        # call python externally here
-        line = '/home/mar/.virtualenvs/eco3/bin/python /home/mar/code/marcel/ECO/src/python/utils/irc_bot.py --txt_path /home/mar/code/marcel/ECO/src/python/utils/test_pdfs_txt/ --file_name ' + file + ' --server ' + server
+        line = '/home/mar/.virtualenvs/eco3/bin/python /home/mar/code/marcel/ECO/src/python/utils/irc_bot.py --txt_path ' + txts_path + ' --file_name ' + file + ' --server ' + server
         subprocess.Popen(shlex.split(line), shell=False)
-        #os.system(line)
-        #author = file.partition('-')[0]
-        #author = author[:15]
-        #author.replace('.', '')
-        #if author in authors:
-        #    author += '_'
-        #authors.append(author)
-
-        #p = MarkovCalculator(lines, author, filename=file)
-        #p.start()
-        #processes.append(p)
 
         count += 1
-
-    #for p in processes:
-    #    p.join()
-
-    #pool = pydle.ClientPool()
-    #for p in processes:
-    #    client = EcoIrcClient(p.markov_chain.prefix)
-    #    client.set_markov(p.markov_chain.prefix, p.markov_chain, p.filename)
-    #    client.connect(server, tls=False)
-    #    pool.add(client)
 
     statistic_client = EcoStatistics('STATISTIC_BOT')
     statistic_client.connect(server, tls=False)
     statistic_client.handle_forever()
-    #pool.add(statistic_client)
     print('Setup done.')
-    #pool.handle_forever()
