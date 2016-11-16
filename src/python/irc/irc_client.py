@@ -29,6 +29,7 @@ def process_arguments(args):
     parser.add_argument('--txts_path', action='store', help='path to folder with txt files')
     parser.add_argument('--max_bots', action='store', help='the maximum number of bots to train and connect to IRC')
     parser.add_argument('--server', action='store', help='the server to connect the bots to')
+    parser.add_argument('--bot_script_path', action='store', help='path to the irc_bot.py script')
 
     params = vars(parser.parse_args(args))
 
@@ -39,6 +40,7 @@ if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
     txts_path = params['txts_path']
     max_bots = int(params['max_bots'])
+    bot_script_path = params['bot_script_path']
     server = params['server']
 
     count = 0
@@ -61,7 +63,10 @@ if __name__ == '__main__':
 
         if line_count < 100:
             continue
-        line = '/home/mar/.virtualenvs/eco3/bin/python /home/mar/code/marcel/ECO/src/python/utils/irc_bot.py --txt_path ' + txts_path + ' --file_name ' + file + ' --server ' + server
+
+        python_path = os.popen('which python').read().rstrip()
+        line = python_path + ' ' + bot_script_path + ' --txt_path ' + txts_path + ' --file_name ' + file + ' --server ' + server
+        print(line)
         subprocess.Popen(shlex.split(line), shell=False)
 
         count += 1

@@ -163,7 +163,7 @@ class EcoIrcClient(pydle.Client):
         print('new answer: ' + answer)
         time.sleep(self.ANSWER_DELAY_SECONDS)
         self.last_messages.append(answer)
-        if len(self.last_messages) > self.LAST_MESSAGES_MAX:
+        if len(self.last_messages) > self.LAST_MESSAGES_MAX and len(self.last_messages) > 0:
             self.last_messages.remove(0)
         self.message(channel, answer)
         time.sleep(1)
