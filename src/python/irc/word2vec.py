@@ -112,5 +112,8 @@ if __name__ == '__main__':
         model_selftrained = gensim.models.Word2Vec(sentences, min_count=5, size=features, workers=8)
         first_testing(model_selftrained, features=features)
     elif method in 'google':
+        t0 = time.time()
         model = gensim.models.Word2Vec.load_word2vec_format(google_path, binary=True)
+        t1 = time.time()
+        print('Loading the google model took ' + str(t1-t0) + 's')
         second_training(google_model=model, path=path, features=features)
