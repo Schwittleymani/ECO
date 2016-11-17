@@ -114,7 +114,7 @@ def train_markovs(path, max_markov=30):
     return markovs
 
 def third_testing(path, google_path, features):
-    markovs = train_markovs(path=path, max_markov=30)
+    markovs = train_markovs(path=path, max_markov=120)
     print('Done Training Markovs')
     model = gensim.models.Word2Vec.load_word2vec_format(google_path, binary=True)
     print('Done loading Google model')
