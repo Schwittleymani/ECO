@@ -138,6 +138,7 @@ def third_testing(path, google_path, features):
     markov_dict = {}
     for markov in markovs:
         generated_sentences = []
+        print('----------------------------------------')
         print(markov.prefix)
         for i in range(10):
             t0 = time.time()
@@ -166,15 +167,11 @@ def third_testing(path, google_path, features):
 
             t1 = time.time()
 
-            print('-------------------')
-            print(' '.join(sentence))
-            print('Most similar from google:')
-            print(biggest_similarity_google)
-            print(biggest_similarity_sentence_google)
-            print('Most similar from own:')
-            print(biggest_similarity_own)
-            print(biggest_similarity_sentence_own)
-            print('Calculating this took: ' + str(int(t1-t0)) + 's')
+            print('----------------------------------------')
+            print('markov: ' + ' '.join(sentence))
+            print('closest via google: ' + biggest_similarity_sentence_google)
+            print('closest via own model: ' + biggest_similarity_sentence_own)
+            #print('Calculating this took: ' + str(int(t1-t0)) + 's')
             generated_sentences.append(sentence)
         markov_dict[markov] = generated_sentences
 
