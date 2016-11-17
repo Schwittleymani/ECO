@@ -4,6 +4,7 @@ import argparse
 import time
 import gensim
 import random
+import markov
 import numpy as np
 import scipy.spatial.distance
 
@@ -87,19 +88,95 @@ def second_training(google_model, path, features):
         random_a_vec = avg_feature_vector(random_a.split(), model=google_model, num_features=features)
         random_b_vec = avg_feature_vector(random_b.split(), model=google_model, num_features=features)
         similarity = 1 - scipy.spatial.distance.cosine(random_a_vec, random_b_vec)
-        #print('a: ' + random_a)
-        #print('b: ' + random_b)
-        #print('sim: ' + str(similarity))
         log.append((random_a, random_b, similarity))
     t1 = time.time()
     print('calculating all vectors took ' + str(t1-t0) + 's')
-    log.sort(key=lambda scores: scores[2], reverse=True)
+    log.sort(key=lambda log: log[2], reverse=True)
     print('Best results:')
     for i in range(10):
         print('Index: ' + str(i))
         print(log[i][0])
         print(log[i][1])
         print('with similarity: ' + str(log[i][2]))
+
+def train_markovs(path, max_markov=30):
+    markovs = []
+    for fname in os.listdir(path):
+        if len(markovs) > max_markov:
+            break
+        print('Start training markov from ' + fname)
+        markov_chain = markov.Markov(prefix=fname)
+        for line in open(os.path.join(path, fname)):
+            line_low = line.lower()
+            markov_chain.add_line_to_index(line_low.split())
+        print('Done training markov from ' + fname)
+        markovs.append(markov_chain)
+    return markovs
+
+def third_testing(path, google_path, features):
+    markovs = train_markovs(path=path, max_markov=30)
+    print('Done Training Markovs')
+    model = gensim.models.Word2Vec.load_word2vec_format(google_path, binary=True)
+    print('Done loading Google model')
+    model_selftrained = gensim.models.Word2Vec(Sentence(path), min_count=5, size=features, workers=8)
+    print('Done training own model')
+
+    _t0 = time.time()
+    # loading all lines for comparison
+    lines_vectors_google = []
+    lines_vectors_own = []
+    for fname in os.listdir(path):
+        for line in open(os.path.join(path, fname)):
+            line_low = line.lower()
+            vector_google = avg_feature_vector(line_low.split(), model=model_selftrained, num_features=features)
+            vector_own = avg_feature_vector(line_low.split(), model=model, num_features=features)
+            lines_vectors_google.append((line_low, vector_google))
+            lines_vectors_own.append((line_low, vector_own))
+    _t1 = time.time()
+    print('Calculating all vectors on google/own models for sentences from own corpus done')
+    print('That took ' + str(int(_t1-_t0)) + 's. It was done for ' + str(len(lines_vectors_google)) + ' lines')
+    markov_dict = {}
+    for markov in markovs:
+        generated_sentences = []
+        print(markov.prefix)
+        for i in range(10):
+            t0 = time.time()
+            sentence = markov.generate(max_words=100)
+
+            sentence_vec_google = avg_feature_vector(' '.join(sentence).lower().split(), model=model_selftrained, num_features=features)
+            sentence_vec_own = avg_feature_vector(' '.join(sentence).lower().split(), model=model, num_features=features)
+
+            # iterating through all vectors of all existing text lines from our corpus
+            biggest_similarity_google = 0.0
+            biggest_similarity_sentence_google = ''
+            biggest_similarity_own = 0.0
+            biggest_similarity_sentence_own = ''
+            for index_corpus_line in range(len(lines_vectors_google)):
+                vec_google = lines_vectors_google[index_corpus_line][1]
+                vec_own = lines_vectors_own[index_corpus_line][1]
+                similarity_google = 1 - scipy.spatial.distance.cosine(vec_google, sentence_vec_google)
+                similarity_own = 1 - scipy.spatial.distance.cosine(vec_own, sentence_vec_own)
+
+                if similarity_google > biggest_similarity_google:
+                    biggest_similarity_google = similarity_google
+                    biggest_similarity_sentence_google = lines_vectors_google[index_corpus_line][0]
+                if similarity_own > biggest_similarity_own:
+                    biggest_similarity_own = similarity_own
+                    biggest_similarity_sentence_own = lines_vectors_own[index_corpus_line][0]
+
+            t1 = time.time()
+
+            print('-------------------')
+            print(' '.join(sentence))
+            print('Most similar from google:')
+            print(biggest_similarity_google)
+            print(biggest_similarity_sentence_google)
+            print('Most similar from own:')
+            print(biggest_similarity_own)
+            print(biggest_similarity_sentence_own)
+            print('Calculating this took: ' + str(int(t1-t0)) + 's')
+            generated_sentences.append(sentence)
+        markov_dict[markov] = generated_sentences
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
@@ -117,3 +194,6 @@ if __name__ == '__main__':
         t1 = time.time()
         print('Loading the google model took ' + str(t1-t0) + 's')
         second_training(google_model=model, path=path, features=features)
+    elif method in 'markov':
+        # loading google model and own model (for comparing)
+        third_testing(path=path, google_path=google_path, features=features)
