@@ -106,11 +106,14 @@ def train_markovs(path, max_markov=30):
             break
         print('Start training markov from ' + fname)
         markov_chain = markov.Markov(prefix=fname)
+        line_count = 0
         for line in open(os.path.join(path, fname)):
             line_low = line.lower()
             markov_chain.add_line_to_index(line_low.split())
+            line_count += 1
         print('Done training markov from ' + fname)
-        markovs.append(markov_chain)
+        if line_count > 200:
+            markovs.append(markov_chain)
     return markovs
 
 def third_testing(path, google_path, features):
