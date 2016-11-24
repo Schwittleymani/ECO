@@ -2,7 +2,6 @@ import random
 import sys
 import time
 import markov
-import threading
 import pydle
 import argparse
 
@@ -21,11 +20,11 @@ class EcoIrcClient(pydle.Client):
     last_message = ()
     last_messages = []
 
-    def set_markov(self, name, markov, corpus_name):
-        print('Starting IRC Client of ' + name)
-        self.name = name
+    def set_markov(self, markov, corpus_name):
+        self.name = markov.prefix
         self.markov = markov
         self.corpus_name = corpus_name
+        print('Starting IRC Client of ' + self.name)
 
     def on_connect(self):
         super().on_connect()
@@ -33,7 +32,7 @@ class EcoIrcClient(pydle.Client):
         self.markov_used = 0
         self.original_used = 0
 
-        self.join('#eco')
+        self.join(self.CHANNEL)
 
     def on_notice(self, target, by, message):
         super().on_notice(target, by, message)
@@ -41,7 +40,7 @@ class EcoIrcClient(pydle.Client):
         if message == self.KEYWORD_NEXT_BOT:
             print(target, by, message)
             time.sleep(2)
-            self.write_to_channel('#eco', self.last_message[1])
+            self.write_to_channel(self.CHANNEL, self.last_message[1])
 
     def on_private_message(self, by, message):
         super().on_private_message(by, message)
@@ -76,21 +75,11 @@ class EcoIrcClient(pydle.Client):
             start_index = random.randint(0, len(split_msg) - (length + 1))
         return ' '.join(split_msg[start_index:start_index+length])
 
-    def get_best_score(self, scores):
-        """
-        calculates the best score of a passed tuple list. it contains (string, score)
-        """
-        # sorting reversed by second elements of the tuple list.
-
-        # maximum is at first index
-        return scores[0]
-
     def on_message(self, target, by, message):
         """
         called when a new message is posted in the channel
         """
         super().on_message(target, by, message)
-
         self.last_message = (target, message)
 
     def send_original_sentence(self, best_result_string):
@@ -170,22 +159,6 @@ class EcoIrcClient(pydle.Client):
         self.notice(next_bot, self.KEYWORD_NEXT_BOT)
 
 
-class MarkovCalculator(threading.Thread):
-    def __init__(self, lines, author, filename):
-        self.lines = lines
-        self.author = author
-        self.filename = filename
-        super(MarkovCalculator, self).__init__()
-
-    def run(self):
-        self.markov_chain = markov.Markov(prefix=self.author)
-
-        print('Start training ' + self.author)
-        for s in self.lines:
-            #print('trainging ' + self.author + ' with line ' + s)
-            self.markov_chain.add_line_to_index(s.split())
-        print('Done training ' + self.author)
-
 def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure the irc clients')
 
@@ -205,20 +178,23 @@ if __name__ == '__main__':
     server = params['server']
 
     author = file_name.partition('-')[0]
-    author = author[:10]
+    author = author[:15]
     author.replace('.', '')
 
-    lines = []
     f = open(txt_path + file_name, 'r')
     lines = []
     for line in f:
         lines.append(line)
 
-    author += str(random.random())[16:]
-    p = MarkovCalculator(lines, author, filename=file_name)
-    p.start()
-    p.join()
-    client = EcoIrcClient(p.markov_chain.prefix)
-    client.set_markov(p.markov_chain.prefix, p.markov_chain, p.filename)
+    author += str(random.randint(1000, 9999))
+    markov_chain = markov.Markov(prefix=author)
+
+    for s in lines:
+        markov_chain.add_line_to_index(s.split())
+
+    print('Done training ' + author)
+
+    client = EcoIrcClient(markov_chain.prefix)
+    client.set_markov(markov_chain, file_name)
     client.connect(server, tls=False)
     client.handle_forever()
