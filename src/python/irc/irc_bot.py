@@ -1,9 +1,27 @@
 import random
 import sys
+import os
 import time
-import markov
+import markov_python3
 import pydle
 import argparse
+
+class EcoStatistics(pydle.Client):
+    def on_connect(self):
+        super().on_connect()
+        self.join('#eco')
+        self.markov_used = 0
+        self.original_used = 0
+
+    def on_private_message(self, by, message):
+        super().on_private_message(by, message)
+        if 'markov' in message:
+            self.markov_used += 1
+        elif 'original' in message:
+            self.original_used += 1
+        elif '--statistic' in message:
+            answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
+            self.message(by, answer)
 
 class EcoIrcClient(pydle.Client):
 
@@ -163,8 +181,7 @@ def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure the irc clients')
 
     parser.add_argument('--txt_path', action='store', help='the path to the directory containing the file')
-    parser.add_argument('--file_name', action='store', help='file name')
-    parser.add_argument('--server', action='store', help='the server to connect the bots to')
+    parser.add_argument('--server', action='store', help='the server to connect the bots to', type=str, default='localhost')
 
     params = vars(parser.parse_args(args))
 
@@ -173,28 +190,22 @@ def process_arguments(args):
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
+
     txt_path = params['txt_path']
-    file_name = params['file_name']
     server = params['server']
 
+    file_path, file_name = os.path.split(txt_path)
+    lines = open(txt_path, 'r').readlines()
+
     author = file_name.partition('-')[0]
-    author = author[:15]
-    author.replace('.', '')
-
-    f = open(txt_path + file_name, 'r')
-    lines = []
-    for line in f:
-        lines.append(line)
-
-    author += str(random.randint(1000, 9999))
-    markov_chain = markov.Markov(prefix=author)
+    markov_chain = markov_python3.Markov(prefix=author)
 
     for s in lines:
         markov_chain.add_line_to_index(s.split())
 
     print('Done training ' + author)
 
-    client = EcoIrcClient(markov_chain.prefix)
+    client = EcoIrcClient(author)
     client.set_markov(markov_chain, file_name)
     client.connect(server, tls=False)
     client.handle_forever()
