@@ -4,6 +4,7 @@ import os
 import time
 import markov_python3
 import pydle
+import collections
 import argparse
 
 class EcoStatistics(pydle.Client):
@@ -23,88 +24,48 @@ class EcoStatistics(pydle.Client):
             answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
             self.message(by, answer)
 
-
-class EcoIrcClient(pydle.Client):
+class MarkovAnswerGenerator(object):
 
     SEQUENCE_MATCH_LENGTH = 3
     MAX_GENERATOR_LENGTH_CHARACTERS = 100
     SIMILARITY_THRESHOLD_PERCENTAGE = 2 # 0-100
-    OWNERS_NAME = ['mrzl', 'marmar', 'ra', 'STATISTIC_BOT']
-    ANSWER_DELAY_SECONDS = 2
-    CHANNEL = '#eco'
-    KEYWORD_NEXT_BOT = 'your turn'
-    LAST_MESSAGES_MAX = 100
+    KEYWORD_ORIGINAL_USED = 'original'
+    KEYWORD_MARKOV_USED = 'markov'
 
-    corpus_name = ''
-    last_message = ''
-    last_messages = []
+    markov_used = 0
+    original_used = 0
 
-    def __init__(self, prefix, markov, corpus_name):
-        super().__init__(prefix)
-        self.name = markov.prefix
+    def __init__(self, markov):
         self.markov = markov
-        self.corpus_name = corpus_name
 
-        self.parser = argparse.ArgumentParser(description='configure the irc clients')
-        self.parser.add_argument('--statistic', action='store_true', help='returns statistic')
-        self.parser.add_argument('--corpus', action='store_true', help='returns the used corpus name')
-        self.parser.add_argument('--last', action='store', help='returns the last n messages', type=int, default=5)
+    def generate_answer(self, best_result_string, best_result_score):
+        if best_result_score > self.SIMILARITY_THRESHOLD_PERCENTAGE:
+            # if it is above some threshold, generate a message with that sequence as seed
+            answer = ' '.join(self.markov.generate(seed=best_result_string.split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
+            # if the generated answer is the same as the best possible answer.
+            if answer == best_result_string:
+                answer = self.get_original_sentence(best_result_string=best_result_string)
+                technique_used = self.KEYWORD_ORIGINAL_USED
+                self.original_used += 1
+            else:
+                technique_used = self.KEYWORD_MARKOV_USED
+                self.markov_used += 1
+        else:
+            # if is is below, generate a completely new message
+            answer = self.get_original_sentence(best_result_string=best_result_string)
+            technique_used = self.KEYWORD_ORIGINAL_USED
+            self.original_used += 1
 
-    def on_connect(self):
-        super().on_connect()
+        return answer, technique_used
 
-        self.markov_used = 0
-        self.original_used = 0
-
-        self.join(self.CHANNEL)
-
-    def on_notice(self, target, by, message):
-        super().on_notice(target, by, message)
-
-        if self.KEYWORD_NEXT_BOT in message:
-            if self.last_message is None:
-                self.last_message = self.get_original_sentence()
-            answer = self.compose_message(self.last_message)
-            next_bot = self.get_next_bot()
-
-            time.sleep(self.ANSWER_DELAY_SECONDS)
-
-            self.message(self.CHANNEL, answer)
-            self.notice(next_bot, self.KEYWORD_NEXT_BOT)
-
-    def on_message(self, target, by, message):
-        """
-        called when a new message is posted in the channel
-        """
-        super().on_message(target, by, message)
-        self.last_message = message
-
-    def parse_private_message(self, message):
-        params = vars(self.parser.parse_args(message.split()))
-        if params['statistic'] is True:
-            answer = 'Markov: ' + str(self.markov_used) + ' Original: ' + str(self.original_used)
-            self.message(by, answer)
-            return True
-        if params['corpus'] is True:
-            self.message(by, self.corpus_name)
-            return True
-        if params['last'] is not None and isinstance(params['last'], int):
-            amount = max(0, min(params['last'], len(self.last_messages)))
-            for i in list(reversed(self.last_messages))[:amount]:
-                self.message(by, i)
-                time.sleep(0.1)
-            return True
-        return False
-
-    def on_private_message(self, by, message):
-        super().on_private_message(by, message)
-        was_command = self.parse_private_message(message)
-        if not was_command:
-            best = self.calc_best_score(last_message=message)
-            best_result_string = best[0]
-            best_result_score = best[1]
-            answer = self.generate_answer(best_result_score=best_result_score, best_result_string=best_result_string)
-            self.message(by, answer)
+    def get_original_sentence(self, best_result_string=''):
+        answer = ''
+        for _line in self.markov.lines:
+            if best_result_string in ' '.join(_line):
+                answer = ' '.join(_line)
+        if answer == '':
+            answer = random.choice(self.markov.lines)
+        return answer
 
     def get_random_sequence(self, input, length=3):
         """
@@ -116,39 +77,6 @@ class EcoIrcClient(pydle.Client):
         if len(split_msg) > length + 1:
             start_index = random.randint(0, len(split_msg) - (length + 1))
         return ' '.join(split_msg[start_index:start_index+length])
-
-    def send_original_sentence(self, best_result_string):
-        # if is is below, generate a completely new message
-        answer = self.get_original_sentence(best_result_string=best_result_string)
-        print('Sampling original input text')
-        self.message('STATISTIC_BOT', 'original')
-        self.original_used += 1
-        return answer
-
-    def generate_answer(self, best_result_string, best_result_score):
-        if best_result_score > self.SIMILARITY_THRESHOLD_PERCENTAGE:
-            # if it is above some threshold, generate a message with that sequence as seed
-            print('input: ' + best_result_string)
-            answer = ' '.join(self.markov.generate(seed=best_result_string.split(), max_words=self.MAX_GENERATOR_LENGTH_CHARACTERS))
-            if answer == best_result_string:
-                answer = self.send_original_sentence(best_result_string=best_result_string)
-            else:
-                print('Using Markov Method')
-                self.message('STATISTIC_BOT', 'markov')
-                self.markov_used += 1
-        else:
-            answer = self.send_original_sentence(best_result_string=best_result_string)
-
-        return answer
-
-    def get_original_sentence(self, best_result_string=''):
-        answer = ''
-        for _line in self.markov.lines:
-            if best_result_string in ' '.join(_line):
-                answer = ' '.join(_line)
-        if answer == '':
-            answer = random.choice(self.markov.lines)
-        return answer
 
     def calc_best_score(self, last_message):
         scores = []
@@ -165,7 +93,140 @@ class EcoIrcClient(pydle.Client):
         scores.sort(key=lambda scores: scores[1], reverse=True)
         return scores[0]
 
-    def get_next_bot(self):
+    def compose_message(self, last):
+        # check if the best answer score is above some certain threshold
+        best = self.calc_best_score(last_message=last)
+        best_result_string = best[0]
+        best_result_score = best[1]
+        answer = self.generate_answer(best_result_score=best_result_score, best_result_string=best_result_string)
+
+        return answer
+
+
+class EcoIrcClient(pydle.Client):
+
+    STATISTIC_BOT = 'HumammadSusej'
+    OWNERS_NAME = ['mrzl', 'marmar', 'ra', STATISTIC_BOT]
+    ANSWER_DELAY_SECONDS = 2
+    CHANNEL = '#eco'
+    KEYWORD_TURN = 'your turn'
+
+    corpus_name = None
+    last_channel_message = None
+    last_messages = collections.deque(maxlen=100)
+
+    def __init__(self, prefix, markov, corpus_name):
+        super().__init__(prefix)
+
+        self.generator = MarkovAnswerGenerator(markov)
+        self.name = markov.prefix
+        self.corpus_name = corpus_name
+
+        self.last_channel_message = self.generator.get_original_sentence()
+
+        self.parser = argparse.ArgumentParser(description='configure the irc clients')
+        self.parser.add_argument('--statistic', action='store_true', help='returns statistic')
+        self.parser.add_argument('--corpus', action='store_true', help='returns the used corpus name')
+        self.parser.add_argument('--last', action='store', help='returns the last n messages', type=int)
+
+    def on_connect(self):
+        """
+        called once the client is connected to the network
+        """
+        super().on_connect()
+        self.join(self.CHANNEL)
+
+    def on_notice(self, target, by, message):
+        """
+        called when this client has received a /notice *nick* notice_message
+
+        :param target: the own name of this irc client
+        :param by: the nick who sent the notice
+        :param message: the message attached to the notice
+        :return:
+        """
+
+        super().on_notice(target, by, message)
+
+        # if the notice contained the commando that indicates it's this clients turn
+        if self.KEYWORD_TURN in message:
+            # generate an answer
+            answer, technique = self.generator.compose_message(self.last_channel_message)
+
+            # a bit of delay
+            time.sleep(self.ANSWER_DELAY_SECONDS)
+
+            # sends the new message to the channel
+            self.message(self.CHANNEL, answer)
+
+            # saving statistics
+            self.statistics(self.CHANNEL, answer, technique)
+
+            # notifies next bot for its turn
+            self.notice(self.random_bot(), self.KEYWORD_TURN)
+
+    def on_message(self, target, by, message):
+        """
+        called when a new message is posted in the channel
+        """
+        super().on_message(target, by, message)
+
+        # saving last posted channel message
+        self.last_channel_message = message
+
+    def parse_private_message(self, by, message):
+        """
+        parses the message to check if it was a command or just a text for direct conversation
+        :param by: which nickname sent the message
+        :param message: the content
+        :return: True if the message was a command, False if it was not one of the defined commands
+        """
+        params, unknown = self.parser.parse_known_args(message.split())
+        params = vars(params)
+
+        if params['statistic'] is True:
+            answer = 'Markov: ' + str(self.generator.markov_used) + ' Original: ' + str(self.generator.original_used)
+            self.message(by, answer)
+            return True
+        if params['corpus'] is True:
+            self.message(by, self.corpus_name)
+            return True
+        if params['last'] is not None and isinstance(params['last'], int):
+            amount = max(0, min(params['last'], len(self.last_messages)))
+            for i in list(reversed(self.last_messages))[:amount]:
+                self.message(by, i)
+                time.sleep(0.1)
+            return True
+        return False
+
+    def on_private_message(self, by, message):
+        """
+        this is called when a private message was received.
+        1. checks if the message was a commando
+        2. if not, answer to the message directly
+
+        :param by: who sent the message
+        :param message: the content of the message
+        :return: nothing
+        """
+        super().on_private_message(by, message)
+        was_command = self.parse_private_message(by, message)
+        if not was_command:
+            answer, technique = self.generator.compose_message(self.last_channel_message)
+            self.message(by, answer)
+            self.statistics(by, answer, technique)
+
+    def statistics(self, answer, technique):
+        # saving statistics
+        self.message(self.STATISTIC_BOT, technique)
+        self.last_messages.append(answer)
+
+    def random_bot(self):
+        """
+        chooses a random conversation partner from the current channel
+
+        :return: nick name of the chosen partner
+        """
         users = self.channels[self.CHANNEL]['users']
         if self.name in users:
             users.remove(self.name)
@@ -175,20 +236,6 @@ class EcoIrcClient(pydle.Client):
 
         next_bot = random.choice(tuple(users))
         return next_bot
-
-    def compose_message(self, last):
-        # check if the best answer score is above some certain threshold
-        best = self.calc_best_score(last_message=last)
-        best_result_string = best[0]
-        best_result_score = best[1]
-        answer = self.generate_answer(best_result_score=best_result_score, best_result_string=best_result_string)
-
-        print(self.name + ' will interpret the message. best score for sentence: ', best)
-        print('new answer: ' + answer)
-        self.last_messages.append(answer)
-        if len(self.last_messages) > self.LAST_MESSAGES_MAX and len(self.last_messages) > 0:
-            self.last_messages.remove(0)
-        return answer
 
 
 def process_arguments(args):

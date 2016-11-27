@@ -10,7 +10,7 @@ def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure the irc clients')
 
     parser.add_argument('--txts_path', action='store', help='path to folder with txt files')
-    parser.add_argument('--bot_script_path', action='store', help='path to the irc_bot.py script')
+    parser.add_argument('--bot_script_path', action='store', help='path to the irc_bot.py script', type=str, default='irc_bot.py')
     parser.add_argument('--server', action='store', help='the server to connect the bots to', type=str, default='localhost')
     parser.add_argument('--max_bots', action='store', help='the maximum number of bots to train', type=int, default=10)
 
@@ -35,6 +35,6 @@ if __name__ == '__main__':
     for file in glob.glob(txts_path + '/*.txt')[:max_bots]:
         start_individual_bot_process(script_path=bot_script_path, file_path=file, server=server)
 
-    statistic_client = irc_bot.EcoStatistics('STATISTIC_BOT')
+    statistic_client = irc_bot.EcoStatistics('HumammadSusej')
     statistic_client.connect(server, tls=False)
     statistic_client.handle_forever()
