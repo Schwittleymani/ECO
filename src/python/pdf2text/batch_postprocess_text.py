@@ -16,16 +16,14 @@ def process_arguments(args):
 
     return params
 
-def write_statistics(parser):
-    file = open('statistics.txt', 'w')
-    file.write('Files parsed: ' + str(parser.statistic.files_parsed)+'\n')
-    file.write('All sentences: ' + str(parser.statistic.all_sentences)+'\n')
-    file.write('Proper sentences: ' + str(parser.statistic.proper_sentences)+'\n')
-    file.write('Too few words: ' + str(parser.statistic.too_few_words)+'\n')
-    file.write('First word number: ' + str(parser.statistic.first_word_is_number)+'\n')
-    file.write('Contains brackets: ' + str(parser.statistic.sentence_contains_brackets)+'\n')
-    file.write('Contains number: ' + str(parser.statistic.sentence_contains_number)+'\n')
-    file.write('Too many comma: ' + str(parser.statistic.sentence_too_many_comma)+'\n')
+def write_statistics(parser, filename):
+    file = open('statistics.txt', 'a')
+
+    file.write(filename)
+
+    for key, value in parser.statistic.properties.items():
+        file.write(',' + str(value))
+    file.write('\n')
     file.close()
 
 
@@ -43,6 +41,13 @@ if __name__ == '__main__':
         os.makedirs(output_path)
 
     parser = textparser.TextParser()
+    file = open('statistics.txt', 'a')
+    file.write('filename')
+    for key, value in parser.statistic.properties.items():
+        file.write(',' + key)
+    file.write('\n')
+    file.close()
+
     for file_path in glob.glob(input_path + '/*.pdf'):
         print('Parsing ' + file_path)
 
@@ -50,6 +55,8 @@ if __name__ == '__main__':
 
         try:
             text = textract.process(file_path)
+
+            parser = textparser.TextParser()
             parser.parse(text.decode('utf-8'))
 
             output_filename = output_path + filename[:-3]
@@ -62,7 +69,7 @@ if __name__ == '__main__':
                 output_file.write(line.string.encode('utf8'))
                 output_file.write('\n')
 
-            write_statistics(parser)
+            write_statistics(parser, file_path)
 
         except TypeError as e:
             print(e)

@@ -1,15 +1,14 @@
 from pattern.en import parse, Text
 
 class ParseStatistic(object):
-    all_sentences = 0
-    proper_sentences = 0
-    files_parsed = 0
-
-    too_few_words = 0
-    first_word_is_number = 0
-    sentence_contains_brackets = 0
-    sentence_contains_number = 0
-    sentence_too_many_comma = 0
+    properties = {}
+    properties['all_sentences'] = 0
+    properties['proper_sentences'] = 0
+    properties['too_few_words'] = 0
+    properties['first_word_is_number'] = 0
+    properties['sentence_contains_brackets'] = 0
+    properties['sentence_contains_number'] = 0
+    properties['sentence_too_many_comma'] = 0
 
 class TextParser(object):
     """
@@ -52,8 +51,7 @@ class TextParser(object):
                           encoding='utf-8',
                           tagset=None))
 
-        self.statistic.all_sentences += len(text)
-        self.statistic.files_parsed += 1
+        self.statistic.properties['all_sentences'] += len(text)
         for sentence in text:
             if len(sentence.words) > self.MIN_WORD_COUNT:
                 first_word = sentence.words[0]
@@ -67,19 +65,19 @@ class TextParser(object):
                                 self.proper_sentences.append(sentence)
                             else:
                                 # the sentence has more than 2 occurrences of a comma(,)
-                                self.statistic.sentence_too_many_comma += 1
+                                self.statistic.properties['sentence_too_many_comma'] += 1
                         else:
                             # the sentence contains a number
-                            self.statistic.sentence_contains_number += 1
+                            self.statistic.properties['sentence_contains_number'] += 1
                     else:
                         # the sentence contains either ( ) or \
-                        self.statistic.sentence_contains_brackets += 1
+                        self.statistic.properties['sentence_contains_brackets'] += 1
                 else:
                     # first word of the sentence is a number
-                    self.statistic.first_word_is_number += 1
+                    self.statistic.properties['first_word_is_number'] += 1
             else:
                 # too few words in the sentence
                 # removes sentences like these: https://gist.github.com/mrzl/32b9763bd943c18cb77cd1167a87640a
-                self.statistic.too_few_words += 1
-        self.statistic.proper_sentences += len(self.proper_sentences)
+                self.statistic.properties['too_few_words'] += 1
+        self.statistic.properties['proper_sentences'] += len(self.proper_sentences)
         print('Parsed ' + str(len(self.proper_sentences)) + ' proper sentences.')
