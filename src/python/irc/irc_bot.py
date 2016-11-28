@@ -160,7 +160,7 @@ class EcoIrcClient(pydle.Client):
             self.message(self.CHANNEL, answer)
 
             # saving statistics
-            self.statistics(self.CHANNEL, answer, technique)
+            self.statistics(answer, technique)
 
             # notifies next bot for its turn
             self.notice(self.random_bot(), self.KEYWORD_TURN)
