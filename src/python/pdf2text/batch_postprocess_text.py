@@ -16,16 +16,7 @@ def process_arguments(args):
 
     return params
 
-def render_statistic(parser):
-    print('Statistic')
-    print('All sentences: ' + str(parser.statistic.all_sentences))
-    print('Proper sentences: ' + str(parser.statistic.proper_sentences))
-    print('Too few words: ' + str(parser.statistic.too_few_words))
-    print('First word number: ' + str(parser.statistic.first_word_is_number))
-    print('Contains brackets: ' + str(parser.statistic.sentence_contains_brackets))
-    print('Contains number: ' + str(parser.statistic.sentence_contains_number))
-    print('Too many comma: ' + str(parser.statistic.sentence_too_many_comma))
-
+def write_statistics(parser):
     file = open('statistics.txt', 'w')
     file.write('Files parsed: ' + str(parser.statistic.files_parsed)+'\n')
     file.write('All sentences: ' + str(parser.statistic.all_sentences)+'\n')
@@ -71,7 +62,7 @@ if __name__ == '__main__':
                 output_file.write(line.string.encode('utf8'))
                 output_file.write('\n')
 
-            render_statistic(parser)
+            write_statistics(parser)
 
         except TypeError as e:
             print(e)
