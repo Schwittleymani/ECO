@@ -6,8 +6,6 @@ import glob
 import textract
 import textparser
 
-import matplotlib.pyplot as plt
-
 
 def process_arguments(args):
     parser = argparse.ArgumentParser(description='convert pdfs to text and parse the texts properly')
@@ -27,29 +25,6 @@ def render_statistic(parser):
     print('Contains brackets: ' + str(parser.statistic.sentence_contains_brackets))
     print('Contains number: ' + str(parser.statistic.sentence_contains_number))
     print('Too many comma: ' + str(parser.statistic.sentence_too_many_comma))
-
-    labels = 'Proper Sentences', 'Too Few Words', 'First Word Number', 'Contains Brackets', 'Contains Number', 'Too Many Comma'
-    sizes = [len(parser.proper_sentences), parser.statistic.too_few_words, parser.statistic.first_word_is_number, parser.statistic.sentence_contains_brackets, parser.statistic.sentence_contains_number, parser.statistic.sentence_too_many_comma]
-    colors = ['yellowgreen', 'mediumpurple', 'lightskyblue', 'lightcoral', 'darkred', 'yellow']
-    explode = (0, 0, 0, 0, 0, 0)    # proportion with which to offset each wedge
-
-    def make_autopct(values):
-        def my_autopct(pct):
-            total = sum(values)
-            val = int(round(pct*total/100.0))
-            return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
-        return my_autopct
-    plt.pie(sizes,              # data
-    explode=explode,    # offset parameters
-    labels=labels,      # slice labels
-    colors=colors,      # array of colours
-    autopct=make_autopct(sizes),  # print the values inside the wedges
-    shadow=True,        # enable shadow
-    startangle=70       # starting angle
-    )
-
-    plt.axis('equal')
-    #plt.show()
 
     file = open('statistics.txt', 'w')
     file.write('Files parsed: ' + str(parser.statistic.files_parsed)+'\n')
