@@ -55,6 +55,16 @@ class TextParser(object):
 
     def parse(self, text):
         self.proper_sentences = []
+
+        self.statistic.properties['all_sentences'] = 0
+        self.statistic.properties['proper_sentences'] = 0
+        self.statistic.properties['too_few_words'] = 0
+        self.statistic.properties['first_word_is_number'] = 0
+        self.statistic.properties['sentence_contains_brackets'] = 0
+        self.statistic.properties['sentence_contains_number'] = 0
+        self.statistic.properties['sentence_too_many_comma'] = 0
+        self.statistic.properties['too_many_short_words'] = 0
+
         text = Text(parse(text,
                           tokenize=True,
                           tags=True,
