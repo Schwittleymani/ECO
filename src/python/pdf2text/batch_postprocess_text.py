@@ -60,7 +60,7 @@ if __name__ == '__main__':
             parser.parse(text.decode('utf-8'))
 
             output_filename = output_path + filename[:-3]
-            output_filename += 'txt'
+            output_filename += '.txt'
             output_filename = output_filename.replace(' ', '_')
             output_filename = output_filename.replace('.', '_')
             print('Saving to ' + output_filename)
