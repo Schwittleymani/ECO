@@ -22,7 +22,7 @@ def write_statistics(parser, filename):
     file.write(filename)
 
     for key, value in parser.statistic.properties.items():
-        file.write(',' + str(value))
+        file.write(';' + str(value))
     file.write('\n')
     file.close()
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     file = open('statistics.txt', 'a')
     file.write('filename')
     for key, value in parser.statistic.properties.items():
-        file.write(',' + key)
+        file.write(';' + key)
     file.write('\n')
     file.close()
 

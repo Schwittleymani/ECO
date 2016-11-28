@@ -16,7 +16,7 @@ if __name__ == '__main__':
     path = params['statistics_path']
 
     lines = open(path, 'r').readlines()
-    labels = lines[0].split(',')[1:]
+    labels = lines[0].split(';')[1:]
 
     colors = ['yellowgreen', 'mediumpurple', 'lightskyblue', 'lightcoral', 'darkred', 'blue', 'green']
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     values = [0, 0, 0, 0, 0, 0, 0]
 
     for stat in lines[1:]:
-        sizes = list(map(int, stat.split(',')[1:]))
+        sizes = list(map(int, stat.split(';')[1:]))
         sizes.pop(remove_index_from_list)
         index = 0
         for v in sizes:
