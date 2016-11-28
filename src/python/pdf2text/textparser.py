@@ -9,6 +9,7 @@ class ParseStatistic(object):
     properties['sentence_contains_brackets'] = 0
     properties['sentence_contains_number'] = 0
     properties['sentence_too_many_comma'] = 0
+    properties['too_many_short_words'] = 0
 
 class TextParser(object):
     """
@@ -40,6 +41,18 @@ class TextParser(object):
 
         return False
 
+    @staticmethod
+    def get_perc_single_char_words(sentence):
+        short_word = 0
+        long_word = 0
+        for word in sentence:
+            if len(word.string) < 2:
+                short_word += 1
+            else:
+                long_word += 1
+        perc = float(short_word) / float(short_word + long_word)
+        return perc
+
     def parse(self, text):
         self.proper_sentences = []
         text = Text(parse(text,
@@ -56,25 +69,29 @@ class TextParser(object):
             if len(sentence.words) > self.MIN_WORD_COUNT:
                 first_word = sentence.words[0]
                 first_word_tag = first_word.type
-                if first_word_tag != "CD":
-                    if not self.contains_tag(sentence, "(") \
-                            and not self.contains_tag(sentence, ")") \
-                            and not self.contains_tag(sentence, "\""):
-                        if self.get_count_tag(sentence, "CD") < 1:
-                            if self.get_count_tag(sentence, ",") < 3:
-                                self.proper_sentences.append(sentence)
+                if self.get_perc_single_char_words(sentence) < 0.5:
+                    if first_word_tag != "CD":
+                        if not self.contains_tag(sentence, "(") \
+                                and not self.contains_tag(sentence, ")") \
+                                and not self.contains_tag(sentence, "\""):
+                            if self.get_count_tag(sentence, "CD") < 1:
+                                if self.get_count_tag(sentence, ",") < 3:
+                                    self.proper_sentences.append(sentence)
+                                else:
+                                    # the sentence has more than 2 occurrences of a comma(,)
+                                    self.statistic.properties['sentence_too_many_comma'] += 1
                             else:
-                                # the sentence has more than 2 occurrences of a comma(,)
-                                self.statistic.properties['sentence_too_many_comma'] += 1
+                                # the sentence contains a number
+                                self.statistic.properties['sentence_contains_number'] += 1
                         else:
-                            # the sentence contains a number
-                            self.statistic.properties['sentence_contains_number'] += 1
+                            # the sentence contains either ( ) or \
+                            self.statistic.properties['sentence_contains_brackets'] += 1
                     else:
-                        # the sentence contains either ( ) or \
-                        self.statistic.properties['sentence_contains_brackets'] += 1
+                        # first word of the sentence is a number
+                        self.statistic.properties['first_word_is_number'] += 1
                 else:
-                    # first word of the sentence is a number
-                    self.statistic.properties['first_word_is_number'] += 1
+                    # too many short words
+                    self.statistic.properties['too_many_short_words'] += 1
             else:
                 # too few words in the sentence
                 # removes sentences like these: https://gist.github.com/mrzl/32b9763bd943c18cb77cd1167a87640a
