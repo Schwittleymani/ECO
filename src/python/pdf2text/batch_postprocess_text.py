@@ -19,7 +19,7 @@ def process_arguments(args):
 def render_statistic(parser):
     print('Statistic')
     print('All sentences: ' + str(parser.statistic.all_sentences))
-    print('Proper sentences: ' + str(len(parser.statistic.proper_sentences)))
+    print('Proper sentences: ' + str(parser.statistic.proper_sentences))
     print('Too few words: ' + str(parser.statistic.too_few_words))
     print('First word number: ' + str(parser.statistic.first_word_is_number))
     print('Contains brackets: ' + str(parser.statistic.sentence_contains_brackets))
@@ -29,7 +29,7 @@ def render_statistic(parser):
     file = open('statistics.txt', 'w')
     file.write('Files parsed: ' + str(parser.statistic.files_parsed)+'\n')
     file.write('All sentences: ' + str(parser.statistic.all_sentences)+'\n')
-    file.write('Proper sentences: ' + str(len(parser.statistic.proper_sentences))+'\n')
+    file.write('Proper sentences: ' + str(parser.statistic.proper_sentences)+'\n')
     file.write('Too few words: ' + str(parser.statistic.too_few_words)+'\n')
     file.write('First word number: ' + str(parser.statistic.first_word_is_number)+'\n')
     file.write('Contains brackets: ' + str(parser.statistic.sentence_contains_brackets)+'\n')
