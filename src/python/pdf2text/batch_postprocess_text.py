@@ -22,7 +22,7 @@ def write_statistics(parser, filename):
     file.write(filename)
 
     for key, value in parser.statistic.properties.items():
-        file.write(',' + str(value))
+        file.write(';' + str(value))
     file.write('\n')
     file.close()
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     file = open('statistics.txt', 'a')
     file.write('filename')
     for key, value in parser.statistic.properties.items():
-        file.write(',' + key)
+        file.write(';' + key)
     file.write('\n')
     file.close()
 
@@ -59,10 +59,15 @@ if __name__ == '__main__':
             parser = textparser.TextParser()
             parser.parse(text.decode('utf-8'))
 
-            output_filename = output_path + filename[:-3]
-            output_filename += 'txt'
-            output_filename = output_filename.replace(' ', '_')
-            output_filename = output_filename.replace('.', '_')
+            output_filename = output_path + filename[:-4]
+            #output_filename = output_filename.replace(' ', '_')
+            #output_filename = output_filename.replace('.', '_')
+            #output_filename = output_filename.replace(',', '_')
+            #output_filename = output_filename.replace('[', '')
+            #output_filename = output_filename.replace(']', '')
+            #output_filename = output_filename.replace('(', '')
+            #output_filename = output_filename.replace(')', '')
+            output_filename += '.txt'
             print('Saving to ' + output_filename)
             output_file = open(output_filename, 'w')
             for line in parser.proper_sentences:
