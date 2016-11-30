@@ -1,8 +1,8 @@
 from pattern.en import parse, Text
+from langdetect import detect_langs
 
 class ParseStatistic(object):
     properties = {}
-    properties['all_sentences'] = 0
     properties['proper_sentences'] = 0
     properties['too_few_words'] = 0
     properties['first_word_is_number'] = 0
@@ -10,6 +10,12 @@ class ParseStatistic(object):
     properties['sentence_contains_number'] = 0
     properties['sentence_too_many_comma'] = 0
     properties['too_many_short_words'] = 0
+    properties['sentence_in_german'] = 0
+    properties['sentence_in_french'] = 0
+    properties['sentence_in_spanish'] = 0
+    properties['sentence_in_italian'] = 0
+    properties['sentence_in_dutch'] = 0
+    properties['sentence_not_english'] = 0
 
 class TextParser(object):
     """
@@ -56,7 +62,6 @@ class TextParser(object):
     def parse(self, text):
         self.proper_sentences = []
 
-        self.statistic.properties['all_sentences'] = 0
         self.statistic.properties['proper_sentences'] = 0
         self.statistic.properties['too_few_words'] = 0
         self.statistic.properties['first_word_is_number'] = 0
@@ -64,6 +69,12 @@ class TextParser(object):
         self.statistic.properties['sentence_contains_number'] = 0
         self.statistic.properties['sentence_too_many_comma'] = 0
         self.statistic.properties['too_many_short_words'] = 0
+        self.statistic.properties['sentence_in_german'] = 0
+        self.statistic.properties['sentence_in_french'] = 0
+        self.statistic.properties['sentence_in_spanish'] = 0
+        self.statistic.properties['sentence_in_italian'] = 0
+        self.statistic.properties['sentence_in_dutch'] = 0
+        self.statistic.properties['sentence_not_english'] = 0
 
         text = Text(parse(text,
                           tokenize=True,
@@ -74,7 +85,6 @@ class TextParser(object):
                           encoding='utf-8',
                           tagset=None))
 
-        self.statistic.properties['all_sentences'] += len(text)
         for sentence in text:
             if len(sentence.words) > self.MIN_WORD_COUNT:
                 first_word = sentence.words[0]
@@ -86,7 +96,21 @@ class TextParser(object):
                                 and not self.contains_tag(sentence, "\""):
                             if self.get_count_tag(sentence, "CD") < 1:
                                 if self.get_count_tag(sentence, ",") < 3:
-                                    self.proper_sentences.append(sentence)
+                                    detected_language = str(detect_langs(sentence.string)[0]).split(':')[0]
+                                    if detected_language in 'en':
+                                        self.proper_sentences.append(sentence)
+                                    elif detected_language in 'de':
+                                        self.statistic.properties['sentence_in_german'] += 1
+                                    elif detected_language in 'fr':
+                                        self.statistic.properties['sentence_in_french'] += 1
+                                    elif detected_language in 'es':
+                                        self.statistic.properties['sentence_in_spanish'] += 1
+                                    elif detected_language in 'nl':
+                                        self.statistic.properties['sentence_in_dutch'] += 1
+                                    elif detected_language in 'it':
+                                        self.statistic.properties['sentence_in_italian'] += 1
+                                    else:
+                                        self.statistic.properties['sentence_not_english'] += 1
                                 else:
                                     # the sentence has more than 2 occurrences of a comma(,)
                                     self.statistic.properties['sentence_too_many_comma'] += 1
