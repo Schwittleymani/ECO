@@ -83,7 +83,7 @@ def second_training(google_model, path, features):
     log = []
     print('Collected ' + str(len(lines)) + ' lines.')
     t0 = time.time()
-    for i in range(100000):
+    for i in range(1000000):
         random_a = random.choice(lines)
         random_b = random.choice(lines)
         random_a_vec = avg_feature_vector(random_a.split(), model=google_model, num_features=features)
