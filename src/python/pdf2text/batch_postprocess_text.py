@@ -73,7 +73,6 @@ if __name__ == '__main__':
             output_filename_valid = output_path + filename[:-4]
             output_filename_faulty = output_filename_valid + '_faulty.txt'
             output_filename_valid += '_valid.txt'
-            print('Saving to ' + output_filename_valid)
             output_file_valid = open(output_filename_valid, 'w')
             for line in parser.valid_sentences:
                 output_file_valid.write(line.string.encode('utf8'))
