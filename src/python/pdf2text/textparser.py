@@ -1,5 +1,5 @@
 from pattern.en import parse, Text
-from langdetect import detect_langs
+import langdetect
 
 class ParseStatistic(object):
     properties = {}
@@ -98,25 +98,29 @@ class TextParser(object):
                                 and not self.contains_tag(sentence, "\""):
                             if self.get_count_tag(sentence, "CD") < 1:
                                 if self.get_count_tag(sentence, ",") < 3:
-                                    detected_language = str(detect_langs(sentence.string)[0]).split(':')[0]
-                                    if detected_language in 'en':
-                                        self.valid_sentences.append(sentence)
-                                    elif detected_language in 'de':
-                                        self.statistic.properties['sentence_in_german'] += 1
-                                        self.faulty_sentences.append(sentence)
-                                    elif detected_language in 'fr':
-                                        self.statistic.properties['sentence_in_french'] += 1
-                                        self.faulty_sentences.append(sentence)
-                                    elif detected_language in 'es':
-                                        self.statistic.properties['sentence_in_spanish'] += 1
-                                        self.faulty_sentences.append(sentence)
-                                    elif detected_language in 'nl':
-                                        self.statistic.properties['sentence_in_dutch'] += 1
-                                        self.faulty_sentences.append(sentence)
-                                    elif detected_language in 'it':
-                                        self.statistic.properties['sentence_in_italian'] += 1
-                                        self.faulty_sentences.append(sentence)
-                                    else:
+                                    try:
+                                        detected_language = str(langdetect.detect_langs(sentence.string)[0]).split(':')[0]
+                                        if detected_language in 'en':
+                                            self.valid_sentences.append(sentence)
+                                        elif detected_language in 'de':
+                                            self.statistic.properties['sentence_in_german'] += 1
+                                            self.faulty_sentences.append(sentence)
+                                        elif detected_language in 'fr':
+                                            self.statistic.properties['sentence_in_french'] += 1
+                                            self.faulty_sentences.append(sentence)
+                                        elif detected_language in 'es':
+                                            self.statistic.properties['sentence_in_spanish'] += 1
+                                            self.faulty_sentences.append(sentence)
+                                        elif detected_language in 'nl':
+                                            self.statistic.properties['sentence_in_dutch'] += 1
+                                            self.faulty_sentences.append(sentence)
+                                        elif detected_language in 'it':
+                                            self.statistic.properties['sentence_in_italian'] += 1
+                                            self.faulty_sentences.append(sentence)
+                                        else:
+                                            self.statistic.properties['sentence_not_english'] += 1
+                                            self.faulty_sentences.append(sentence)
+                                    except langdetect.lang_detect_exception.LangDetectException:
                                         self.statistic.properties['sentence_not_english'] += 1
                                         self.faulty_sentences.append(sentence)
                                 else:
