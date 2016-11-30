@@ -4,6 +4,7 @@ import argparse
 import time
 import gensim
 import random
+sys.path.insert(0, '../irc/markov_python3.py')
 import markov
 import numpy as np
 import scipy.spatial.distance
