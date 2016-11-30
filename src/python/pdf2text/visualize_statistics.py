@@ -1,6 +1,8 @@
 import sys
+import os
 import argparse
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def process_arguments(args):
@@ -18,9 +20,12 @@ if __name__ == '__main__':
     lines = open(path, 'r').readlines()
     labels = lines[0].split(';')[1:]
 
-    colors = ['yellowgreen', 'mediumpurple', 'lightskyblue', 'lightcoral', 'darkred', 'blue', 'green']
+    cmap = plt.get_cmap('jet')
+    colors = cmap(np.linspace(0, 1, len(labels)))
 
-    values = [0, 0, 0, 0, 0, 0, 0]
+    values = [0] * len(labels)
+
+    plt.rcParams['font.size'] = 9.0
 
     for stat in lines[1:]:
         sizes = list(map(int, stat.split(';')[1:]))
@@ -29,16 +34,13 @@ if __name__ == '__main__':
             values[index] += v
             index += 1
 
-    explode = (0, 0, 0, 0, 0, 0, 0)    # proportion with which to offset each wedge
-
     def make_autopct(values):
         def my_autopct(pct):
             total = sum(values)
             val = int(round(pct*total/100.0))
             return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
         return my_autopct
-    plt.pie(values,              # data
-        explode=explode,    # offset parameters
+    patches, texts, autotexts = plt.pie(values,              # data
         labels=labels,      # slice labels
         colors=colors,      # array of colours
         autopct=make_autopct(values),  # print the values inside the wedges
@@ -46,5 +48,13 @@ if __name__ == '__main__':
         startangle=70       # starting angle
     )
 
+    for text in texts:
+        text.set_fontsize(6)
+    for text in autotexts:
+        text.set_fontsize(6)
     plt.axis('equal')
-    plt.show()
+
+    # getting the filename of the statistics, and saving the statistics image with the same name
+    head, tail = os.path.split(path)
+    tail = tail.replace('.txt', '.png')
+    plt.savefig(tail, dpi=300)
