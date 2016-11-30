@@ -94,7 +94,7 @@ def second_training(google_model, path, features):
     print('calculating all vectors took ' + str(t1-t0) + 's')
     log.sort(key=lambda log: log[2], reverse=True)
     print('Best results:')
-    for i in range(10):
+    for i in range(30):
         print('Index: ' + str(i))
         print(log[i][0])
         print(log[i][1])
