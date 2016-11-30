@@ -3,7 +3,7 @@ import langdetect
 
 class ParseStatistic(object):
     properties = {}
-    properties['proper_sentences'] = 0
+    properties['valid_sentences'] = 0
     properties['too_few_words'] = 0
     properties['first_word_is_number'] = 0
     properties['sentence_contains_brackets'] = 0
