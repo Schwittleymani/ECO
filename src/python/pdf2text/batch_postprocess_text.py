@@ -16,16 +16,23 @@ def process_arguments(args):
 
     return params
 
-def write_statistics(parser, filename):
-    file = open('statistics.txt', 'a')
+def write_statistics(parser, statistic_filename, output_filename):
+    file = open(statistic_filename, 'a')
 
-    file.write(filename)
+    file.write(output_filename)
 
     for key, value in parser.statistic.properties.items():
         file.write(';' + str(value))
     file.write('\n')
     file.close()
 
+def get_last_dir_from_path(path):
+    list = path.split('/')
+    if path.endswith('/'):
+        out = list[-2]
+    else:
+        out = list[-1]
+    return out
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
@@ -40,8 +47,10 @@ if __name__ == '__main__':
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
+    statistic_filename = get_last_dir_from_path(output_path) + '_statistics.txt'
+
     parser = textparser.TextParser()
-    file = open('statistics.txt', 'a')
+    file = open(statistic_filename, 'a')
     file.write('filename')
     for key, value in parser.statistic.properties.items():
         file.write(';' + key)
@@ -60,13 +69,6 @@ if __name__ == '__main__':
             parser.parse(text.decode('utf-8'))
 
             output_filename = output_path + filename[:-4]
-            #output_filename = output_filename.replace(' ', '_')
-            #output_filename = output_filename.replace('.', '_')
-            #output_filename = output_filename.replace(',', '_')
-            #output_filename = output_filename.replace('[', '')
-            #output_filename = output_filename.replace(']', '')
-            #output_filename = output_filename.replace('(', '')
-            #output_filename = output_filename.replace(')', '')
             output_filename += '.txt'
             print('Saving to ' + output_filename)
             output_file = open(output_filename, 'w')
@@ -74,7 +76,7 @@ if __name__ == '__main__':
                 output_file.write(line.string.encode('utf8'))
                 output_file.write('\n')
 
-            write_statistics(parser, file_path)
+            write_statistics(parser, statistic_filename, file_path)
 
         except TypeError as e:
             print(e)

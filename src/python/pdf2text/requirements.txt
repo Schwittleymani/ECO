@@ -4,6 +4,7 @@ chardet==2.3.0
 cycler==0.10.0
 docx2txt==0.6
 EbookLib==0.15
+langdetect==1.0.7
 lxml==3.6.4
 matplotlib==1.5.3
 numpy==1.11.2

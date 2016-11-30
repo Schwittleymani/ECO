@@ -20,14 +20,10 @@ if __name__ == '__main__':
 
     colors = ['yellowgreen', 'mediumpurple', 'lightskyblue', 'lightcoral', 'darkred', 'blue', 'green']
 
-    remove_index_from_list = labels.index('all_sentences')
-    labels.remove('all_sentences')
-
     values = [0, 0, 0, 0, 0, 0, 0]
 
     for stat in lines[1:]:
         sizes = list(map(int, stat.split(';')[1:]))
-        sizes.pop(remove_index_from_list)
         index = 0
         for v in sizes:
             values[index] += v
