@@ -64,7 +64,7 @@ class TextParser(object):
         self.valid_sentences = []
         self.faulty_sentences = []
 
-        self.statistic.properties['proper_sentences'] = 0
+        self.statistic.properties['valid_sentences'] = 0
         self.statistic.properties['too_few_words'] = 0
         self.statistic.properties['first_word_is_number'] = 0
         self.statistic.properties['sentence_contains_brackets'] = 0
@@ -148,5 +148,5 @@ class TextParser(object):
                 # removes sentences like these: https://gist.github.com/mrzl/32b9763bd943c18cb77cd1167a87640a
                 self.statistic.properties['too_few_words'] += 1
                 self.faulty_sentences.append(sentence)
-        self.statistic.properties['proper_sentences'] += len(self.valid_sentences)
+        self.statistic.properties['valid_sentences'] += len(self.valid_sentences)
         print('Parsed ' + str(len(self.valid_sentences)) + ' proper sentences.')
