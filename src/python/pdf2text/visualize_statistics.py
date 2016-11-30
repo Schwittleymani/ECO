@@ -54,8 +54,10 @@ if __name__ == '__main__':
     for text in autotexts:
         text.set_fontsize(6)
 
+    print(sum(values))
+
     for index, item in enumerate(labels):
-        val = ': ' + str(values[index])
+        val = ': ' + str(values[index]) + ' ( ' + str(round((values[index] / float(sum(values))) * 100.0, 2)) + ' % )'
         labels[index] += val
     plt.legend(labels, fontsize=5, loc="best")
     plt.axis('equal')
