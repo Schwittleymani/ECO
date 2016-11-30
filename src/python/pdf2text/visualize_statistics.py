@@ -43,6 +43,7 @@ if __name__ == '__main__':
     patches, texts, autotexts = plt.pie(values,              # data
         labels=labels,      # slice labels
         colors=colors,      # array of colours
+        pctdistance=0.7,
         autopct=make_autopct(values),  # print the values inside the wedges
         shadow=True,        # enable shadow
         startangle=70       # starting angle
@@ -52,6 +53,11 @@ if __name__ == '__main__':
         text.set_fontsize(6)
     for text in autotexts:
         text.set_fontsize(6)
+
+    for index, item in enumerate(labels):
+        val = ': ' + str(values[index])
+        labels[index] += val
+    plt.legend(labels, fontsize=5, loc="best")
     plt.axis('equal')
 
     # getting the filename of the statistics, and saving the statistics image with the same name
