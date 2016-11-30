@@ -5,3 +5,5 @@ conversation.log
 local_settings.py
 *.pyc
 data/gifs
+GoogleNews-vectors-negative300.bin.gz
+SBW-vectors-300-min5.bin.gz
