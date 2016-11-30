@@ -68,13 +68,19 @@ if __name__ == '__main__':
             parser = textparser.TextParser()
             parser.parse(text.decode('utf-8'))
 
-            output_filename = output_path + filename[:-4]
-            output_filename += '.txt'
-            print('Saving to ' + output_filename)
-            output_file = open(output_filename, 'w')
+            output_filename_valid = output_path + filename[:-4]
+            output_filename_faulty = output_filename_valid + '_faulty.txt'
+            output_filename_valid += '_valid.txt'
+            print('Saving to ' + output_filename_valid)
+            output_file_valid = open(output_filename_valid, 'w')
             for line in parser.proper_sentences:
-                output_file.write(line.string.encode('utf8'))
-                output_file.write('\n')
+                output_file_valid.write(line.string.encode('utf8'))
+                output_file_valid.write('\n')
+
+            output_file_faulty = open(output_filename_faulty, 'w')
+            for line in parser.faulty_sentences:
+                output_file_faulty.write(line.string.encode('utf8'))
+                output_file_faulty.write('\n')
 
             write_statistics(parser, statistic_filename, file_path)
 

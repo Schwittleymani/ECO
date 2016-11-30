@@ -27,7 +27,8 @@ class TextParser(object):
     The tags of words are being analyzed: http://www.clips.ua.ac.be/pages/mbsp-tags
     """
     def __init__(self):
-        self.proper_sentences = []
+        self.valid_sentences = []
+        self.faulty_sentences = []
         self.MIN_WORD_COUNT = 10
         self.statistic = ParseStatistic()
 
@@ -60,7 +61,8 @@ class TextParser(object):
         return perc
 
     def parse(self, text):
-        self.proper_sentences = []
+        self.valid_sentences = []
+        self.faulty_sentences = []
 
         self.statistic.properties['proper_sentences'] = 0
         self.statistic.properties['too_few_words'] = 0
@@ -98,37 +100,49 @@ class TextParser(object):
                                 if self.get_count_tag(sentence, ",") < 3:
                                     detected_language = str(detect_langs(sentence.string)[0]).split(':')[0]
                                     if detected_language in 'en':
-                                        self.proper_sentences.append(sentence)
+                                        self.valid_sentences.append(sentence)
                                     elif detected_language in 'de':
                                         self.statistic.properties['sentence_in_german'] += 1
+                                        self.faulty_sentences.append(sentence)
                                     elif detected_language in 'fr':
                                         self.statistic.properties['sentence_in_french'] += 1
+                                        self.faulty_sentences.append(sentence)
                                     elif detected_language in 'es':
                                         self.statistic.properties['sentence_in_spanish'] += 1
+                                        self.faulty_sentences.append(sentence)
                                     elif detected_language in 'nl':
                                         self.statistic.properties['sentence_in_dutch'] += 1
+                                        self.faulty_sentences.append(sentence)
                                     elif detected_language in 'it':
                                         self.statistic.properties['sentence_in_italian'] += 1
+                                        self.faulty_sentences.append(sentence)
                                     else:
                                         self.statistic.properties['sentence_not_english'] += 1
+                                        self.faulty_sentences.append(sentence)
                                 else:
                                     # the sentence has more than 2 occurrences of a comma(,)
                                     self.statistic.properties['sentence_too_many_comma'] += 1
+                                    self.faulty_sentences.append(sentence)
                             else:
                                 # the sentence contains a number
                                 self.statistic.properties['sentence_contains_number'] += 1
+                                self.faulty_sentences.append(sentence)
                         else:
                             # the sentence contains either ( ) or \
                             self.statistic.properties['sentence_contains_brackets'] += 1
+                            self.faulty_sentences.append(sentence)
                     else:
                         # first word of the sentence is a number
                         self.statistic.properties['first_word_is_number'] += 1
+                        self.faulty_sentences.append(sentence)
                 else:
                     # too many short words
                     self.statistic.properties['too_many_short_words'] += 1
+                    self.faulty_sentences.append(sentence)
             else:
                 # too few words in the sentence
                 # removes sentences like these: https://gist.github.com/mrzl/32b9763bd943c18cb77cd1167a87640a
                 self.statistic.properties['too_few_words'] += 1
-        self.statistic.properties['proper_sentences'] += len(self.proper_sentences)
-        print('Parsed ' + str(len(self.proper_sentences)) + ' proper sentences.')
+                self.faulty_sentences.append(sentence)
+        self.statistic.properties['proper_sentences'] += len(self.valid_sentences)
+        print('Parsed ' + str(len(self.valid_sentences)) + ' proper sentences.')
