@@ -57,7 +57,8 @@ if __name__ == '__main__':
     file.write('\n')
     file.close()
 
-    for file_path in glob.glob(input_path + '/*.pdf'):
+    pdf_files = glob.glob(input_path + '/*.pdf')
+    for file_path in pdf_files:
         print('Parsing ' + file_path)
 
         path, filename = os.path.split(file_path)
@@ -67,6 +68,7 @@ if __name__ == '__main__':
 
             parser = textparser.TextParser()
             parser.parse(text.decode('utf-8'))
+            print(str(pdf_files.index(file_path)) + ' / ' + str(len(pdf_files)) + ' done.')
 
             output_filename_valid = output_path + filename[:-4]
             output_filename_faulty = output_filename_valid + '_faulty.txt'
