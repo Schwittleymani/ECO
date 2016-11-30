@@ -4,8 +4,8 @@ import argparse
 import time
 import gensim
 import random
-sys.path.insert(0, '../irc/markov_python3.py')
-import markov
+sys.path.insert(0, '../markov/')
+import markov_python3
 import numpy as np
 import scipy.spatial.distance
 
@@ -106,7 +106,7 @@ def train_markovs(path, max_markov=30):
         if len(markovs) > max_markov:
             break
         print('Start training markov from ' + fname)
-        markov_chain = markov.Markov(prefix=fname)
+        markov_chain = markov_python3.Markov(prefix=fname)
         line_count = 0
         for line in open(os.path.join(path, fname)):
             line_low = line.lower()
