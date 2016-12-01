@@ -11,7 +11,7 @@ def process_arguments(args):
     parser.add_argument('--iterations', action='store', help='how many iterations to train')
     parser.add_argument('--epochs', action='store', help='how many epochs to train')
     parser.add_argument('--steps', action='store', help='how many steps. aka i dont really know what it does, yet')
-    parser.add_argument('--save_every', action='store', default=1, help='save the model every n iterations')
+    parser.add_argument('--save_every', action='store', default=1000, help='save the model every n iterations')
     parser.add_argument('--model_save_path', action='store', help='path to save the exported models to')
     params = vars(parser.parse_args(args))
 
