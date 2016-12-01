@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pattern.en import parse, Text
 import langdetect
 
@@ -16,6 +18,9 @@ class ParseStatistic(object):
     properties['sentence_in_italian'] = 0
     properties['sentence_in_dutch'] = 0
     properties['sentence_not_english'] = 0
+    properties['begins_with_punctuation'] = 0
+    properties['weird_chars'] = 0
+    properties['first_not_upper'] = 0
 
 class TextParser(object):
     """
@@ -29,7 +34,7 @@ class TextParser(object):
     def __init__(self):
         self.valid_sentences = []
         self.faulty_sentences = []
-        self.MIN_WORD_COUNT = 10
+        self.MIN_WORD_COUNT = 12
         self.statistic = ParseStatistic()
 
     @staticmethod
@@ -60,6 +65,15 @@ class TextParser(object):
         perc = float(short_word) / float(short_word + long_word)
         return perc
 
+    @staticmethod
+    def get_count_of_special_chars(sentence):
+        special_chars = [u'~', u'\\', u';', u':', u'_', u'·', u'<', u'>', u'-', u'<U+']
+        count = 0
+        for char in sentence.string:
+            if char in special_chars:
+                count += 1
+        return count
+
     def parse(self, text):
         self.valid_sentences = []
         self.faulty_sentences = []
@@ -77,6 +91,9 @@ class TextParser(object):
         self.statistic.properties['sentence_in_italian'] = 0
         self.statistic.properties['sentence_in_dutch'] = 0
         self.statistic.properties['sentence_not_english'] = 0
+        self.statistic.properties['begins_with_punctuation'] = 0
+        self.statistic.properties['weird_chars'] = 0
+        self.statistic.properties['first_not_upper'] = 0
 
         text = Text(parse(text,
                           tokenize=True,
@@ -98,30 +115,45 @@ class TextParser(object):
                                 and not self.contains_tag(sentence, "\""):
                             if self.get_count_tag(sentence, "CD") < 1:
                                 if self.get_count_tag(sentence, ",") < 3:
-                                    try:
-                                        detected_language = str(langdetect.detect_langs(sentence.string)[0]).split(':')[0]
-                                        if detected_language in 'en':
-                                            self.valid_sentences.append(sentence)
-                                        elif detected_language in 'de':
-                                            self.statistic.properties['sentence_in_german'] += 1
-                                            self.faulty_sentences.append(sentence)
-                                        elif detected_language in 'fr':
-                                            self.statistic.properties['sentence_in_french'] += 1
-                                            self.faulty_sentences.append(sentence)
-                                        elif detected_language in 'es':
-                                            self.statistic.properties['sentence_in_spanish'] += 1
-                                            self.faulty_sentences.append(sentence)
-                                        elif detected_language in 'nl':
-                                            self.statistic.properties['sentence_in_dutch'] += 1
-                                            self.faulty_sentences.append(sentence)
-                                        elif detected_language in 'it':
-                                            self.statistic.properties['sentence_in_italian'] += 1
-                                            self.faulty_sentences.append(sentence)
+                                    if not sentence.string[0] in [u'.', u'\'', u';', u'~', u':', u'-', u'·', u'‘']:
+                                        if self.get_count_of_special_chars(sentence) < 3:
+                                            if sentence.string[0].isupper():
+                                                try:
+                                                    detected_language = str(langdetect.detect_langs(sentence.string)[0]).split(':')[0]
+                                                    if detected_language in 'en':
+                                                        self.valid_sentences.append(sentence)
+                                                    elif detected_language in 'de':
+                                                        self.statistic.properties['sentence_in_german'] += 1
+                                                        self.faulty_sentences.append(sentence)
+                                                    elif detected_language in 'fr':
+                                                        self.statistic.properties['sentence_in_french'] += 1
+                                                        self.faulty_sentences.append(sentence)
+                                                    elif detected_language in 'es':
+                                                        self.statistic.properties['sentence_in_spanish'] += 1
+                                                        self.faulty_sentences.append(sentence)
+                                                    elif detected_language in 'nl':
+                                                        self.statistic.properties['sentence_in_dutch'] += 1
+                                                        self.faulty_sentences.append(sentence)
+                                                    elif detected_language in 'it':
+                                                        self.statistic.properties['sentence_in_italian'] += 1
+                                                        self.faulty_sentences.append(sentence)
+                                                    else:
+                                                        self.statistic.properties['sentence_not_english'] += 1
+                                                        self.faulty_sentences.append(sentence)
+                                                except langdetect.lang_detect_exception.LangDetectException:
+                                                    self.statistic.properties['sentence_not_english'] += 1
+                                                    self.faulty_sentences.append(sentence)
+                                            else:
+                                                # first char is not upper case
+                                                self.statistic.properties['first_not_upper'] += 1
+                                                self.faulty_sentences.append(sentence)
                                         else:
-                                            self.statistic.properties['sentence_not_english'] += 1
+                                            # sentence contains weirdly escaped chars
+                                            self.statistic.properties['weird_chars'] += 1
                                             self.faulty_sentences.append(sentence)
-                                    except langdetect.lang_detect_exception.LangDetectException:
-                                        self.statistic.properties['sentence_not_english'] += 1
+                                    else:
+                                        # sentence begins with puncutations
+                                        self.statistic.properties['begins_with_punctuation'] += 1
                                         self.faulty_sentences.append(sentence)
                                 else:
                                     # the sentence has more than 2 occurrences of a comma(,)
@@ -150,3 +182,10 @@ class TextParser(object):
                 self.faulty_sentences.append(sentence)
         self.statistic.properties['valid_sentences'] += len(self.valid_sentences)
         print('Parsed ' + str(len(self.valid_sentences)) + ' proper sentences.')
+
+        sum = 0
+        for key, value in self.statistic.properties.iteritems():
+            if key not in 'valid_sentences':
+                sum += value
+
+        print('Discarded ' + str(sum) + ' invalid sentences.')
