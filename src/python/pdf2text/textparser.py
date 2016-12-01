@@ -21,6 +21,8 @@ class ParseStatistic(object):
     properties['begins_with_punctuation'] = 0
     properties['weird_chars'] = 0
     properties['first_not_upper'] = 0
+    properties['last_not_dot'] = 0
+    properties['too_many_dots'] = 0
 
 class TextParser(object):
     """
@@ -34,7 +36,7 @@ class TextParser(object):
     def __init__(self):
         self.valid_sentences = []
         self.faulty_sentences = []
-        self.MIN_WORD_COUNT = 12
+        self.MIN_WORD_COUNT = 8
         self.statistic = ParseStatistic()
 
     @staticmethod
@@ -67,7 +69,7 @@ class TextParser(object):
 
     @staticmethod
     def get_count_of_special_chars(sentence):
-        special_chars = [u'~', u'\\', u';', u':', u'_', u'·', u'<', u'>', u'-', u'<U+']
+        special_chars = [u'~', u'\\', u'/', u';', u':', u'_', u'·', u'<', u'>', u'<U+', u'�', u'!']
         count = 0
         for char in sentence.string:
             if char in special_chars:
@@ -94,6 +96,8 @@ class TextParser(object):
         self.statistic.properties['begins_with_punctuation'] = 0
         self.statistic.properties['weird_chars'] = 0
         self.statistic.properties['first_not_upper'] = 0
+        self.statistic.properties['last_not_dot'] = 0
+        self.statistic.properties['too_many_dots'] = 0
 
         text = Text(parse(text,
                           tokenize=True,
@@ -106,42 +110,50 @@ class TextParser(object):
 
         for sentence in text:
             if len(sentence.words) > self.MIN_WORD_COUNT:
-                first_word = sentence.words[0]
-                first_word_tag = first_word.type
                 if self.get_perc_single_char_words(sentence) < 0.5:
-                    if first_word_tag != "CD":
+                    if not sentence.string[0].isdigit():
                         if not self.contains_tag(sentence, "(") \
                                 and not self.contains_tag(sentence, ")") \
                                 and not self.contains_tag(sentence, "\""):
-                            if self.get_count_tag(sentence, "CD") < 1:
+                            if self.get_count_tag(sentence, "CD") < 2:
                                 if self.get_count_tag(sentence, ",") < 3:
                                     if not sentence.string[0] in [u'.', u'\'', u';', u'~', u':', u'-', u'·', u'‘']:
-                                        if self.get_count_of_special_chars(sentence) < 3:
+                                        if self.get_count_of_special_chars(sentence) < 2:
                                             if sentence.string[0].isupper():
-                                                try:
-                                                    detected_language = str(langdetect.detect_langs(sentence.string)[0]).split(':')[0]
-                                                    if detected_language in 'en':
-                                                        self.valid_sentences.append(sentence)
-                                                    elif detected_language in 'de':
-                                                        self.statistic.properties['sentence_in_german'] += 1
-                                                        self.faulty_sentences.append(sentence)
-                                                    elif detected_language in 'fr':
-                                                        self.statistic.properties['sentence_in_french'] += 1
-                                                        self.faulty_sentences.append(sentence)
-                                                    elif detected_language in 'es':
-                                                        self.statistic.properties['sentence_in_spanish'] += 1
-                                                        self.faulty_sentences.append(sentence)
-                                                    elif detected_language in 'nl':
-                                                        self.statistic.properties['sentence_in_dutch'] += 1
-                                                        self.faulty_sentences.append(sentence)
-                                                    elif detected_language in 'it':
-                                                        self.statistic.properties['sentence_in_italian'] += 1
-                                                        self.faulty_sentences.append(sentence)
+                                                if sentence.string[-1] in '.':
+                                                    if sentence.string.count('.') < 4:
+                                                        try:
+                                                            detected_language = str(langdetect.detect_langs(sentence.string)[0]).split(':')[0]
+                                                            if detected_language in 'en':
+                                                                self.valid_sentences.append(sentence)
+                                                            elif detected_language in 'de':
+                                                                self.statistic.properties['sentence_in_german'] += 1
+                                                                self.faulty_sentences.append(sentence)
+                                                            elif detected_language in 'fr':
+                                                                self.statistic.properties['sentence_in_french'] += 1
+                                                                self.faulty_sentences.append(sentence)
+                                                            elif detected_language in 'es':
+                                                                self.statistic.properties['sentence_in_spanish'] += 1
+                                                                self.faulty_sentences.append(sentence)
+                                                            elif detected_language in 'nl':
+                                                                self.statistic.properties['sentence_in_dutch'] += 1
+                                                                self.faulty_sentences.append(sentence)
+                                                            elif detected_language in 'it':
+                                                                self.statistic.properties['sentence_in_italian'] += 1
+                                                                self.faulty_sentences.append(sentence)
+                                                            else:
+                                                                self.statistic.properties['sentence_not_english'] += 1
+                                                                self.faulty_sentences.append(sentence)
+                                                        except langdetect.lang_detect_exception.LangDetectException:
+                                                            self.statistic.properties['sentence_not_english'] += 1
+                                                            self.faulty_sentences.append(sentence)
                                                     else:
-                                                        self.statistic.properties['sentence_not_english'] += 1
+                                                        # too many dots in the sentence
+                                                        self.statistic.properties['too_many_dots'] += 1
                                                         self.faulty_sentences.append(sentence)
-                                                except langdetect.lang_detect_exception.LangDetectException:
-                                                    self.statistic.properties['sentence_not_english'] += 1
+                                                else:
+                                                    # last char not a dot
+                                                    self.statistic.properties['last_not_dot'] += 1
                                                     self.faulty_sentences.append(sentence)
                                             else:
                                                 # first char is not upper case
