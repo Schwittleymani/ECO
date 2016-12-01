@@ -1,4 +1,5 @@
 import sys
+import pprint
 
 sys.path.insert(0, '../pdf2text/')
 import textparser
@@ -23,10 +24,13 @@ class ParserTest(object):
         valid_sentences = '\n'.join(lines)
         parser = textparser.TextParser()
         parser.parse(valid_sentences)
+        pp = pprint.PrettyPrinter(indent=4)
         if not len(lines) == len(parser.valid_sentences):
             print('-------------------------')
             print('These lines should be valid:')
+            pp.pprint(parser.statistic.properties)
             for line in parser.faulty_sentences:
+                pass
                 print(line.string)
             print('-------------------------')
 
