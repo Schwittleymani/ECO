@@ -35,8 +35,8 @@ def get_last_dir_from_path(path):
         out = list[-1]
     return out
 
-def enable_verbose_training():
-    program = os.path.basename(sys.argv[0])
+def enable_verbose_training(program):
+    program = os.path.basename(program)
     logger = logging.getLogger(program)
 
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
@@ -46,8 +46,8 @@ def enable_verbose_training():
 def train_model(folder_path):
     model = gensim.models.Word2Vec(
         Sentence(folder_path),
-        # the more training data, the higher the size
-        size=400,
+        # the more training data, the higher the size. google model uses 300
+        size=300,
         # drop all words which occur less than 5 times
         min_count=5,
         # no idea what negative does
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     verbose = params['verbose']
 
     if verbose:
-        enable_verbose_training()
+        enable_verbose_training(sys.argv[0])
 
     model = train_model(input_path)
     export_model(input_path)
