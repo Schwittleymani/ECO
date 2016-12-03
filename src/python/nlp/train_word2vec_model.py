@@ -1,12 +1,11 @@
 import gensim
 import math
 import sys
-import os
-import pathlib
 import glob
 import argparse
 import multiprocessing
-import logging
+
+import util
 
 def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure Word2Vec model building')
@@ -33,21 +32,6 @@ class Sentence(object):
                     line = line.lower()
                     yield line.split()
 
-def get_last_dir_from_path(path):
-    list = path.split('/')
-    if path.endswith('/'):
-        out = list[-2]
-    else:
-        out = list[-1]
-    return out
-
-def enable_verbose_training(program):
-    program = os.path.basename(program)
-    logger = logging.getLogger(program)
-
-    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
-    logging.root.setLevel(level=logging.INFO)
-    logger.info("running %s" % ' '.join(sys.argv))
 
 def train_model(folder_path):
     model = gensim.models.Word2Vec(
@@ -65,22 +49,6 @@ def train_model(folder_path):
     print('Finished training: ' + str(model) + ' Filesize:', str(round(model.estimate_memory()['total'] / (math.pow(1024, 2)))) + 'mb')
     return model
 
-def export_model(input_path):
-    # the input path is used for constructing the filename of the model
-    model_filename = get_last_dir_from_path(input_path) + '.model'
-    # file exists already in current directory?
-    if pathlib.Path(model_filename).is_file():
-        # y/n choice to overwrite
-        user_input = input('Overwrite model file ' + model_filename + '? [y/(n)]')
-        if 'y' in user_input:
-            model.save(model_filename)
-            print('Saved model: ' + model_filename)
-        else:
-            print('NOT saved model. File already exists.')
-    else:
-        model.save(model_filename)
-        print('Saved model: ' + model_filename)
-
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
@@ -88,7 +56,7 @@ if __name__ == '__main__':
     verbose = params['verbose']
 
     if verbose:
-        enable_verbose_training(sys.argv[0])
+        util.enable_verbose_training(sys.argv[0])
 
     model = train_model(input_path)
-    export_model(input_path)
+    util.export_model(model, input_path, '.w2vmodel')
