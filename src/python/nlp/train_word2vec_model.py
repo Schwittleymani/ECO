@@ -7,7 +7,9 @@ import glob
 import argparse
 import multiprocessing
 import logging
+import random
 import pprint
+import numpy as np
 
 def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure Word2Vec model building')
@@ -90,7 +92,10 @@ if __name__ == '__main__':
     pprint.pprint(model.most_similar('computer'))
     pprint.pprint(model.most_similar('cyberspace'))
     pprint.pprint(model.most_similar('stupid'))
+    pprint.pprint(model.most_similar_cosmul('berlin', 'spain'))
     pprint.pprint(model.similarity('computer', 'cyberspace'))
     pprint.pprint(model.similarity('question', 'answer'))
     pprint.pprint(model.most_similar(positive=['computer'], negative=['keyboard'], topn=10))
+    pprint.pprint(model.doesnt_match('computer keyboard internet cigarette'.split()))
+    pprint.pprint(model['computer'])
     export_model(input_path)
