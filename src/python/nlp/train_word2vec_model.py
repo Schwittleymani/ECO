@@ -20,6 +20,7 @@ class Sentence(object):
         self.dirname = dirname
 
     def __iter__(self):
+        print(self.dirname)
         if self.dirname.endswith('.txt'):
             for line in open(self.dirname, 'r'):
                 # compare two models which are trained with the next line toggled
