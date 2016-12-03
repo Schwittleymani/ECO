@@ -3,6 +3,7 @@
 from pattern.en import parse, Text
 import langdetect
 
+
 class ParseStatistic(object):
     properties = {}
     properties['valid_sentences'] = 0
@@ -24,6 +25,7 @@ class ParseStatistic(object):
     properties['last_not_dot'] = 0
     properties['too_many_dots'] = 0
 
+
 class TextParser(object):
     """
     This parses a massive string, that contains an entire book. Splits
@@ -33,6 +35,7 @@ class TextParser(object):
     This is using pattern.en as a analysis library http://www.clips.ua.ac.be/pages/pattern-en#parser
     The tags of words are being analyzed: http://www.clips.ua.ac.be/pages/mbsp-tags
     """
+
     def __init__(self):
         self.valid_sentences = []
         self.faulty_sentences = []
@@ -109,89 +112,97 @@ class TextParser(object):
                           tagset=None))
 
         for sentence in text:
-            if len(sentence.words) > self.MIN_WORD_COUNT:
-                if self.get_perc_single_char_words(sentence) < 0.5:
-                    if not sentence.string[0].isdigit():
-                        if not self.contains_tag(sentence, "(") \
-                                and not self.contains_tag(sentence, ")") \
-                                and not self.contains_tag(sentence, "\""):
-                            if self.get_count_tag(sentence, "CD") < 2:
-                                if self.get_count_tag(sentence, ",") < 3:
-                                    if not sentence.string[0] in [u'.', u'\'', u';', u'~', u':', u'-', u'·', u'‘']:
-                                        if self.get_count_of_special_chars(sentence) < 2:
-                                            if sentence.string[0].isupper():
-                                                if sentence.string[-1] in '.':
-                                                    if sentence.string.count('.') < 4:
-                                                        try:
-                                                            detected_language = str(langdetect.detect_langs(sentence.string)[0]).split(':')[0]
-                                                            if detected_language in 'en':
-                                                                self.valid_sentences.append(sentence)
-                                                            elif detected_language in 'de':
-                                                                self.statistic.properties['sentence_in_german'] += 1
-                                                                self.faulty_sentences.append(sentence)
-                                                            elif detected_language in 'fr':
-                                                                self.statistic.properties['sentence_in_french'] += 1
-                                                                self.faulty_sentences.append(sentence)
-                                                            elif detected_language in 'es':
-                                                                self.statistic.properties['sentence_in_spanish'] += 1
-                                                                self.faulty_sentences.append(sentence)
-                                                            elif detected_language in 'nl':
-                                                                self.statistic.properties['sentence_in_dutch'] += 1
-                                                                self.faulty_sentences.append(sentence)
-                                                            elif detected_language in 'it':
-                                                                self.statistic.properties['sentence_in_italian'] += 1
-                                                                self.faulty_sentences.append(sentence)
-                                                            else:
-                                                                self.statistic.properties['sentence_not_english'] += 1
-                                                                self.faulty_sentences.append(sentence)
-                                                        except langdetect.lang_detect_exception.LangDetectException:
-                                                            self.statistic.properties['sentence_not_english'] += 1
-                                                            self.faulty_sentences.append(sentence)
-                                                    else:
-                                                        # too many dots in the sentence
-                                                        self.statistic.properties['too_many_dots'] += 1
-                                                        self.faulty_sentences.append(sentence)
-                                                else:
-                                                    # last char not a dot
-                                                    self.statistic.properties['last_not_dot'] += 1
-                                                    self.faulty_sentences.append(sentence)
-                                            else:
-                                                # first char is not upper case
-                                                self.statistic.properties['first_not_upper'] += 1
-                                                self.faulty_sentences.append(sentence)
-                                        else:
-                                            # sentence contains weirdly escaped chars
-                                            self.statistic.properties['weird_chars'] += 1
-                                            self.faulty_sentences.append(sentence)
-                                    else:
-                                        # sentence begins with puncutations
-                                        self.statistic.properties['begins_with_punctuation'] += 1
-                                        self.faulty_sentences.append(sentence)
-                                else:
-                                    # the sentence has more than 2 occurrences of a comma(,)
-                                    self.statistic.properties['sentence_too_many_comma'] += 1
-                                    self.faulty_sentences.append(sentence)
-                            else:
-                                # the sentence contains a number
-                                self.statistic.properties['sentence_contains_number'] += 1
-                                self.faulty_sentences.append(sentence)
-                        else:
-                            # the sentence contains either ( ) or \
-                            self.statistic.properties['sentence_contains_brackets'] += 1
-                            self.faulty_sentences.append(sentence)
-                    else:
-                        # first word of the sentence is a number
-                        self.statistic.properties['first_word_is_number'] += 1
-                        self.faulty_sentences.append(sentence)
-                else:
-                    # too many short words
-                    self.statistic.properties['too_many_short_words'] += 1
-                    self.faulty_sentences.append(sentence)
-            else:
+            if len(sentence.words) < self.MIN_WORD_COUNT:
                 # too few words in the sentence
                 # removes sentences like these: https://gist.github.com/mrzl/32b9763bd943c18cb77cd1167a87640a
                 self.statistic.properties['too_few_words'] += 1
                 self.faulty_sentences.append(sentence)
+                continue
+            if self.get_perc_single_char_words(sentence) > 0.5:
+                # too many short words
+                self.statistic.properties['too_many_short_words'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if sentence.string[0].isdigit():
+                # first word of the sentence is a number
+                self.statistic.properties['first_word_is_number'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if self.contains_tag(sentence, "(") \
+                    or self.contains_tag(sentence, ")"):
+                # the sentence contains either ( )
+                self.statistic.properties['sentence_contains_brackets'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if self.get_count_tag(sentence, "CD") > 1:
+                # the sentence contains a number
+                self.statistic.properties['sentence_contains_number'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if self.get_count_tag(sentence, ",") > 2:
+                # the sentence has more than 2 occurrences of a comma(,)
+                self.statistic.properties['sentence_too_many_comma'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if sentence.string[0] in [u'.', u'\'', u';', u'~', u':', u'-', u'·', u'‘', u'\\']:
+                # sentence begins with punctuations
+                self.statistic.properties['begins_with_punctuation'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if self.get_count_of_special_chars(sentence) > 1:
+                # sentence contains weirdly escaped chars
+                self.statistic.properties['weird_chars'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if not sentence.string[0].isupper():
+                # first char is not upper case
+                self.statistic.properties['first_not_upper'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if not sentence.string[-1] in '.':
+                # last char not a dot
+                self.statistic.properties['last_not_dot'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            if sentence.string.count('.') > 3:
+                # too many dots in the sentence
+                self.statistic.properties['too_many_dots'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+            try:
+                detected_language = str(langdetect.detect_langs(sentence.string)[0]).split(':')[0]
+                if detected_language in 'en':
+                    self.valid_sentences.append(sentence)
+                    continue
+                elif detected_language in 'de':
+                    self.statistic.properties['sentence_in_german'] += 1
+                    self.faulty_sentences.append(sentence)
+                    continue
+                elif detected_language in 'fr':
+                    self.statistic.properties['sentence_in_french'] += 1
+                    self.faulty_sentences.append(sentence)
+                    continue
+                elif detected_language in 'es':
+                    self.statistic.properties['sentence_in_spanish'] += 1
+                    self.faulty_sentences.append(sentence)
+                    continue
+                elif detected_language in 'nl':
+                    self.statistic.properties['sentence_in_dutch'] += 1
+                    self.faulty_sentences.append(sentence)
+                    continue
+                elif detected_language in 'it':
+                    self.statistic.properties['sentence_in_italian'] += 1
+                    self.faulty_sentences.append(sentence)
+                    continue
+                else:
+                    self.statistic.properties['sentence_not_english'] += 1
+                    self.faulty_sentences.append(sentence)
+                    continue
+            except langdetect.lang_detect_exception.LangDetectException:
+                self.statistic.properties['sentence_not_english'] += 1
+                self.faulty_sentences.append(sentence)
+                continue
+
         self.statistic.properties['valid_sentences'] += len(self.valid_sentences)
         print('Parsed ' + str(len(self.valid_sentences)) + ' proper sentences.')
 
