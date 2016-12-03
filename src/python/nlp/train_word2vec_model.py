@@ -20,12 +20,18 @@ class Sentence(object):
         self.dirname = dirname
 
     def __iter__(self):
-        text_files = glob.glob(self.dirname + '/*.txt')
-        for file in text_files:
-            for line in open(file, 'r'):
+        if self.dirname.endswith('.txt'):
+            for line in open(self.dirname, 'r'):
                 # compare two models which are trained with the next line toggled
                 line = line.lower()
                 yield line.split()
+        else:
+            text_files = glob.glob(self.dirname + '/*.txt')
+            for file in text_files:
+                for line in open(file, 'r'):
+                    # compare two models which are trained with the next line toggled
+                    line = line.lower()
+                    yield line.split()
 
 def get_last_dir_from_path(path):
     list = path.split('/')
