@@ -17,13 +17,14 @@ if __name__ == '__main__':
         print(globals()['__doc__'] % locals())
         sys.exit(1)
     inp, outp = sys.argv[1:3]
-    space = " "
     i = 0
  
     output = open(outp, 'w')
     wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
     for text in wiki.get_texts():
-        output.write(space.join(text) + "\n")
+        text = map(str, text)
+        text = ' '.join(text)
+        output.write(text + '\n')
         i = i + 1
         if (i % 10000 == 0):
             logger.info("Saved " + str(i) + " articles")
