@@ -7,7 +7,7 @@ import glob
 import argparse
 import multiprocessing
 import logging
-
+import pprint
 
 def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure Word2Vec model building')
@@ -23,8 +23,9 @@ class Sentence(object):
     def __iter__(self):
         text_files = glob.glob(self.dirname + '/*.txt')
         for file in text_files:
-            for line in open(file):
-                # line = line.lower()
+            for line in open(file, 'r'):
+                # compare two models which are trained with the next line toggled
+                line = line.lower()
                 yield line.split()
 
 def get_last_dir_from_path(path):
@@ -44,7 +45,17 @@ def enable_verbose_training():
     logger.info("running %s" % ' '.join(sys.argv))
 
 def train_model(folder_path):
-    model = gensim.models.Word2Vec(Sentence(folder_path), size=400, min_count=5, negative=5, window=10, workers=multiprocessing.cpu_count())
+    model = gensim.models.Word2Vec(
+        Sentence(folder_path),
+        # the more training data, the higher the size
+        size=400,
+        # drop all words which occur less than 5 times
+        min_count=5,
+        # no idea what negative does
+        negative=5,
+        window=10,
+        workers=multiprocessing.cpu_count()
+    )
     model.init_sims(replace=True)
     print('Finished training: ' + str(model) + ' Filesize:', str(round(model.estimate_memory()['total'] / (math.pow(1024, 2)))) + 'mb')
     return model
@@ -75,4 +86,11 @@ if __name__ == '__main__':
         enable_verbose_training()
 
     model = train_model(input_path)
+
+    pprint.pprint(model.most_similar('computer'))
+    pprint.pprint(model.most_similar('cyberspace'))
+    pprint.pprint(model.most_similar('stupid'))
+    pprint.pprint(model.similarity('computer', 'cyberspace'))
+    pprint.pprint(model.similarity('question', 'answer'))
+    pprint.pprint(model.most_similar(positive=['computer'], negative=['keyboard'], topn=10))
     export_model(input_path)
