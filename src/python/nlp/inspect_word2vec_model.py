@@ -2,7 +2,7 @@ import argparse
 import pprint
 import sys
 import gensim
-import train_word2vec_model
+import util
 
 def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure Word2Vec model building')
@@ -14,7 +14,7 @@ if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
     input_path = params['model_path']
 
-    train_word2vec_model.enable_verbose_training(sys.argv[0])
+    util.enable_verbose_training(sys.argv[0])
 
     try:
         model = gensim.models.Word2Vec.load_word2vec_format(input_path, binary=True)
