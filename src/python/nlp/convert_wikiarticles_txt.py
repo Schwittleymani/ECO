@@ -24,7 +24,7 @@ if __name__ == '__main__':
     for text in wiki.get_texts():
         text = map(str, text)
         text = ' '.join(text)
-        text = text.decode('utf-8')
+        text = text.encode('utf-8', 'ignore')
         output.write(text + '\n')
         i = i + 1
         if (i % 10000 == 0):
