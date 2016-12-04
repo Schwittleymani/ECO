@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 import pathlib
 
 def get_last_dir_from_path(path):
