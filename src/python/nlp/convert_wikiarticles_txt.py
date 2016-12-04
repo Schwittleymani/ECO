@@ -3,6 +3,11 @@ import os.path
 import sys
 
 from gensim.corpora import WikiCorpus
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for ind in range(0, len(l), n):
+        yield l[ind:ind + n]
  
 if __name__ == '__main__':
     program = os.path.basename(sys.argv[0])
@@ -23,10 +28,10 @@ if __name__ == '__main__':
     wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
     for text in wiki.get_texts():
         text = map(str, text)
-        text = ' '.join(text)
-        text = text.encode('utf-8', 'ignore')
-        text = text.decode('utf-8')
-        output.write(text + '\n')
+
+        for chunk in chunks(text, 200):
+            chunk = ' '.join(chunk)
+            output.write(chunk + '\n')
         i = i + 1
         if (i % 10000 == 0):
             logger.info("Saved " + str(i) + " articles")
