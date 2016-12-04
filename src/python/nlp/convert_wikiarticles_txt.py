@@ -28,6 +28,8 @@ if __name__ == '__main__':
     wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
     for text in wiki.get_texts():
         text = list(map(str, text))
+        for index, item in enumerate(text):
+            text[index] = item[2:-1]
         for chunk in chunks(text, 200):
             chunk = ' '.join(chunk)
             output.write(chunk + '\n')
