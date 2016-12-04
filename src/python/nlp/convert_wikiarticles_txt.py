@@ -1,7 +1,7 @@
 import logging
 import os.path
 import sys
- 
+
 from gensim.corpora import WikiCorpus
  
 if __name__ == '__main__':
@@ -24,6 +24,7 @@ if __name__ == '__main__':
     for text in wiki.get_texts():
         text = map(str, text)
         text = ' '.join(text)
+        text = text.decode('utf-8')
         output.write(text + '\n')
         i = i + 1
         if (i % 10000 == 0):
