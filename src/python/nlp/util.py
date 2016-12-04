@@ -21,16 +21,29 @@ def enable_verbose_training(program):
 
 def export_model(model, input_path, ext):
     # the input path is used for constructing the filename of the model
-    model_filename = get_last_dir_from_path(input_path) + ext
+    numpy_model_filename = get_last_dir_from_path(input_path) + '_numpy' + ext
+    word2vec_model_filename = get_last_dir_from_path(input_path) + '_word2vec' + ext
     # file exists already in current directory?
-    if pathlib.Path(model_filename).is_file():
+    if pathlib.Path(numpy_model_filename).is_file():
         # y/n choice to overwrite
-        user_input = input('Overwrite model file ' + model_filename + '? [y/(n)]')
+        user_input = input('Overwrite model file ' + numpy_model_filename + '? [y/(n)]')
         if 'y' in user_input:
-            model.save(model_filename)
-            print('Saved model: ' + model_filename)
+            model.save(numpy_model_filename)
+            print('Saved model: ' + numpy_model_filename)
         else:
             print('NOT saved model. File already exists.')
     else:
-        model.save(model_filename)
-        print('Saved model: ' + model_filename)
+        model.save(numpy_model_filename)
+        print('Saved model: ' + numpy_model_filename)
+
+    if pathlib.Path(word2vec_model_filename).is_file():
+        # y/n choice to overwrite
+        user_input = input('Overwrite model file ' + word2vec_model_filename + '? [y/(n)]')
+        if 'y' in user_input:
+            model.save_word2vec_format(word2vec_model_filename, binary=True)
+            print('Saved model: ' + word2vec_model_filename)
+        else:
+            print('NOT saved model. File already exists.')
+    else:
+        model.save_word2vec_format(word2vec_model_filename, binary=True)
+        print('Saved model: ' + word2vec_model_filename)
