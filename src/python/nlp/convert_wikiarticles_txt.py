@@ -27,8 +27,7 @@ if __name__ == '__main__':
     output = open(outp, 'w')
     wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
     for text in wiki.get_texts():
-        text = map(str, text)
-
+        text = list(map(str, text))
         for chunk in chunks(text, 200):
             chunk = ' '.join(chunk)
             output.write(chunk + '\n')
