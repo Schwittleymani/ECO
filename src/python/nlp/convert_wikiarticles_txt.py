@@ -25,6 +25,7 @@ if __name__ == '__main__':
         text = map(str, text)
         text = ' '.join(text)
         text = text.encode('utf-8', 'ignore')
+        text = text.decode('utf-8')
         output.write(text + '\n')
         i = i + 1
         if (i % 10000 == 0):
