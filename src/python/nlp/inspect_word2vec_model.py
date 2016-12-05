@@ -3,6 +3,7 @@ import pprint
 import sys
 import gensim
 import util
+import random
 
 def process_arguments(args):
     parser = argparse.ArgumentParser(description='configure Word2Vec model building')
@@ -22,16 +23,16 @@ if __name__ == '__main__':
     except Exception:
         # just use the other mothod of loading..
         model = gensim.models.Word2Vec.load(input_path)
-
-    model.accuracy('questions-words.txt')
+    print(len(model.vocab))
+    #model.accuracy('questions-words.txt')
 
     pprint.pprint(model.most_similar('computer'))
-    pprint.pprint(model.most_similar('cyberspace'))
     pprint.pprint(model.most_similar('stupid'))
     # this fails weirdly. what is similar_cosmul anyhow?
     #pprint.pprint(model.most_similar_cosmul('berlin', 'spain'))
     print(model.similarity('computer', 'cyberspace'))
     print(model.similarity('question', 'answer'))
-    print(model.n_similarity(['i', 'like', 'brown', 'turtles'], ['i', 'like', 'dark', 'brown', 'turtles']))
+    print(model.n_similarity(['like', 'brown', 'turtles'], ['like', 'dark', 'brown', 'turtles']))
     pprint.pprint(model.most_similar(positive=['computer'], negative=['keyboard'], topn=10))
+    pprint.pprint(model.most_similar(positive=['brown'], negative=['red'], topn=10))
     pprint.pprint(model.doesnt_match('computer keyboard internet cigarette'.split()))
