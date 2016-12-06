@@ -1,4 +1,4 @@
-import gensim
+from gensim.models.doc2vec import Doc2Vec
 import argparse
 import multiprocessing
 import sys
@@ -24,7 +24,7 @@ class LabeledLineSentence(object):
             yield gensim.LabeledSentence(words=line.split(), labels=['SENT_%s' % uid])
 
 def train_model(folder_path):
-    model = gensim.models.DocVec(
+    model = Doc2Vec(
         train_lbls=False,
         # the more training data, the higher the size. google model uses 300
         size=300,
