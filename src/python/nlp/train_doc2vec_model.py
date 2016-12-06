@@ -25,24 +25,20 @@ class LabeledLineSentence(object):
 
 def train_model(folder_path):
     model = Doc2Vec(
-        train_lbls=False,
+        dm=0, dbow_words=1,
         # the more training data, the higher the size. google model uses 300
-        size=300,
+        size=200,
         # drop all words which occur less than 5 times
-        min_count=5,
-        # no idea what negative does
-        negative=5,
-        window=10,
-        alpha=0.25,
-        min_alpha=0.25,
+        window=8, min_count=19, iter=10,
         workers=multiprocessing.cpu_count()
     )
     sentences = LabeledLineSentence(folder_path)
-    model.build_vocab(sentences)
-    for epoch in range(10):
-        model.train(sentences)
-        model.alpha -= 0.002  # decrease the learning rate
-        model.min_alpha = model.alpha  # fix the learning rate, no decay
+    model.train(sentences)
+    #model.build_vocab(sentences)
+    #for epoch in range(10):
+    #    model.train(sentences)
+    #    model.alpha -= 0.002  # decrease the learning rate
+    #    model.min_alpha = model.alpha  # fix the learning rate, no decay
 
     model.init_sims(replace=True)
     print('Finished training: ' + str(model) + ' Filesize:', str(round(model.estimate_memory()['total'] / (math.pow(1024, 2)))) + 'mb')
