@@ -36,7 +36,7 @@ if __name__ == '__main__':
                 chunk = ' '.join(chunk)
                 output.write(chunk + '\n')
         else:
-            output.write(text + '\n')
+            output.write(' '.join(text) + '\n')
         i = i + 1
         if (i % 10000 == 0):
             logger.info("Saved " + str(i) + " articles")
