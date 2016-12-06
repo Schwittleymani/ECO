@@ -33,6 +33,7 @@ def train_model(folder_path):
         workers=multiprocessing.cpu_count()
     )
     sentences = LabeledLineSentence(folder_path)
+    model.build_vocab(sentences)
     model.train(sentences)
     #model.build_vocab(sentences)
     #for epoch in range(10):
