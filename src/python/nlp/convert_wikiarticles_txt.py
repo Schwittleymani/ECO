@@ -23,16 +23,20 @@ if __name__ == '__main__':
         sys.exit(1)
     inp, outp = sys.argv[1:3]
     i = 0
- 
+
+    do_chunk = False
     output = open(outp, 'w')
     wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
     for text in wiki.get_texts():
         text = list(map(str, text))
         for index, item in enumerate(text):
             text[index] = item[2:-1]
-        for chunk in chunks(text, 200):
-            chunk = ' '.join(chunk)
-            output.write(chunk + '\n')
+        if do_chunk:
+            for chunk in chunks(text, 200):
+                chunk = ' '.join(chunk)
+                output.write(chunk + '\n')
+        else:
+            output.write(text + '\n')
         i = i + 1
         if (i % 10000 == 0):
             logger.info("Saved " + str(i) + " articles")
