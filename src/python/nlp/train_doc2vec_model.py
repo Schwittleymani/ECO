@@ -1,4 +1,4 @@
-from gensim.models.doc2vec import Doc2Vec, LabeledSentence
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import argparse
 import multiprocessing
 import sys
@@ -21,7 +21,7 @@ class LabeledLineSentence(object):
         for uid, line in enumerate(open(self.filename)):
             # compare two models which are trained with the next line toggled
             line = line.lower()
-            yield LabeledSentence(words=line.split(), tags=['SENT_%s' % uid])
+            yield TaggedDocument(words=line.split(), tags=['SENT_%s' % uid])
 
 def train_model(folder_path):
     model = Doc2Vec(
