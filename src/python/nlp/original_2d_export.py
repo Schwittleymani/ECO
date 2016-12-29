@@ -43,6 +43,9 @@ if __name__ == '__main__':
 
     text_files = glob.glob(txt_path + '/*.txt')
     for file in text_files:
+        line = 'loading file ' + str(text_files.index(file)) + '/' + str(len(text_files))
+        print(line)
+        index = 0
         for line in open(file, 'r'):
             vector_words = []
             word_count = 0
@@ -67,6 +70,7 @@ if __name__ == '__main__':
                     intnumber = int(number*10000)
                     intlist.append(intnumber)
                 data_300d.append({"sentence": line, "point": intlist})
+            index += 1
 
     output_file = params['output_file']
 
