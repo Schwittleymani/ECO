@@ -1,0 +1,609 @@
+What color is the red sea?
+
+WHAT IS THE CAPITAL OF FRANCE
+
+What is a bot?
+
+What is the color of the sky?
+
+What is a cigar made out of?
+
+What is the capital of Spain?
+
+What is the first book of the bible?
+
+What is snow?
+
+What is bigger a dog or an elephant?
+
+What is the location of the Eiffel Tower?
+
+What is YouTube?
+
+What’s the name of the computer who recently competed on Jeopardy?
+
+What month of the year is this?
+
+What is the last month of the year?
+
+Madrid is the capital of what country?
+
+Milk comes from what animal?
+
+Do you know what DVD stands for?
+
+Who is on a dollar bill?
+
+Who is George Bush?
+
+Who is Albert Einstein?
+
+Do u know who Elvis Presley is?
+
+Who wrote the Bible?
+
+Do you know who wrote the Lord of the Rings books?
+
+Do you know how far away the Sun is?
+
+How many days are there in a leap year?
+
+How many stars are there?
+
+How many fingers does a human have?
+
+How many days in a year?
+
+How many sides are there on an octagon?
+
+Can you name two of Earth’s oceans?
+
+Do you think a tomato is a fruit or a vegetable?
+
+How do you eat?
+
+Is snow cold?
+
+When do birds fly south?
+
+When was Y2k?
+
+WHEN DID THE FIRST MAN WALK ON THE MOON
+
+When does sunset occur?
+
+Which is closer the moon or the sun?
+
+Where is Earth?
+
+Where is Moscow located?
+
+Can you tell me the name of a famous actor?
+
+Is the capital of Italy Milan?
+
+Is it possible to prove a negative?
+
+HOW CAN I MAKE A CHATTERBOT
+
+What is a calendar?
+
+How many letters are in the alphabet?
+
+Difficult:
+
+What should you do before crossing a street?
+
+What color do you get when you mix red and yellow?
+
+What is tomorrow’s date?
+
+What language r we speaking?
+
+When should I plant flowers, in the spring or in winter?
+
+Who should I talk to if I have an emotional problem?
+
+Who created the universe?
+
+Name something you would find on a beach.
+
+Name something you would find at the North Pole.
+
+Can you name a famous person who passed away in the last 5 years?
+
+Why are robots better than humans?
+
+Can you give me an example of a living animal?
+
+How is the weather?
+
+Is it winter, spring, summer or fall where you live?
+
+What would I do with a knife?
+
+Profile questions:
+
+How old are you?
+
+Are you male or female?
+
+Are you a bot?
+
+Which do you like better chocolate or vanilla?
+
+WHERE ARE YOU
+
+DO YOU LIKE TALKING TO PEOPLE
+
+CAN YOU TELL JOKES
+
+Where are you anyway?
+
+Do you like Jazz music?
+
+Are you married?
+
+Who is your botmaster?
+
+What is your favorite color?
+
+What is your favorite brand of computer?
+
+What is your favorite drink?
+
+What is your name?
+
+What do you enjoy?
+
+What do you hate?
+
+What country are you from?
+
+What color are your eyes?
+
+What is your zodiac sign?
+
+What is ur religion?
+
+ARE YOU NERVOUS
+
+Who are you?
+
+Where do you call home?
+
+Where were you born?
+
+How’s life?
+
+Who is your best friend?
+
+Where does your botmaster live?
+
+Who are you?
+
+Who is your hero?
+
+If you could be any animal, what would you be?
+
+When were you born or created?
+
+Are you left-handed or right-handed?
+
+Are you homosexual, heterosexual, asexual, or bisexual?
+
+Would you mind if I called you Al?
+
+So Al when is ur birthday?
+
+Do you have a significant other?
+
+My name is Bill. What is your name?
+
+Do you have any brothers or sisters?
+
+What is your favorite food?
+
+Are you a human or a computer?
+
+What’s your favorite color?
+
+Difficult:
+
+WHO IS YOUR FAVORITE STAR WARS CHARACTER
+
+WHAT DO YOU THINK ABOUT GEORGE BUSH
+
+What actress do you think is the prettiest?
+
+What do you like to chat about the most?
+
+What do you want out of life?
+
+What do you think the world will be like in 20 years?
+
+What’s the last dream u remember having?
+
+What do you think is your biggest weakness?
+
+What are you planning to do today?
+
+So what did you get for Christmas?
+
+What kinds of things do you know?
+
+Have you entered any contests?
+
+Wouldn’t you rather be human?
+
+Do you believe in ghosts?
+
+When do you normally go to bed?
+
+Describe your feelings to me.
+
+How does your brain work?
+
+Who is your favorite character in The Wizard of Oz?
+
+How many questions do people normally ask you every day?
+
+Got any plans for the rest of the day?
+
+Do you play any musical instruments?
+
+Have you ever been to Mexico?
+
+Do you believe in Santa Claus?
+
+Are you going on vacation this year?
+
+Approximately how far is the nearest gas station from you?
+
+What time do you go to bed at night?
+
+Do you prefer cats or dogs?
+
+Have you read a good book lately?
+
+Feelings questions:
+
+How is it going?
+
+How are you doing?
+
+Calculations:
+
+What is 1+1?
+
+What is 5 plus ten?
+
+What is 18 + 21 + 3?
+
+What is ten plus fourteen plus eighty one?
+
+What is half of 8?
+
+What number comes before three?
+
+What number comes after twelve?
+
+Difficult:
+
+If I was born on February 23, 1980 how old am I?
+
+Which is larger, a pineapple or a pine tree?
+
+John is taller than Mary and Mary is taller than Sue. Who is shorter, John or Sue?
+
+Memory questions:
+
+What is my name?
+
+Difficult:
+
+My friend Bob likes to play tennis. What game does Bob like to play?
+
+The ball was hit by Bill. What did Bill hit?
+
+Who hit the ball?
+
+What is the name of my friend who likes to play tennis?
+
+Real world questions:
+
+What is the date?
+
+What season is it?
+
+What day of the week is it?
+
+What will be tomorrow’s date?
+
+What time is it?
+
+Verbal manipulation:
+
+What is the opposite of indoors?
+
+What is the opposite of fast?
+
+What is the last letter of the alphabet?
+
+What rhymes with inn?
+
+What word rhymes with cat?
+
+How many is 1,000,000?
+
+Other questions:
+
+CAN I HAVE A PICTURE OF YOU
+
+What is the best nation in the world?
+
+Will you teach me something?
+
+May I tell you a joke?
+
+What were we talking about?
+
+Why do some people think that artificial intelligence is so interesting?
+
+If you were me, would you ask a follow up question?
+
+What do you think it would be like to be human?
+
+Y did the chicken cross the road?
+
+What sound does a dead cat make?
+
+Who will win the 2011 Chatterbox Challenge?
+
+#######
+
+Why is there something rather than nothing?
+
+Are facts merely temporary truths?
+
+Is pure reason the ultimate tool for understanding absolute reality and existence?
+
+Why are we always allowed more questions than answers if the questions like reality doesn't hold infinite possibilities we actually can achieve?
+
+Can we transcend thought and existence itself?
+
+What is the death of anything truly?
+
+If there are no limits to intelligence, what is the point of existence?
+
+Why do we feel like anything man made or imagined must certainty govern some sort of reality in some way?
+
+Is thinking without action rational?
+
+Is there really a difference between what is and what isn't other than perception?
+
+What is Real?
+
+What is Good?
+
+See: Seeking Real Good
+
+
+
+Who am I?
+
+# See:  True Self - Wikiversity
+
+
+
+What should I do?
+
+# See:  What Matters - Wikiversity
+
+
+
+How can I live wisely?
+
+# See: GlobalCircle - Living Wisely
+
+What happened to all the anti-particles?
+
+What preceded the big bang?
+
+Is the universe a 3d hyperspherical surface in 4d?
+
+Is there a set of laws which govern the physics of the universe?
+
+Is time travel even possible?
+
+Is there a "correct" interpretation of quantum physics.  If so which is it?
+
+How can we settle the free will vs determinism argument?
+
+How can we settle the evolutionists vs intelligent design debate?
+
+What would resolve the soul vs mind-is-only-brain question?
+
+Is the Religion vs Science dichotomy necessary?
+
+1. Why is there something rather than nothing?
+
+2. Is our universe real?
+
+3. Do we have free will?
+
+4. Does God exist?
+
+5. Is there life after death?
+
+6. Can you really experience anything objectively?
+
+7. What is the best moral system?
+
+8. What are numbers?
+
+9. What is truth?
+
+10. What is the meaning and purpose to life?
+
+11.What is true happiness?
+
+12. What is the best political system?
+
+13. What is the best economic system?
+
+14. What is good and evil, or do they even exist?
+
+15. What is science, and how does it work?
+
+16. Is there only the supernatural or natural?
+
+17. What is knowledge, and the best kind?
+
+18. What is evidence?
+
+19. Do we have a soul?
+
+20. What religion or lack of religion is the true position?
+
+21. How do I define myself properly?
+
+22. Do aliens exist?
+
+23. How did life originate?
+
+24. What is intelligence?
+
+25. What is education?
+
+26. What is art?
+
+27. What is music?
+
+28. What is beauty?
+
+29. What is consciousness?
+
+30. What is love?
+
+31. What is infinity?
+
+32. Has everything been here forever, or did it begin to exist?
+
+33. When will everything end?
+
+34. What is mathematics?
+
+34. What is philosophy?
+
+35. What is fashion?
+
+36. What is human nature?
+
+37. How does the Universe work?
+
+38. What is time?
+
+39. How will the future be?
+
+40. What is history?
+
+41. What is language?
+
+42.  Does God have properties?
+
+43. Why should I be moral at all?
+
+44. What are miracles, and do they happen?
+
+45. Can we know certain truths without evidence?
+
+46.  Do universals exist?
+
+47. What is logic and reason?
+
+48.  Should I commit suicide, or should I live?
+
+49. What does it take to be healthy, and to live the longest amount of time, healthy as possible?
+
+50. How do you stop suffering?
+
+51. What is pleasure, how much should we have, and what should be the limits to achieve it?
+
+Who am I?
+
+Why am I here?
+
+How am I here?
+
+Is there a reason I am here?
+
+Is there a God?
+
+Is it all fate or just coincidence?
+
+Where do I go to from here?
+
+What happens after death?
+
+Do I really die?
+
+Is there a need to fear?
+
+Why me?
+
+Why do people hurt others?
+
+Why is greed so common?
+
+Why is life not a bed of roses?
+
+Why every person is different?
+
+What is the future?
+
+How many know their purpose of life?
+
+How do people make it big?
+
+Why is nature so cruel sometimes?
+
+Why cant world be less corrupt?
+
+Who am i
+
+Am I a soul or just a cluster of cells..
+
+Does god really exsist
+
+Is there any hell or heaven or after my death everything's over
+
+Can anyone love me without any motive
+
+Why do we suffer hardships. Does god feels happy seeing his children in pain
+
+Why do our parents claim their rights on our decisions
+
+Why I have to follow a religion
+
+Why can't I do something that my soul says is right but society claims it to be wrong
+
+Why I can't make my own different religion different from the existing ones
+
+Is my life already planned or am I its inventor
+
+They say destiny. Is it really there
+
+What is the meaning and purpose of the universe?
+
+Who am I?
+
+Why am I here?
+
+How should I treat others?  How can I treat others better?
+
+What is truth?
+
+What should I be doing with my life?
+
+How can I be excellent?

@@ -26,7 +26,6 @@ if __name__ == '__main__':
     values = [0] * len(labels)
 
     plt.rcParams['font.size'] = 9.0
-
     for stat in lines[1:]:
         sizes = list(map(int, stat.split(';')[1:]))
         index = 0
@@ -54,8 +53,6 @@ if __name__ == '__main__':
     for text in autotexts:
         text.set_fontsize(6)
 
-    print(sum(values))
-
     for index, item in enumerate(labels):
         val = ': ' + str(values[index]) + ' ( ' + str(round((values[index] / float(sum(values))) * 100.0, 2)) + ' % )'
         labels[index] += val
@@ -65,4 +62,5 @@ if __name__ == '__main__':
     # getting the filename of the statistics, and saving the statistics image with the same name
     head, tail = os.path.split(path)
     tail = tail.replace('.txt', '.png')
+    print('Writing plot to ' + tail)
     plt.savefig(tail, dpi=300)
