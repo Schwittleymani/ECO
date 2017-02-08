@@ -19,7 +19,7 @@ text = read_file(filename)
 # Process `text` with Spacy NLP Parser
 processed_text = nlp(text)
 
-def write_lists_to_file(lists):    
+def write_lists_to_file(lists):
 	with codecs.open('character_file.txt','w','utf-8') as out:
 		for al in lists:
 			out.write(al[0]+','+str(al[1])+'\n')
