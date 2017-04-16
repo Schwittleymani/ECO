@@ -8,3 +8,9 @@ data/gifs
 GoogleNews-vectors-negative300.bin.gz
 SBW-vectors-300-min5.bin.gz
 data
+src/experiments/.ipynb_checkpoints
+src/experiments/word2vec/trunk/.svn
+src/experiments/word2vec/trunk
+venv3/lib/python3.5/site-packages
+src/tests/py_nltk/.ipynb_checkpoints
+src/python/modelbuilder/doc2vec/.ipynb_checkpoints
