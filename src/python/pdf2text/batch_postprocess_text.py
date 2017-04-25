@@ -76,11 +76,15 @@ if __name__ == '__main__':
             output_file_valid = open(output_filename_valid, 'w')
             for line in parser.valid_sentences:
                 output_file_valid.write(line.string.encode('utf8'))
+		output_file_valid.write(';')
+		output_file_valid.write(filename)
                 output_file_valid.write('\n')
 
             output_file_faulty = open(output_filename_faulty, 'w')
             for line in parser.faulty_sentences:
                 output_file_faulty.write(line.string.encode('utf8'))
+		output_file_faulty.write(';')
+		output_file_faulty.write(filename)
                 output_file_faulty.write('\n')
 
             write_statistics(parser, statistic_filename, file_path)
