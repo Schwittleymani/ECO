@@ -1,0 +1,11 @@
+corpusi
+
+https://nlp.stanford.edu/projects/snli/
+http://agarciaduran.org/
+http://www.simplyscripts.com/genre/sci-fi-scripts.html
+
+## meta:
+http://corpus.byu.edu/
+
+## image
+http://www.medievalart.org.uk/

@@ -14,3 +14,8 @@ src/experiments/word2vec/trunk
 venv3/lib/python3.5/site-packages
 src/tests/py_nltk/.ipynb_checkpoints
 src/python/modelbuilder/doc2vec/.ipynb_checkpoints
+src/tests/py_nltk/node_modules
+src/tests/py_nltk/pattern-2.6/docs
+src/tests/py_nltk/pattern-2.6/examples
+src/tests/py_nltk/pattern-2.6
+venv3

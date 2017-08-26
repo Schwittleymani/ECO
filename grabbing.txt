@@ -1,0 +1,19 @@
+
+Grab
+constructed: 
+log:   "state": "INIT",
+
+grab()
+get html
+get text
+ log: > html size, text size, urls,   state: GRABBED
+
+grab_sub():
+
+log: state: ROLLING
+
+if no url
+log state: DONE
+report parent: done
+parent checks if all done.
+report parent: done
