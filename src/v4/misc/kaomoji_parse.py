@@ -2,8 +2,8 @@ import re
 import os
 
 
-class Kaomoji(object):
-    def __init__(self, path="../data/kaomoji.txt"):
+class KaomojiHelp(object):
+    def __init__(self, path="data/kaomoji.txt"):
         self.emojis = []
         emoji_lines = open(path, 'r').readlines()
         for line in emoji_lines:
@@ -12,7 +12,10 @@ class Kaomoji(object):
             self.emojis.append((emoji_list[0], emoji_list[1]))
 
     def get(self, index):
-        return self.emojis[index][0]
+        return self.emojis[index]
+
+    def len(self):
+        return len(self.emojis)
 
 
 def parse():
@@ -41,7 +44,7 @@ def parse():
 
 
 if __name__ == '__main__':
-    kao = Kaomoji()
+    kao = KaomojiHelp()
     print(kao.get(1))
 
     # parse the files again, they are already saved in data/kaomoji.txt

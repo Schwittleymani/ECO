@@ -18,7 +18,7 @@ def serversideEventLoop():
     while True:
         socketio.sleep(1)
         count += 1
-        postmanager.add(PostType.POST_TYPE_GIF)
+        postmanager.add(PostType.POST_TYPE_KAOMOJI)
 
         socketio.emit('my_response',
                       {'data': postmanager.last().json(), 'count': count},

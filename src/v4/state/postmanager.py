@@ -2,8 +2,11 @@ import base64
 from enum import Enum
 import json
 from PIL import Image
-
+import random
 import time
+
+from misc.kaomoji_parse import KaomojiHelp
+
 
 class PostType(Enum):
     POST_TYPE_START = -1
@@ -53,13 +56,17 @@ class Kaomoji(object):
     def kaomojiText(self):
         return self._kaomojiText
 
+kao = KaomojiHelp()
 
 class KaomojiPost(Post):
+
     def __init__(self, previous):
         super().__init__(previous)
         # todo: check the previous text representation
         # todo: for correlation with available kaomojis
-        self.kaomoji = Kaomoji("evil", "(｀ε´)")
+        k = kao.get(random.randint(0, kao.len()))
+        print(k)
+        self.kaomoji = Kaomoji(k[0], k[1])
 
     def text(self):
         return self.kaomoji.rawText()
