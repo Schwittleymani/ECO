@@ -1,42 +1,59 @@
-from flask import Flask, render_template, send_file, safe_join, request,jsonify
-from flask_socketio import SocketIO, emit
-from src.v4.server import settings
-import time
+from flask import Flask, render_template, session, request
+from flask_socketio import SocketIO, Namespace, emit, disconnect
+from threading import Lock
 
-
+# "threading", "eventlet" or "gevent"
+async_mode = 'threading'
 app = Flask(__name__)
-app.config.from_object('src.v4.server.settings')
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode=async_mode)
+thread = None
+thread_lock = Lock()
 
-@app.route('/', methods=['GET'])
+
+def background_thread():
+    """Example of how to send server generated events to clients."""
+    count = 0
+    while True:
+        socketio.sleep(1)
+        count += 1
+        socketio.emit('my_response',
+                      {'data': 'Server generated event', 'count': count},
+                      namespace='/eco')
+
+
+@app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', async_mode=socketio.async_mode)
 
 
-# @socketio.on('key')
-# def handle_my_custom_event(json):
-#     print('received json: ' + str(json))
-#
+class EcoTestNamespace(Namespace):
+    def on_my_event(self, message):
+        session['receive_count'] = session.get('receive_count', 0) + 1
+        emit('my_response',
+             {'data': message['data'], 'count': session['receive_count']})
 
-@socketio.on('connect')
-def client_connect():
-    # emit('my_response', {'data': 'Connected', 'count': 0}, broadcast=True)
-    send_msg('hello','mozart')
-    time.sleep(2)
-    send_msg("what's up buddy?", 'kant')
+    def on_disconnect_request(self):
+        session['receive_count'] = session.get('receive_count', 0) + 1
+        emit('my_response',
+             {'data': 'Disconnected!', 'count': session['receive_count']})
+        disconnect()
 
-def send_msg(text, user, style='', attachment=''):
-    emit('msg',{
-        'text' : text,
-        'user': user,
-        'style': style,
-        'attachment': attachment
-    }, broadcast=True)
+    def on_my_ping(self):
+        emit('fps_event')
 
-def launch():
-    # print('starting webserver: http://localhost:'+ str(settings.PORT))
-    socketio.run(app,host= settings.HOST, port=settings.PORT, debug=settings.DEBUG)
+    def on_connect(self):
+        global thread
+        with thread_lock:
+            if thread is None:
+                thread = socketio.start_background_task(
+                    target=background_thread)
+        emit('my_response', {'data': 'Connected', 'count': 0})
 
-# RUN APP
-if __name__ == "__main__":
-    launch()
+    def on_disconnect(self):
+        print('Client disconnected', request.sid)
+
+socketio.on_namespace(EcoTestNamespace('/eco'))
+
+
+def launch(host, port, debug):
+    socketio.run(app, host=host, port=port, debug=debug)
