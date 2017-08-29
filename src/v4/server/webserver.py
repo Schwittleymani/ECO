@@ -1,6 +1,7 @@
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, Namespace, emit, disconnect
 from threading import Lock
+from state.postmanager import PostManager, PostType
 
 # "threading", "eventlet" or "gevent"
 async_mode = 'threading'
@@ -10,14 +11,17 @@ thread = None
 thread_lock = Lock()
 
 
-def background_thread():
+def serversideEventLoop():
     """Example of how to send server generated events to clients."""
     count = 0
+    postmanager = PostManager()
     while True:
         socketio.sleep(1)
         count += 1
+        postmanager.add(PostType.POST_TYPE_GIF)
+
         socketio.emit('my_response',
-                      {'data': 'Server generated event', 'count': count},
+                      {'data': postmanager.last().json(), 'count': count},
                       namespace='/eco')
 
 
@@ -46,7 +50,7 @@ class EcoTestNamespace(Namespace):
         with thread_lock:
             if thread is None:
                 thread = socketio.start_background_task(
-                    target=background_thread)
+                    target=serversideEventLoop)
         emit('my_response', {'data': 'Connected', 'count': 0})
 
     def on_disconnect(self):
