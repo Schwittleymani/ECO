@@ -1,3 +1,31 @@
 .msg {
-    width: 100%;
+/*    position: relative;
+    width: 100%; */
+    margin-top: 5px;
+    list-style: none
+    clear: both;
+}
+
+.msgBox {
+    max-width: 200px;
+    background: grey;
+    border: grey solid 0.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.news-item:nth-child(odd) div.news-info {
+  float: right;
+}
+
+.msgUser {
+    font-weight: bold;
+}
+
+.msgText {
+    margin-top: 5px;
+}
+
+#msgTemplate {
+    display: none;
 }

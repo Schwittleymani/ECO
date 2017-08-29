@@ -1,4 +1,8 @@
 let log = $('#log')
+let template = $('#msgTemplate')
+
+let nextMsgRight = false
+
 
 class Message {
 
@@ -9,11 +13,19 @@ class Message {
         this.attachment = socketMsg.attachment
 
         this.append()
+        nextMsgRight = !nextMsgRight
     }
 
     append() {
 //        log.append('<br>')
         console.log('appending msg')
-        log.append($('<div/>').text(this.user +': '+ this.text).attr('class','msg'))
+        let msgObj = template.clone()
+        msgObj.removeAttr('id')
+        msgObj.find('.msgText').text(this.text)
+        msgObj.find('.msgUser').text(this.user)
+        if(nextMsgRight)
+            msgObj.find('.msgBox').addClass('rightMsgBox')
+        log.append(msgObj)
+//        log.append($('<div/>').text(this.user +': '+ this.text).attr('class','msg'))
     }
 }
