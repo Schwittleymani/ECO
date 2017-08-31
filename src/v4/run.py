@@ -8,7 +8,7 @@ from state.postmanager import PostType
 if __name__ == "__main__":
     postmanager = PostManager()
     while True:
-        postmanager.add(PostType.POST_TYPE_KAOMOJI)
+        postmanager.add()
         time.sleep(1)
         last = postmanager.last()
         result = requests.post('http://localhost:8090/msg', json.dumps({
