@@ -21,7 +21,8 @@ class KaomojiHelp(object):
         for line in emoji_lines:
             line = line.rstrip('\n')
             emoji_list = re.split(r'\t+', line.rstrip('\t'))
-            self.emojis.append((emoji_list[0], emoji_list[1]))
+            # stripping the path and so on from the file that has the kaomoji meaning
+            self.emojis.append((emoji_list[0], emoji_list[1][8:-4]))
 
     def get(self, index):
         kao = Kaomoji(self.emojis[index][0], self.emojis[index][1])

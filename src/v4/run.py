@@ -3,7 +3,6 @@ import json
 import time
 
 from state.postmanager import PostManager
-from state.postmanager import PostType
 
 if __name__ == "__main__":
     postmanager = PostManager()
