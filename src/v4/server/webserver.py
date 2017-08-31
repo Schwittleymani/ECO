@@ -3,8 +3,10 @@ from flask_socketio import SocketIO
 import settings
 import json
 
+# "threading", "eventlet" or "gevent"
+async_mode = 'threading'
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode=async_mode)
 
 
 @app.route('/', methods=['GET'])
