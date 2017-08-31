@@ -1,7 +1,22 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>ECO v4</title>
+    <title>Oracle 4.0</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+            socket.on('connect', function() {
+                <!--socket.emit('my_event', {data: 'I\'m connected!'});-->
+            });
+            socket.on('msg', function(socketMsg) {
+                let msg = new Message(socketMsg)
+            });
+        });
+    </script>
+
 </head>
 <body>
     <h1>Oracle 4.0</h1>

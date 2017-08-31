@@ -21,11 +21,7 @@ class KaomojiHelp(object):
 def parse():
     emojis = []
 
-<<<<<<< HEAD
     emoji_files = open("data/kaomoji_files.txt").readlines()
-=======
-    emoji_files = open("../data/kaomoji_files.txt").readlines()
->>>>>>> af837fc919cb8eb59fe0f5fbc946025341e60ba3
     for file in emoji_files:
         file = file.rstrip('\n')
         path = os.path.join("../data/", file).rstrip('\n')
