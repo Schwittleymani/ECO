@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 import settings
-import json
 
 # "threading", "eventlet" or "gevent"
 async_mode = 'threading'
@@ -9,9 +8,9 @@ app = Flask(__name__)
 socketio = SocketIO(app, async_mode=async_mode)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', async_mode=socketio.async_mode)
 
 
 @app.route('/msg', methods=['POST'])
