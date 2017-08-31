@@ -35,6 +35,12 @@ class Post(object):
         """
         raise NotImplementedError("Should have implemented this")
 
+    def dict(self):
+        """
+        returns a dict of the post
+        """
+        raise NotImplementedError("Should have implemented this")
+
 
 class StartPost(Post):
     def __init__(self, previous, text=""):
@@ -58,8 +64,8 @@ class Kaomoji(object):
 
 kao = KaomojiHelp()
 
-class KaomojiPost(Post):
 
+class KaomojiPost(Post):
     def __init__(self, previous):
         super().__init__(previous)
         # todo: check the previous text representation
@@ -71,14 +77,17 @@ class KaomojiPost(Post):
     def text(self):
         return self.kaomoji.rawText()
 
-    def json(self):
+    def dict(self):
         dict = {}
         dict['textRepresentation'] = self.text()
         dict['text'] = self.kaomoji.kaomojiText()
         dict['postType'] = "KAOMOJI_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
-        dump = json.dumps(dict)
+        return dict
+
+    def json(self):
+        dump = json.dumps(self.dict())
         return dump
 
 
@@ -93,14 +102,17 @@ class GifPost(Post):
     def text(self):
         return self.previousPost.text() + str(time.time())
 
-    def json(self):
+    def dict(self):
         dict = {}
         dict['textRepresentation'] = self.text()
         dict['text'] = self.text()
         dict['postType'] = "GIF_POST"
         dict['renderType'] = "GIF"
         dict['image'] = str(self.encoded_string)
-        dump = json.dumps(dict)
+        return dict
+
+    def json(self):
+        dump = json.dumps(self.dict())
         return dump
 
 

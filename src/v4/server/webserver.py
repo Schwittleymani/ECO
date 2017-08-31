@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 import settings
+import json
 
 # "threading", "eventlet" or "gevent"
 async_mode = 'threading'

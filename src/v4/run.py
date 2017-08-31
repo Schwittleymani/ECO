@@ -10,9 +10,10 @@ if __name__ == "__main__":
     while True:
         postmanager.add(PostType.POST_TYPE_KAOMOJI)
         time.sleep(1)
+        last = postmanager.last()
         result = requests.post('http://localhost:8090/msg', json.dumps({
-            "text": postmanager.last().text(),
-            "user": "cunt",
+            "text": last.dict()['textRepresentation'],
+            "user": last.dict()['text'],
             "style": "",
             "attachment": ""}),
            headers={'Content-Type': 'application/json'})
