@@ -26,6 +26,7 @@ class Message {
         if(nextMsgRight)
             msgObj.find('.msgBox').addClass('rightMsgBox')
         log.append(msgObj)
+        window.scrollTo(0,document.body.scrollHeight);
 //        log.append($('<div/>').text(this.user +': '+ this.text).attr('class','msg'))
     }
 }
