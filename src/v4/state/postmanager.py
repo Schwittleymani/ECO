@@ -5,7 +5,7 @@ from PIL import Image
 import random
 import time
 
-from misc.kaomoji_parse import KaomojiHelp
+from misc.kaomoji import KaomojiHelp
 
 
 class PostType(Enum):
@@ -50,17 +50,12 @@ class StartPost(Post):
     def text(self):
         return self._text
 
+    def json(self):
+        pass
 
-class Kaomoji(object):
-    def __init__(self, rawText, kaomojiText):
-        self._raw = rawText
-        self._kaomojiText = kaomojiText
+    def dict(self):
+        pass
 
-    def rawText(self):
-        return self._raw
-
-    def kaomojiText(self):
-        return self._kaomojiText
 
 kao = KaomojiHelp()
 
@@ -70,9 +65,7 @@ class KaomojiPost(Post):
         super().__init__(previous)
         # todo: check the previous text representation
         # todo: for correlation with available kaomojis
-        k = kao.get(random.randint(0, kao.len() - 1))
-        print(k)
-        self.kaomoji = Kaomoji(k[0], k[1])
+        self.kaomoji = kao.get(random.randint(0, kao.len() - 1))
 
     def text(self):
         return self.kaomoji.rawText()

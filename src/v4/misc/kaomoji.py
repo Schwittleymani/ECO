@@ -2,6 +2,18 @@ import re
 import os
 
 
+class Kaomoji(object):
+    def __init__(self, rawText, kaomojiText):
+        self._raw = rawText
+        self._kaomojiText = kaomojiText
+
+    def rawText(self):
+        return self._raw
+
+    def kaomojiText(self):
+        return self._kaomojiText
+
+
 class KaomojiHelp(object):
     def __init__(self, path="data/kaomoji.txt"):
         self.emojis = []
@@ -12,7 +24,8 @@ class KaomojiHelp(object):
             self.emojis.append((emoji_list[0], emoji_list[1]))
 
     def get(self, index):
-        return self.emojis[index]
+        kao = Kaomoji(self.emojis[index][0], self.emojis[index][1])
+        return kao
 
     def len(self):
         return len(self.emojis)
@@ -35,7 +48,7 @@ def parse():
 
     print("Found: " + str(len(emojis)) + ' emojis.')
 
-    output = open("../data/kaomoji.txt", 'w')
+    output = open("data/kaomoji.txt", 'w')
     for emoji in emojis:
         output.write(emoji[0] + '\t' + emoji[1])
         output.write('\n')
