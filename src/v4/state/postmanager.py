@@ -23,8 +23,16 @@ class PostType(Enum):
 
 class Post(object):
     def __init__(self, previous):
-        self.previousPost = previous
+        self.connection(previous)
         print("new post: " + str(self))
+
+    def connection(self, previous):
+        """
+        makes the connection, generates class variables depending
+        on what of the previous post to take into account for
+        generating the new post
+        """
+        raise NotImplementedError("Should have implemented this")
 
     def text(self):
         """
@@ -50,6 +58,9 @@ class StartPost(Post):
         super().__init__(previous)
         self._text = text
 
+    def connection(self, previous):
+        pass
+
     def text(self):
         return self._text
 
@@ -59,16 +70,25 @@ class StartPost(Post):
     def dict(self):
         pass
 
-
+# some static variable
 kao = KaomojiHelp()
 
 
 class KaomojiPost(Post):
     def __init__(self, previous):
-        super().__init__(previous)
-        # todo: check the previous text representation
-        # todo: for correlation with available kaomojis
         self.kaomoji = kao.get(random.randint(0, kao.len() - 1))
+        super().__init__(previous)
+
+    def connection(self, previous):
+        words = previous.text().split()
+        for word in words:
+            print("word: " + word)
+            for index in range(kao.len()):
+                k = kao.get(index)
+                if word.lower() is k.kaomojiText().lower() and word is not "":
+                    self.kaomoji = k
+                    print("KAO: FOUND A MATCH!!!: " + k.kaomojiText())
+                    return
 
     def text(self):
         return self.kaomoji.rawText()
@@ -90,13 +110,16 @@ class KaomojiPost(Post):
 class GifPost(Post):
     def __init__(self, previous):
         super().__init__(previous)
+
+    def connection(self, previous):
+        self._text = previous.text()
         self.path = 'data/gif/1469571231514.gif'
-        with open(self.path, "rb") as image_file:
-            self.encoded_string = base64.b64encode(image_file.read())
-        self.gif = Image.open(self.path)
+        # with open(self.path, "rb") as image_file:
+        #    self.encoded_string = base64.b64encode(image_file.read())
+        # self.gif = Image.open(self.path)
 
     def text(self):
-        return self.previousPost.text()
+        return self._text
 
     def dict(self):
         dict = {}
@@ -104,14 +127,14 @@ class GifPost(Post):
         dict['text'] = self.text()
         dict['postType'] = "GIF_POST"
         dict['renderType'] = "GIF"
-        dict['image'] = str(self.encoded_string)
+        dict['image'] = self.path
         return dict
 
     def json(self):
         dump = json.dumps(self.dict())
         return dump
 
-
+# some heavy, static variables
 feather_file = 'data/reddit/test_reddit_4chan.feather'
 block_words = open('data/reddit/blocked_words.txt').readlines()
 block_chars = "".join(open('data/reddit/blocked_chars.txt').readlines())
@@ -123,13 +146,22 @@ generator = Generator(PandasFilter(df), block_words=block_words, block_chars=blo
 
 class RedditPost(Post):
     def __init__(self, previous):
+        """
+        uses a class that generates(filters) a new post from reddit/4chan
+        this class can be more detailed parametrized. check Generator
+        :param previous:
+        """
         super().__init__(previous)
 
         generator.reset()
         generator.clear()
-        generator.length(50, 150).shannon_entropy(1.0, 10)
+        generator.length(150, 550).shannon_entropy(1.0, 10)
         generator.generate()
         self._text = generator.sentences()[0].text
+
+    def connection(self, previous):
+        # TODO
+        pass
 
     def text(self):
         return self._text
@@ -150,23 +182,49 @@ class RedditPost(Post):
 
 class PostManager(object):
     def __init__(self):
+        self._max_history = 20
         self.posts = []
         self.posts.append(StartPost(previous=None, text="Start Text"))
 
+    def _limit(self):
+        """
+        limits the list of posts
+        """
+        if len(self.posts) > self._max_history:
+            self.posts.pop(0)
+
     def last(self):
+        """
+        :return: the last added post
+        """
         return self.posts[-1]
 
     def add(self, postType):
+        """
+        adds a new post
+        :param postType: type of the new post
+        """
         new = self.get(postType, self.last())
         self.posts.append(new)
+        self._limit()
 
     def add(self):
+        """
+        adds a new random post
+        """
         randomType = random.choice(list(PostType))
         new = self.get(randomType, self.last())
         self.posts.append(new)
+        self._limit()
 
     @staticmethod
     def get(ptype, previous):
+        """
+        returns a new Post() instance
+        :param ptype: type of the new post
+        :param previous: the previously generated post
+        :return: a new post of certain type
+        """
         if ptype is PostType.POST_TYPE_KAOMOJI:
             return KaomojiPost(previous=previous)
         if ptype is PostType.POST_TYPE_GIF:
