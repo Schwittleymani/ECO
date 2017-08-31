@@ -13,6 +13,7 @@
             });
             socket.on('msg', function(socketMsg) {
                 let msg = new Message(socketMsg)
+                window.scrollTo(0,document.body.scrollHeight);
             });
         });
     </script>
