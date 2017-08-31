@@ -1,12 +1,9 @@
 from flask import Flask, render_template, request
-from flask_socketio import SocketIO, emit
-from src.v4.server import settings
-import time
+from flask_socketio import SocketIO
+import settings
 import json
 
-
 app = Flask(__name__)
-app.config.from_object('src.v4.server.settings')
 socketio = SocketIO(app)
 
 
@@ -26,16 +23,7 @@ def msg():
 
 @socketio.on('connect')
 def client_connect():
-    # emit('my_response', {'data': 'Connected', 'count': 0}, broadcast=True)
-    # some test chat messages
-    print('s1')
-    send_msg('hello', 'mozart')
-    time.sleep(2)
-    print('s2')
-    send_msg("what's up buddy?", 'kant')
-    time.sleep(2)
-    print('s3')
-    send_msg("Where is the logic", 'mozart')
+    send_msg('hello', 'connected')
 
 
 def send_msg(text, user, style='', attachment=''):
@@ -48,10 +36,5 @@ def send_msg(text, user, style='', attachment=''):
     }, broadcast=True)
 
 
-def launch():
-    # print('starting webserver: http://localhost:'+ str(settings.PORT))
-    socketio.run(app, host=settings.HOST, port=settings.PORT, debug=settings.DEBUG)
-
-# RUN APP
 if __name__ == "__main__":
-    launch()
+    socketio.run(app, host=settings.HOST, port=settings.PORT, debug=settings.DEBUG)
