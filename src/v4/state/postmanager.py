@@ -64,7 +64,7 @@ class KaomojiPost(Post):
         super().__init__(previous)
         # todo: check the previous text representation
         # todo: for correlation with available kaomojis
-        k = kao.get(random.randint(0, kao.len()))
+        k = kao.get(random.randint(0, kao.len() - 1))
         print(k)
         self.kaomoji = Kaomoji(k[0], k[1])
 
@@ -115,7 +115,6 @@ class PostManager(object):
     def add(self, postType):
         new = self.get(postType, self.last())
         self.posts.append(new)
-        print(self.posts)
 
     @staticmethod
     def get(ptype, previous):
