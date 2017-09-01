@@ -16,4 +16,5 @@ if __name__ == "__main__":
             "style": "",
             "attachment": ""}),
            headers={'Content-Type': 'application/json'})
-        print(result)
+        if not result.ok:
+            print(result.error)
