@@ -23,7 +23,7 @@ class Message {
         msgObj.removeAttr('id')
         msgObj.find('.msgText').text(this.text)
         msgObj.find('.msgUser').text(this.user)
-        if(nextMsgRight)
+        //if(nextMsgRight)
             msgObj.find('.msgBox').addClass('rightMsgBox')
         log.append(msgObj)
 //        log.append($('<div/>').text(this.user +': '+ this.text).attr('class','msg'))
