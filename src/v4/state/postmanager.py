@@ -1,7 +1,5 @@
-import base64
 from enum import Enum
 import json
-from PIL import Image
 import random
 
 from misc.kaomoji import KaomojiHelp
@@ -116,9 +114,6 @@ class GifPost(Post):
     def connection(self, previous):
         self._text = previous.text()
         self.path = 'data/gif/1469571231514.gif'
-        # with open(self.path, "rb") as image_file:
-        #    self.encoded_string = base64.b64encode(image_file.read())
-        # self.gif = Image.open(self.path)
 
     def text(self):
         return self._text
@@ -193,7 +188,6 @@ class AsciiPost(Post):
         self._text = ""
         for line in self.butterfly:
             self._text += line
-            #self._text += '< /br>'
 
     def text(self):
         return self._text
