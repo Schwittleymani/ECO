@@ -14,6 +14,7 @@ class PostType(Enum):
     POST_TYPE_KAOMOJI = 0
     POST_TYPE_GIF = 1
     POST_TYPE_REDDIT = 2
+    POST_TYPE_ASCII = 3
     #POST_TYPE_START = -1
     #POST_TYPE_USER = 0
     #POST_TYPE_HANDWRITING = 2
@@ -124,7 +125,7 @@ class GifPost(Post):
     def dict(self):
         dict = {}
         dict['textRepresentation'] = self.path
-        dict['text'] = self.text()
+        dict['text'] = self.path
         dict['postType'] = "GIF_POST"
         dict['renderType'] = "GIF"
         dict['image'] = self.path
@@ -171,6 +172,34 @@ class RedditPost(Post):
         dict['textRepresentation'] = self.text()
         dict['text'] = "reddit/4chan"
         dict['postType'] = "REDDIT_POST"
+        dict['renderType'] = "PLAIN"
+        dict['image'] = None
+        return dict
+
+    def json(self):
+        dump = json.dumps(self.dict())
+        return dump
+
+
+class AsciiPost(Post):
+    def __init__(self, previous):
+        super().__init__(previous)
+
+    def connection(self, previous):
+        self.butterfly = open('data/ascii/butterfly.txt', 'r').readlines()
+        self._text = ""
+        for line in self.butterfly:
+            self._text += line
+            #self._text += '< /br>'
+
+    def text(self):
+        return self._text
+
+    def dict(self):
+        dict = {}
+        dict['textRepresentation'] = self.text()
+        dict['text'] = "ascii"
+        dict['postType'] = "ASCII_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
         return dict
@@ -231,3 +260,5 @@ class PostManager(object):
             return GifPost(previous=previous)
         if ptype is PostType.POST_TYPE_REDDIT:
             return RedditPost(previous=previous)
+        if ptype is PostType.POST_TYPE_ASCII:
+            return AsciiPost(previous=previous)
