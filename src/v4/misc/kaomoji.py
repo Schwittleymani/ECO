@@ -1,7 +1,7 @@
 import re
 import os
 
-
+# TODO misc is always a great package name. we should name all packages misc ( misc1, misc2, ...)
 class Kaomoji(object):
     def __init__(self, rawText, kaomojiText):
         self._raw = rawText

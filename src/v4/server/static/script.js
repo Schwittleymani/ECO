@@ -19,6 +19,9 @@ function appendMsg(socketMsg) {
     // checking whether the text should be added to a
     // <pre> (pre-formatted) or <div> tag
     // important for pre-formatted text like ascii stuff
+    // TODO style is supposed to be a more complex object, but for now... ok
+    // TODO let's also have a default style use its string representation on the top of the file.
+    // this is magic number style and often leads to problems when another developer cannot read your mind
     if(style == "unformatted") {
         console.log(style)
         msgObj.find('.msgTextDiv').text(text)
@@ -31,11 +34,7 @@ function appendMsg(socketMsg) {
     msgObj.find('.msgUser').text(user)
 
     // adds some css class to divs for left and right style
-    if(nextMsgRight) {
-        msgObj.find('.msgBox').addClass('right')
-    } else {
-        msgObj.find('.msgBox').addClass('left')
-    }
+    msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left')
 
     // adds the customized msg to the log
     log.append(msgObj)

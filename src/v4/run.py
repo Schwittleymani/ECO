@@ -10,6 +10,7 @@ if __name__ == "__main__":
         postmanager.add()
         time.sleep(2)
         last = postmanager.last()
+        # TODO so here we gonna add last.to_json() ok?
         result = requests.post('http://localhost:8090/msg', json.dumps({
             "text": last.dict()['textRepresentation'],
             "user": last.dict()['text'],
