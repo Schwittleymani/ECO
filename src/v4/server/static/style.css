@@ -1,15 +1,29 @@
+@font-face {
+  font-family: "Aki Lines";
+  src: url("aki_lines_regular.ttf") format("truetype");
+}
+
+h1 {
+    font-family: "Aki Lines";
+    font-size: 50px;
+}
+
 .msg {
 /*    position: relative;
     width: 100%; */
     margin-top: 5px;
-    list-style: none
+    list-style: none;
     clear: both;
 }
 
 .msgBox {
-    max-width: 600px;
-    background: grey;
-    border: grey solid 0.5px;
+    font-family: monospace;
+    font-size: 16px;
+    display: inline-block;
+    text-align: left;
+    max-width: 700px;
+    background: #BBDEFB;
+    border: #BDBDBD solid 1px;
     padding: 3px 8px;
     border-radius: 4px;
 }
