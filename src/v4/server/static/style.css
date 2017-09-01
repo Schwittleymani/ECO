@@ -9,8 +9,6 @@ h1 {
 }
 
 .msg {
-/*    position: relative;
-    width: 100%; */
     margin-top: 5px;
     list-style: none;
     clear: both;
@@ -22,14 +20,24 @@ h1 {
     display: inline-block;
     text-align: left;
     max-width: 700px;
-    background: #BBDEFB;
-    border: #BDBDBD solid 1px;
     padding: 3px 8px;
     border-radius: 4px;
 }
 
-.news-item:nth-child(odd) div.news-info {
-  float: right;
+.left {
+    justify-content: flex-start;
+    margin-right: auto;
+    float: left;
+    background: #BBDEFB;
+    border: #BDBDBD solid 1px;
+}
+
+.right {
+    justify-content: flex-end;
+    margin-left: auto;
+    float: right;
+    background: #87D37C;
+    border: #BDBDBD solid 1px;
 }
 
 .msgUser {

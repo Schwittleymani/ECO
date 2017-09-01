@@ -1,11 +1,8 @@
 let log = $('#log')
 let template = $('#msgTemplate')
-
 let nextMsgRight = false
 
-
 class Message {
-
     constructor(socketMsg) {
         this.text = socketMsg.text
         this.user = socketMsg.user
@@ -17,11 +14,12 @@ class Message {
     }
 
     append() {
-//        log.append('<br>')
-        console.log('appending msg')
         let msgObj = template.clone()
         msgObj.removeAttr('id')
 
+        // checking whether the text should be added to a
+        // <pre> (pre-formatted) or <div> tag
+        // important for pre-formatted text like ascii stuff
         if(this.style == "unformatted") {
             console.log(this.style)
             msgObj.find('.msgTextDiv').text(this.text)
@@ -29,10 +27,18 @@ class Message {
             console.log(this.style)
             msgObj.find('.msgTextPre').text(this.text)
         }
+
+        // inserts username
         msgObj.find('.msgUser').text(this.user)
-        //if(nextMsgRight)
-            msgObj.find('.msgBox').addClass('rightMsgBox')
+
+        // adds some css class to divs for left and right style
+        if(nextMsgRight) {
+            msgObj.find('.msgBox').addClass('right')
+        } else {
+            msgObj.find('.msgBox').addClass('left')
+        }
+
+        // adds the customized msg to the log
         log.append(msgObj)
-//        log.append($('<div/>').text(this.user +': '+ this.text).attr('class','msg'))
     }
 }
