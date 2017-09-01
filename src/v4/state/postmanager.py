@@ -14,11 +14,15 @@ class PostType(Enum):
     POST_TYPE_GIF = 1
     POST_TYPE_REDDIT = 2
     POST_TYPE_ASCII = 3
-    POST_TYPE_START = -1
-    POST_TYPE_USER = 0
-    POST_TYPE_HANDWRITING = 2
-    POST_TYPE_RNN_NAILS = 3
-    POST_TYPE_NAILS_CITATION = 5
+    """
+    # TODO I was always told, there should be no commented code hanging around. now I know why
+    not implemented yet
+    # POST_TYPE_START = -1
+    # POST_TYPE_USER = 0
+    # POST_TYPE_HANDWRITING = 2
+    # POST_TYPE_RNN_NAILS = 3
+    # POST_TYPE_NAILS_CITATION = 5
+    """
     POST_TYPE_EMOJI = 6
 
 
