@@ -3,11 +3,20 @@ let template = $('#msgTemplate')
 
 let nextMsgRight = false
 
+var emoji = new EmojiConvertor();
+
+appendMsg(socketMsg) {
+    var text = socketMsg.text;
+    var user = socketMsg.user;
+    var attachment = socketMsg.attachment;
+    var style = socketMsg.style;
+}
 
 class Message {
 
     constructor(socketMsg) {
-        this.text = socketMsg.text
+        this.text = emoji.replace_colons(socketMsg.text)
+        console.log(this.text)
         this.user = socketMsg.user
         this.style = socketMsg.style
         this.attachment = socketMsg.attachment

@@ -11,15 +11,16 @@ from state.reddit.pandasfilter import PandasFilter
 
 
 class PostType(Enum):
-    POST_TYPE_KAOMOJI = 0
-    POST_TYPE_GIF = 1
-    POST_TYPE_REDDIT = 2
-    POST_TYPE_ASCII = 3
+    # POST_TYPE_KAOMOJI = 0
+    # POST_TYPE_GIF = 1
+    # POST_TYPE_REDDIT = 2
+    # POST_TYPE_ASCII = 3
     #POST_TYPE_START = -1
     #POST_TYPE_USER = 0
     #POST_TYPE_HANDWRITING = 2
     #POST_TYPE_RNN_NAILS = 3
     #POST_TYPE_NAILS_CITATION = 5
+    POST_TYPE_EMOJI = 6
 
 
 class Post(object):
@@ -209,6 +210,25 @@ class AsciiPost(Post):
         return dump
 
 
+class EmojiPost(Post):
+    def __init__(self, previous):
+        super().__init__(previous)
+
+    def connection(self, previous):
+        self._text = 'i like :smiley:'
+
+    def text(self):
+        return self._text
+
+    def dict(self):
+        return {
+            'textRepresentation': self.text(),
+            'text': 'why the fuck is the user represented as text'
+            }
+
+    def json(self):
+        return json.dumps(self.dict())
+
 class PostManager(object):
     def __init__(self):
         self._max_history = 20
@@ -242,6 +262,7 @@ class PostManager(object):
         adds a new random post
         """
         randomType = random.choice(list(PostType))
+        print(randomType)
         new = self.get(randomType, self.last())
         self.posts.append(new)
         self._limit()
@@ -254,11 +275,13 @@ class PostManager(object):
         :param previous: the previously generated post
         :return: a new post of certain type
         """
-        if ptype is PostType.POST_TYPE_KAOMOJI:
-            return KaomojiPost(previous=previous)
-        if ptype is PostType.POST_TYPE_GIF:
-            return GifPost(previous=previous)
-        if ptype is PostType.POST_TYPE_REDDIT:
-            return RedditPost(previous=previous)
-        if ptype is PostType.POST_TYPE_ASCII:
-            return AsciiPost(previous=previous)
+        # if ptype is PostType.POST_TYPE_KAOMOJI:
+        #     return KaomojiPost(previous=previous)
+        # if ptype is PostType.POST_TYPE_GIF:
+        #     return GifPost(previous=previous)
+        # if ptype is PostType.POST_TYPE_REDDIT:
+        #     return RedditPost(previous=previous)
+        # if ptype is PostType.POST_TYPE_ASCII:
+        #     return AsciiPost(previous=previous)
+        if ptype is PostType.POST_TYPE_EMOJI:
+            return EmojiPost(previous=previous)
