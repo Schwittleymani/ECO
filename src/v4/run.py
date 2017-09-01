@@ -13,7 +13,7 @@ if __name__ == "__main__":
         result = requests.post('http://localhost:8090/msg', json.dumps({
             "text": last.dict()['textRepresentation'],
             "user": last.dict()['text'],
-            "style": "",
+            "style": last.dict()['style'],
             "attachment": ""}),
            headers={'Content-Type': 'application/json'})
         print(result)

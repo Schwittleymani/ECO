@@ -101,6 +101,7 @@ class KaomojiPost(Post):
         dict['postType'] = "KAOMOJI_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
+        dict['style'] = "unformatted"
         return dict
 
     def json(self):
@@ -129,6 +130,7 @@ class GifPost(Post):
         dict['postType'] = "GIF_POST"
         dict['renderType'] = "GIF"
         dict['image'] = self.path
+        dict['style'] = "unformatted"
         return dict
 
     def json(self):
@@ -174,6 +176,7 @@ class RedditPost(Post):
         dict['postType'] = "REDDIT_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
+        dict['style'] = "unformatted"
         return dict
 
     def json(self):
@@ -202,6 +205,7 @@ class AsciiPost(Post):
         dict['postType'] = "ASCII_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
+        dict['style'] = "formatted"
         return dict
 
     def json(self):

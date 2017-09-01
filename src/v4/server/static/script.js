@@ -21,7 +21,14 @@ class Message {
         console.log('appending msg')
         let msgObj = template.clone()
         msgObj.removeAttr('id')
-        msgObj.find('.msgText').text(this.text)
+
+        if(this.style == "unformatted") {
+            console.log(this.style)
+            msgObj.find('.msgTextDiv').text(this.text)
+        } else if (this.style == "formatted") {
+            console.log(this.style)
+            msgObj.find('.msgTextPre').text(this.text)
+        }
         msgObj.find('.msgUser').text(this.user)
         //if(nextMsgRight)
             msgObj.find('.msgBox').addClass('rightMsgBox')
