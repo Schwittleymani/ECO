@@ -1,7 +1,5 @@
-import base64
 from enum import Enum
 import json
-from PIL import Image
 import random
 
 from misc.kaomoji import KaomojiHelp
@@ -11,15 +9,15 @@ from state.reddit.pandasfilter import PandasFilter
 
 
 class PostType(Enum):
-    # POST_TYPE_KAOMOJI = 0
-    # POST_TYPE_GIF = 1
-    # POST_TYPE_REDDIT = 2
-    # POST_TYPE_ASCII = 3
-    #POST_TYPE_START = -1
-    #POST_TYPE_USER = 0
-    #POST_TYPE_HANDWRITING = 2
-    #POST_TYPE_RNN_NAILS = 3
-    #POST_TYPE_NAILS_CITATION = 5
+    POST_TYPE_KAOMOJI = 0
+    POST_TYPE_GIF = 1
+    POST_TYPE_REDDIT = 2
+    POST_TYPE_ASCII = 3
+    POST_TYPE_START = -1
+    POST_TYPE_USER = 0
+    POST_TYPE_HANDWRITING = 2
+    POST_TYPE_RNN_NAILS = 3
+    POST_TYPE_NAILS_CITATION = 5
     POST_TYPE_EMOJI = 6
 
 
@@ -102,6 +100,7 @@ class KaomojiPost(Post):
         dict['postType'] = "KAOMOJI_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
+        dict['style'] = "unformatted"
         return dict
 
     def json(self):
@@ -116,9 +115,6 @@ class GifPost(Post):
     def connection(self, previous):
         self._text = previous.text()
         self.path = 'data/gif/1469571231514.gif'
-        # with open(self.path, "rb") as image_file:
-        #    self.encoded_string = base64.b64encode(image_file.read())
-        # self.gif = Image.open(self.path)
 
     def text(self):
         return self._text
@@ -130,6 +126,7 @@ class GifPost(Post):
         dict['postType'] = "GIF_POST"
         dict['renderType'] = "GIF"
         dict['image'] = self.path
+        dict['style'] = "unformatted"
         return dict
 
     def json(self):
@@ -175,6 +172,7 @@ class RedditPost(Post):
         dict['postType'] = "REDDIT_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
+        dict['style'] = "unformatted"
         return dict
 
     def json(self):
@@ -191,7 +189,6 @@ class AsciiPost(Post):
         self._text = ""
         for line in self.butterfly:
             self._text += line
-            #self._text += '< /br>'
 
     def text(self):
         return self._text
@@ -203,6 +200,7 @@ class AsciiPost(Post):
         dict['postType'] = "ASCII_POST"
         dict['renderType'] = "PLAIN"
         dict['image'] = None
+        dict['style'] = "formatted"
         return dict
 
     def json(self):
@@ -223,7 +221,8 @@ class EmojiPost(Post):
     def dict(self):
         return {
             'textRepresentation': self.text(),
-            'text': 'why the fuck is the user represented as text'
+            'text': 'why the fuck is the user represented as text',
+            'style': 'unformatted'
             }
 
     def json(self):
@@ -262,7 +261,6 @@ class PostManager(object):
         adds a new random post
         """
         randomType = random.choice(list(PostType))
-        print(randomType)
         new = self.get(randomType, self.last())
         self.posts.append(new)
         self._limit()
@@ -275,13 +273,13 @@ class PostManager(object):
         :param previous: the previously generated post
         :return: a new post of certain type
         """
-        # if ptype is PostType.POST_TYPE_KAOMOJI:
-        #     return KaomojiPost(previous=previous)
-        # if ptype is PostType.POST_TYPE_GIF:
-        #     return GifPost(previous=previous)
-        # if ptype is PostType.POST_TYPE_REDDIT:
-        #     return RedditPost(previous=previous)
-        # if ptype is PostType.POST_TYPE_ASCII:
-        #     return AsciiPost(previous=previous)
+        if ptype is PostType.POST_TYPE_KAOMOJI:
+            return KaomojiPost(previous=previous)
+        if ptype is PostType.POST_TYPE_GIF:
+            return GifPost(previous=previous)
+        if ptype is PostType.POST_TYPE_REDDIT:
+            return RedditPost(previous=previous)
+        if ptype is PostType.POST_TYPE_ASCII:
+            return AsciiPost(previous=previous)
         if ptype is PostType.POST_TYPE_EMOJI:
             return EmojiPost(previous=previous)

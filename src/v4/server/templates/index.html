@@ -4,6 +4,7 @@
     <title>Oracle 4.0</title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <!-- https://github.com/iamcal/js-emoji -->
     <script type="text/javascript" src="static/emoji.min.js"></script>
     <link rel="stylesheet" href="static/style.css">
     <script type="text/javascript" charset="utf-8">
@@ -13,7 +14,7 @@
                 <!--socket.emit('my_event', {data: 'I\'m connected!'});-->
             });
             socket.on('msg', function(socketMsg) {
-                let msg = new Message(socketMsg)
+                appendMsg(socketMsg)
                 window.scrollTo(0,document.body.scrollHeight);
             });
         });
@@ -26,7 +27,8 @@
     <li class="msg" id="msgTemplate">
         <div class="msgBox">
             <div class="msgUser">Karl</div>
-            <pre class="msgText">Hey Yo. What is going on with you. heee?</pre>
+            <div class="msgTextDiv"></div>
+            <pre class="msgTextPre"></pre>
         </div>
     </li>
     <script src="static/script.js"></script>

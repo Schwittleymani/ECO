@@ -1,40 +1,45 @@
 let log = $('#log')
 let template = $('#msgTemplate')
-
 let nextMsgRight = false
 
 var emoji = new EmojiConvertor();
 
-appendMsg(socketMsg) {
-    var text = socketMsg.text;
+function appendMsg(socketMsg) {
+    var text = emoji.replace_colons(socketMsg.text);
+    console.log(text)
     var user = socketMsg.user;
     var attachment = socketMsg.attachment;
     var style = socketMsg.style;
-}
 
-class Message {
+    console.log(style)
 
-    constructor(socketMsg) {
-        this.text = emoji.replace_colons(socketMsg.text)
-        console.log(this.text)
-        this.user = socketMsg.user
-        this.style = socketMsg.style
-        this.attachment = socketMsg.attachment
+    var msgObj = template.clone()
+    msgObj.removeAttr('id')
 
-        this.append()
-        nextMsgRight = !nextMsgRight
+    // checking whether the text should be added to a
+    // <pre> (pre-formatted) or <div> tag
+    // important for pre-formatted text like ascii stuff
+    if(style == "unformatted") {
+        console.log(style)
+        msgObj.find('.msgTextDiv').text(text)
+    } else if (style == "formatted") {
+        console.log(style)
+        msgObj.find('.msgTextPre').text(text)
     }
 
-    append() {
-//        log.append('<br>')
-        console.log('appending msg')
-        let msgObj = template.clone()
-        msgObj.removeAttr('id')
-        msgObj.find('.msgText').text(this.text)
-        msgObj.find('.msgUser').text(this.user)
-        //if(nextMsgRight)
-            msgObj.find('.msgBox').addClass('rightMsgBox')
-        log.append(msgObj)
-//        log.append($('<div/>').text(this.user +': '+ this.text).attr('class','msg'))
+    // inserts username
+    msgObj.find('.msgUser').text(user)
+
+    // adds some css class to divs for left and right style
+    if(nextMsgRight) {
+        msgObj.find('.msgBox').addClass('right')
+    } else {
+        msgObj.find('.msgBox').addClass('left')
     }
+
+    // adds the customized msg to the log
+    log.append(msgObj)
+
+    nextMsgRight = !nextMsgRight
 }
+
