@@ -10,7 +10,6 @@ from state.reddit.pandasdata import PandasData
 from state.reddit.pandasfilter import PandasFilter
 
 
-# nice, you're really missing Java aren't you? ;)
 class PostType(Enum):
     POST_TYPE_KAOMOJI = 0
     POST_TYPE_GIF = 1
@@ -18,16 +17,12 @@ class PostType(Enum):
     POST_TYPE_ASCII = 3
     POST_TYPE_EMOJI = 4
     """
-    # TODO I was always told, there should be no commented code hanging around. now I know why
-    not implemented yet
     # POST_TYPE_START = -1
     # POST_TYPE_USER = 0
     # POST_TYPE_HANDWRITING = 2
     # POST_TYPE_RNN_NAILS = 3
     # POST_TYPE_NAILS_CITATION = 5
     """
-
-
 
 
 class Post(object):
@@ -54,7 +49,7 @@ class Post(object):
         """
         convert a post to json in order to send it to the frontend
         """
-        raise NotImplementedError("Should have implemented this")
+        return json.dumps(self.dict())
 
     # TODO for what?
     def dict(self):
@@ -101,26 +96,20 @@ class KaomojiPost(Post):
                 k = kao.get(index)
                 if word.lower() is k.kaomojiText().lower() and word is not "":
                     self.kaomoji = k
-                    print("KAO: FOUND A MATCH!!!: " + k.kaomojiText())
+                    print('KAO: FOUND A MATCH!!!: ' + k.kaomojiText())
                     return
 
     def text(self):
         return self.kaomoji.rawText()
 
     def dict(self):
-        dict = {}
-        dict['textRepresentation'] = self.text()
-        dict['text'] = self.kaomoji.kaomojiText()
-        dict['postType'] = "KAOMOJI_POST"
-        dict['renderType'] = "PLAIN"
-        dict['image'] = None
-        dict['style'] = "unformatted"
-        dict['timestamp'] = self.timestamp()
-        return dict
-
-    def json(self):
-        dump = json.dumps(self.dict())
-        return dump
+        return {
+            'user': self.kaomoji.kaomojiText(),
+            'text': self.text(),
+            'attachment': None,
+            'style': 'unformatted',
+            'timestamp': self.timestamp()
+        }
 
 
 class GifPost(Post):
@@ -135,19 +124,14 @@ class GifPost(Post):
         return self._text
 
     def dict(self):
-        dict = {}
-        dict['textRepresentation'] = self.path
-        dict['text'] = self.path
-        dict['postType'] = "GIF_POST"
-        dict['renderType'] = "GIF"
-        dict['image'] = self.path
-        dict['style'] = "unformatted"
-        dict['timestamp'] = self.timestamp()
-        return dict
+        return {
+            'user': 'gif',
+            'text': self.path,
+            'attachment': None,
+            'style': 'unformatted',
+            'timestamp': self.timestamp()
+        }
 
-    def json(self):
-        dump = json.dumps(self.dict())
-        return dump
 
 # some heavy, static variables
 feather_file = 'data/reddit/test_reddit_4chan.feather'
@@ -182,20 +166,13 @@ class RedditPost(Post):
         return self._text
 
     def dict(self):
-        # TODO u get a warning here? I get a warning here. dict is a dangerous variable name
-        dict = {}
-        dict['textRepresentation'] = self.text()
-        dict['text'] = "reddit/4chan"
-        dict['postType'] = "REDDIT_POST"
-        dict['renderType'] = "PLAIN"
-        dict['image'] = None
-        dict['style'] = "unformatted"
-        dict['timestamp'] = self.timestamp()
-        return dict
-
-    def json(self):
-        dump = json.dumps(self.dict())
-        return dump
+        return {
+            'user': 'reddit/4chan',
+            'text': self.text(),
+            'attachment': None,
+            'style': 'unformatted',
+            'timestamp': self.timestamp()
+        }
 
 
 class AsciiPost(Post):
@@ -212,19 +189,13 @@ class AsciiPost(Post):
         return self._text
 
     def dict(self):
-        dict = {}
-        dict['textRepresentation'] = self.text()
-        dict['text'] = "ascii"
-        dict['postType'] = "ASCII_POST"
-        dict['renderType'] = "PLAIN"
-        dict['image'] = None
-        dict['style'] = "formatted"
-        dict['timestamp'] = self.timestamp()
-        return dict
-
-    def json(self):
-        dump = json.dumps(self.dict())
-        return dump
+        return {
+            'text': self.text(),
+            'user': 'ascii',
+            'attachment': None,
+            'style': 'formatted',
+            'timestamp': self.timestamp()
+        }
 
 
 class EmojiPost(Post):
@@ -239,14 +210,13 @@ class EmojiPost(Post):
 
     def dict(self):
         return {
-            'textRepresentation': self.text(),
-            'text': 'why the fuck is the user represented as text',
+            'user': 'emojipost',
+            'text': self.text(),
             'style': 'unformatted',
-            'timestamp': self.timestamp()
+            'timestamp': self.timestamp(),
+            'attachment': None
         }
 
-    def json(self):
-        return json.dumps(self.dict())
 
 class PostManager(object):
     def __init__(self):
@@ -276,8 +246,7 @@ class PostManager(object):
         self.posts.append(new)
         self._limit()
 
-    # TODO how about add_random instead of this java style confusion game
-    def add(self):
+    def add_random(self):
         """
         adds a new random post
         """

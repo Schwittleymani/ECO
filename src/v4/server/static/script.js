@@ -6,13 +6,10 @@ var emoji = new EmojiConvertor();
 
 function appendMsg(socketMsg) {
     var text = emoji.replace_colons(socketMsg.text);
-    console.log(text)
     var user = socketMsg.user;
     var attachment = socketMsg.attachment;
     var style = socketMsg.style;
     var timestamp = socketMsg.timestamp;
-
-    console.log(style)
 
     var msgObj = template.clone()
     msgObj.removeAttr('id')
