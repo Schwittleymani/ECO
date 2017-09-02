@@ -87,25 +87,23 @@ kao = KaomojiHelp()
 
 class KaomojiPost(Post):
     def __init__(self, previous):
-        self.kaomoji = kao.get(random.randint(0, kao.len() - 1))
+        self.kaomoji = kao.random()
         super().__init__(previous)
 
     def connection(self, previous):
         words = previous.text().split()
-        for word in words:
-            for index in range(kao.len()):
-                k = kao.get(index)
-                if word.lower() is k.kaomojiText().lower() and word is not "":
-                    self.kaomoji = k
-                    print('KAO: FOUND A MATCH!!!: ' + k.kaomojiText())
-                    return
+        self.kaomoji = kao.find(words)
+        if not self.kaomoji:
+            self.kaomoji = kao.random()
+        else:
+            print("FOUND A MATCH")
 
     def text(self):
-        return self.kaomoji.rawText()
+        return self.kaomoji.kaomoji()
 
     def dict(self):
         return {
-            'user': self.kaomoji.kaomojiText(),
+            'user': self.kaomoji.emotions(),
             'text': self.text(),
             'attachment': None,
             'style': 'unformatted',

@@ -14,7 +14,7 @@ function appendMsg(socketMsg) {
     var msgObj = template.clone()
     msgObj.removeAttr('id')
 
-    msgObj.find('.timeStamp').text(timestamp)
+    msgObj.find('.timeStamp').text("<b>" + user + "</b>: " + timestamp)
 
     // checking whether the text should be added to a
     // <pre> (pre-formatted) or <div> tag
