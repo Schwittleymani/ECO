@@ -8,6 +8,7 @@ class Message {
         this.user = socketMsg.user
         this.style = socketMsg.style
         this.attachment = socketMsg.attachment
+        this.timestamp = socketMsg.timestamp
 
         this.append()
         nextMsgRight = !nextMsgRight
@@ -21,12 +22,13 @@ class Message {
         // <pre> (pre-formatted) or <div> tag
         // important for pre-formatted text like ascii stuff
         if(this.style == "unformatted") {
-            console.log(this.style)
             msgObj.find('.msgTextDiv').text(this.text)
         } else if (this.style == "formatted") {
-            console.log(this.style)
             msgObj.find('.msgTextPre').text(this.text)
         }
+
+        // inserts timestamp
+        msgObj.find('.timeStamp').text(this.timestamp)
 
         // inserts username
         msgObj.find('.msgUser').text(this.user)

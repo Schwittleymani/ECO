@@ -12,7 +12,11 @@
                 <!--socket.emit('my_event', {data: 'I\'m connected!'});-->
             });
             socket.on('msg', function(socketMsg) {
-                let msg = new Message(socketMsg)
+                console.log(socketMsg)
+                // create new message that appends new content to the log
+                new Message(socketMsg)
+
+                // scroll to bottom
                 window.scrollTo(0,document.body.scrollHeight);
             });
         });
@@ -24,9 +28,10 @@
     <ul id="log"></ul>
     <li class="msg" id="msgTemplate">
         <div class="msgBox">
-            <div class="msgUser">Karl</div>
+            <div class="msgUser"></div>
             <div class="msgTextDiv"></div>
             <pre class="msgTextPre"></pre>
+            <div class="timeStamp">TIMESTAMP??</div>
         </div>
     </li>
     <script src="static/script.js"></script>

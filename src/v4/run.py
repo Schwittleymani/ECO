@@ -10,10 +10,15 @@ if __name__ == "__main__":
         postmanager.add()
         time.sleep(1)
         last = postmanager.last()
-        result = requests.post('http://localhost:8090/msg', json.dumps({
+        json_to_send = json.dumps\
+        (
+            {
             "text": last.dict()['textRepresentation'],
             "user": last.dict()['text'],
             "style": last.dict()['style'],
-            "attachment": ""}),
-           headers={'Content-Type': 'application/json'})
+            "timestamp": last.dict()['timestamp'],
+            "attachment": ""
+            }
+        )
+        result = requests.post('http://localhost:8090/msg', json_to_send, headers={'Content-Type': 'application/json'})
         print(result)

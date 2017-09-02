@@ -25,7 +25,6 @@ h1 {
 }
 
 .left {
-    justify-content: flex-start;
     margin-right: auto;
     float: left;
     background: #BBDEFB;
@@ -33,11 +32,18 @@ h1 {
 }
 
 .right {
-    justify-content: flex-end;
     margin-left: auto;
     float: right;
     background: #87D37C;
     border: #BDBDBD solid 1px;
+}
+
+.timeStamp {
+    font-family: monospace;
+    font-size: 12px;
+    color:grey;
+    margin-left: auto;
+    float: right;
 }
 
 .msgUser {

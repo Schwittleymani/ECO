@@ -1,6 +1,8 @@
 from enum import Enum
 import json
 import random
+import time
+import datetime
 
 from misc.kaomoji import KaomojiHelp
 from state.reddit.generator import Generator
@@ -23,7 +25,8 @@ class PostType(Enum):
 class Post(object):
     def __init__(self, previous):
         self.connection(previous)
-        print("new post: " + str(self))
+
+        self._timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
     def connection(self, previous):
         """
@@ -50,6 +53,9 @@ class Post(object):
         returns a dict of the post
         """
         raise NotImplementedError("Should have implemented this")
+
+    def timestamp(self):
+        return self._timestamp
 
 
 class StartPost(Post):
@@ -81,7 +87,6 @@ class KaomojiPost(Post):
     def connection(self, previous):
         words = previous.text().split()
         for word in words:
-            print("word: " + word)
             for index in range(kao.len()):
                 k = kao.get(index)
                 if word.lower() is k.kaomojiText().lower() and word is not "":
@@ -100,6 +105,7 @@ class KaomojiPost(Post):
         dict['renderType'] = "PLAIN"
         dict['image'] = None
         dict['style'] = "unformatted"
+        dict['timestamp'] = self.timestamp()
         return dict
 
     def json(self):
@@ -126,6 +132,7 @@ class GifPost(Post):
         dict['renderType'] = "GIF"
         dict['image'] = self.path
         dict['style'] = "unformatted"
+        dict['timestamp'] = self.timestamp()
         return dict
 
     def json(self):
@@ -172,6 +179,7 @@ class RedditPost(Post):
         dict['renderType'] = "PLAIN"
         dict['image'] = None
         dict['style'] = "unformatted"
+        dict['timestamp'] = self.timestamp()
         return dict
 
     def json(self):
@@ -200,6 +208,7 @@ class AsciiPost(Post):
         dict['renderType'] = "PLAIN"
         dict['image'] = None
         dict['style'] = "formatted"
+        dict['timestamp'] = self.timestamp()
         return dict
 
     def json(self):
