@@ -4,10 +4,11 @@ import random
 import time
 import datetime
 
-from misc.kaomoji import KaomojiHelp
 from state.reddit.generator import Generator
 from state.reddit.pandasdata import PandasData
 from state.reddit.pandasfilter import PandasFilter
+
+from state.kaomoji.kaomoji import KaomojiHelp
 
 
 class PostType(Enum):
