@@ -19,23 +19,18 @@ def msg():
     data = request.get_json()
     if 'text' not in data or 'user' not in data:
         return json.dumps({'error': 'text or user missing'}), 400, {'ContentType': 'application/json'}
-    send_msg(data['text'], data['user'], data.get('style',''), data.get('attachment',''))
+    send_msg(data)
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @socketio.on('connect')
 def client_connect():
-    send_msg('hello', 'connected')
+    send_msg({"text":'hello', "user":'connected'})
 
 
-def send_msg(text, user, style='', attachment=''):
+def send_msg(data):
     # print('send_msg')
-    socketio.emit('msg', {
-        'text': text,
-        'user': user,
-        'style': style,
-        'attachment': attachment
-    }, broadcast=True)
+    socketio.emit('msg', data, broadcast=True)
 
 
 if __name__ == "__main__":
