@@ -2,45 +2,44 @@ let log = $('#log')
 let template = $('#msgTemplate')
 let nextMsgRight = false
 
-class Message {
-    constructor(socketMsg) {
-        this.text = socketMsg.text
-        this.user = socketMsg.user
-        this.style = socketMsg.style
-        this.attachment = socketMsg.attachment
-        this.timestamp = socketMsg.timestamp
+var emoji = new EmojiConvertor();
 
-        this.append()
-        nextMsgRight = !nextMsgRight
+function appendMsg(socketMsg) {
+    var text = emoji.replace_colons(socketMsg.text);
+    console.log(text)
+    var user = socketMsg.user;
+    var attachment = socketMsg.attachment;
+    var style = socketMsg.style;
+    var timestamp = socketMsg.timestamp;
+
+    console.log(style)
+
+    var msgObj = template.clone()
+    msgObj.removeAttr('id')
+
+    msgObj.find('.timeStamp').text(timestamp)
+
+    // checking whether the text should be added to a
+    // <pre> (pre-formatted) or <div> tag
+    // important for pre-formatted text like ascii stuff
+    // TODO style is supposed to be a more complex object, but for now... ok
+    // TODO let's also have a default style use its string representation on the top of the file.
+    // this is magic number style and often leads to problems when another developer cannot read your mind
+    if(style == "unformatted") {
+        msgObj.find('.msgTextDiv').text(text)
+    } else if (style == "formatted") {
+        msgObj.find('.msgTextPre').text(text)
     }
 
-    append() {
-        let msgObj = template.clone()
-        msgObj.removeAttr('id')
+    // inserts username
+    msgObj.find('.msgUser').text(user)
 
-        // checking whether the text should be added to a
-        // <pre> (pre-formatted) or <div> tag
-        // important for pre-formatted text like ascii stuff
-        if(this.style == "unformatted") {
-            msgObj.find('.msgTextDiv').text(this.text)
-        } else if (this.style == "formatted") {
-            msgObj.find('.msgTextPre').text(this.text)
-        }
+    // adds some css class to divs for left and right style
+    msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left')
 
-        // inserts timestamp
-        msgObj.find('.timeStamp').text(this.timestamp)
+    // adds the customized msg to the log
+    log.append(msgObj)
 
-        // inserts username
-        msgObj.find('.msgUser').text(this.user)
-
-        // adds some css class to divs for left and right style
-        if(nextMsgRight) {
-            msgObj.find('.msgBox').addClass('right')
-        } else {
-            msgObj.find('.msgBox').addClass('left')
-        }
-
-        // adds the customized msg to the log
-        log.append(msgObj)
-    }
+    nextMsgRight = !nextMsgRight
 }
+

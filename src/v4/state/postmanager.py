@@ -10,16 +10,23 @@ from state.reddit.pandasdata import PandasData
 from state.reddit.pandasfilter import PandasFilter
 
 
+# nice, you're really missing Java aren't you? ;)
 class PostType(Enum):
     POST_TYPE_KAOMOJI = 0
     POST_TYPE_GIF = 1
     POST_TYPE_REDDIT = 2
     POST_TYPE_ASCII = 3
-    #POST_TYPE_START = -1
-    #POST_TYPE_USER = 0
-    #POST_TYPE_HANDWRITING = 2
-    #POST_TYPE_RNN_NAILS = 3
-    #POST_TYPE_NAILS_CITATION = 5
+    """
+    # TODO I was always told, there should be no commented code hanging around. now I know why
+    not implemented yet
+    # POST_TYPE_START = -1
+    # POST_TYPE_USER = 0
+    # POST_TYPE_HANDWRITING = 2
+    # POST_TYPE_RNN_NAILS = 3
+    # POST_TYPE_NAILS_CITATION = 5
+    """
+    POST_TYPE_EMOJI = 6
+
 
 
 class Post(object):
@@ -44,10 +51,11 @@ class Post(object):
 
     def json(self):
         """
-        convert a post to json in order to send it to the frontent
+        convert a post to json in order to send it to the frontend
         """
         raise NotImplementedError("Should have implemented this")
 
+    # TODO for what?
     def dict(self):
         """
         returns a dict of the post
@@ -58,6 +66,7 @@ class Post(object):
         return self._timestamp
 
 
+# TODO what's this for exactly?
 class StartPost(Post):
     def __init__(self, previous, text=""):
         super().__init__(previous)
@@ -172,6 +181,7 @@ class RedditPost(Post):
         return self._text
 
     def dict(self):
+        # TODO u get a warning here? I get a warning here. dict is a dangerous variable name
         dict = {}
         dict['textRepresentation'] = self.text()
         dict['text'] = "reddit/4chan"
@@ -216,6 +226,26 @@ class AsciiPost(Post):
         return dump
 
 
+class EmojiPost(Post):
+    def __init__(self, previous):
+        super().__init__(previous)
+
+    def connection(self, previous):
+        self._text = 'i like :smiley:'
+
+    def text(self):
+        return self._text
+
+    def dict(self):
+        return {
+            'textRepresentation': self.text(),
+            'text': 'why the fuck is the user represented as text',
+            'style': 'unformatted'
+        }
+
+    def json(self):
+        return json.dumps(self.dict())
+
 class PostManager(object):
     def __init__(self):
         self._max_history = 20
@@ -244,6 +274,7 @@ class PostManager(object):
         self.posts.append(new)
         self._limit()
 
+    # TODO how about add_random instead of this java style confusion game
     def add(self):
         """
         adds a new random post
@@ -261,6 +292,9 @@ class PostManager(object):
         :param previous: the previously generated post
         :return: a new post of certain type
         """
+        # TODO 5000 ifs a nice but maybe an pythonic enum alternative.
+        # TODO a dict with all the PostType as keys and clazzes as values could turn this into one line
+        # I like this approach https://www.quora.com/What-is-the-best-way-to-implement-enums-in-Python
         if ptype is PostType.POST_TYPE_KAOMOJI:
             return KaomojiPost(previous=previous)
         if ptype is PostType.POST_TYPE_GIF:
@@ -269,3 +303,5 @@ class PostManager(object):
             return RedditPost(previous=previous)
         if ptype is PostType.POST_TYPE_ASCII:
             return AsciiPost(previous=previous)
+        if ptype is PostType.POST_TYPE_EMOJI:
+            return EmojiPost(previous=previous)

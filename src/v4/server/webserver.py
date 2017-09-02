@@ -29,7 +29,7 @@ def client_connect():
 
 
 def send_msg(text, user, style='', attachment=''):
-    print('send_msg')
+    # print('send_msg')
     socketio.emit('msg', {
         'text': text,
         'user': user,
