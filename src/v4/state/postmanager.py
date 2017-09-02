@@ -16,6 +16,7 @@ class PostType(Enum):
     POST_TYPE_GIF = 1
     POST_TYPE_REDDIT = 2
     POST_TYPE_ASCII = 3
+    POST_TYPE_EMOJI = 4
     """
     # TODO I was always told, there should be no commented code hanging around. now I know why
     not implemented yet
@@ -25,7 +26,7 @@ class PostType(Enum):
     # POST_TYPE_RNN_NAILS = 3
     # POST_TYPE_NAILS_CITATION = 5
     """
-    POST_TYPE_EMOJI = 6
+
 
 
 
@@ -240,7 +241,8 @@ class EmojiPost(Post):
         return {
             'textRepresentation': self.text(),
             'text': 'why the fuck is the user represented as text',
-            'style': 'unformatted'
+            'style': 'unformatted',
+            'timestamp': self.timestamp()
         }
 
     def json(self):
