@@ -5,7 +5,7 @@ import logging
 import pandas as pd
 import feather
 
-from state.reddit.jsondata import SparkJsonSource
+from posts.reddit.jsondata import SparkJsonSource
 
 NUM_PARTS = 100
 

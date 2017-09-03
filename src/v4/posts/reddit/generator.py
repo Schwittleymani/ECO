@@ -1,6 +1,6 @@
 import operator
 
-from state.reddit.sentence import Sentence
+from posts.reddit.sentence import Sentence
 
 
 class Generator(object):

@@ -1,7 +1,7 @@
 import requests
 import time
 
-from state.postmanager import PostManager
+from posts.postmanager import PostManager
 
 if __name__ == "__main__":
     postmanager = PostManager()
