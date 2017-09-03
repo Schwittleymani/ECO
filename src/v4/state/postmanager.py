@@ -3,20 +3,23 @@ import json
 import random
 import time
 import datetime
+import os
+import socket
 
 from state.reddit.generator import Generator
 from state.reddit.pandasdata import PandasData
 from state.reddit.pandasfilter import PandasFilter
 
 from state.kaomoji.kaomoji import KaomojiHelp
+from state.image.image import ImageHelper
 
 
 class PostType(Enum):
     POST_TYPE_KAOMOJI = 0
-    POST_TYPE_GIF = 1
+    POST_TYPE_IMAGE = 1
     POST_TYPE_REDDIT = 2
-    POST_TYPE_ASCII = 3
-    POST_TYPE_EMOJI = 4
+    POST_TYPE_EMOJI = 3
+    #POST_TYPE_ASCII = 4
     """
     # POST_TYPE_START = -1
     # POST_TYPE_USER = 0
@@ -100,8 +103,6 @@ class KaomojiPost(Post):
         self.kaomoji = kao.find(words)
         if not self.kaomoji:
             self.kaomoji = kao.random()
-        else:
-            print("FOUND A MATCH")
 
     def text(self):
         return self.kaomoji.kaomoji()
@@ -116,22 +117,35 @@ class KaomojiPost(Post):
         }
 
 
-class GifPost(Post):
+image_helper = ImageHelper(path='data/image/ffffound_image_categories.json')
+#image_helper = ImageHelper(path='data/image/test_out_4chan_hc.json')
+
+
+class ImagePost(Post):
     def __init__(self, previous):
         super().__init__(previous)
 
     def connection(self, previous):
         self._text = previous.text()
-        self.path = 'data/gif/1469571231514.gif'
+        if socket.gethostname() == 'lyrik':
+            image_name = image_helper.find(self._text.split())
+            if image_name is None:
+                image_name = image_helper.random()
+
+            image_path = os.path.join('static/image/ffffound_scrape/ffffound_images/', image_name)
+            #image_path = os.path.join('static/image/4chan_hc/', image_name)
+            self.path = image_path
+        else:
+            self.path = 'static/image/gif.gif'
 
     def text(self):
         return self._text
 
     def dict(self):
         return {
-            'user': 'gif',
-            'text': self.path,
-            'attachment': None,
+            'user': 'image',
+            'text': self.text(),
+            'attachment': self.path,
             'style': 'unformatted',
             'timestamp': self.timestamp()
         }
@@ -158,7 +172,7 @@ class RedditPost(Post):
 
         generator.reset()
         generator.clear()
-        generator.length(150, 550).shannon_entropy(1.0, 10)
+        generator.length(150, 700).shannon_entropy(1.0, 10)
         generator.generate()
         self._text = generator.sentences()[0].text
 
@@ -272,11 +286,11 @@ class PostManager(object):
         # I like this approach https://www.quora.com/What-is-the-best-way-to-implement-enums-in-Python
         if ptype is PostType.POST_TYPE_KAOMOJI:
             return KaomojiPost(previous=previous)
-        if ptype is PostType.POST_TYPE_GIF:
-            return GifPost(previous=previous)
+        if ptype is PostType.POST_TYPE_IMAGE:
+            return ImagePost(previous=previous)
         if ptype is PostType.POST_TYPE_REDDIT:
             return RedditPost(previous=previous)
-        if ptype is PostType.POST_TYPE_ASCII:
-            return AsciiPost(previous=previous)
         if ptype is PostType.POST_TYPE_EMOJI:
             return EmojiPost(previous=previous)
+        #    return AsciiPost(previous=previous)
+        #if ptype is PostType.POST_TYPE_ASCII:
