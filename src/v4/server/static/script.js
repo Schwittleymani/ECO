@@ -14,7 +14,7 @@ function appendMsg(socketMsg) {
     var msgObj = template.clone()
     msgObj.removeAttr('id')
 
-    msgObj.find('.timeStamp').text("<b>" + user + "</b>: " + timestamp)
+    msgObj.find('.timeStamp').text(user + ": " + timestamp)
 
     // checking whether the text should be added to a
     // <pre> (pre-formatted) or <div> tag
@@ -27,9 +27,6 @@ function appendMsg(socketMsg) {
     } else if (style == "formatted") {
         msgObj.find('.msgTextPre').text(text)
     }
-
-    // inserts username
-    msgObj.find('.msgUser').text(user)
 
     // adds some css class to divs for left and right style
     msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left')
