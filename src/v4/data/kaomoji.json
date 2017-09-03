@@ -1,0 +1,434 @@
+{
+	"exciting":{
+		"keywords":["exciting", "circle hands", "happy", "joy"],
+		"icon": "o(≧∇≦o)",
+		"category": "emotion"
+	},
+
+	"exciting_right":{
+		"keywords":["exciting", "right", "hands up", "happy"],
+		"icon": "(/^▽^)/",
+		"category": "emotion"
+	},
+
+	"love_eyes":{
+		"keywords":["love", "like", "loving eyes", "smile"],
+		"icon": "(✿ ♥‿♥)",
+		"category": "emotion"
+	},
+
+	"love_left":{
+		"keywords":["love", "like", "love left", "smile"],
+		"icon": "♥(ˆ⌣ˆԅ)",
+		"category": "emotion"
+	},
+
+	"delicious":{
+		"keywords":[ "delicious", "yummy", "food", "eat" ],
+		"icon": "(*´ڡ`●)",
+		"category": "emotion"
+	},
+
+	"sad":{
+		"keywords": [ "painful", "injuried", "sick" ],
+		"icon": "(っ- ‸ – ς)",
+		"category": "emotion"
+	},
+
+	"crying":{
+		"keywords": ["cry", "depressed", "unhappy"],
+		"icon": "੨( ･᷄ ︵･᷅ )ｼ",
+		"category": "emotion"
+	},
+
+	"tears":{
+		"keywords": ["cry", "vertical tears", "failed", "unhappy"],
+		"icon": "꒰๑•̥﹏•̥๑꒱",
+		"category": "emotion"
+	},
+
+	"cat_star":{
+		"keywords": ["cat", "cute", "pet"],
+		"icon": "(=ↀωↀ=)✧",
+		"category": "animal"
+	},
+
+	"cat_shock":{
+		"keywords": ["cat", "cute", "pet", "angry"],
+		"icon": "(ↀДↀ)⁼³₌₃",
+		"category": "animal"
+	},
+
+	"smile_with_heart":{
+		"keywords": ["smile", "joy", "heart", "love", "right heart"],
+		"icon": "(*˘︶˘*).｡.:*♡",
+		"category": "emotion"
+	},
+
+	"happy_love":{
+		"keywords": ["smile", "happy", "joy", "right heart"],
+		"icon": "(≧◡≦) ♡",
+		"category": "emotion"
+	},
+
+	"kiss_love":{
+		"keywords": ["kiss", "heart", "love", "affection", "chu"],
+		"icon": "σ(≧ε≦σ) ♡",
+		"category": "emotion"
+	},
+
+	"kiss_star":{
+		"keywords": ["kiss", "chu", "love", "affection", "shy"],
+		"icon": "☆⌒ヽ(*'､^*)chu",
+		"category": "emotion"
+	},
+
+	"shy_blush":{
+		"keywords":["shy", "blush", "love"],
+		"icon": "(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)",
+		"category": "emotion"
+	},
+
+	"sympathy":{
+		"keywords":["cry", "kindness", "affinity", "compassion"],
+		"icon": "(ノ_<。)ヾ(´▽｀)",
+		"category": "emotion"
+	},
+
+	"square_mouth_afraid":{
+		"keywords":["afraid", "shocked", "fear", "hands up"],
+		"icon": "＼(º □ º l|l)/",
+		"category": "emotion"
+	},
+
+	"hands_up_indifference":{
+		"keywords":["indifference", "apathy", "insensitivity", "disdain"],
+		"icon": "┐(￣∀￣)┌",
+		"category": "emotion"
+	},
+
+	"confusion_@eyes":{
+		"keywords":["donno", "confused", "doubt", "question"],
+		"icon": "(＠_＠)",
+		"category": "emotion"
+	},
+
+	"surprise_round_eyes":{
+		"keywords":["surprised", "shocked", "curious"],
+		"icon": "∑(O_O;)",
+		"category":"emotion"
+	},
+
+	"hands_up_greeting":{
+		"keywords":["greeting", "hello", "morning", "what's up", "hand up", "smile", "cat mouth"],
+		"icon": "(⌒ω⌒)ﾉ",
+		"category": "emotion"
+	},
+
+	"winking_star":{
+		"keywords":["winking", "star", "cute", "trick", "joke"],
+		"icon": "(^_<)〜☆",
+		"category": "emotion"
+	},
+
+	"apologize":{
+		"keywords":["sorry", "I am wrong", "confess"],
+		"icon": "m(_ _;m)",
+		"category": "emotion"
+	},
+
+	"nosebleeding":{
+		"keywords":["shocked", "nose", "blood", "sexy", "beautiful"],
+		"icon": "(＾་།＾)",
+		"category": "emotion"
+	},
+
+	"writing_quietly":{
+		"keywords":["writing", "study", "essay", "working hard"],
+		"icon": "__φ(．．)",
+		"category": "behavior"
+	},
+
+	"running_fast":{
+		"keywords":["run", "escape", "right"],
+		"icon": "C= C= C= C=┌(｀ー´)┘",
+		"category":"behavior"
+	},
+
+	"sleepy":{
+		"keywords": ["sleeping", "tired", "exhausted", "slobber"],
+		"icon": "(￣ρ￣)..zzZZ",
+		"category":"animal"
+	},
+
+	"nya_cat":{
+		"keywords": ["nya", "cat", "pet"],
+		"icon": "( =ω=)..nyaa",
+		"category":"animal"
+	},
+
+	"cute_polar_bear":{
+		"keywords":["bear", "polar bear", "smile bear"],
+		"icon": "ʕ •ᴥ• ʔ",
+		"category": "animal"
+	},
+
+	"normal_dog_ear_down":{
+		"keywords":["dog", "dog ear down"],
+		"icon":"∪･ω･∪",
+		"category": "animal"
+	},
+
+	"happy_rabbit":{
+		"keywords":["rabbit", "exciting", "joy"],
+		"icon":"／(≧ x ≦)＼",
+		"category":"animal"
+	},
+
+	"normal_pig":{
+		"keywords":["pig", "cute", "pork"],
+		"icon": "｡ﾟ(ﾟ´(00)`ﾟ)ﾟ｡",
+		"category":"animal"
+	},
+
+	"big_black_eyes_bird":{
+		"keywords":["bird", "black round eyes", "fly"],
+		"icon": "(◉Θ◉)",
+		"category":"animal"
+	},
+
+	"swimming_left_fish":{
+		"keywords":["fish", "swim", "water"],
+		"icon":"(°)#))<<",
+		"category": "animal"
+	},
+
+	"friends_together":{
+		"keywords":["friends", "hangout", "play", "party"],
+		"icon": "٩(๑･ิᴗ･ิ)۶٩(･ิᴗ･ิ๑)۶",
+		"category": "people"
+	},
+
+	"friends_hand_in_hand":{
+		"keywords":["friends", "hangout", "cheer", "together", "happy", "smile"],
+		"icon":"ヽ(≧◡≦)八(o^ ^o)ノ",
+		"category": "people"
+	},
+
+	"fight_enemies":{
+		"keywords":["quarrel", "punch_in_face", "angry", "beat", "unhappy"],
+		"icon": "(｀⌒*)O-(｀⌒´Q)",
+		"category": "people"
+	},
+
+	"shot_you":{
+		"keywords":["shooting","weapon", "fight", "war", "gun"],
+		"icon": "(ﾒ￣▽￣)︻┳═一",
+		"category": "behavior"
+	},
+
+	"magic_flower":{
+		"keywords":["majic", "give_you", "beautiful"],
+		"icon": "(⊃｡•́‿•̀｡)⊃━✿✿✿✿✿✿",
+		"category": "behavior"
+	},
+
+	"majic_star":{
+		"keywords":["majic", "star", "shooting", "biu-biu"],
+		"icon": "(ﾉ≧∀≦)ﾉ ‥…━━━★",
+		"category": "behavior"
+	},
+
+	"food":{
+		"keywords":["delicious", "hungry", "yum", "salivate"],
+		"icon": "Fooooood…ԅ(¯﹃¯ԅ)",
+		"category": "behavior"
+	},
+
+	"singing":{
+		"keywords":["music", "sing", "party", "relax"],
+		"icon": "((ヽ(๑╹◡╹๑)ﾉ))♬",
+		"category": "behavior"
+	},
+
+	"let's_go":{
+		"keywords":["go", "hangout", "exciting"],
+		"icon": "─=≡Σ((( つ•̀ω•́)つLET’SGO!",
+		"category": "behavior"
+	},
+
+	"cheering":{
+		"keywords":["happy", "cheer", "joy", "hands up"],
+		"icon": "\\\\\\(۶•̀ᴗ•́)۶//／／",
+		"category": "behavior"
+	},
+
+	"let's_go":{
+		"keywords":["go", "hangout", "exciting"],
+		"icon": "─=≡Σ((( つ•̀ω•́)つLET’SGO!",
+		"category": "behavior"
+	},
+
+	"poking":{
+		"keywords":["poke", "heyhey"],
+		"icon": "（￢з￢）σ",
+		"category": "behavior"
+	},
+
+	"punch":{
+		"keywords":["punch in face", "punch you"],
+		"icon":"(o￣∇￣)=◯)`ν゜)",
+		"category":"behavior"
+	},
+
+	"good_morning":{
+		"keywords": ["yawn", "morning", "greeting"],
+		"icon": "(*´0)ゞ*yawn* morning~",
+		"category":"behavior"
+	},
+
+	"rise_and_shine":{
+		"keywords": ["morning", "get up", "rise", "shine"],
+		"icon": "(*^｡^*)Rise (*^o^*)And ＼(*^0^*)／Shineｰ!!",
+		"category": "behavior"
+	},
+
+	"good_night":{
+		"keywords":["good night", "night", "dream"],
+		"icon": "Good(*´ -`)(´- `*)Night",
+		"category": "behavior"
+	},
+
+	"sleeping":{
+		"keywords":["good night", "night", "sleepy"],
+		"icon": "(´-ω-)´_ _)´-ω-)´_ _)zZZ",
+		"category": "behavior"
+	},
+
+	"hello":{
+		"keywords":["hi", "what's up", "hey"],
+		"icon": "(●っゝω・)っ～☆HELLO☆",
+		"category": "behavior"
+	},
+
+	"thank_you":{
+		"keywords":["thanks", "thx", "gratitude"],
+		"icon": "*:;,｡･★Thanks(◎≧v≦)人(≧v≦●)Thanks☆･:.,;*",
+		"category": "behavior"
+	},
+
+	"thank_kiss":{
+		"keywords":["kiss", "chu", "thanks", "thank you", "gratitude"],
+		"icon": "Thank CHU♪(‘εﾟ人)*.+゜",
+		"category": "behavior"
+	},
+
+	"thank_you_so_much":{
+		"keywords":["thanks", "thank you", "thanks a lot"],
+		"icon": "Thank you…(´人｀●)SOOOOO━━＼(´∀｀●)／━━MUCH!!",
+		"category": "behavior"
+	},
+
+	"sniff":{
+		"keywords":["sad", "unhappy", "sniff", "cry", "depressed", "feeling down"],
+		"icon": "(´＿｀。) *sniff*",
+		"category": "emotion"
+	},
+
+	"hug_for_you":{
+		"keywords":["hug", "hug you", "sweet", "comfort", "love"],
+		"icon": "HUG FOR YOU~╰(*´︶`*)╯(´・ω・｀)",
+		"category": "behavior"
+	},
+
+	"simple_dog":{
+		"keywords":["dog", "animal", "bark", "pet"],
+		"icon": "▼・ᴥ・▼",
+		"category": "animal"
+	},
+
+	"simple_cat":{
+		"keywords":["cat", "animal", "nya", "meow", "simple", "pet"],
+		"icon": "=^._.^= ∫",
+		"category": "animal"
+	},
+
+	"flower_cat":{
+		"keywords":["cat", "flower", "nya", "meow", "pet", "cute"],
+		"icon": " /ᐠ｡ꞈ｡ᐟ✿\\ ",
+		"category": "animal"
+	},
+
+	"table_flip_angry":{
+		"keywords": ["table flip", "angry", "what?!", "shocked"],
+		"icon": "(┛✧Д✧))┛彡┻━┻",
+		"category": "behavior"
+	},
+
+	"set_table":{
+		"keywords":["table", "there we go", "happy", "party", "prepare"],
+		"icon": "┣ﾍ(^▽^ﾍ)Ξ(ﾟ▽ﾟ*)ﾉ┳━┳ There we go~♪",
+		"category":"behavior"
+	},
+
+	"thumbs_down":{
+		"keywords": ["thumb_down", "angry", "unhappy"],
+		"icon": "p(●｀□´●)q",
+		"category": "behavior"
+	},
+
+	"blushing_flower_girl":{
+		"keywords": ["blushing", "girl", "flower", "shy", "cute"],
+		"icon": "(///∇///✿)",
+		"category": "behavior"
+	},
+
+	"merry_x'mas":{
+		"keywords":["merry christmas", "christmas time", "christmas"],
+		"icon": "†+☆;:*:;☆。:.†Merry X’mas゜†.:。☆;:*:;☆+†",
+		"category": "holiday"
+	},
+
+	"happy_Xmas":{
+		"keywords":["merry christmas", "christmas time", "christmas", "Xmas"],
+		"icon": "o＜(*’v`p)p☆+*:;;;:*+☆ Happy Xmas ☆+*:;;;:*+☆q(q’v`*)＞o",
+		"category": "holiday"
+	},
+
+	"cute_flower_bear":{
+		"keywords": ["bear", "animal", "cute", "pet", "flower"],
+		"icon": "(✿◕㉨◕)",
+		"category": "animal"
+	},
+
+	"love_letter":{
+		"keywords":["love", "writing", "valentine", "I love you"],
+		"icon": "I Love You..〆(・∀・＊)",
+		"category": "holiday"
+	},
+
+	"chocolate_valentine":{
+		"keywords":["love", "chocolate", "valentine", "I love you"],
+		"icon": "Chocolate!( ・∀・)っ■",
+		"category": "food"
+	},
+
+	"gross_creepy":{
+		"keywords":["gross", "creepy", "wtf"],
+		"icon": "༼;´༎ຶ ۝ ༎ຶ༽",
+		"category": "emotion"
+	},
+
+	"awkward_cross_eyes":{
+		"keywords": ["awkward", "funny", "weird", "idiot"],
+		"icon": "(´◑ω◐`)",
+		"category": "behavior"
+	},
+
+	"jailed_smile":{
+		"keywords": ["jailed", "shut in"],
+		"icon": "||Φ|(|ﾟ|∀|ﾟ|)|Φ||",
+		"category": "behavior"
+	}
+
+}
