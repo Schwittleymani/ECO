@@ -9,13 +9,13 @@ h1 {
 }
 
 .msg {
-    margin-top: 5px;
-    margin-bottom: 5px;
     list-style: none;
     clear: both;
 }
 
 .msgBox {
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-family: monospace;
     font-size: 16px;
     display: inline-block;
