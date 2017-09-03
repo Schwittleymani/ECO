@@ -1,8 +1,13 @@
-let log = $('#log')
-let template = $('#msgTemplate')
-let nextMsgRight = false
+var log_div, template, nextMsgRight, emoji;
 
-var emoji = new EmojiConvertor();
+window.onload = function () {
+    log_div = $('#log')
+    template = $('#msgTemplate')
+    nextMsgRight = false
+    emoji = new EmojiConvertor();
+ }
+
+
 
 function appendMsg(socketMsg) {
     var text = emoji.replace_colons(socketMsg.text);
@@ -42,7 +47,7 @@ function appendMsg(socketMsg) {
     msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left')
 
     // adds the customized msg to the log
-    log.append(msgObj)
+    log_div.append(msgObj)
 
     nextMsgRight = !nextMsgRight
 }
