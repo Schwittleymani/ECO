@@ -28,6 +28,16 @@ function appendMsg(socketMsg) {
         msgObj.find('.msgTextPre').text(text)
     }
 
+    if( attachment == null) {
+        // remove the image tag
+        msgObj.find('.image').remove()
+    } else {
+        // append the image and remove the text
+        msgObj.find('.image').attr( 'src', attachment );
+        msgObj.find('.msgTextDiv').remove()
+        msgObj.find('.msgTextPre').remove()
+    }
+
     // adds some css class to divs for left and right style
     msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left')
 
