@@ -63,8 +63,13 @@ class Post(object):
         return self._timestamp
 
 
-# TODO what's this for exactly?
 class StartPost(Post):
+    """
+    this post is just there for the initial post
+    because all new posts require a previous post
+
+    this is a way to define the starting topic
+    """
     def __init__(self, previous, text=""):
         super().__init__(previous)
         self._text = text
@@ -221,7 +226,7 @@ class PostManager(object):
     def __init__(self):
         self._max_history = 20
         self.posts = []
-        self.posts.append(StartPost(previous=None, text="Start Text"))
+        self.posts.append(StartPost(previous=None, text="Let's talk about full english breakfast."))
 
     def _limit(self):
         """

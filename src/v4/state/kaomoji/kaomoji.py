@@ -1,5 +1,3 @@
-import re
-import os
 import json
 import random
 
@@ -18,6 +16,7 @@ class Kaomoji(object):
 
 class KaomojiHelp(object):
     def __init__(self):
+        # taken from https://github.com/Yuuki221/kaomojiLib
         self.kaomoji_json = json.loads(open("data/kaomoji.json", 'r').read())
         self.dictionary = {}
         index = 0
