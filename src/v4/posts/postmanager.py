@@ -1,5 +1,5 @@
 import random
-from post import StartPost, KaomojiPost, ImagePost, RedditPost, EmojiPost
+from posts.post import StartPost, KaomojiPost, ImagePost, RedditPost, EmojiPost
 
 post_types = {
     "POST_TYPE_KAOMOJI": KaomojiPost,
