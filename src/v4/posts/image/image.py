@@ -8,19 +8,22 @@ from PIL import Image
 class AsciiHelper(object):
     ASCII_CHARS = ['#', '?', '%', '.', 'S', '+', '.', '*', ':', ',', '@']
 
-    def image2ascii(self, image, new_width=100):
-        image = self._scale_image(image)
-        image = self._convert_to_grayscale(image)
+    def image2ascii(self, image, new_width=180):
+        if image:
+            image = self._scale_image(image)
+            image = self._convert_to_grayscale(image)
 
-        pixels_to_chars = self._map_pixels_to_ascii_chars(image)
-        len_pixels_to_chars = len(pixels_to_chars)
+            pixels_to_chars = self._map_pixels_to_ascii_chars(image)
+            len_pixels_to_chars = len(pixels_to_chars)
 
-        image_ascii = [pixels_to_chars[index: index + new_width] for index in
-                       range(0, len_pixels_to_chars, new_width)]
+            image_ascii = [pixels_to_chars[index: index + new_width] for index in
+                           range(0, len_pixels_to_chars, new_width)]
 
-        return "\n".join(image_ascii)
+            return "\n".join(image_ascii)
+        else:
+            return False
 
-    def _scale_image(self, image, new_width=100):
+    def _scale_image(self, image, new_width=180):
         """
         Resizes an image preserving the aspect ratio.
         """
