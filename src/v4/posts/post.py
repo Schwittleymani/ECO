@@ -86,8 +86,9 @@ class KaomojiPost(Post):
         self._user = self.kaomoji.emotions()
 
 
-image_helper = ImageHelper(path='data/image/ffffound_image_categories.json')
+#image_helper = ImageHelper(path='data/image/ffffound_image_categories.json')
 #image_helper = ImageHelper(path='data/image/test_out_4chan_hc.json')
+image_helper = ImageHelper(path='data/image/test_out_4chan_g.json')
 
 
 class ImagePost(Post):
@@ -101,8 +102,9 @@ class ImagePost(Post):
             if image_name is None:
                 image_name = image_helper.random()
 
-            image_path = os.path.join('static/image/ffffound_scrape/ffffound_images/', image_name)
+            #image_path = os.path.join('static/image/ffffound_scrape/ffffound_images/', image_name)
             #image_path = os.path.join('static/image/4chan_hc/', image_name)
+            image_path = os.path.join('static/image/4chan_g/', image_name)
             self.path = image_path
         else:
             self.path = 'static/image/gif.gif'
