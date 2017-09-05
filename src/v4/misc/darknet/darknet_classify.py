@@ -133,7 +133,7 @@ if __name__ == "__main__":
     # mypath = '/mnt/drive1/4chan_scrape/hc/'
     # mypath = '/mnt/drive1/4chan_scrape/ic/'
     # mypath = '/mnt/drive1/4chan_scrape/g/'
-    mypath = '/mnt/drive1/data/eco/gifs/clean/'
+    mypath = '/mnt/drive1/4chan_scrape/tv/'
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
     saved = {}
@@ -146,9 +146,11 @@ if __name__ == "__main__":
             with Image.open(path) as img:
                 split = img.split()
 
+                print(len(split))
                 if len(split) is 3:
                     im = load_image(path, 0, 0)
                     r = classify(net, meta, im)
+
                     if r[0] > 0.7:
                         counter += 1
                         print(str(counter) + ' / ' + str(len(onlyfiles)))
@@ -156,7 +158,6 @@ if __name__ == "__main__":
                         free_image(im)
                 else:
                     print("rror")
-
                 img.close()
         except:
             pass
@@ -166,15 +167,5 @@ if __name__ == "__main__":
     # with open('test_out_4chan_hc.json', 'w') as fp:
     # with open('test_out_4chan_ic.json', 'w') as fp:
     # with open('test_out_4chan_g.json', 'w') as fp:
-    with open('test_out_4chan_clean_gifs.json', 'w') as fp:
+    with open('test_out_4chan_tv.json', 'w') as fp:
         json.dump(saved, fp)
-
-    net = load_net("cfg/tiny-yolo.cfg", "tiny-yolo.weights", 0)
-    meta = load_meta("cfg/coco.data")
-    r = detect(net, meta, "data/dog.jpg")
-    r2 = classify(net, meta, load_image("data/dog.jpg", 0, 0))
-
-    print(r)
-    print(r2)
-
-
