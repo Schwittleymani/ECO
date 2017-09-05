@@ -14,10 +14,9 @@
                 <!--socket.emit('my_event', {data: 'I\'m connected!'});-->
             });
             socket.on('msg', function(socketMsg) {
-                window.scrollTo(0,document.body.scrollHeight);
-               appendMsg(socketMsg)
-                // scroll to bottom
-
+                //window.scrollTo(0,document.body.scrollHeight);
+                window.scroll({ top: document.body.scrollHeight, left: 0, behavior: 'smooth' });
+                appendMsg(socketMsg)
             });
         });
     </script>
