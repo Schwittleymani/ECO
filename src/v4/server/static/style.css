@@ -48,6 +48,11 @@ h1 {
     float: right;
 }
 
+.msgTextPre {
+    font-size: 6px;
+    font-family: monospace;
+}
+
 .image {
     max-width: 400px;
     max-height: 400px;

@@ -2,6 +2,7 @@ from enum import Enum
 import json
 import time
 import datetime
+import random
 import os
 import socket
 
@@ -11,6 +12,7 @@ from posts.reddit.pandasfilter import PandasFilter
 
 from posts.kaomoji.kaomoji import KaomojiHelp
 from posts.image.image import ImageHelper
+from posts.image.image import AsciiHelper
 
 
 class Post(object):
@@ -86,9 +88,10 @@ class KaomojiPost(Post):
         self._user = self.kaomoji.emotions()
 
 
-#image_helper = ImageHelper(path='data/image/ffffound_image_categories.json')
+image_helper = ImageHelper(path='data/image/ffffound_image_categories.json')
 #image_helper = ImageHelper(path='data/image/test_out_4chan_hc.json')
-image_helper = ImageHelper(path='data/image/test_out_4chan_g.json')
+#image_helper = ImageHelper(path='data/image/test_out_4chan_g.json')
+ascii_helper = AsciiHelper()
 
 
 class ImagePost(Post):
@@ -97,14 +100,15 @@ class ImagePost(Post):
 
     def connection(self, previous):
         self._text = previous.text()
+
         if socket.gethostname() == 'lyrik':
             image_name = image_helper.find(self._text.split())
             if image_name is None:
                 image_name = image_helper.random()
 
-            #image_path = os.path.join('static/image/ffffound_scrape/ffffound_images/', image_name)
+            image_path = os.path.join('static/image/ffffound_scrape/ffffound_images/', image_name)
             #image_path = os.path.join('static/image/4chan_hc/', image_name)
-            image_path = os.path.join('static/image/4chan_g/', image_name)
+            #image_path = os.path.join('static/image/4chan_g/', image_name)
             self.path = image_path
         else:
             self.path = 'static/image/gif.gif'
@@ -112,6 +116,16 @@ class ImagePost(Post):
         self._user = 'image'
         self._attachment = self.path
 
+        self._ascii = bool(random.getrandbits(1))
+
+        if self._ascii:
+            self._attachment = None
+            self._text = ascii_helper.image2ascii(ascii_helper.load('server/' + self.path))
+            self._style = "formatted"
+            if self._text is False:
+                self._attachment = self.path
+                self._style = "unformatted"
+                self._text = ""
 
 
 # some heavy, static variables
