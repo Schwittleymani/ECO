@@ -306,18 +306,22 @@ if __name__ == '__main__':
     logging.basicConfig(format=u'[%(asctime)s %(filename)s:%(lineno)d %(levelname)s]  %(message)s', level=logging.INFO)
 
     pcr = NNPCR()
-    pcr.loadModel('data/nnmodel.bin')
+    pcr.loadModel('nnmodel.bin')
     porn_detected = {}
 
-    mypath = '/home/marcel/drive/data/4chan_scrape/b/'
+    mypath = '/home/marcel/drive/4chan_scrape/b/'
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     index = 0
     for file in onlyfiles:
         print('processing ' + str(index) + ' / ' + str(len(onlyfiles)))
         next_file = join(mypath, file)
-        isporn = pcr.predict([next_file])[0]
-        porn_detected[next_file] = isporn
+        print(next_file)
         index += 1
+        try:
+            isporn = pcr.predict([next_file])[0]
+            porn_detected[next_file] = isporn
+        except:
+            print('failed that one')
 
     with open('data/image/4chan_b_porndetector.json', 'w') as json_file:
         json_file.write(json.dumps(porn_detected))
