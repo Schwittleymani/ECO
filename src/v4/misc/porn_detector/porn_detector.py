@@ -323,5 +323,5 @@ if __name__ == '__main__':
         except:
             print('failed that one')
 
-    with open('data/image/4chan_b_porndetector.json', 'w') as json_file:
+    with open('4chan_b_porndetector.json', 'w') as json_file:
         json_file.write(json.dumps(porn_detected))
