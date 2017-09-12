@@ -15,8 +15,11 @@
                 <!--socket.emit('my_event', {data: 'I\'m connected!'});-->
             });
             socket.on('msg', function(socketMsg) {
-                //window.scrollTo(0,document.body.scrollHeight);
-                window.scroll({ top: document.body.scrollHeight, left: 0, behavior: 'smooth' });
+                // smooth scrolling to empty div at bottom of page
+                $('html, body').animate({
+                    scrollTop: $('.smooth_scroll_div').offset().top
+                }, 500);
+
                 appendMsg(socketMsg)
             });
         });
@@ -34,6 +37,7 @@
             <div class="timeStamp">TIMESTAMP??</div>
         </div>
     </li>
+    <div class="smooth_scroll_div"></div>
     <script type="text/javascript" src="static/script.js"></script>
 </body>
 </html>
