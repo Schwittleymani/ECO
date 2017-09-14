@@ -70,3 +70,9 @@ h1 {
 #msgTemplate {
     display: none;
 }
+
+.button {
+    position: sticky;
+    top: 10px;
+    left: 10px;
+}
