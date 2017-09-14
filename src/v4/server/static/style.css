@@ -17,7 +17,7 @@ h1 {
     margin-top: 10px;
     margin-bottom: 10px;
     font-family: monospace;
-    font-size: 16px;
+    font-size: 26px;
     display: inline-block;
     text-align: left;
     max-width: 700px;
@@ -69,4 +69,10 @@ h1 {
 
 #msgTemplate {
     display: none;
+}
+
+.button {
+    position: sticky;
+    top: 10px;
+    left: 10px;
 }
