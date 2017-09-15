@@ -1115,6 +1115,14 @@
         "auto_named": false,
         "file_name": "Hayles - Unfinished Work - From Cyborg to Cognisphere_valid.txt"
       },
+      "Mackenzie-Adrian-Wirelessness-Radical-Empiricism-Network-Cultures": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Mackenzie-Adrian-Wirelessness-Radical-Empiricism-Network-Cultures_valid.txt"
+      },
       "Rushkoff-Douglas-Cyberia-Life-Trenches-Hyperspace": {
         "manually_named": false,
         "assigned_to": "R",
@@ -1251,13 +1259,13 @@
         "auto_named": true,
         "file_name": "BOGOST-Event Wrap Up_valid.txt"
       },
-      "Steele, David - The Open-Source Everything Manifesto 2012": {
+      "Manovich, Lev - Software Takes Command": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "Steele, David",
-        "auto_group_name": "1comma_>1dash",
+        "author_name": "Manovich, Lev",
+        "auto_group_name": "1comma_1dash",
         "auto_named": true,
-        "file_name": "Steele, David - The Open-Source Everything Manifesto 2012_valid.txt"
+        "file_name": "Manovich, Lev - Software Takes Command_valid.txt"
       },
       "KURZWEIL-The Singularity Is Near": {
         "manually_named": false,
@@ -1627,13 +1635,13 @@
         "auto_named": false,
         "file_name": "Palmer-Daniel-Emotional-Archives-Online-Photo-Sharing-and-Cultivation-Self_valid.txt"
       },
-      "Mackenzie-Adrian-Wirelessness-Radical-Empiricism-Network-Cultures": {
+      "Steele, David - The Open-Source Everything Manifesto 2012": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Mackenzie-Adrian-Wirelessness-Radical-Empiricism-Network-Cultures_valid.txt"
+        "assigned_to": null,
+        "author_name": "Steele, David",
+        "auto_group_name": "1comma_>1dash",
+        "auto_named": true,
+        "file_name": "Steele, David - The Open-Source Everything Manifesto 2012_valid.txt"
       },
       "Manovich-The Language of the New Media": {
         "manually_named": false,
@@ -1866,14 +1874,6 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "transit_labour-digest2-web-lovink_valid.txt"
-      },
-      "Manovich, Lev - Software Takes Command": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Manovich, Lev",
-        "auto_group_name": "1comma_1dash",
-        "auto_named": true,
-        "file_name": "Manovich, Lev - Software Takes Command_valid.txt"
       },
       "BOGOST-A Portrait of the Artist as a Game Studio": {
         "manually_named": false,
@@ -2835,13 +2835,13 @@
         "auto_named": true,
         "file_name": "Der Derian - Imaging Terror - Logos, Pathos and Ethos_valid.txt"
       },
-      "Smith-Matthew-Wilson-Total-Work-Art-Bayreuth-Cyberspace": {
+      "DOCKRAY-Containment-the architecture of the 1967 Newark Riots": {
         "manually_named": false,
-        "assigned_to": "R",
+        "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Smith-Matthew-Wilson-Total-Work-Art-Bayreuth-Cyberspace_valid.txt"
+        "file_name": "DOCKRAY-Containment-the architecture of the 1967 Newark Riots_valid.txt"
       },
       "Dean-Jodi-Anticipating-Homeland-Security": {
         "manually_named": false,
@@ -3162,6 +3162,14 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "Thacker - Three Questions on Demonology_valid.txt"
+      },
+      "Smith-Matthew-Wilson-Total-Work-Art-Bayreuth-Cyberspace": {
+        "manually_named": false,
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Smith-Matthew-Wilson-Total-Work-Art-Bayreuth-Cyberspace_valid.txt"
       },
       "LOVINK-the_principles_of_notworking": {
         "manually_named": false,
@@ -4683,14 +4691,6 @@
         "auto_named": true,
         "file_name": "rooney, ellen-and-elizabeth-weed-d-i-f-f-e-r-e-n-c-e-s-in-the-shadows-of-the-digital-humanities_valid.txt"
       },
-      "DOCKRAY-Containment-the architecture of the 1967 Newark Riots": {
-        "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "DOCKRAY-Containment-the architecture of the 1967 Newark Riots_valid.txt"
-      },
       "Hayles-Katherine-N-How-We-Became-Posthuman-Virtual-Bodies-Cybernetics-Literature-and-Informatics": {
         "manually_named": false,
         "assigned_to": "R",
@@ -6113,13 +6113,13 @@
         "auto_named": true,
         "file_name": "JENKS-visual_culture_valid.txt"
       },
-      "Lawson, Bryan-What-Designers-Know": {
+      "Broodthaers -an_interview_with_marcel Broodthaers by the Film Journal Trépied": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "Lawson, Bryan",
-        "auto_group_name": "1comma_>1dash",
+        "author_name": "Broodthaers",
+        "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "Lawson, Bryan-What-Designers-Know_valid.txt"
+        "file_name": "Broodthaers -an_interview_with_marcel Broodthaers by the Film Journal Trépied_valid.txt"
       },
       "Croce, Benedetto-Aesthetic-Science-Expression-and-General-Linguistic": {
         "manually_named": false,
@@ -6321,21 +6321,21 @@
         "auto_named": true,
         "file_name": "Campany, David_-_The_Cinematic_Whitechapel_Documents_of_Contemporary_Art____2007_valid.txt"
       },
-      "LANGER-art_as_resistance_posters": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "LANGER",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "LANGER-art_as_resistance_posters_valid.txt"
+      "Levi-Neil-Carl-Schmitt-and-Question-Aesthetic": {
+        "manually_named": true,
+        "assigned_to": "M",
+        "author_name": "Levi,Neil",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Levi-Neil-Carl-Schmitt-and-Question-Aesthetic_valid.txt"
       },
-      "dunne-HertzianTales": {
+      "PULSKE OBALE-katarina_06_opening_of": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "dunne",
+        "author_name": "PULSKE OBALE",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "dunne-HertzianTales_valid.txt"
+        "file_name": "PULSKE OBALE-katarina_06_opening_of_valid.txt"
       },
       "Kemal-Salim-Kants-Aesthetic-Theory-2nd-edition": {
         "manually_named": true,
@@ -6689,6 +6689,14 @@
         "auto_named": false,
         "file_name": "APPIAH-GUTMANN-color_conscious_the_public_valid.txt"
       },
+      "DOY-black_visual_culture": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "DOY",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "DOY-black_visual_culture_valid.txt"
+      },
       "gill, eric-an-essay-on-typography": {
         "manually_named": false,
         "assigned_to": null,
@@ -6833,13 +6841,13 @@
         "auto_named": false,
         "file_name": "Bleiker-Roland-Aesthetics-and-World-Politics_valid.txt"
       },
-      "Wiseman-Boris-Levi-Strauss-Anthropology-and-Aesthetics-Ideas-Context-85-2007-CUP": {
+      "BENN MICHAELS-against_formalism_the_autonomous": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Wiseman-Boris-Levi-Strauss-Anthropology-and-Aesthetics-Ideas-Context-85-2007-CUP_valid.txt"
+        "assigned_to": null,
+        "author_name": "BENN MICHAELS",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "BENN MICHAELS-against_formalism_the_autonomous_valid.txt"
       },
       "Spadaccini, Nicholas-Hispanic-Baroques-Reading-Cultures-Context": {
         "manually_named": false,
@@ -7121,13 +7129,13 @@
         "auto_named": false,
         "file_name": "Smith-Karl-E-Meaning-Subjectivity-Society-Making-Sense-Modernity_valid.txt"
       },
-      "HEARTFIELD-creativity_gap": {
+      "OCTOBER-no16_spring_1981_art": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "HEARTFIELD",
+        "author_name": "OCTOBER",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "HEARTFIELD-creativity_gap_valid.txt"
+        "file_name": "OCTOBER-no16_spring_1981_art_valid.txt"
       },
       "Dezeuze-Anna-Thriving-Adversity-Art-Precariousness": {
         "manually_named": true,
@@ -7328,6 +7336,14 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "KRAUSS-reinventing_the_medium_valid.txt"
+      },
+      "FOSTER, Hal-Blinded Insights On the Modernist": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "FOSTER, Hal",
+        "auto_group_name": "1comma_1dash",
+        "auto_named": true,
+        "file_name": "FOSTER, Hal-Blinded Insights On the Modernist_valid.txt"
       },
       "Borgemeister & Cullens-section_des_figures_the": {
         "manually_named": false,
@@ -8217,13 +8233,13 @@
         "auto_named": true,
         "file_name": "OCTOBER-no15_winter_1980_valid.txt"
       },
-      "BENN MICHAELS-against_formalism_the_autonomous": {
+      "Wiseman-Boris-Levi-Strauss-Anthropology-and-Aesthetics-Ideas-Context-85-2007-CUP": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "BENN MICHAELS",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "BENN MICHAELS-against_formalism_the_autonomous_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Wiseman-Boris-Levi-Strauss-Anthropology-and-Aesthetics-Ideas-Context-85-2007-CUP_valid.txt"
       },
       "KESTER-community_and_communicability": {
         "manually_named": false,
@@ -8481,13 +8497,13 @@
         "auto_named": false,
         "file_name": "Nara-Hiroshi-Structure-Detachment-Aesthetic-Vision-Kuki-Shūzō_valid.txt"
       },
-      "Levi-Neil-Carl-Schmitt-and-Question-Aesthetic": {
-        "manually_named": true,
-        "assigned_to": "M",
-        "author_name": "Levi,Neil",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Levi-Neil-Carl-Schmitt-and-Question-Aesthetic_valid.txt"
+      "LANGER-art_as_resistance_posters": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "LANGER",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "LANGER-art_as_resistance_posters_valid.txt"
       },
       "LESLIE-synthetic_worlds_nature_art and chmeical industry": {
         "manually_named": false,
@@ -8905,13 +8921,13 @@
         "auto_named": true,
         "file_name": "maravall-culture of the baroque_valid.txt"
       },
-      "HOME-memphis_underground_a_novel": {
+      "KOETHER-weird": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "HOME",
+        "author_name": "KOETHER",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "HOME-memphis_underground_a_novel_valid.txt"
+        "file_name": "KOETHER-weird_valid.txt"
       },
       "Higgins-Dick-Book": {
         "manually_named": false,
@@ -8952,14 +8968,6 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Carroll-Noel-Philosophy-Art-Contemporary-Introduction_valid.txt"
-      },
-      "KENTER-collaboration_art_and_subcultures": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "KENTER",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "KENTER-collaboration_art_and_subcultures_valid.txt"
       },
       "OCTOBER-no35_winter_1985_moscow": {
         "manually_named": false,
@@ -9497,13 +9505,13 @@
         "auto_named": true,
         "file_name": "RESZLER and PLEASANCE-peter_kropotkin_and_his Vision of Anarchist Aesthetics_valid.txt"
       },
-      "EISENSTEIN, CArl-notes_on_cubism": {
+      "KUBLER-the_shape_of_time reconsidered": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "EISENSTEIN, CArl",
-        "auto_group_name": "1comma_1dash",
+        "author_name": "KUBLER",
+        "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "EISENSTEIN, CArl-notes_on_cubism_valid.txt"
+        "file_name": "KUBLER-the_shape_of_time reconsidered_valid.txt"
       },
       "Duchamp-Marcel-Marcel-Duchamp-Afternoon-Interviews-Calvin-Tompkins": {
         "manually_named": false,
@@ -10345,14 +10353,6 @@
         "auto_named": true,
         "file_name": "Herwitz, Daniel-Aesthetics-Key-Concepts-Philosophy_valid.txt"
       },
-      "OCTOBER-no11_winter_1979_essays": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "OCTOBER",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "OCTOBER-no11_winter_1979_essays_valid.txt"
-      },
       "VARIOUS-an_anthology_of_chance": {
         "manually_named": false,
         "assigned_to": null,
@@ -10953,13 +10953,13 @@
         "auto_named": true,
         "file_name": "TROEMEL-free_art_valid.txt"
       },
-      "andre, carl-xerox-book": {
+      "Home-Stewart-Neoism-Plagiarism-and-Praxis": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "andre, carl",
-        "auto_group_name": "1comma_>1dash",
-        "auto_named": true,
-        "file_name": "andre, carl-xerox-book_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Home-Stewart-Neoism-Plagiarism-and-Praxis_valid.txt"
       },
       "WBDG  Aesthetics": {
         "manually_named": false,
@@ -11201,13 +11201,13 @@
         "auto_named": false,
         "file_name": "Roberts-John-Limits-Negation-Badious-Theory-Art_valid.txt"
       },
-      "KOETHER-weird": {
+      "Parry-Joseph-D-Art-and-Phenomenology": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "KOETHER",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "KOETHER-weird_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Parry-Joseph-D-Art-and-Phenomenology_valid.txt"
       },
       "CAE-ecd6": {
         "manually_named": false,
@@ -11377,13 +11377,13 @@
         "auto_named": false,
         "file_name": "Thomson.L- Heidegger-art_postmodernity_valid.txt"
       },
-      "Buck-Morss-Susan-Aesthetics-and-Anaesthetics-Walter-Benjamins-Artwork-Essay-Reconsidered": {
+      "DOCKRAY-Facebook Suicide": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Buck-Morss-Susan-Aesthetics-and-Anaesthetics-Walter-Benjamins-Artwork-Essay-Reconsidered_valid.txt"
+        "assigned_to": null,
+        "author_name": "DOCKRAY",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "DOCKRAY-Facebook Suicide_valid.txt"
       },
       "HOME, Stewart -reading_for_immortality": {
         "manually_named": false,
@@ -12641,13 +12641,13 @@
         "auto_named": true,
         "file_name": "NEWMAN,Barnett-the_sublime_is_now_valid.txt"
       },
-      "Rice-Shelley-Inverted-Odysseys": {
-        "manually_named": true,
-        "assigned_to": "M",
-        "author_name": "Rice,Shelley",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Rice-Shelley-Inverted-Odysseys_valid.txt"
+      "OCTOBER-no37_summer_1986": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "OCTOBER",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "OCTOBER-no37_summer_1986_valid.txt"
       },
       "Blumenberg-Hans-Briefwechsel-1971-1978-Und-weitere-Materialien": {
         "manually_named": false,
@@ -12752,14 +12752,6 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Sheriff-Mary-Cultural-Contact-and-Making-European-Art-Age-Exploration_valid.txt"
-      },
-      "DOCKRAY-Facebook Suicide": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "DOCKRAY",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "DOCKRAY-Facebook Suicide_valid.txt"
       },
       "Matthew_Fuller_Media_Ecologies_Materialist_Energies_in_Art_and_Technoculture___2005": {
         "manually_named": false,
@@ -13225,13 +13217,13 @@
         "auto_named": true,
         "file_name": "BELL.C-since_czanne_valid.txt"
       },
-      "owens, craig-Under-Arrest": {
+      "EISENSTEIN, CArl-notes_on_cubism": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "owens, craig",
-        "auto_group_name": "1comma_>1dash",
+        "author_name": "EISENSTEIN, CArl",
+        "auto_group_name": "1comma_1dash",
         "auto_named": true,
-        "file_name": "owens, craig-Under-Arrest_valid.txt"
+        "file_name": "EISENSTEIN, CArl-notes_on_cubism_valid.txt"
       },
       "DeMiddel, Cristina-Afronauts": {
         "manually_named": false,
@@ -13361,14 +13353,6 @@
         "auto_named": true,
         "file_name": "STEINBERG-encounters_with_rauschenberg_valid.txt"
       },
-      "FOSTER,Hal-an_archival_impulse": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "FOSTER,Hal",
-        "auto_group_name": "1comma_1dash",
-        "auto_named": true,
-        "file_name": "FOSTER,Hal-an_archival_impulse_valid.txt"
-      },
       "Mitchell WJT - What Do Pictures 'Really' Want": {
         "manually_named": false,
         "assigned_to": null,
@@ -13441,13 +13425,13 @@
         "auto_named": false,
         "file_name": "Vallega, Alejandro_A._-_Sense_and_Finitude_Encounters_at_the_Limits_of_Language,_Art,_and_the_Political___2009_valid.txt"
       },
-      "PULSKE OBALE-katarina_06_opening_of": {
+      "VALERY-introduction_to_the_method of Leonardo": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "PULSKE OBALE",
+        "author_name": "VALERY",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "PULSKE OBALE-katarina_06_opening_of_valid.txt"
+        "file_name": "VALERY-introduction_to_the_method of Leonardo_valid.txt"
       },
       "Stewart-Paul-Sex-and-Aesthetics-Samuel-Becketts-Work": {
         "manually_named": true,
@@ -13513,13 +13497,13 @@
         "auto_named": false,
         "file_name": "McRobbie - 'Everyone Is Creative' - Artists as New Economy Pioneers_valid.txt"
       },
-      "KUBLER-the_shape_of_time reconsidered": {
+      "FOSTER,Hal-an_archival_impulse": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "KUBLER",
-        "auto_group_name": "1dash",
+        "author_name": "FOSTER,Hal",
+        "auto_group_name": "1comma_1dash",
         "auto_named": true,
-        "file_name": "KUBLER-the_shape_of_time reconsidered_valid.txt"
+        "file_name": "FOSTER,Hal-an_archival_impulse_valid.txt"
       },
       "POLLOCK-the_missing_future_moma and women": {
         "manually_named": false,
@@ -13648,6 +13632,14 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Schapiro-Meyer-Still-Life-Personal-Object_valid.txt"
+      },
+      "Buck-Morss-Susan-Aesthetics-and-Anaesthetics-Walter-Benjamins-Artwork-Essay-Reconsidered": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Buck-Morss-Susan-Aesthetics-and-Anaesthetics-Walter-Benjamins-Artwork-Essay-Reconsidered_valid.txt"
       },
       "CABINET-No1-2000": {
         "manually_named": false,
@@ -14057,13 +14049,13 @@
         "auto_named": false,
         "file_name": "Roberts-John-Art-Praxis-and-Community-Come_valid.txt"
       },
-      "OCTOBER-no37_summer_1986": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "OCTOBER",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "OCTOBER-no37_summer_1986_valid.txt"
+      "Schelling-F-W-J-Du-rapport-entre-les-arts-plastiques-et-la-nature-I": {
+        "manually_named": true,
+        "assigned_to": "M",
+        "author_name": "Schelling,F",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Schelling-F-W-J-Du-rapport-entre-les-arts-plastiques-et-la-nature-I_valid.txt"
       },
       "Roberts-John-Art-After-Deskilling": {
         "manually_named": false,
@@ -14217,13 +14209,13 @@
         "auto_named": true,
         "file_name": "OCTOBER-no9_summer_1979_valid.txt"
       },
-      "Cabinet-Cabinet-Cabinet-Magazine-Issue-19": {
-        "manually_named": true,
-        "assigned_to": "M",
-        "author_name": "n: no author",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Cabinet-Cabinet-Cabinet-Magazine-Issue-19_valid.txt"
+      "owens, craig-Under-Arrest": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "owens, craig",
+        "auto_group_name": "1comma_>1dash",
+        "auto_named": true,
+        "file_name": "owens, craig-Under-Arrest_valid.txt"
       },
       "YOUNG-destroying works of art": {
         "manually_named": false,
@@ -14520,6 +14512,14 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Cohn-Neil-Un-Defining-Comics-Separating-Cultural-Structural-Comics_valid.txt"
+      },
+      "Eikhenbaum-the_theory_of_the formal method": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "Eikhenbaum",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Eikhenbaum-the_theory_of_the formal method_valid.txt"
       },
       "Virno-Paolo-Three-Remarks-Regarding-Multitudes-Subjectivity-and-Its-Aesthetic-Component": {
         "manually_named": false,
@@ -14905,13 +14905,13 @@
         "auto_named": true,
         "file_name": "OWENS-The Allegorical Impulse Toward a Theory of Postmodernism_valid.txt"
       },
-      "OCTOBER-no16_spring_1981_art": {
+      "HEARTFIELD-creativity_gap": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "OCTOBER",
+        "author_name": "HEARTFIELD",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "OCTOBER-no16_spring_1981_art_valid.txt"
+        "file_name": "HEARTFIELD-creativity_gap_valid.txt"
       },
       "DOCKRAY-The Public School": {
         "manually_named": false,
@@ -15137,13 +15137,13 @@
         "auto_named": true,
         "file_name": "DUCHAMP-letters_to_croti_valid.txt"
       },
-      "Parry-Joseph-D-Art-and-Phenomenology": {
+      "dunne-HertzianTales": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Parry-Joseph-D-Art-and-Phenomenology_valid.txt"
+        "assigned_to": null,
+        "author_name": "dunne",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "dunne-HertzianTales_valid.txt"
       },
       "FRIEDmichael_ArtAndObjecthood": {
         "manually_named": false,
@@ -15457,14 +15457,6 @@
         "auto_named": true,
         "file_name": "LUPTON-mechanical_brides_women_and machines from home to office_valid.txt"
       },
-      "Sitesize-what-shared-and-permanent-Pedagogical-notebook": {
-        "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Sitesize-what-shared-and-permanent-Pedagogical-notebook_valid.txt"
-      },
       "Stonor-Saunders-Frances-Cultural-Cold-War-CIA-and-World-Arts-and-Letters": {
         "manually_named": true,
         "assigned_to": "R",
@@ -15513,13 +15505,13 @@
         "auto_named": false,
         "file_name": "Mitchell WJT - Picturing Terror - Derrida's Autoimmunity_valid.txt"
       },
-      "Home-Stewart-Neoism-Plagiarism-and-Praxis": {
+      "andre, carl-xerox-book": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Home-Stewart-Neoism-Plagiarism-and-Praxis_valid.txt"
+        "assigned_to": null,
+        "author_name": "andre, carl",
+        "auto_group_name": "1comma_>1dash",
+        "auto_named": true,
+        "file_name": "andre, carl-xerox-book_valid.txt"
       },
       "COX etal-coding_praxis_reconsidering_the aesthetics of code": {
         "manually_named": false,
@@ -16225,14 +16217,6 @@
         "auto_named": true,
         "file_name": "OCTOBER-no21_summer_1982_rainer_valid.txt"
       },
-      "Bang-Larsen-Lars-Mass-Utopia-art-activism": {
-        "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Bang-Larsen-Lars-Mass-Utopia-art-activism_valid.txt"
-      },
       "Kester, Grant-One-and-Many-Contemporary-Collaborative-Art-Global-Context": {
         "manually_named": false,
         "assigned_to": null,
@@ -16561,6 +16545,14 @@
         "auto_named": true,
         "file_name": "LEE.A-picturing_chinatown_art_and orientalism in San Francisco_valid.txt"
       },
+      "bookforum-goldmsith-uncreative-writing": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "bookforum-goldmsith-uncreative-writing_valid.txt"
+      },
       "NAUMAN-please_pay_attention_please": {
         "manually_named": false,
         "assigned_to": null,
@@ -16761,13 +16753,13 @@
         "auto_named": false,
         "file_name": "Shaviro - The 'Wrenching Duality' of Aesthetics - Kant, Deleuze, and the 'Theory of the Sensible'_valid.txt"
       },
-      "Eikhenbaum-the_theory_of_the formal method": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Eikhenbaum",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Eikhenbaum-the_theory_of_the formal method_valid.txt"
+      "Rice-Shelley-Inverted-Odysseys": {
+        "manually_named": true,
+        "assigned_to": "M",
+        "author_name": "Rice,Shelley",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Rice-Shelley-Inverted-Odysseys_valid.txt"
       },
       "BARRY, Rboert-One Billion Colored Dots": {
         "manually_named": false,
@@ -16793,13 +16785,13 @@
         "auto_named": true,
         "file_name": "MEANING_16_November-1994_valid.txt"
       },
-      "Broodthaers -an_interview_with_marcel Broodthaers by the Film Journal Trépied": {
+      "Lawson, Bryan-What-Designers-Know": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "Broodthaers",
-        "auto_group_name": "1dash",
+        "author_name": "Lawson, Bryan",
+        "auto_group_name": "1comma_>1dash",
         "auto_named": true,
-        "file_name": "Broodthaers -an_interview_with_marcel Broodthaers by the Film Journal Trépied_valid.txt"
+        "file_name": "Lawson, Bryan-What-Designers-Know_valid.txt"
       },
       "OCTOBER-no24_spring_1983": {
         "manually_named": false,
@@ -17072,14 +17064,6 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "CAE-ecd7_valid.txt"
-      },
-      "New-Inquiry-New-Inquiry-Vol-3-Arguing-Web": {
-        "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "New-Inquiry-New-Inquiry-Vol-3-Arguing-Web_valid.txt"
       },
       "Adriano-Carlos-Caderno-Sesc-VideoBrasil-03": {
         "manually_named": true,
@@ -17825,6 +17809,14 @@
         "auto_named": false,
         "file_name": "Matthews-Pamela-R-Aesthetic-Subjects_valid.txt"
       },
+      "Cabinet-Cabinet-Cabinet-Magazine-Issue-19": {
+        "manually_named": true,
+        "assigned_to": "M",
+        "author_name": "n: no author",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Cabinet-Cabinet-Cabinet-Magazine-Issue-19_valid.txt"
+      },
       "GEL-vogels_net": {
         "manually_named": false,
         "assigned_to": null,
@@ -17953,6 +17945,14 @@
         "auto_named": true,
         "file_name": "HOME-20_of_the_most_valid.txt"
       },
+      "HOME-memphis_underground_a_novel": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "HOME",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "HOME-memphis_underground_a_novel_valid.txt"
+      },
       "Malevich-Kazimir-Suprematist-Mirror": {
         "manually_named": true,
         "assigned_to": "M",
@@ -17977,13 +17977,13 @@
         "auto_named": true,
         "file_name": "Margolin-the_politics_of_the artificial_valid.txt"
       },
-      "VALERY-introduction_to_the_method of Leonardo": {
+      "New-Inquiry-New-Inquiry-Vol-3-Arguing-Web": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "VALERY",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "VALERY-introduction_to_the_method of Leonardo_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "New-Inquiry-New-Inquiry-Vol-3-Arguing-Web_valid.txt"
       },
       "RICE [ed]-inverted_odysseys_claude_cahun": {
         "manually_named": false,
@@ -18153,13 +18153,13 @@
         "auto_named": true,
         "file_name": "McCloud, Scott-_Understanding_Comics_The_Invisible_Art__1994_valid.txt"
       },
-      "FOSTER, Hal-Blinded Insights On the Modernist": {
+      "OCTOBER-no11_winter_1979_essays": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "FOSTER, Hal",
-        "auto_group_name": "1comma_1dash",
+        "author_name": "OCTOBER",
+        "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "FOSTER, Hal-Blinded Insights On the Modernist_valid.txt"
+        "file_name": "OCTOBER-no11_winter_1979_essays_valid.txt"
       },
       "Suleiman-Elia-Occupation-and-Life-through-Absurdist-Lens-Interview-Elia-Suleiman": {
         "manually_named": false,
@@ -18345,13 +18345,13 @@
         "auto_named": true,
         "file_name": "BOURRIAUD-relational_aesthetics_valid.txt"
       },
-      "Schelling-F-W-J-Du-rapport-entre-les-arts-plastiques-et-la-nature-I": {
-        "manually_named": true,
+      "Bang-Larsen-Lars-Mass-Utopia-art-activism": {
+        "manually_named": false,
         "assigned_to": "M",
-        "author_name": "Schelling,F",
+        "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Schelling-F-W-J-Du-rapport-entre-les-arts-plastiques-et-la-nature-I_valid.txt"
+        "file_name": "Bang-Larsen-Lars-Mass-Utopia-art-activism_valid.txt"
       },
       "Albert and Birrell - Ripple Effects - Art and Parecon": {
         "manually_named": false,
@@ -18545,13 +18545,13 @@
         "auto_named": false,
         "file_name": "October-No67-Winter-1994_valid.txt"
       },
-      "DOY-black_visual_culture": {
+      "KENTER-collaboration_art_and_subcultures": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "DOY",
+        "author_name": "KENTER",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "DOY-black_visual_culture_valid.txt"
+        "file_name": "KENTER-collaboration_art_and_subcultures_valid.txt"
       },
       "New-Inquiry-New-Inquiry-Vol-1-Precarity": {
         "manually_named": false,
@@ -18585,13 +18585,13 @@
         "auto_named": true,
         "file_name": "MARTIN, AGnes-writings_valid.txt"
       },
-      "bookforum-goldmsith-uncreative-writing": {
+      "Sitesize-what-shared-and-permanent-Pedagogical-notebook": {
         "manually_named": false,
-        "assigned_to": "M",
+        "assigned_to": "R",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "bookforum-goldmsith-uncreative-writing_valid.txt"
+        "file_name": "Sitesize-what-shared-and-permanent-Pedagogical-notebook_valid.txt"
       },
       "OCTOBER-no5_summer_1978_photography": {
         "manually_named": false,
@@ -19463,14 +19463,6 @@
         "auto_named": false,
         "file_name": "Michael_L._Arnold_Reticulate_Evolution_and_Humans_Origins_and_Ecology__2008_valid.txt"
       },
-      "herzogenrath-2009 deleuze and guattari's ecology": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "herzogenrath",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "herzogenrath-2009 deleuze and guattari's ecology_valid.txt"
-      },
       "KURSHMAN etal-Seawater reverse osmosis powered from renewable energy sources in Libya": {
         "manually_named": false,
         "assigned_to": null,
@@ -20127,6 +20119,14 @@
         "auto_named": true,
         "file_name": "White, Leslie_A._-_The_Science_of_Culture_A_Study_of_Man_and_Civilization__1949_valid.txt"
       },
+      "morin, edgar-homeland-earth-a-manifesto-for-the-new-millennium": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "morin, edgar",
+        "auto_group_name": "1comma_>1dash",
+        "auto_named": true,
+        "file_name": "morin, edgar-homeland-earth-a-manifesto-for-the-new-millennium_valid.txt"
+      },
       "Akuffo, Hannah_-_Parasites_of_the_Colder_Climates__2002": {
         "manually_named": false,
         "assigned_to": null,
@@ -20158,14 +20158,6 @@
         "auto_group_name": "1comma_1dash",
         "auto_named": true,
         "file_name": "Zalasiewicz, Jan [et al] - The New World of the Anthropocene (2010)_valid.txt"
-      },
-      "JENSEN-songs_of_the_dead": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "JENSEN",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "JENSEN-songs_of_the_dead_valid.txt"
       },
       "CLUGSTON-Increasing Global Nonrenewable Natural Resource Scarcity - Draft": {
         "manually_named": false,
@@ -20239,6 +20231,14 @@
         "auto_named": true,
         "file_name": "Orr, David - Nature-Design-Ecology-Culture-and-Human-Intention_valid.txt"
       },
+      "TURNER-limitsToGrowth-30yearsComparison": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "TURNER-limitsToGrowth-30yearsComparison_valid.txt"
+      },
       "Gallagher,_Jones and Wainwright_Landscape_Evolution_Denudation,_Climate_and_Tectonics_over_Different_Time_and_Space_Scales__2008": {
         "manually_named": true,
         "assigned_to": "R",
@@ -20247,14 +20247,6 @@
         "auto_named": false,
         "file_name": "Gallagher,_Jones and Wainwright_Landscape_Evolution_Denudation,_Climate_and_Tectonics_over_Different_Time_and_Space_Scales__2008_valid.txt"
       },
-      "Popov, V._ and_C._A._Brebbia_Food_and_Environment_The_Quest_for_a_Sustainable_Future__2011": {
-        "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Popov, V._ and_C._A._Brebbia_Food_and_Environment_The_Quest_for_a_Sustainable_Future__2011_valid.txt"
-      },
       "Foster JB, Clark and York - Ecology - The Moment of TruthΓÇöAn Introduction": {
         "manually_named": false,
         "assigned_to": null,
@@ -20262,6 +20254,14 @@
         "auto_group_name": "1comma_>1dash",
         "auto_named": true,
         "file_name": "Foster JB, Clark and York - Ecology - The Moment of TruthΓÇöAn Introduction_valid.txt"
+      },
+      "Popov, V._ and_C._A._Brebbia_Food_and_Environment_The_Quest_for_a_Sustainable_Future__2011": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Popov, V._ and_C._A._Brebbia_Food_and_Environment_The_Quest_for_a_Sustainable_Future__2011_valid.txt"
       },
       "Steele,_Thorpe,_and Turekian_Climate_and_Oceans_A_Derivative_of_Encyclopedia_of_Ocean_Sciences,_Second_Edition__2010": {
         "manually_named": true,
@@ -20399,13 +20399,13 @@
         "auto_named": true,
         "file_name": "Henderson-Sellers and McGuffie_The_Future_of_the_Worlds_Climate,_Second_Edition____2012_valid.txt"
       },
-      "Burkett-marxism_and_ecological_economics": {
+      "Sax.B-___Animals_as_Tradition": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "Burkett",
+        "author_name": "Sax.B",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "Burkett-marxism_and_ecological_economics_valid.txt"
+        "file_name": "Sax.B-___Animals_as_Tradition_valid.txt"
       },
       "Huber,_Macleod,_and Wing_Warm_Climates_in_Earth_History__1999": {
         "manually_named": false,
@@ -20535,14 +20535,6 @@
         "auto_named": true,
         "file_name": "Bray et al 2003 Mexico’s Community-Managed Forests as a Global Model_valid.txt"
       },
-      "Haigh,_Lockwood,_Giampapa,_Rüedi,_Güdel,_and Schmutz_The_Sun,_Solar_Analogs_and_the_Climate_2004.": {
-        "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Haigh,_Lockwood,_Giampapa,_Rüedi,_Güdel,_and Schmutz_The_Sun,_Solar_Analogs_and_the_Climate_2004._valid.txt"
-      },
       "Glotfelty-Cheryll-Ecocriticism-Reader-Landmarks-Literary-Ecology": {
         "manually_named": false,
         "assigned_to": "R",
@@ -20599,14 +20591,6 @@
         "auto_named": false,
         "file_name": "Toledo et al 2003 The Multiple Use of Tropical Forests by Indigenous Peoples in Mexico_valid.txt"
       },
-      "Brown, Lester - World_on_the_Edge_How_to_Prevent_Environmental_and_Economic_Collapse__2011": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Brown, Lester",
-        "auto_group_name": "1comma_1dash",
-        "auto_named": true,
-        "file_name": "Brown, Lester - World_on_the_Edge_How_to_Prevent_Environmental_and_Economic_Collapse__2011_valid.txt"
-      },
       "JORGENSON-Global Warming and the Neglected Greenhouse Gas-methane": {
         "manually_named": false,
         "assigned_to": "R",
@@ -20638,6 +20622,14 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "Dalla Costa - Capitalism and Reproduction_valid.txt"
+      },
+      "Leary_N._ed.,_Adejuwon_J._ed.,_Kulkarni_J._ed._Climate_Change_and_Adaptation__2007": {
+        "manually_named": false,
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Leary_N._ed.,_Adejuwon_J._ed.,_Kulkarni_J._ed._Climate_Change_and_Adaptation__2007_valid.txt"
       },
       "FOSTER-marxs_ecology_materialism_and nature": {
         "manually_named": false,
@@ -20823,13 +20815,13 @@
         "auto_named": true,
         "file_name": "MARTIN-environment_c1973_valid.txt"
       },
-      "Dalla Costa - The Native In Us, The Earth We Belong To": {
+      "CARSON-silent_spring": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "Dalla Costa",
-        "auto_group_name": "1comma_1dash",
+        "author_name": "CARSON",
+        "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "Dalla Costa - The Native In Us, The Earth We Belong To_valid.txt"
+        "file_name": "CARSON-silent_spring_valid.txt"
       },
       "Chew, Sing_C._-_Ecological_Futures_What_History_Can_Teach_Us_Trilogy_on_World_Ecological_Degradation__2008": {
         "manually_named": false,
@@ -20935,6 +20927,14 @@
         "auto_named": true,
         "file_name": "Budyko-_The_Earths_climate,_past_and_future_International_Geophysics__1982_valid.txt"
       },
+      "morton, Timothy - same as it ever was_volume_35_essay-2013": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "morton, Timothy",
+        "auto_group_name": "1comma_>1dash",
+        "auto_named": true,
+        "file_name": "morton, Timothy - same as it ever was_volume_35_essay-2013_valid.txt"
+      },
       "Sorokhtin,_ Khilyuk, and._Chilingarian_Global_Warming_and_Global_Cooling,_Volume_5_Evolution_of_Climate_on_Earth__2007": {
         "manually_named": true,
         "assigned_to": "R",
@@ -21015,13 +21015,13 @@
         "auto_named": false,
         "file_name": "SAVIELLO and GROVES-The Greening of a Pulp & Paper Mill - 2002 IE, Vol. 6, Issue 1_valid.txt"
       },
-      "Sax.B-___Animals_as_Tradition": {
+      "Burkett-marxism_and_ecological_economics": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "Sax.B",
+        "author_name": "Burkett",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "Sax.B-___Animals_as_Tradition_valid.txt"
+        "file_name": "Burkett-marxism_and_ecological_economics_valid.txt"
       },
       "Thacker-Eugene-Dust-Planet": {
         "manually_named": false,
@@ -21086,14 +21086,6 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "TRAINER-CanRenewablesSolveTheGreenhouseProblem-no_valid.txt"
-      },
-      "FAUGERAS etal (ed)-SHARING KNOWLEDGE ACROSS THE MEDITERRANEAN AREA": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "FAUGERAS etal (ed)",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "FAUGERAS etal (ed)-SHARING KNOWLEDGE ACROSS THE MEDITERRANEAN AREA_valid.txt"
       },
       "delTREDICI-brave_new_ecology": {
         "manually_named": false,
@@ -21911,14 +21903,6 @@
         "auto_named": false,
         "file_name": "Biro-Andrew-Critical-Ecologies-Frankfurt-School-and-Contemporary-Environmental-Crises_valid.txt"
       },
-      "Dalla Costa - Seven Good Reasons to Say 'Locality'": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Dalla Costa",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Dalla Costa - Seven Good Reasons to Say 'Locality'_valid.txt"
-      },
       "Crossland, Christopher_et al - Coastal_Fluxes_in_the_Anthropocene_The_Land-Ocean_Interactions_in_the_Coastal_Zone_Project_of_the_International_Geosp": {
         "manually_named": false,
         "assigned_to": null,
@@ -22087,13 +22071,13 @@
         "auto_named": true,
         "file_name": "Duffy_A Trip Too Far-Ecotourism Politics and Exploitation_valid.txt"
       },
-      "Hutchins 2007 Footprints in the Forest Ecotourism in upper amazon": {
+      "Ostrom and Becker - Human Ecology and Resource Sustainability - The Importance of Institutional D": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Hutchins 2007 Footprints in the Forest Ecotourism in upper amazon_valid.txt"
+        "file_name": "Ostrom and Becker - Human Ecology and Resource Sustainability - The Importance of Institutional D_valid.txt"
       },
       "SMITH-Sustainability at the cutting edge-architecture": {
         "manually_named": false,
@@ -22199,13 +22183,13 @@
         "auto_named": true,
         "file_name": "Jensen - Rodje_Deleuzian Intersections_R_valid.txt"
       },
-      "Leiss-William-Domination-Nature": {
+      "DEMENY-McNICOLL-encyclopedia_of_population": {
         "manually_named": true,
         "assigned_to": "R",
-        "author_name": "Leiss,William",
+        "author_name": "DEMENY,McNICOLL",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Leiss-William-Domination-Nature_valid.txt"
+        "file_name": "DEMENY-McNICOLL-encyclopedia_of_population_valid.txt"
       },
       "Klingle-Matthew-Emerald-City-Environmental-History-Seattle": {
         "manually_named": false,
@@ -22391,13 +22375,13 @@
         "auto_named": true,
         "file_name": "TAYLOR-Dark_Green_Religion__Nature_Spirituality_and_the_Planetary_Future_valid.txt"
       },
-      "morton, Timothy - same as it ever was_volume_35_essay-2013": {
+      "Brown, Lester - World_on_the_Edge_How_to_Prevent_Environmental_and_Economic_Collapse__2011": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "morton, Timothy",
-        "auto_group_name": "1comma_>1dash",
+        "author_name": "Brown, Lester",
+        "auto_group_name": "1comma_1dash",
         "auto_named": true,
-        "file_name": "morton, Timothy - same as it ever was_volume_35_essay-2013_valid.txt"
+        "file_name": "Brown, Lester - World_on_the_Edge_How_to_Prevent_Environmental_and_Economic_Collapse__2011_valid.txt"
       },
       "COLEBROOK-Introduction Extinction. ": {
         "manually_named": false,
@@ -23047,13 +23031,13 @@
         "auto_named": false,
         "file_name": "Corrington-Robert-Nature-and-Spirit-Essay-Ecstatic-Naturalism_valid.txt"
       },
-      "Basili-Marcello-Environment-Inequality-and-Collective-Action": {
+      "Haigh,_Lockwood,_Giampapa,_Rüedi,_Güdel,_and Schmutz_The_Sun,_Solar_Analogs_and_the_Climate_2004.": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Basili-Marcello-Environment-Inequality-and-Collective-Action_valid.txt"
+        "file_name": "Haigh,_Lockwood,_Giampapa,_Rüedi,_Güdel,_and Schmutz_The_Sun,_Solar_Analogs_and_the_Climate_2004._valid.txt"
       },
       "Flannery, Tim - The Weather Makers The History and Future Impact of Climate Change (2005)": {
         "manually_named": false,
@@ -23127,13 +23111,13 @@
         "auto_named": false,
         "file_name": "Hillel, Daniel_-_Handbook_of_Climate_Change_and_Agroecosystems_Impacts,_Adaptation,_and_Mitigation__2010_valid.txt"
       },
-      "St._John, Bill__Antarctica_As_an_Exploration_Frontier_-_Hydrocarbon_Potential,_Geology,_and_Hazards_AAPG_Studies_in_Geology_31__1991": {
-        "manually_named": true,
-        "assigned_to": "R",
-        "author_name": "St.John,Bill",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "St._John, Bill__Antarctica_As_an_Exploration_Frontier_-_Hydrocarbon_Potential,_Geology,_and_Hazards_AAPG_Studies_in_Geology_31__1991_valid.txt"
+      "PUSEY and RUSSELL-The Climate Crisis or the Crisis of Climate Politics": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "PUSEY and RUSSELL",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "PUSEY and RUSSELL-The Climate Crisis or the Crisis of Climate Politics_valid.txt"
       },
       "CONLEY-ecopolitics_The environment in poststructuralist thought ": {
         "manually_named": false,
@@ -23183,14 +23167,6 @@
         "auto_named": true,
         "file_name": "Lannoo, Michael_-_Malformed_Frogs_The_Collapse_of_Aquatic_Ecosystems__2008_valid.txt"
       },
-      "CARSON-silent_spring": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "CARSON",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "CARSON-silent_spring_valid.txt"
-      },
       "Georgescu-Rogen, Nicolas - The Entropy Law and the Economic Process in Retrospect": {
         "manually_named": false,
         "assigned_to": null,
@@ -23239,21 +23215,21 @@
         "auto_named": false,
         "file_name": "BESHTA-RIPPLE-wolves_trophic_cascades_and and rivers in the Olympic Nat Park_valid.txt"
       },
-      "morin, edgar-homeland-earth-a-manifesto-for-the-new-millennium": {
+      "JENSEN-songs_of_the_dead": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "morin, edgar",
-        "auto_group_name": "1comma_>1dash",
+        "author_name": "JENSEN",
+        "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "morin, edgar-homeland-earth-a-manifesto-for-the-new-millennium_valid.txt"
+        "file_name": "JENSEN-songs_of_the_dead_valid.txt"
       },
-      "Leary_N._ed.,_Adejuwon_J._ed.,_Kulkarni_J._ed._Climate_Change_and_Adaptation__2007": {
+      "Dalla Costa - Seven Good Reasons to Say 'Locality'": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Leary_N._ed.,_Adejuwon_J._ed.,_Kulkarni_J._ed._Climate_Change_and_Adaptation__2007_valid.txt"
+        "assigned_to": null,
+        "author_name": "Dalla Costa",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Dalla Costa - Seven Good Reasons to Say 'Locality'_valid.txt"
       },
       "WEST-translation_value_and_space": {
         "manually_named": false,
@@ -23262,6 +23238,14 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "WEST-translation_value_and_space_valid.txt"
+      },
+      "Leiss-William-Domination-Nature": {
+        "manually_named": true,
+        "assigned_to": "R",
+        "author_name": "Leiss,William",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Leiss-William-Domination-Nature_valid.txt"
       },
       "FUKUOKA-the_one_straw_revolution": {
         "manually_named": false,
@@ -23343,6 +23327,14 @@
         "auto_named": false,
         "file_name": "Nuttall, Mark_-_Protecting_the_Arctic_Indigenous_Peoples_and_Cultural_Survival_Studies_in_Environmental_Anthropology_,_Vol_3__1998_valid.txt"
       },
+      "Dalla Costa - The Native In Us, The Earth We Belong To": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "Dalla Costa",
+        "auto_group_name": "1comma_1dash",
+        "auto_named": true,
+        "file_name": "Dalla Costa - The Native In Us, The Earth We Belong To_valid.txt"
+      },
       "hicks, j.b.-Mr. Keynes and the Classics A Suggested Interpretation": {
         "manually_named": false,
         "assigned_to": null,
@@ -23375,13 +23367,13 @@
         "auto_named": true,
         "file_name": "RICHARDS.P-fighting_for_the_rain forest_valid.txt"
       },
-      "P.J._Littlefair_Environmental_Site_Layout_Planning_Solar_Access,_Microclimate_and_Passive_Cooling_in_Urban_Areas__2000": {
+      "SCHIEBINGER-plants_and_empire_colonial": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "P.J._Littlefair_Environmental_Site_Layout_Planning_Solar_Access,_Microclimate_and_Passive_Cooling_in_Urban_Areas__2000_valid.txt"
+        "assigned_to": null,
+        "author_name": "SCHIEBINGER",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "SCHIEBINGER-plants_and_empire_colonial_valid.txt"
       },
       "Peet - The Social Origins of Environmental Determinism": {
         "manually_named": false,
@@ -23935,14 +23927,6 @@
         "auto_named": true,
         "file_name": "palit-monsoon_risings_mega_dam_valid.txt"
       },
-      "DEMENY-McNICOLL-encyclopedia_of_population": {
-        "manually_named": true,
-        "assigned_to": "R",
-        "author_name": "DEMENY,McNICOLL",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "DEMENY-McNICOLL-encyclopedia_of_population_valid.txt"
-      },
       "Alexei_Turchin_STRUCTURE_OF_THE_GLOBAL_CATASTROPHE_Risks_of_human_extinction_in_the_XXI_century____2010": {
         "manually_named": false,
         "assigned_to": "R",
@@ -24015,13 +23999,13 @@
         "auto_named": true,
         "file_name": "Herzogenrath-an_unlikely_alliance_thinking environments with deleuze and guattari_valid.txt"
       },
-      "PUSEY and RUSSELL-The Climate Crisis or the Crisis of Climate Politics": {
+      "P.J._Littlefair_Environmental_Site_Layout_Planning_Solar_Access,_Microclimate_and_Passive_Cooling_in_Urban_Areas__2000": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "PUSEY and RUSSELL",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "PUSEY and RUSSELL-The Climate Crisis or the Crisis of Climate Politics_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "P.J._Littlefair_Environmental_Site_Layout_Planning_Solar_Access,_Microclimate_and_Passive_Cooling_in_Urban_Areas__2000_valid.txt"
       },
       "P.H._Nienhuis_Environmental_History_of_the_Rhine-Meuse_Delta_An_ecological_story_on_evolving_human-environmental_relations_coping_with_climate_change_and_sea-level": {
         "manually_named": false,
@@ -24166,6 +24150,14 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Reuveny and Decker - Endogenous Technological Progress and the Malthusian Trap - Could Simon a_valid.txt"
+      },
+      "St._John, Bill__Antarctica_As_an_Exploration_Frontier_-_Hydrocarbon_Potential,_Geology,_and_Hazards_AAPG_Studies_in_Geology_31__1991": {
+        "manually_named": true,
+        "assigned_to": "R",
+        "author_name": "St.John,Bill",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "St._John, Bill__Antarctica_As_an_Exploration_Frontier_-_Hydrocarbon_Potential,_Geology,_and_Hazards_AAPG_Studies_in_Geology_31__1991_valid.txt"
       },
       "Bulbeck_Facing the Wild-Ecotourism Conservation and Animal Encounters": {
         "manually_named": false,
@@ -24327,13 +24319,13 @@
         "auto_named": true,
         "file_name": "Lovelock,James_-_Gaia_A_New_Look_at_Life_on_Earth____2000_valid.txt"
       },
-      "Ostrom and Becker - Human Ecology and Resource Sustainability - The Importance of Institutional D": {
+      "Hutchins 2007 Footprints in the Forest Ecotourism in upper amazon": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Ostrom and Becker - Human Ecology and Resource Sustainability - The Importance of Institutional D_valid.txt"
+        "file_name": "Hutchins 2007 Footprints in the Forest Ecotourism in upper amazon_valid.txt"
       },
       "heinberg-peakEverything": {
         "manually_named": false,
@@ -24647,13 +24639,13 @@
         "auto_named": false,
         "file_name": "Michiel_Korthals_Before_Dinner_Philosophy_and_Ethics_of_Food_The_International_Library_of_Environmental,_Agricultural_and_Food_Ethics__2004_valid.txt"
       },
-      "TURNER-limitsToGrowth-30yearsComparison": {
+      "FAUGERAS etal (ed)-SHARING KNOWLEDGE ACROSS THE MEDITERRANEAN AREA": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "TURNER-limitsToGrowth-30yearsComparison_valid.txt"
+        "assigned_to": null,
+        "author_name": "FAUGERAS etal (ed)",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "FAUGERAS etal (ed)-SHARING KNOWLEDGE ACROSS THE MEDITERRANEAN AREA_valid.txt"
       },
       "Scrase and MacKerron_Energy_for_the_Future_A_New_Agenda_Energy,_Climate_and_the_Environment__2009": {
         "manually_named": false,
@@ -24743,13 +24735,13 @@
         "auto_named": true,
         "file_name": "Wapner,Paul-Living_Through_the_End_of_Nature_The_Future_of_American_Environmentalism__2010_valid.txt"
       },
-      "Serreze and Barry_The_Arctic_Climate_System___2006": {
+      "Palevich, Robert_-_The_Lean_Sustainable_Supply_Chain_How_to_Create_a_Green_Infrastructure_2012": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Serreze and Barry_The_Arctic_Climate_System___2006_valid.txt"
+        "assigned_to": null,
+        "author_name": "Palevich, Robert_",
+        "auto_group_name": "1comma_1dash",
+        "auto_named": true,
+        "file_name": "Palevich, Robert_-_The_Lean_Sustainable_Supply_Chain_How_to_Create_a_Green_Infrastructure_2012_valid.txt"
       },
       "Foster JB - Organizing Ecological Revolution": {
         "manually_named": false,
@@ -25423,13 +25415,13 @@
         "auto_named": true,
         "file_name": "COMSTOCK-Handbook of Nature_valid.txt"
       },
-      "SCHIEBINGER-plants_and_empire_colonial": {
+      "herzogenrath-2009 deleuze and guattari's ecology": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "SCHIEBINGER",
+        "author_name": "herzogenrath",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "SCHIEBINGER-plants_and_empire_colonial_valid.txt"
+        "file_name": "herzogenrath-2009 deleuze and guattari's ecology_valid.txt"
       },
       "Bergstrom, D.M._ and_P._Convey,_A.H.L._Huiskes_Trends_in_Antarctic_Terrestrial_and_Limnetic_Ecosystems_Antarctica_as_a_Global_Indicator__2007": {
         "manually_named": false,
@@ -25599,6 +25591,14 @@
         "auto_named": true,
         "file_name": "SANDLER and PEZZULLO [ed]-environmental_justice_and_environmentalism_valid.txt"
       },
+      "MASTER_CONSERVER_INSTRUCTION_HANDBOOK": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "MASTER_CONSERVER_INSTRUCTION_HANDBOOK_valid.txt"
+      },
       "Ghassemi, Fereidoun  and Ian White-Inter-Basin Water Transfer_ Case Studies from AUS, UUSA, CAN, CHM and IND- (2007)": {
         "manually_named": false,
         "assigned_to": "M",
@@ -25607,13 +25607,13 @@
         "auto_named": false,
         "file_name": "Ghassemi, Fereidoun  and Ian White-Inter-Basin Water Transfer_ Case Studies from AUS, UUSA, CAN, CHM and IND- (2007)_valid.txt"
       },
-      "MASTER_CONSERVER_INSTRUCTION_HANDBOOK": {
+      "Basili-Marcello-Environment-Inequality-and-Collective-Action": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "MASTER_CONSERVER_INSTRUCTION_HANDBOOK_valid.txt"
+        "file_name": "Basili-Marcello-Environment-Inequality-and-Collective-Action_valid.txt"
       },
       "AGRAWAL-LEMOS-a_greener_revolution_in the making": {
         "manually_named": false,
@@ -25951,13 +25951,13 @@
         "auto_named": false,
         "file_name": "de-Bruyn-Ben-Borrowed-Time-Borrowed-World-and-Borrowed-Eyes-Care-Ruin-and-Vision-McCarthy’s-Road-and_valid.txt"
       },
-      "Palevich, Robert_-_The_Lean_Sustainable_Supply_Chain_How_to_Create_a_Green_Infrastructure_2012": {
+      "Serreze and Barry_The_Arctic_Climate_System___2006": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Palevich, Robert_",
-        "auto_group_name": "1comma_1dash",
-        "auto_named": true,
-        "file_name": "Palevich, Robert_-_The_Lean_Sustainable_Supply_Chain_How_to_Create_a_Green_Infrastructure_2012_valid.txt"
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Serreze and Barry_The_Arctic_Climate_System___2006_valid.txt"
       },
       "MOERMAN-Principles Post Oil Peak Planning": {
         "manually_named": false,
@@ -26213,13 +26213,13 @@
         "auto_named": false,
         "file_name": "Chomsky - Commentary - Moral Truisms, Empirical Evidence, and Foreign Policy_valid.txt"
       },
-      "Anarchist-Studies-Journal- 20-1": {
+      "Newman S - The Politics of Postanarchism": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Anarchist-Studies-Journal- 20-1_valid.txt"
+        "assigned_to": null,
+        "author_name": "Newman S",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Newman S - The Politics of Postanarchism_valid.txt"
       },
       "Avakian-Bob-Preaching-Pulpit-Bones-We-Need-Morality-Not-Traditional-Morality": {
         "manually_named": false,
@@ -27157,13 +27157,13 @@
         "auto_named": false,
         "file_name": "Chomsky - Simple Truths, Hard Problems - Some Thoughts on Terror, Justice, and Self-Defence_valid.txt"
       },
-      "Kropotkin - Proposed Communist Settlement - A New Colony for Tyneside or Wearside": {
+      "Medical and Surgical Reporter 1894-medical treatment of anarchism": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Kropotkin - Proposed Communist Settlement - A New Colony for Tyneside or Wearside_valid.txt"
+        "assigned_to": null,
+        "author_name": "Medical and Surgical Reporter 1894",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Medical and Surgical Reporter 1894-medical treatment of anarchism_valid.txt"
       },
       "Black - Apes of Wrath": {
         "manually_named": false,
@@ -27188,14 +27188,6 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "Bonanno - Destruction and Language_valid.txt"
-      },
-      "Medical and Surgical Reporter 1894-medical treatment of anarchism": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Medical and Surgical Reporter 1894",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Medical and Surgical Reporter 1894-medical treatment of anarchism_valid.txt"
       },
       "KINNA-anarchism_a_beginners_guide": {
         "manually_named": false,
@@ -27253,13 +27245,13 @@
         "auto_named": true,
         "file_name": "Chomsky - The United States and the Universality of Human Rights_valid.txt"
       },
-      "Newman S - The Politics of Postanarchism": {
+      "Anarchist-Studies-Journal- 20-1": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Newman S",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Newman S - The Politics of Postanarchism_valid.txt"
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Anarchist-Studies-Journal- 20-1_valid.txt"
       },
       "Zerzan - Anarchy after September 11": {
         "manually_named": false,
@@ -29413,6 +29405,14 @@
         "auto_named": true,
         "file_name": "Black - Left Rites_valid.txt"
       },
+      "Kropotkin - Proposed Communist Settlement - A New Colony for Tyneside or Wearside": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Kropotkin - Proposed Communist Settlement - A New Colony for Tyneside or Wearside_valid.txt"
+      },
       "Gelderloos, Peter-Anarchy-Works": {
         "manually_named": false,
         "assigned_to": null,
@@ -30997,13 +30997,13 @@
         "auto_named": true,
         "file_name": "Coatman etal [ed] - Regeneration_valid.txt"
       },
-      "Jahn, Beate-Classical-theory-international-relations": {
+      "Goldman-Emma-Living-My-Life": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Jahn, Beate",
-        "auto_group_name": "1comma_>1dash",
-        "auto_named": true,
-        "file_name": "Jahn, Beate-Classical-theory-international-relations_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Goldman-Emma-Living-My-Life_valid.txt"
       },
       "Kropotkin - Brain Work and Manual Work": {
         "manually_named": false,
@@ -31461,13 +31461,13 @@
         "auto_named": false,
         "file_name": "Chomsky - US Aid and Torture - A Correlation_valid.txt"
       },
-      "Goldman-Emma-Living-My-Life": {
+      "Jahn, Beate-Classical-theory-international-relations": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Goldman-Emma-Living-My-Life_valid.txt"
+        "assigned_to": null,
+        "author_name": "Jahn, Beate",
+        "auto_group_name": "1comma_>1dash",
+        "auto_named": true,
+        "file_name": "Jahn, Beate-Classical-theory-international-relations_valid.txt"
       },
       "Malatesta-A little theory": {
         "manually_named": false,
@@ -32483,6 +32483,14 @@
         "auto_named": true,
         "file_name": "WALKER-Crime, Gender and Social Order in Early Modern England_valid.txt"
       },
+      "KARAGANIS [ed]- Media Piracy in Emerging Economies": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "KARAGANIS [ed]",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "KARAGANIS [ed]- Media Piracy in Emerging Economies_valid.txt"
+      },
       "De-Fotenay-Elisabeth-Without-Offending-Humans-Critique-Animal-Rights": {
         "manually_named": false,
         "assigned_to": "R",
@@ -32787,13 +32795,13 @@
         "auto_named": false,
         "file_name": "Covell, Charles - Hobbes, Realism and the Tradition of International Law_valid.txt"
       },
-      "Malhotra-Namita-Avriti-Porn-Law-video-technology": {
+      "Merry-Sally-Human-Rights-and-Gender-Violence-TRANSLATING-INTERNATIONAL-LAW-LOCAL-JUSTICE": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Malhotra-Namita-Avriti-Porn-Law-video-technology_valid.txt"
+        "file_name": "Merry-Sally-Human-Rights-and-Gender-Violence-TRANSLATING-INTERNATIONAL-LAW-LOCAL-JUSTICE_valid.txt"
       },
       "Herbert-Steve-Policing-Space-Territoriality-and-Los-Angeles-Police-Department": {
         "manually_named": false,
@@ -32939,13 +32947,13 @@
         "auto_named": true,
         "file_name": "DOW-american_gulag_inside_us_valid.txt"
       },
-      "Garland - Review - The 1992 Fullbright Colloquium on Penal Theory and Penal Practice": {
+      "Irving etal-Law Encyclopedia Nolo Press": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Garland - Review - The 1992 Fullbright Colloquium on Penal Theory and Penal Practice_valid.txt"
+        "assigned_to": null,
+        "author_name": "Irving etal",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Irving etal-Law Encyclopedia Nolo Press_valid.txt"
       },
       "Zick-Timothy-Speech-Out-Doors-Preserving-First-Amendment-Liberties-Public-Places": {
         "manually_named": false,
@@ -32994,6 +33002,14 @@
         "auto_group_name": "1comma_1dash",
         "auto_named": true,
         "file_name": "Sykes, Karen_-_Arguing_With_Anthropology_An_Introduction_to_Critical_Theories_of_the_Gift__2005_valid.txt"
+      },
+      "Lefebvre A - Habermas and Deleuze on Law and Adjudication": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "Lefebvre A",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Lefebvre A - Habermas and Deleuze on Law and Adjudication_valid.txt"
       },
       "JOHNSON-the_prison_birth_of of Black Power": {
         "manually_named": false,
@@ -33323,13 +33339,13 @@
         "auto_named": false,
         "file_name": "Garland - Editorial - Punishment and Society Today_valid.txt"
       },
-      "Best-Stephen-Fugitive-Justice": {
+      "Western - Mass Imprisonment and Economic Inequality": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Best-Stephen-Fugitive-Justice_valid.txt"
+        "assigned_to": null,
+        "author_name": "Western",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Western - Mass Imprisonment and Economic Inequality_valid.txt"
       },
       "Spinello-Richard-Defense-Intellectual-Property": {
         "manually_named": false,
@@ -33379,13 +33395,13 @@
         "auto_named": true,
         "file_name": "Elias, Stephen-Legal-Research-How-Find-Understand-Law_valid.txt"
       },
-      "Berry-David-M-Copy-Rip-Burn-Politics-Copyleft-and-Open-Source": {
+      "Park, Patricia-International Law for Energy and the Environment, Second Edition-CRC Press (2013)": {
         "manually_named": false,
-        "assigned_to": "M",
+        "assigned_to": "R",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Berry-David-M-Copy-Rip-Burn-Politics-Copyleft-and-Open-Source_valid.txt"
+        "file_name": "Park, Patricia-International Law for Energy and the Environment, Second Edition-CRC Press (2013)_valid.txt"
       },
       "May-Christopher-World-Intellectual-Property-Organization-Resurgence-and-Development-Agenda(1)": {
         "manually_named": false,
@@ -33514,14 +33530,6 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "DOCTOROW- Essays on Technology, Creativity, Copyright and the Future of the Future_valid.txt"
-      },
-      "Nader L - Anthropology - Distinguished Lecture--2000": {
-        "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Nader L - Anthropology - Distinguished Lecture--2000_valid.txt"
       },
       "WEINBERG, Michael - What's the Deal with Copyright_ Final version2 2013": {
         "manually_named": false,
@@ -33659,13 +33667,13 @@
         "auto_named": false,
         "file_name": "WIRTEN,Eva-No trespassing -authorship, intellectual property rights and the boundaries of globalization _valid.txt"
       },
-      "SLAUGHTER--Human_Rights,_Inc.": {
+      "RAWLS-justice_as_fairness_a": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "SLAUGHTER",
-        "auto_group_name": "1comma_>1dash",
+        "author_name": "RAWLS",
+        "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "SLAUGHTER--Human_Rights,_Inc._valid.txt"
+        "file_name": "RAWLS-justice_as_fairness_a_valid.txt"
       },
       "BARRY.E-women_prisoners_on_the": {
         "manually_named": false,
@@ -34083,13 +34091,13 @@
         "auto_named": true,
         "file_name": "Western, Kleykamp and Rosenfeld - Did Falling Wages and Employment Increase U.S. Imprisonment_valid.txt"
       },
-      "SUDBURY-a_world_without_prisons": {
+      "Nader L - The Life of the Law - A Moving Story": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "SUDBURY",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "SUDBURY-a_world_without_prisons_valid.txt"
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Nader L - The Life of the Law - A Moving Story_valid.txt"
       },
       "Dinwoodie, Graeme_and_Mark_D._Janis_Trademark_Law_and_Theory_A_Handbook_of_Contemporary_Research_Research_Handbooks_in_Intellectual_Property__2008": {
         "manually_named": false,
@@ -34099,13 +34107,13 @@
         "auto_named": false,
         "file_name": "Dinwoodie, Graeme_and_Mark_D._Janis_Trademark_Law_and_Theory_A_Handbook_of_Contemporary_Research_Research_Handbooks_in_Intellectual_Property__2008_valid.txt"
       },
-      "Western - Mass Imprisonment and Economic Inequality": {
+      "Drahos-Peter-Global-Governance-Knowledge-Patent-Offices-and-Their-Clients": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Western",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Western - Mass Imprisonment and Economic Inequality_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Drahos-Peter-Global-Governance-Knowledge-Patent-Offices-and-Their-Clients_valid.txt"
       },
       "GHOSH [ed]-code_collaborative_ownership_and the digital economy": {
         "manually_named": false,
@@ -34171,13 +34179,13 @@
         "auto_named": false,
         "file_name": "Malcolm-Janet-Iphigenia-Forest-Hills-Anatomy-Murder-Trial_valid.txt"
       },
-      "Nader L - The Life of the Law - A Moving Story": {
+      "SUDBURY-a_world_without_prisons": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Nader L - The Life of the Law - A Moving Story_valid.txt"
+        "assigned_to": null,
+        "author_name": "SUDBURY",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "SUDBURY-a_world_without_prisons_valid.txt"
       },
       "Lessig-Lawrence-Code-20": {
         "manually_named": false,
@@ -34499,21 +34507,13 @@
         "auto_named": true,
         "file_name": "Nader L - Crime as a Category_valid.txt"
       },
-      "Drahos-Peter-Global-Governance-Knowledge-Patent-Offices-and-Their-Clients": {
+      "Berry-David-M-Copy-Rip-Burn-Politics-Copyleft-and-Open-Source": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Drahos-Peter-Global-Governance-Knowledge-Patent-Offices-and-Their-Clients_valid.txt"
-      },
-      "Park, Patricia-International Law for Energy and the Environment, Second Edition-CRC Press (2013)": {
-        "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Park, Patricia-International Law for Energy and the Environment, Second Edition-CRC Press (2013)_valid.txt"
+        "file_name": "Berry-David-M-Copy-Rip-Burn-Politics-Copyleft-and-Open-Source_valid.txt"
       },
       "GARLAND-mass_imprisonment_social_causes": {
         "manually_named": false,
@@ -34587,13 +34587,13 @@
         "auto_named": false,
         "file_name": "Van-Der-Walt-J-Property-Margins_valid.txt"
       },
-      "Sullivan&Schulz (eds) - Encyclopedia of Law Enforcement ~ Federal": {
+      "Best-Stephen-Fugitive-Justice": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Sullivan&Schulz (eds)",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Sullivan&Schulz (eds) - Encyclopedia of Law Enforcement ~ Federal_valid.txt"
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Best-Stephen-Fugitive-Justice_valid.txt"
       },
       "Reeve-Property": {
         "manually_named": false,
@@ -34602,14 +34602,6 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "Reeve-Property_valid.txt"
-      },
-      "Nader L - Energy Barriers": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Nader L",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Nader L - Energy Barriers_valid.txt"
       },
       "Durkheim-Emile-Two-Laws-Penal-Evolution": {
         "manually_named": false,
@@ -34706,14 +34698,6 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Research-Forum-Police-Executive-Chief-Concerns-Police-Management-Mass-Demonstrations-Identifying-Iss_valid.txt"
-      },
-      "Garland - The Peculiar Forms of American Capital Punishment": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Garland",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Garland - The Peculiar Forms of American Capital Punishment_valid.txt"
       },
       "GILROY-police_and_thieves": {
         "manually_named": false,
@@ -34835,6 +34819,14 @@
         "auto_named": false,
         "file_name": "Noronha, Frederick_and_Jeremy_Malcolm_Access_to_Knowledge_A_Guide_for_Everyone__1990_valid.txt"
       },
+      "felman - The Simpson Trial and the Forgotten Trauma of Lynching- A Response to Shoshana Felman": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "felman - The Simpson Trial and the Forgotten Trauma of Lynching- A Response to Shoshana Felman_valid.txt"
+      },
       "Mgbeoji-Ikechi-Global-Biopiracy-Patents-Plants-and-Indigenous-Knowledge": {
         "manually_named": false,
         "assigned_to": "M",
@@ -34882,6 +34874,14 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Sherman-Brad-Making-Modern-Intellectual-Property-Law-British-Experience-1760-1911_valid.txt"
+      },
+      "Fire-Prisons-Fire-Prisons-4": {
+        "manually_named": false,
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Fire-Prisons-Fire-Prisons-4_valid.txt"
       },
       "KIELY-Forensic Evidence Science And The Criminal Law (2001) Een Lotb": {
         "manually_named": false,
@@ -34995,13 +34995,13 @@
         "auto_named": false,
         "file_name": "Piquero-Alex-Handbook-Quantitative-Criminology-2010_valid.txt"
       },
-      "Fisher-Mark-We-Have-Our-Own-Concept-Time-and-Motion": {
+      "Garland - The Peculiar Forms of American Capital Punishment": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Fisher-Mark-We-Have-Our-Own-Concept-Time-and-Motion_valid.txt"
+        "assigned_to": null,
+        "author_name": "Garland",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Garland - The Peculiar Forms of American Capital Punishment_valid.txt"
       },
       "Grene - Theories of Interpretation in the Law of Contracts": {
         "manually_named": false,
@@ -35051,6 +35051,14 @@
         "auto_named": false,
         "file_name": "Clough et al - Life Capacity Beyond Reentry - A Critical Examination of Racism and Prisoner Reentry R_valid.txt"
       },
+      "Parenti-the_new_criminal_justice": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "Parenti",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Parenti-the_new_criminal_justice_valid.txt"
+      },
       "Mendieta-plantations_ghettos_prisons_us": {
         "manually_named": false,
         "assigned_to": null,
@@ -35059,21 +35067,29 @@
         "auto_named": true,
         "file_name": "Mendieta-plantations_ghettos_prisons_us_valid.txt"
       },
-      "Shiva-Vandana-Protect-or-Plunder-Understanding-Intellectual-Property-Rights": {
+      "Nader L - Energy Barriers": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "Nader L",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Nader L - Energy Barriers_valid.txt"
+      },
+      "Fisher-Mark-We-Have-Our-Own-Concept-Time-and-Motion": {
         "manually_named": false,
         "assigned_to": "R",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Shiva-Vandana-Protect-or-Plunder-Understanding-Intellectual-Property-Rights_valid.txt"
+        "file_name": "Fisher-Mark-We-Have-Our-Own-Concept-Time-and-Motion_valid.txt"
       },
-      "Schmitt-Carl-Legality-and-Legitimacy": {
+      "PROUDHON-what_is_property": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Schmitt-Carl-Legality-and-Legitimacy_valid.txt"
+        "assigned_to": null,
+        "author_name": "PROUDHON",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "PROUDHON-what_is_property_valid.txt"
       },
       "Western - Reentry - Reversing Mass Imprisonment": {
         "manually_named": false,
@@ -35483,13 +35499,13 @@
         "auto_named": false,
         "file_name": "Munzer-Stephen-R-New-Essays-Legal-and-Political-Theory-Property_valid.txt"
       },
-      "RAWLS-justice_as_fairness_a": {
+      "Garland - Review - The 1992 Fullbright Colloquium on Penal Theory and Penal Practice": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "RAWLS",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "RAWLS-justice_as_fairness_a_valid.txt"
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Garland - Review - The 1992 Fullbright Colloquium on Penal Theory and Penal Practice_valid.txt"
       },
       "EDMUNDSON-An Introduction to Rights (2004)": {
         "manually_named": false,
@@ -35571,14 +35587,6 @@
         "auto_named": false,
         "file_name": "Federman-Carey-Body-and-State-Habeas-Corpus-and-American-Jurisprudence_valid.txt"
       },
-      "Sell-Susan-K-Private-Power-Public-Law-Globalization-Intellectual-Property-Rights": {
-        "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Sell-Susan-K-Private-Power-Public-Law-Globalization-Intellectual-Property-Rights_valid.txt"
-      },
       "PETTUS-felony_disenfranchisement_in_america": {
         "manually_named": false,
         "assigned_to": null,
@@ -35651,13 +35659,13 @@
         "auto_named": true,
         "file_name": "WOOD-the_marxian_critique_of justice_valid.txt"
       },
-      "Lefebvre A - Habermas and Deleuze on Law and Adjudication": {
+      "Shiva-Vandana-Protect-or-Plunder-Understanding-Intellectual-Property-Rights": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Lefebvre A",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Lefebvre A - Habermas and Deleuze on Law and Adjudication_valid.txt"
+        "assigned_to": "R",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Shiva-Vandana-Protect-or-Plunder-Understanding-Intellectual-Property-Rights_valid.txt"
       },
       "Fire-Prisons-Fire-Prisons-3": {
         "manually_named": false,
@@ -35690,14 +35698,6 @@
         "auto_group_name": "1comma_1dash",
         "auto_named": true,
         "file_name": "JUTERSONKE-Morgenthau, Law and Realism_valid.txt"
-      },
-      "Merry-Sally-Human-Rights-and-Gender-Violence-TRANSLATING-INTERNATIONAL-LAW-LOCAL-JUSTICE": {
-        "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Merry-Sally-Human-Rights-and-Gender-Violence-TRANSLATING-INTERNATIONAL-LAW-LOCAL-JUSTICE_valid.txt"
       },
       "US CENSUS BUREAU-incarceration_in_americas_gulf states 2000": {
         "manually_named": false,
@@ -35771,13 +35771,13 @@
         "auto_named": false,
         "file_name": "Childs-Dennis-You-Aint-Seen-Nothin-Yet-Beloved-American-Chain-Gang-and-Middle-Passage-Remix_valid.txt"
       },
-      "PROUDHON-what_is_property": {
+      "Sell-Susan-K-Private-Power-Public-Law-Globalization-Intellectual-Property-Rights": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "PROUDHON",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "PROUDHON-what_is_property_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Sell-Susan-K-Private-Power-Public-Law-Globalization-Intellectual-Property-Rights_valid.txt"
       },
       "Cornell D - Time, Deconstruction, and the Challenge to Legal Positivism - The Call for Judicial R": {
         "manually_named": false,
@@ -35818,6 +35818,14 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "David, Matthew-_Peer_to_Peer_and_the_Music_Industry_The_Criminalization_of_Sharing_Published_in_association_with_Theory,_Culture_&_Society__2009_valid.txt"
+      },
+      "SEYMOUR-law_antisemitism_and_the HOLOCAUST": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "SEYMOUR",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "SEYMOUR-law_antisemitism_and_the HOLOCAUST_valid.txt"
       },
       "Marinos, Diamantides-Levinas-Law-Politics": {
         "manually_named": false,
@@ -35891,13 +35899,13 @@
         "auto_named": false,
         "file_name": "Nader L - A Wide-Angle on Dispute Management_valid.txt"
       },
-      "Wark, McKenzie - Copyright, Copyleft, Copygift": {
+      "Friedrich-Carl-J-Constitutional-Reason-State-Survival-Constitutional-Order": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Wark, McKenzie - Copyright, Copyleft, Copygift_valid.txt"
+        "file_name": "Friedrich-Carl-J-Constitutional-Reason-State-Survival-Constitutional-Order_valid.txt"
       },
       "Merriden, Trevor_-_Irresistible_Forces_The_Business_Legacy_of_Napster_and_the_Growth_of_the_Underground_Internet__2001": {
         "manually_named": false,
@@ -35922,6 +35930,14 @@
         "auto_group_name": null,
         "auto_named": false,
         "file_name": "Fire-Prisons-Fire-Prisons-7_valid.txt"
+      },
+      "Nader L - Controlling Processes in the Practice of Law - Hierarchy and Pacification in the Movement t": {
+        "manually_named": false,
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Nader L - Controlling Processes in the Practice of Law - Hierarchy and Pacification in the Movement t_valid.txt"
       },
       "GOLDSMITH-to_profit_by_his skill-19th century prison labour": {
         "manually_named": false,
@@ -36051,13 +36067,13 @@
         "auto_named": true,
         "file_name": "Garland - Concepts of Culture in the Sociology of Punishment_valid.txt"
       },
-      "SEYMOUR-law_antisemitism_and_the HOLOCAUST": {
+      "Malhotra-Namita-Avriti-Porn-Law-video-technology": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "SEYMOUR",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "SEYMOUR-law_antisemitism_and_the HOLOCAUST_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Malhotra-Namita-Avriti-Porn-Law-video-technology_valid.txt"
       },
       "de-Vitoria-Francisco-De-Indis-et-De-Jure-Belli": {
         "manually_named": false,
@@ -36163,21 +36179,13 @@
         "auto_named": true,
         "file_name": "Western and Pettit - Incarceration and Racial Inequality in Men's Employment_valid.txt"
       },
-      "Friedrich-Carl-J-Constitutional-Reason-State-Survival-Constitutional-Order": {
+      "Wark, McKenzie - Copyright, Copyleft, Copygift": {
         "manually_named": false,
         "assigned_to": "M",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "Friedrich-Carl-J-Constitutional-Reason-State-Survival-Constitutional-Order_valid.txt"
-      },
-      "RAWLS-a_brief_inquiry_into the meaning of sin and faith": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "RAWLS",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "RAWLS-a_brief_inquiry_into the meaning of sin and faith_valid.txt"
+        "file_name": "Wark, McKenzie - Copyright, Copyleft, Copygift_valid.txt"
       },
       "Scotchmer-Suzanne-Innovation-and-Incentives": {
         "manually_named": false,
@@ -36299,13 +36307,13 @@
         "auto_named": true,
         "file_name": "Novak, David-DownTime-Guide-Federal-Incarceration_valid.txt"
       },
-      "felman - The Simpson Trial and the Forgotten Trauma of Lynching- A Response to Shoshana Felman": {
+      "Nader L - Anthropology - Distinguished Lecture--2000": {
         "manually_named": false,
-        "assigned_to": "M",
+        "assigned_to": "R",
         "author_name": "",
         "auto_group_name": null,
         "auto_named": false,
-        "file_name": "felman - The Simpson Trial and the Forgotten Trauma of Lynching- A Response to Shoshana Felman_valid.txt"
+        "file_name": "Nader L - Anthropology - Distinguished Lecture--2000_valid.txt"
       },
       "SHOSHANA & LAUB-testimony_crises_of_witnessing": {
         "manually_named": false,
@@ -36411,13 +36419,13 @@
         "auto_named": false,
         "file_name": "KENNEDY--A_Critique_of_Adjudication_valid.txt"
       },
-      "Fire-Prisons-Fire-Prisons-4": {
+      "Sullivan&Schulz (eds) - Encyclopedia of Law Enforcement ~ Federal": {
         "manually_named": false,
-        "assigned_to": "R",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Fire-Prisons-Fire-Prisons-4_valid.txt"
+        "assigned_to": null,
+        "author_name": "Sullivan&Schulz (eds)",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "Sullivan&Schulz (eds) - Encyclopedia of Law Enforcement ~ Federal_valid.txt"
       },
       "global-intellectual-property-rights-knowledge-access-and-development.9780333990278.31656": {
         "manually_named": false,
@@ -36427,13 +36435,13 @@
         "auto_named": false,
         "file_name": "global-intellectual-property-rights-knowledge-access-and-development.9780333990278.31656_valid.txt"
       },
-      "KARAGANIS [ed]- Media Piracy in Emerging Economies": {
+      "Schmitt-Carl-Legality-and-Legitimacy": {
         "manually_named": false,
-        "assigned_to": null,
-        "author_name": "KARAGANIS [ed]",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "KARAGANIS [ed]- Media Piracy in Emerging Economies_valid.txt"
+        "assigned_to": "M",
+        "author_name": "",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "Schmitt-Carl-Legality-and-Legitimacy_valid.txt"
       },
       "HARDING-Medieval Law and the Foundations of the State (Oxford University Press, 2001)": {
         "manually_named": false,
@@ -36443,13 +36451,13 @@
         "auto_named": true,
         "file_name": "HARDING-Medieval Law and the Foundations of the State (Oxford University Press, 2001)_valid.txt"
       },
-      "Nader L - Controlling Processes in the Practice of Law - Hierarchy and Pacification in the Movement t": {
+      "SLAUGHTER--Human_Rights,_Inc.": {
         "manually_named": false,
-        "assigned_to": "M",
-        "author_name": "",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "Nader L - Controlling Processes in the Practice of Law - Hierarchy and Pacification in the Movement t_valid.txt"
+        "assigned_to": null,
+        "author_name": "SLAUGHTER",
+        "auto_group_name": "1comma_>1dash",
+        "auto_named": true,
+        "file_name": "SLAUGHTER--Human_Rights,_Inc._valid.txt"
       },
       "felman - Theaters of justice": {
         "manually_named": false,
@@ -36723,14 +36731,6 @@
         "auto_named": true,
         "file_name": "Kantorowicz - Justice Enthroned_valid.txt"
       },
-      "Irving etal-Law Encyclopedia Nolo Press": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "Irving etal",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "Irving etal-Law Encyclopedia Nolo Press_valid.txt"
-      },
       "Bach, Amy-Ordinary-Injustice-How-America-Holds-Court": {
         "manually_named": false,
         "assigned_to": null,
@@ -36763,13 +36763,13 @@
         "auto_named": true,
         "file_name": "Hinduja, Sameer_-_Music_Piracy_and_Crime_Theory_Criminal_Justice_Recent_Scholarship__2005_valid.txt"
       },
-      "Parenti-the_new_criminal_justice": {
+      "RAWLS-a_brief_inquiry_into the meaning of sin and faith": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "Parenti",
+        "author_name": "RAWLS",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "Parenti-the_new_criminal_justice_valid.txt"
+        "file_name": "RAWLS-a_brief_inquiry_into the meaning of sin and faith_valid.txt"
       },
       "Haunss-ed-Sebastian-Politics-Intellectual-Property-Contestation-Over-Ownership-Use-and-Control-Knowl": {
         "manually_named": false,
@@ -37599,6 +37599,14 @@
         "auto_named": true,
         "file_name": "bruno_latour-visualization_and_cognition_drawing_things_together_valid.txt"
       },
+      "allan_turing-COMPUTING_MACHINERY_AND_INTELLIGENCE": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "allan_turing",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "allan_turing-COMPUTING_MACHINERY_AND_INTELLIGENCE_valid.txt"
+      },
       "boris-magrini_confronting_the_machine": {
         "manually_named": false,
         "assigned_to": null,
@@ -37647,13 +37655,13 @@
         "auto_named": false,
         "file_name": "Xenofeminism2_valid.txt"
       },
-      "kazys_varnelis-the_rise_of_network_culture": {
+      "alfred_jarry-king_ubu": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "kazys_varnelis",
+        "author_name": "alfred_jarry",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "kazys_varnelis-the_rise_of_network_culture_valid.txt"
+        "file_name": "alfred_jarry-king_ubu_valid.txt"
       },
       "faith_wilding-where_is_the_feminism_in_cyberfeminism": {
         "manually_named": false,
@@ -37759,13 +37767,13 @@
         "auto_named": true,
         "file_name": "nick_bostrom-a_history_of_posthuman_thought_valid.txt"
       },
-      "alfred_jarry-king_ubu": {
+      "kazys_varnelis-the_rise_of_network_culture": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "alfred_jarry",
+        "author_name": "kazys_varnelis",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "alfred_jarry-king_ubu_valid.txt"
+        "file_name": "kazys_varnelis-the_rise_of_network_culture_valid.txt"
       },
       "warren_sack-network_aesthetics": {
         "manually_named": false,
@@ -37854,14 +37862,6 @@
         "auto_group_name": "1dash",
         "auto_named": true,
         "file_name": "lisa_gitelman-scripts_grooves_and_writing_machines_representing_technology_in_the_edison_era_valid.txt"
-      },
-      "frieder_nake-paragraphs_on_computer_art_past_and_present": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "frieder_nake",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "frieder_nake-paragraphs_on_computer_art_past_and_present_valid.txt"
       },
       "ronald_cole_turner-transhumanism_and_transcendence": {
         "manually_named": false,
@@ -38079,13 +38079,13 @@
         "auto_named": true,
         "file_name": "antony_rowe-immersion_in_mixed_reality_spaces_valid.txt"
       },
-      "nick_bostrom-are_you_living_in_a-computer_simulation": {
-        "manually_named": true,
-        "assigned_to": "R",
-        "author_name": "nick,bostrom",
-        "auto_group_name": null,
-        "auto_named": false,
-        "file_name": "nick_bostrom-are_you_living_in_a-computer_simulation_valid.txt"
+      "heinz_von_foerster-on_constructing_a_reality": {
+        "manually_named": false,
+        "assigned_to": null,
+        "author_name": "heinz_von_foerster",
+        "auto_group_name": "1dash",
+        "auto_named": true,
+        "file_name": "heinz_von_foerster-on_constructing_a_reality_valid.txt"
       },
       "sherry_turkle-how_computers_change_the_way_we_think": {
         "manually_named": false,
@@ -38271,13 +38271,13 @@
         "auto_named": true,
         "file_name": "vivian_sobchack-carnal_thoughts_embodiement_and_moving_image_culture_valid.txt"
       },
-      "heinz_von_foerster-on_constructing_a_reality": {
-        "manually_named": false,
-        "assigned_to": null,
-        "author_name": "heinz_von_foerster",
-        "auto_group_name": "1dash",
-        "auto_named": true,
-        "file_name": "heinz_von_foerster-on_constructing_a_reality_valid.txt"
+      "nick_bostrom-are_you_living_in_a-computer_simulation": {
+        "manually_named": true,
+        "assigned_to": "R",
+        "author_name": "nick,bostrom",
+        "auto_group_name": null,
+        "auto_named": false,
+        "file_name": "nick_bostrom-are_you_living_in_a-computer_simulation_valid.txt"
       },
       "armin_medosch-technological_determinism_in_media_art": {
         "manually_named": false,
@@ -38335,13 +38335,13 @@
         "auto_named": true,
         "file_name": "arthur_danto-the_end_of_art_a_philosophical_defence_valid.txt"
       },
-      "gunter_graf_gottfried_schweiger-the_philosophical_evaluation_of_poverty": {
+      "dieter_mersch-the_political_and_the_violent": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "gunter_graf_gottfried_schweiger",
+        "author_name": "dieter_mersch",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "gunter_graf_gottfried_schweiger-the_philosophical_evaluation_of_poverty_valid.txt"
+        "file_name": "dieter_mersch-the_political_and_the_violent_valid.txt"
       },
       "charles_sanders_pierce-collected_material": {
         "manually_named": false,
@@ -38383,13 +38383,13 @@
         "auto_named": true,
         "file_name": "noel_caroll-art_and_ethical_criticism_valid.txt"
       },
-      "dieter_mersch-the_political_and_the_violent": {
+      "frieder_nake-paragraphs_on_computer_art_past_and_present": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "dieter_mersch",
+        "author_name": "frieder_nake",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "dieter_mersch-the_political_and_the_violent_valid.txt"
+        "file_name": "frieder_nake-paragraphs_on_computer_art_past_and_present_valid.txt"
       },
       "roland_barthes-mythologies": {
         "manually_named": false,
@@ -38463,13 +38463,13 @@
         "auto_named": true,
         "file_name": "joes_de_mul-transhumanism_the_convergence_of_evolution_humanism_and_information_technology_valid.txt"
       },
-      "allan_turing-COMPUTING_MACHINERY_AND_INTELLIGENCE": {
+      "gunter_graf_gottfried_schweiger-the_philosophical_evaluation_of_poverty": {
         "manually_named": false,
         "assigned_to": null,
-        "author_name": "allan_turing",
+        "author_name": "gunter_graf_gottfried_schweiger",
         "auto_group_name": "1dash",
         "auto_named": true,
-        "file_name": "allan_turing-COMPUTING_MACHINERY_AND_INTELLIGENCE_valid.txt"
+        "file_name": "gunter_graf_gottfried_schweiger-the_philosophical_evaluation_of_poverty_valid.txt"
       },
       "michel_bauwens-p2p_and_human_evolution": {
         "manually_named": false,
