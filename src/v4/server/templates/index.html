@@ -3,7 +3,9 @@
 <head>
     <title>Oracle 4.0</title>
     <meta charset='utf-8'>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <!-- https://github.com/iamcal/js-emoji -->
     <script type="text/javascript" src="static/emoji.min.js"></script>
@@ -21,10 +23,10 @@
                     // smooth scrolling to empty div at bottom of page
                     $('html, body').animate({
                         scrollTop: $('.smooth_scroll_div').offset().top
-                    }, 500);
+                    }, 1000);
                 }
 
-                appendMsg(socketMsg)
+                appendMsg(socketMsg);
             });
         });
 
@@ -43,11 +45,10 @@
             <div class="msgTextDiv"></div>
             <pre class="msgTextPre"></pre>
             <div><img class="image" src=""/></div>
-            <div class="timeStamp">TIMESTAMP??</div>
+            <div class="timeStamp toggle">TIMESTAMP??</div>
         </div>
     </li>
     <div class="smooth_scroll_div"></div>
-
     <script type="text/javascript" src="static/script.js"></script>
 </body>
 </html>

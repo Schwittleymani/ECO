@@ -16,8 +16,22 @@ function appendMsg(socketMsg) {
     var style = socketMsg.style;
     var timestamp = socketMsg.timestamp;
 
-    var msgObj = template.clone()
-    msgObj.removeAttr('id')
+    var msgObj = template.clone();
+
+    // when there are more than 100 posts
+    // remove the first 70
+    // it's like that because otherwise the
+    // scrolling is getting fucked up
+    if( log_div.children().length > 100) {
+        var counter = 0;
+        log_div.children().each(function() {
+            counter = counter + 1;
+            if( counter < 70 ){
+                $( this ).remove();
+            }
+        });
+        //log_div.find('li:first').remove()
+    }
 
     msgObj.find('.timeStamp').text(user + ": " + timestamp)
 
@@ -44,7 +58,10 @@ function appendMsg(socketMsg) {
     }
 
     // adds some css class to divs for left and right style
-    msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left')
+    msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left');
+
+
+    msgObj.effect( "pulsate" );
 
     // adds the customized msg to the log
     log_div.append(msgObj)
