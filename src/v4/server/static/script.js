@@ -35,16 +35,23 @@ function appendMsg(socketMsg) {
 
     msgObj.find('.timeStamp').text(user + ": " + timestamp)
 
+
+
     // checking whether the text should be added to a
     // <pre> (pre-formatted) or <div> tag
     // important for pre-formatted text like ascii stuff
     // TODO style is supposed to be a more complex object, but for now... ok
     // TODO let's also have a default style use its string representation on the top of the file.
     // this is magic number style and often leads to problems when another developer cannot read your mind
+    console.log(style)
     if(style == "unformatted") {
-        msgObj.find('.msgTextDiv').text(text)
+        msgObj.find('.msgTextDiv').text(text);
     } else if (style == "formatted") {
-        msgObj.find('.msgTextPre').text(text)
+        msgObj.find('.msgTextPre').text(text);
+    } else if( style == "scroll") {
+        msgObj.find('.canScroll').addClass("scrollDiv");
+        msgObj.find('.msgTextDiv').text(text);
+        msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
     }
 
     if( attachment == null) {

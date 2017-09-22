@@ -3,9 +3,15 @@
   src: url("aki_lines_regular.ttf") format("truetype");
 }
 
-h1 {
+#top h1 {
     font-family: "Aki Lines";
     font-size: 50px;
+    text-align: center;
+    background: #f1c40f;
+    margin: 0px;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    border-radius:10px;
 }
 
 .msg {
@@ -17,32 +23,32 @@ h1 {
     margin-top: 10px;
     margin-bottom: 10px;
     font-family: monospace;
-    font-size: 26px;
+    font-size: 35px;
     display: inline-block;
     text-align: left;
-    max-width: 700px;
+    max-width: 900px;
+    min-width: 450px;
     padding: 15px 20px;
-    border-radius:25px;
+    border-radius: 15px;
 }
 
 .left {
     margin-right: auto;
     float: left;
+    text-align: left;
     background: #BBDEFB;
-    border: #BDBDBD solid 1px;
 }
 
 .right {
     margin-left: auto;
     float: right;
+    text-align: right;
     background: #87D37C;
-    border: #BDBDBD solid 1px;
 }
 
 .timeStamp {
     font-family: monospace;
     font-size: 14px;
-    font-weight:bold;
     color:grey;
     margin-left: auto;
     float: right;
@@ -51,6 +57,53 @@ h1 {
 .msgTextPre {
     font-size: 6px;
     font-family: monospace;
+}
+
+.scrollDiv {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    vertical-align: bottom;
+}
+
+.scrollDiv .msgTextDiv {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    line-height: 35px;
+    /* text-align: left;*/
+    /* Starting position */
+    -moz-transform:translateY(0%);
+    -webkit-transform:translateY(0%);
+    transform:translateY(0%);
+    /* Apply animation to this element */
+    -moz-animation: scrollDiv 5s linear infinite reverse;
+    -webkit-animation: scrollDiv 5s linear infinite reverse;
+    animation: scrollDiv 5s linear infinite reverse;
+}
+
+/* Move it (define the animation) */
+@-moz-keyframes scrollDiv {
+ 0%   { -moz-transform: translateY(0%); }
+ 100% { -moz-transform: translateY(100%); }
+}
+@-webkit-keyframes scrollDiv {
+ 0%   { -webkit-transform: translateY(0%); }
+ 100% { -webkit-transform: translateY(100%); }
+}
+@keyframes scrollDiv {
+ 0%   {
+         -moz-transform: translateY(0%); /* Firefox bug fix */
+         -webkit-transform: translateY(-100%); /* Firefox bug fix */
+         transform: translateY(-50%);
+    }
+ 100% {
+         -moz-transform: translateY(100%); /* Firefox bug fix */
+         -webkit-transform: translateY(100%); /* Firefox bug fix */
+         transform: translateY(100%);
+ }
 }
 
 .image {
