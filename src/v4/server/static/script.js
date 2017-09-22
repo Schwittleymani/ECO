@@ -66,7 +66,7 @@ function appendMsg(socketMsg) {
 
     // adds some css class to divs for left and right style
     msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left');
-
+    msgObj.find('.timeStamp').addClass(nextMsgRight ? 'right' : 'left');
 
     msgObj.effect( "pulsate" );
 
