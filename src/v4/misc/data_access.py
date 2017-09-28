@@ -1,5 +1,5 @@
 import socket
-import os
+import subprocess
 
 # GET THE RIGHT FOLDER
 # THERE 3 FOLDERS U MIGHT WANNA GET:
