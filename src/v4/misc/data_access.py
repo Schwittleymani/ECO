@@ -30,21 +30,21 @@ import subprocess
 folders = {
     "lyrik": {
         "ramin": {
-            "project": "~/projects/ECO/",
+            "project": "/home/ramin/projects/ECO/",
             "data": "/mnt/drive1/data/eco/",
-            "model": "LETS HAVE A MODELS FOLDER ON /mnt/drive1"
+            "model": "/mnt/drive1/data/eco/" #"LETS HAVE A MODELS FOLDER ON /mnt/drive1"
         },
         "marcel": {
-            "project": "",
+            "project": "/home/marcel/projects/eco/",
             "data": "/mnt/drive1/data/eco/",
-            "model": "LETS HAVE A MODELS FOLDER ON /mnt/drive1"
+            "model": "LETS HAVE A MODELS FOLDER ON /mnt/drive1/"
         },
     },
     "ramin.local": {
         "raminsoleymani": {
-            "project": "~/git/eco",
-            "data": "~/git/eco/data", # locally we might have data & models here ( & in .gitignore)
-            "model": "~/git/eco/models"
+            "project": "/Users/raminsoleymani/git/ECO/",
+            "data": "/Users/raminsoleymani/git/ECO/data/", # locally we might have data & models here ( & in .gitignore)
+            "model": "/Users/raminsoleymani/git/ECO/models/"
         }
     },
     "mrzl.FILLIN": {
@@ -70,7 +70,6 @@ def _machine_folder(specific = 'project'):
 def get_project_folder():
     return _machine_folder()
     
-
 def get_data_folder():
     return _machine_folder('data')
 
@@ -80,6 +79,6 @@ def get_model_folder():
 
 # TESTIN
 if __name__ == "__main__":
-    print(get_project_folder())
-    print(get_data_folder())
-    print(get_model_folder())
+    print("get_project_folder():", get_project_folder())
+    print("get_data_folder():", get_data_folder())
+    print("get_model_folder():", get_model_folder())
