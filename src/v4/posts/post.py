@@ -14,6 +14,8 @@ from posts.kaomoji.kaomoji import KaomojiHelp
 from posts.image.image import ImageHelper
 from posts.image.image import AsciiHelper
 
+from posts.nails.nails import NailsSimilarityFinder
+
 
 class Post(object):
     def __init__(self, previous, text='', user='admin'):
@@ -84,7 +86,7 @@ class KaomojiPost(Post):
         self.kaomoji = kao.find(words)
         if not self.kaomoji:
             self.kaomoji = kao.random()
-        self._text = self.kaomoji.kaomoji()
+        self._text = self.kaomoji.kaomoji() + self.kaomoji.emotions()
         self._user = self.kaomoji.emotions()
 
 
@@ -116,7 +118,7 @@ class ImagePost(Post):
         self._user = 'image'
         self._attachment = self.path
 
-        self._ascii = bool(random.getrandbits(1))
+        self._ascii = False# bool(random.getrandbits(1))
 
         if self._ascii:
             self._attachment = None
@@ -154,6 +156,28 @@ class RedditPost(Post):
         generator.generate()
         self._text = generator.sentences()[0].text
         self._user = 'reddit'
+        self._style = 'scroll'
+
+
+nailsFinder = NailsSimilarityFinder()
+
+
+class NailsPost(Post):
+    def __init__(self, previous):
+        """
+        uses a class that generates(filters) a new post from nails corpus
+        :param previous:
+        """
+        super().__init__(previous)
+
+    def connection(self, previous):
+        selection = nailsFinder.get_similar(previous.text())
+        options = selection[1]
+        selected = selection[0]
+
+        self._text = selected['sentence']
+        self._user = selected['author'] + ' options: ' + str(options)
+        self._style = 'scroll'
 
 
 class AsciiPost(Post):

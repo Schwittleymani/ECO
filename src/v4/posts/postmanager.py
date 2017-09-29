@@ -1,11 +1,12 @@
 import random
-from posts.post import StartPost, KaomojiPost, ImagePost, RedditPost, EmojiPost
+from posts.post import StartPost, KaomojiPost, ImagePost, RedditPost, EmojiPost, NailsPost
 
 post_types = {
-    "POST_TYPE_KAOMOJI": KaomojiPost,
+    #"POST_TYPE_KAOMOJI": KaomojiPost,
     "POST_TYPE_IMAGE": ImagePost,
     "POST_TYPE_REDDIT": RedditPost,
-    "POST_TYPE_EMOJI": EmojiPost
+    #"POST_TYPE_EMOJI": EmojiPost,
+    "POST_TYPE_NAILS": NailsPost
 }
 
 
