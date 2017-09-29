@@ -26,18 +26,17 @@ import subprocess
 """
 
 
-
 folders = {
     "lyrik": {
         "ramin": {
             "project": "/home/ramin/projects/ECO/",
             "data": "/mnt/drive1/data/eco/",
-            "model": "/mnt/drive1/data/eco/" #"LETS HAVE A MODELS FOLDER ON /mnt/drive1"
+            "model": "/mnt/drive1/data/eco/models/" #"LETS HAVE A MODELS FOLDER ON /mnt/drive1"
         },
         "marcel": {
             "project": "/home/marcel/projects/eco/",
             "data": "/mnt/drive1/data/eco/",
-            "model": "LETS HAVE A MODELS FOLDER ON /mnt/drive1/"
+            "model": "/mnt/drive1/data/eco/models/"
         },
     },
     "ramin.local": {
