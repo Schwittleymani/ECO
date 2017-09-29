@@ -9,8 +9,11 @@ from misc import data_access
 
 class NailsSimilarityFinder(object):
     def __init__(self):
-        self._model = gensim.models.Word2Vec.load(data_access.get_model_folder() + 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel')
-        self._dataframe = feather.read_dataframe(data_access.get_model_folder() + 'parsed_v3_log-final_bigger_than_15_incl_filename.feather')
+        w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
+        self._model = gensim.models.Word2Vec.load(data_access.get_model_folder() + w2v_path)
+
+        feather_path = 'parsed_v3_log-final_arts_arthistory_aesthetics_bigger_than_2.feather'
+        self._dataframe = feather.read_dataframe(data_access.get_model_folder() + feather_path)
 
     # sentence to vector via w2v
     def to_vector(self, sentence):
