@@ -23,7 +23,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     font-family: monospace;
-    font-size: 35px;
+    font-size: 25px;
     display: inline-block;
     text-align: left;
     max-width: 900px;
@@ -70,16 +70,16 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    line-height: 35px;
+    line-height: 25px;
     /* text-align: left;*/
     /* Starting position */
     -moz-transform:translateY(0%);
     -webkit-transform:translateY(0%);
     transform:translateY(0%);
     /* Apply animation to this element */
-    -moz-animation: scrollDiv 5s linear infinite reverse;
-    -webkit-animation: scrollDiv 5s linear infinite reverse;
-    animation: scrollDiv 5s linear infinite reverse;
+    -moz-animation: scrollDiv 10s linear infinite reverse;
+    -webkit-animation: scrollDiv 10s linear infinite reverse;
+    animation: scrollDiv 10s linear infinite reverse;
 }
 
 /* Move it (define the animation) */
