@@ -1,5 +1,4 @@
 import random
-import gensim
 import time
 import numpy as np
 import feather
@@ -8,9 +7,8 @@ from misc import data_access
 
 
 class NailsSimilarityFinder(object):
-    def __init__(self):
-        w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
-        self._model = gensim.models.Word2Vec.load(data_access.get_model_folder() + w2v_path)
+    def __init__(self, w2v_model):
+        self._model = w2v_model
 
         feather_path = 'parsed_v3_log-final_arts_arthistory_aesthetics_bigger_than_2.feather'
         self._dataframe = feather.read_dataframe(data_access.get_model_folder() + feather_path)
