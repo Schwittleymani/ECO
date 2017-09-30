@@ -3,8 +3,10 @@ import json
 import time
 import datetime
 import random
+import gensim
 import os
 import socket
+from misc import data_access
 
 from posts.reddit.generator import Generator
 from posts.reddit.pandasdata import PandasData
@@ -159,7 +161,9 @@ class RedditPost(Post):
         self._style = 'scroll'
 
 
-nailsFinder = NailsSimilarityFinder()
+w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
+model = gensim.models.Word2Vec.load(data_access.get_model_folder() + w2v_path)
+nailsFinder = NailsSimilarityFinder(model)
 
 
 class NailsPost(Post):

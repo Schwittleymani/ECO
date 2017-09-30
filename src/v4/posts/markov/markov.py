@@ -12,8 +12,13 @@ class MarkovChainBackOff(object):
         """
         self.grams = {}
         self.n_grams = n_grams
-        self.corpus = corpus
+        self.corpus = []
         self.min_length = min_length
+
+    def add_corpus(self, corpus):
+        self.corpus = self.corpus + corpus
+
+    def start(self):
         self.sequences()
 
     def tokenizer(self, speech, gram):
@@ -83,13 +88,13 @@ class MarkovChainBackOff(object):
         print(start + ' ' + ' '.join(gen_words).replace(' .', '.').replace(' ,', ','))
 
 
-def save(markov):
-    with open('markov.pickle', 'wb') as f:
+def save(markov, pickle_file_name):
+    with open(pickle_file_name, 'wb') as f:
         pickle.dump(markov, f)
 
 
-def load():
-    with open('markov.pickle', 'rb') as f:
+def load(pickle_file_name):
+    with open(pickle_file_name, 'rb') as f:
         markov = pickle.load(f)
         return markov
 
@@ -97,8 +102,10 @@ def load():
 if __name__ == "__main__":
     doc = ['This is your first text', 'and here is your second text.']
 
-    # mark = MarkovChainBackOff(doc, 2, 2)
-    # mark.save()
-    mark = load()
+    # mark = MarkovChainBackOff(2, 2)
+    # mark.add_corpus(doc)
+    # mark.start()
+    # save(mark)
+    mark = load('markov.pickle')
     mark.generate_markov_text('type a sentence that has at least n_grams words', size=25)
 
