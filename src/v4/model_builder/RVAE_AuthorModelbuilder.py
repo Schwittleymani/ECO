@@ -1,4 +1,4 @@
-from pytorch_RVAE import train_word_embeddings, train 
+from src.v4.pytorch_RVAE import train_word_embeddings, train 
 import shutil
 import os
 import codecs
