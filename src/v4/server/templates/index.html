@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="static/style.css">
     <script type="text/javascript" charset="utf-8">
 
-        var doScrolling = false;
+        var doScrolling = true;
         $(document).ready(function() {
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
             socket.on('connect', function() {
