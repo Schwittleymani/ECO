@@ -3,4 +3,4 @@
 	url = git@github.com:mrzl/word-rnn-tensorflow.git
 [submodule "src/v4/pytorch_RVAE"]
 	path = src/v4/pytorch_RVAE
-	url = https://github.com/kefirski/pytorch_RVAE
+	url = https://github.com/Schwittleymani/pytorch_RVAE
