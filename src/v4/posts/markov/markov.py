@@ -1,7 +1,12 @@
 import random
 import nltk
 import pickle
+import glob
+import os
+import codecs
+import json
 
+from misc import data_access
 
 class MarkovChainBackOff(object):
     def __init__(self, corpus, n_grams, min_length):
@@ -17,6 +22,9 @@ class MarkovChainBackOff(object):
 
     def add_corpus(self, corpus):
         self.corpus = self.corpus + corpus
+
+    def curpus_size(self):
+        return len(self.corpus)
 
     def start(self):
         self.sequences()
@@ -85,19 +93,79 @@ class MarkovChainBackOff(object):
             key_id = self.next_key(key_id, result)
             gen_words.append(result)
             i += 1
-        print(start + ' ' + ' '.join(gen_words).replace(' .', '.').replace(' ,', ','))
+        return start + ' ' + ' '.join(gen_words).replace(' .', '.').replace(' ,', ',')
 
 
-def save(markov, pickle_file_name):
-    with open(pickle_file_name, 'wb') as f:
-        pickle.dump(markov, f)
+class MarkovManager(object):
+    def __init__(self):
+        #self.train()
 
+        self._markovs = {}
+        markov_model_folder = data_access.get_model_folder() + 'markov/' + '*.pickle'
+        print(markov_model_folder)
+        pickle_paths = glob.glob(markov_model_folder)
+        print(pickle_paths)
+        counter = 0
+        for path in pickle_paths:
+            if counter < 10:
+                print('loading' + path)
+                _, filename = os.path.split(path)
+                self._markovs[filename[:-6]] = self.load(path)
+                counter += 1
 
-def load(pickle_file_name):
-    with open(pickle_file_name, 'rb') as f:
-        markov = pickle.load(f)
-        return markov
+    @staticmethod
+    def save(markov, pickle_file_name):
+        with open(pickle_file_name, 'wb') as f:
+            pickle.dump(markov, f)
 
+    @staticmethod
+    def load(pickle_file_name):
+        with open(pickle_file_name, 'rb') as f:
+            markov = pickle.load(f)
+            return markov
+
+    def generate_random(self, start_string='', len=30):
+        print('start: ' + str(start_string))
+        author, markov = random.choice(list(self._markovs.items()))
+        return author, markov.generate_markov_text(start=start_string, size=len)
+
+    def read_json_file(self, file_name):
+        with codecs.open(file_name, encoding='utf-8') as fin:
+            return json.loads(fin.read())
+
+    def train(self):
+        json = self.read_json_file(data_access.get_project_folder() + 'src/python/notebooks/log-final.json')
+        base_path = json['folder_path']
+
+        authors = {}
+
+        for key in json['file_descriptors']:
+            values = json['file_descriptors'][key]
+            rel_path = values['rel_path']
+            if True:  # rel_path == 'arts_arthistory_aesthetics/' or rel_path == 'own_mixed_collection/':
+                file_name = values['file_name']
+                author_name = values['author_name']
+                abs_path = os.path.join(base_path + rel_path, file_name)
+                if author_name not in authors:
+                    authors[author_name] = []
+
+                authors[author_name].append(abs_path)
+
+        print(len(authors))
+        markovs = []
+        for key in authors:
+            if len(authors[key]) > 5:
+                print(key + ' ' + str(len(authors[key])))
+                mark = MarkovChainBackOff([], 2, 2)
+                for path in authors[key]:
+                    lines = open(path, 'r').readlines()
+                    mark.add_corpus(lines)
+                    print(len(lines))
+                if mark.curpus_size() > 10:
+                    mark.start()
+                    self.save(mark, key + '.pickle')
+                    mark.generate_markov_text('We should', size=25)
+                    markovs.append(mark)
 
 if __name__ == "__main__":
     doc = ['This is your first text', 'and here is your second text.']
@@ -106,6 +174,6 @@ if __name__ == "__main__":
     # mark.add_corpus(doc)
     # mark.start()
     # save(mark)
-    mark = load('markov.pickle')
-    mark.generate_markov_text('type a sentence that has at least n_grams words', size=25)
+    #mark = load('markov.pickle')
+    #mark.generate_markov_text('type a sentence that has at least n_grams words', size=25)
 

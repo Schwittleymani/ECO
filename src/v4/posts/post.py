@@ -18,6 +18,8 @@ from posts.image.image import AsciiHelper
 
 from posts.nails.nails import NailsSimilarityFinder
 
+from posts.markov.markov import MarkovManager
+
 
 class Post(object):
     def __init__(self, previous, text='', user='admin'):
@@ -129,7 +131,7 @@ class ImagePost(Post):
             if self._text is False:
                 self._attachment = self.path
                 self._style = "unformatted"
-                self._text = ""
+                self._text = "imagefuck"
 
 
 # some heavy, static variables
@@ -181,6 +183,23 @@ class NailsPost(Post):
 
         self._text = selected['sentence']
         self._user = selected['author'] + ' options: ' + str(options)
+        self._style = 'scroll'
+
+markovManager = MarkovManager()
+
+
+class MarkovPost(Post):
+    def __init__(self, previous):
+        super().__init__(previous)
+
+    def connection(self, previous):
+        start = ''
+        if len(previous.text().split()) > 3:
+            start = ' '.join(previous.text().split()[:3])
+
+        author, text = markovManager.generate_random(start_string=start, len=30)
+        self._text = text
+        self._user = author
         self._style = 'scroll'
 
 
