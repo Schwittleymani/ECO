@@ -14,6 +14,7 @@ var Spritzer = function (el) {
     this.currentTimer = null
 
     function processWord(word) {
+        console.log(word)
         var center = Math.floor(word.length / 2),
             letters = word.split('')
         return letters.map(function(letter, idx) {
@@ -58,7 +59,12 @@ var Spritzer = function (el) {
 
     this.render = function(text, wpm) {
         text = text.replace(/(\r\n|\n|\r)/gm,"");
-        this.words = text.replace(/^\s+|\s+|\n$/,'').split(/\s+/).map(processWord)
+        console.log(text)
+        //this.words = text.replace(/^\s+|\s+|\n$/,"")
+        this.words = text.split(" ")
+        console.log(this.words)
+        this.words = this.words.map(processWord)
+        console.log(this.words)
         delay = 60000 / wpm
 
         this.playing = true
