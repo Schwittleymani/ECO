@@ -1,10 +1,13 @@
 // Inspired by http://jsfiddle.net/vKZLn/1/
-var Spritzer = function (el) {
 
+var Spritzer = function (el) {
     el.classList.add('spritzed')
+
+    var offsetLeft = 300;
+
     el.style.padding = (parseInt(window.getComputedStyle(el)['font-size']) / 1.3) + 'px'
 
-	el.appendChild(document.createElement("div"))
+	//el.appendChild(document.createElement("div"))
 
     this.playing = true
 
@@ -27,8 +30,8 @@ var Spritzer = function (el) {
         var centerOffsetX = (highlight.offsetWidth / 2) + highlight.offsetLeft,
             centerOffsetY = (highlight.offsetHeight / 2) + highlight.offsetTop
         
-        wordEl.style.left = ((el.clientWidth / 2) - centerOffsetX) + 'px'
-        wordEl.style.top = ((el.clientHeight / 2) - centerOffsetY) + 'px'
+        wordEl.style.left = (offsetLeft - centerOffsetX) + 'px'
+        wordEl.style.top = (60 - centerOffsetY) + 'px'
     }
 
     var currentWord = 0,
@@ -36,7 +39,9 @@ var Spritzer = function (el) {
     
     var displayNextWord = function() {
         var word = this.words[currentWord++]
-        if (typeof word == 'undefined') return
+        if (typeof word == 'undefined') {
+            return
+        }
         // WTB> nlp.js...
         var hasPause = /^\(|[,\.\)]$/.test(word)
         
@@ -45,11 +50,14 @@ var Spritzer = function (el) {
         el.firstElementChild.innerHTML = word
         positionWord()
 
-        if (currentWord !== this.words.length)
-            this.currentTimer = setTimeout(displayNextWord, delay * (hasPause ? 2 : 1))
+        if (currentWord == this.words.length) {
+            currentWord = 0, delay
+        }
+        this.currentTimer = setTimeout(displayNextWord, delay * (hasPause ? 2 : 1))
     }.bind(this)
 
     this.render = function(text, wpm) {
+        text = text.replace(/(\r\n|\n|\r)/gm,"");
         this.words = text.replace(/^\s+|\s+|\n$/,'').split(/\s+/).map(processWord)
         delay = 60000 / wpm
 

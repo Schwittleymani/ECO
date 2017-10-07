@@ -40,22 +40,21 @@ function appendMsg(socketMsg) {
     // TODO let's also have a default style use its string representation on the top of the file.
     // this is magic number style and often leads to problems when another developer cannot read your mind
     console.log(style)
-    if(style == "unformatted") {
+    if(style === "unformatted") {
         msgObj.find('.msgTextDiv').text(text);
-    } else if (style == "formatted") {
+    } else if (style === "formatted") {
         msgObj.find('.msgTextPre').text(text);
-    } else if( style == "scroll") {
+    } else if( style === "scroll") {
         msgObj.find('.canScroll').addClass("scrollDiv");
         msgObj.find('.msgTextDiv').text(text);
         msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
-    } else if( style == "spritz") {
-        msgObj.find('.canScroll').addClass(nextMsgRight ? 'right' : 'left');
-        //var h1 = msgObj.append(document.createElement('h1'));
-        var spritz = new Spritzer(msgObj.find('.msgTextDiv').get(0))
-        spritz.render(text, 200)
+    } else if( style === "spritz") {
+        var spritz = new Spritzer(msgObj.find('.canScroll').get(0))
+        spritz.render(text, 230)
+
     }
 
-    if( attachment == null) {
+    if( attachment === null) {
         // remove the image tag
         msgObj.find('.image').remove()
     } else {
