@@ -9,14 +9,26 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <!-- https://github.com/iamcal/js-emoji -->
     <script type="text/javascript" src="static/emoji.min.js"></script>
+    <script type="text/javascript" src="static/Tone.min.js"></script>
     <link rel="stylesheet" href="static/style.css">
     <link rel="stylesheet" type="text/css" href="static/spritzer/Spritzer.css">
     <script src="static/spritzer/Spritzer.js"></script>
 
     <script type="text/javascript" charset="utf-8">
 
+        function getRandomInt(min, max) {
+          min = Math.ceil(min);
+          max = Math.floor(max);
+          return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+        }
+
         var doScrolling = true;
         $(document).ready(function() {
+            var synth = new Tone.PolySynth(6, Tone.Synth, {
+                "oscillator" : {
+                    "partials" : [0, 2, 3, 4],
+                }
+            }).toMaster();
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
             socket.on('connect', function() {
                 <!--socket.emit('my_event', {data: 'I\'m connected!'});-->
@@ -29,6 +41,21 @@
                     }, 1000);
                 }
 
+                var first = getRandomInt(100, 300);
+                var second = getRandomInt(100, 300);
+
+                synth.triggerAttack(first)
+                setTimeout(function() {
+                    synth.triggerRelease(first);
+                }, 300)
+
+                setTimeout(function() {
+                    synth.triggerAttack(second);
+                }, 400)
+
+                setTimeout(function() {
+                    synth.triggerRelease(second);
+                }, 700)
                 appendMsg(socketMsg);
             });
         });
