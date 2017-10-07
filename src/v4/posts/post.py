@@ -156,11 +156,11 @@ class RedditPost(Post):
     def connection(self, previous):
         generator.reset()
         generator.clear()
-        generator.length(150, 700).shannon_entropy(1.0, 10)
+        generator.length(30, 200).shannon_entropy(0.0, 10)
         generator.generate()
         self._text = generator.sentences()[0].text
         self._user = 'reddit'
-        self._style = 'scroll'
+        self._style = 'spritz'
 
 
 w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
@@ -199,7 +199,7 @@ class MarkovPost(Post):
 
         author, text = markovManager.generate_random(start_string=start, len=30)
         self._text = text
-        self._user = author
+        self._user = author + ' ~MARKOV'
         self._style = 'scroll'
 
 

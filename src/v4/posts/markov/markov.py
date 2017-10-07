@@ -105,13 +105,10 @@ class MarkovManager(object):
         print(markov_model_folder)
         pickle_paths = glob.glob(markov_model_folder)
         print(pickle_paths)
-        counter = 0
         for path in pickle_paths:
-            if counter < 10:
-                print('loading' + path)
-                _, filename = os.path.split(path)
-                self._markovs[filename[:-6]] = self.load(path)
-                counter += 1
+            print('loading' + path)
+            _, filename = os.path.split(path)
+            self._markovs[filename[:-6]] = self.load(path)
 
     @staticmethod
     def save(markov, pickle_file_name):
