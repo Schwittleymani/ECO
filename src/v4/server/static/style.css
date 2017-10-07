@@ -35,6 +35,14 @@ body
     100%{background-position:0% 82%}
 }
 
+#top
+{
+    position: sticky;
+    z-index: 999;
+    top: 10px;
+    left: 10px;
+}
+
 #top h1 {
     font-family: "Aki Lines";
     font-size: 50px;
@@ -58,7 +66,7 @@ body
     font-size: 25px;
     display: inline-block;
     text-align: left;
-    max-width: 900px;
+    max-width: 1000px;
     min-width: 450px;
     padding: 15px 20px;
     border-radius: 15px;
@@ -89,8 +97,13 @@ body
     font-family: monospace;
 }
 
+.spritzDiv {
+
+}
+
 .scrollDiv {
     height: 200px;
+    z-index: 99;
     overflow: hidden;
     position: relative;
     vertical-align: bottom;
@@ -109,9 +122,9 @@ body
     -webkit-transform:translateY(0%);
     transform:translateY(0%);
     /* Apply animation to this element */
-    -moz-animation: scrollDiv 10s linear infinite reverse;
-    -webkit-animation: scrollDiv 10s linear infinite reverse;
-    animation: scrollDiv 10s linear infinite reverse;
+    -moz-animation: scrollDiv 15s linear infinite reverse;
+    -webkit-animation: scrollDiv 15s linear infinite reverse;
+    animation: scrollDiv 15s linear infinite reverse;
 }
 
 /* Move it (define the animation) */
@@ -155,7 +168,8 @@ body
 }
 
 .button {
+    z-index: 1000;
     position: sticky;
-    top: 10px;
+    top: 100px;
     left: 10px;
 }

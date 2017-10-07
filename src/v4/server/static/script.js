@@ -1,13 +1,11 @@
 var log_div, template, nextMsgRight, emoji;
 
 window.onload = function () {
-    log_div = $('#log')
-    template = $('#msgTemplate')
-    nextMsgRight = false
+    log_div = $('#log');
+    template = $('#msgTemplate');
+    nextMsgRight = false;
     emoji = new EmojiConvertor();
- }
-
-
+};
 
 function appendMsg(socketMsg) {
     var text = emoji.replace_colons(socketMsg.text);
@@ -35,8 +33,6 @@ function appendMsg(socketMsg) {
 
     msgObj.find('.timeStamp').text(user + ": " + timestamp)
 
-
-
     // checking whether the text should be added to a
     // <pre> (pre-formatted) or <div> tag
     // important for pre-formatted text like ascii stuff
@@ -52,6 +48,11 @@ function appendMsg(socketMsg) {
         msgObj.find('.canScroll').addClass("scrollDiv");
         msgObj.find('.msgTextDiv').text(text);
         msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
+    } else if( style == "spritz") {
+        msgObj.find('.canScroll').addClass(nextMsgRight ? 'right' : 'left');
+        //var h1 = msgObj.append(document.createElement('h1'));
+        var spritz = new Spritzer(msgObj.find('.msgTextDiv').get(0))
+        spritz.render(text, 200)
     }
 
     if( attachment == null) {
