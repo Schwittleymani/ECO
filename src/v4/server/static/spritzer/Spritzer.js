@@ -59,6 +59,7 @@ var Spritzer = function (el) {
 
     this.render = function(text, wpm) {
         text = text.replace(/(\r\n|\n|\r)/gm,"");
+        text = text.replace(/ {2,}/g, ' ');
         console.log(text)
         //this.words = text.replace(/^\s+|\s+|\n$/,"")
         this.words = text.split(" ")
