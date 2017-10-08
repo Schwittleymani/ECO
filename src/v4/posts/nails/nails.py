@@ -21,7 +21,11 @@ class NailsSimilarityFinder(object):
 
         vectors = []
         for word in words:
-            vectors.append(self._model[word])
+            v = self._model[word]
+            vectors.append(v)
+
+        if len(vectors) == 0:
+            print('if this error occurs, we should initialize the vectors list with one random 300dim vector...')
 
         vector = np.mean(vectors, axis=0)
         #print(model.similar_by_vector(vector))
