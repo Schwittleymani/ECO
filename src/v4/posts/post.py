@@ -137,6 +137,7 @@ class ImagePost(Post):
 
 # some heavy, static variables
 feather_file = 'data/reddit/test_reddit_4chan.feather'
+print('Loading ' + feather_file + ' for RedditPost')
 block_words = open('data/reddit/blocked_words.txt').readlines()
 block_chars = "".join(open('data/reddit/blocked_chars.txt').readlines())
 data = PandasData(feather_file, block_words=block_words)
