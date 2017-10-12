@@ -20,6 +20,7 @@ from posts.nails.nails import NailsSimilarityFinder
 
 from posts.markov.markov import MarkovManager
 
+from posts.d2vsim.d2vsim import Doc2VecSimilarityManager
 
 class Post(object):
     def __init__(self, previous, text='', user='admin'):
@@ -164,6 +165,7 @@ class RedditPost(Post):
 
 
 w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
+print('Loading w2v model: ' + w2v_path)
 model = gensim.models.Word2Vec.load(data_access.get_model_folder() + w2v_path)
 nailsFinder = NailsSimilarityFinder(model)
 
@@ -201,6 +203,20 @@ class MarkovPost(Post):
         self._text = text
         self._user = author + ' ~MARKOV'
         self._style = 'scroll'
+
+
+doc2vecSimilarityManager = Doc2VecSimilarityManager()
+
+
+class Doc2VecSimilarityPost(Post):
+    def __init__(self, previous):
+        super().__init__(previous)
+
+    def connection(self, previous):
+        sentence, author = doc2vecSimilarityManager.get_random_similar(previous.text())
+        self._text = sentence
+        self._user = author + ' ~D2V'
+        self._style = 'spritz'
 
 
 class AsciiPost(Post):

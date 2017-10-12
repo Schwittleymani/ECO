@@ -4,9 +4,10 @@ from gensim.models.doc2vec import Doc2Vec,TaggedDocument
 import textacy
 from tqdm import tqdm, trange
 import json
-
+import random
 
 base_folder = data_access.get_data_folder() + 'NAIL_DATAFIELD_txt/parsed_v3/merged/'
+#base_folder = data_access.get_data_folder() + 'models/rvae/'
 
 def name_to_file_name(author_name, file_format='txt'):
     return (author_name + '.' + file_format).replace(",", "_")
@@ -80,7 +81,7 @@ class StreamTaggedDocumentFile:
 
 class Doc2VecSimilarities:
     def __init__(self, model_file_path, text_file_path):
-        print("Loading model")
+        print("Loading model: " + model_file_path)
         self.model = Doc2Vec.load(model_file_path)
         print("Reading corpus")
         self.text = list(textacy.fileio.read.read_file_lines(text_file_path))
@@ -115,7 +116,11 @@ class Doc2VecSimilarities:
 
 class AuthorDoc2VecSimilarities(Doc2VecSimilarities):
     def __init__(self, author_name):
+        self._author_name = author_name
         Doc2VecSimilarities.__init__(self, author_model_path(author_name), get_author_file(author_name))
+
+    def author(self):
+        return self._author_name
 
 
 def create_model(corpus_file_path, model_file_path):
@@ -136,6 +141,36 @@ def create_model(corpus_file_path, model_file_path):
 def create_author_model(author_name):
     create_model(get_author_file(author_name), author_model_path(author_name))
 
+
+class Doc2VecSimilarityManager(object):
+    def __init__(self):
+        self.load_all()
+
+    def load_all(self):
+        self.sims = []
+        self.sims.append(AuthorDoc2VecSimilarities("Chomsky,Noam"))
+        self.sims.append(AuthorDoc2VecSimilarities("Ascott,Roy"))
+        self.sims.append(AuthorDoc2VecSimilarities("Dean,Jodi"))
+        self.sims.append(AuthorDoc2VecSimilarities("Featherstone,Mike"))
+        self.sims.append(AuthorDoc2VecSimilarities("Goldman,Emma"))
+        self.sims.append(AuthorDoc2VecSimilarities("Hayles,Katherine"))
+        self.sims.append(AuthorDoc2VecSimilarities("Lovink,Geert"))
+        self.sims.append(AuthorDoc2VecSimilarities("Thacker,Eugene"))
+        self.sims.append(AuthorDoc2VecSimilarities("Turkle,Sherry"))
+        self.sims.append(AuthorDoc2VecSimilarities("Chomsky,Noam_SPLIT-100000samples"))
+        self.sims.append(AuthorDoc2VecSimilarities("Ascott,Roy_SPLIT-100000samples"))
+        self.sims.append(AuthorDoc2VecSimilarities("Dean,Jodi_SPLIT-100000samples"))
+        self.sims.append(AuthorDoc2VecSimilarities("Featherstone,Mike_SPLIT-100000samples"))
+        #self.sims.append(AuthorDoc2VecSimilarities("Goldman,Emma_SPLIT-100000samples"))
+        self.sims.append(AuthorDoc2VecSimilarities("Hayles,Katherine_SPLIT-100000samples"))
+        self.sims.append(AuthorDoc2VecSimilarities("Lovink,Geert_SPLIT-100000samples"))
+        self.sims.append(AuthorDoc2VecSimilarities("Thacker,Eugene_SPLIT-100000samples"))
+        self.sims.append(AuthorDoc2VecSimilarities("Turkle,Sherry_SPLIT-100000samples"))
+
+    def get_random_similar(self, sentence):
+        random_corpus = random.choice(self.sims)
+        return random_corpus.get_top_n(sentence=sentence, top_n=2)[0], random_corpus.author()
+
 if __name__ == "__main__":
     #create_author_model("Chomsky,Noam")
     #create_author_model("Ascott,Roy")
@@ -146,17 +181,21 @@ if __name__ == "__main__":
     #create_author_model("Lovink,Geert")
     #create_author_model("Thacker,Eugene")
     #create_author_model("Turkle,Sherry")
+    #create_author_model("Chomsky,Noam_SPLIT-100000samples")
+    #create_author_model("Dean,Jodi_SPLIT-100000samples")
+    #create_author_model("Featherstone,Mike_SPLIT-100000samples")
+    #create_author_model("Hayles,Katherine_SPLIT-100000samples")
+    #create_author_model("Lovink,Geert_SPLIT-100000samples")
+    #create_author_model("Thacker,Eugene_SPLIT-100000samples")
+    #create_author_model("Turkle,Sherry_SPLIT-100000samples")
 
-    sims = []
-    #sims.append(AuthorDoc2VecSimilarities("Chomsky,Noam"))
-    #sims.append(AuthorDoc2VecSimilarities("Ascott,Roy"))
-    #sims.append(AuthorDoc2VecSimilarities("Dean,Jodi"))
-    #sims.append(AuthorDoc2VecSimilarities("Featherstone,Mike"))
-    #sims.append(AuthorDoc2VecSimilarities("Goldman,Emma"))
-    #sims.append(AuthorDoc2VecSimilarities("Hayles,Katherine"))
-    #sims.append(AuthorDoc2VecSimilarities("Lovink,Geert"))
-    #sims.append(AuthorDoc2VecSimilarities("Thacker,Eugene"))
-    #sims.append(AuthorDoc2VecSimilarities("Turkle,Sherry"))
+    sentence = "The mayor of Puerto Rico's largest city said President Trump is the “Hater in Chief” after Trump said the U.S. response to the crisis in the U.S. territory couldn’t last “forever.”"
 
-    #print(json.dumps(sim.get_top_n("West germany is the shit. literally it is shit", 10), indent=2))
+    manager = Doc2VecSimilarityManager()
+    res = manager.get_random_similar(sentence=sentence)
+    print(res)
+    #sim = AuthorDoc2VecSimilarities("Lovink,Geert")
+    #sim2 = AuthorDoc2VecSimilarities("Lovink,Geert_SPLIT-100000samples")
+    #print(json.dumps(sim.get_top_n(sentence, 10), indent=2))
+    #print(json.dumps(sim2.get_top_n(sentence, 10), indent=2))
     #print(json.dumps(sim.get_all_more_similar_then("fact is freedom in Nicaragua is a fraud .", 0.55, trash_scores=False), indent=2))

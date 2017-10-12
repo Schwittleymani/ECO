@@ -1,5 +1,5 @@
 import random
-from posts.post import StartPost, KaomojiPost, ImagePost, RedditPost, EmojiPost, NailsPost, MarkovPost
+from posts.post import StartPost, KaomojiPost, ImagePost, RedditPost, EmojiPost, NailsPost, MarkovPost, Doc2VecSimilarityPost
 
 post_types = {
     #"POST_TYPE_KAOMOJI": KaomojiPost,
@@ -7,7 +7,8 @@ post_types = {
     "POST_TYPE_REDDIT": RedditPost,
     #"POST_TYPE_EMOJI": EmojiPost,
     "POST_TYPE_NAILS": NailsPost,
-    'POST_TYPE_MARKOV': MarkovPost
+    'POST_TYPE_MARKOV': MarkovPost,
+    'POST_TYPE_D2V': Doc2VecSimilarityPost
 }
 
 
