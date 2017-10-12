@@ -104,9 +104,9 @@ class MarkovManager(object):
         markov_model_folder = data_access.get_model_folder() + 'markov/' + '*.pickle'
         print(markov_model_folder)
         pickle_paths = glob.glob(markov_model_folder)
-        print(pickle_paths)
+        #print(pickle_paths)
         for path in pickle_paths:
-            print('loading' + path)
+            print('loading ' + path)
             _, filename = os.path.split(path)
             self._markovs[filename[:-6]] = self.load(path)
 
