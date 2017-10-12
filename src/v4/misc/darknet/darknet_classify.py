@@ -121,7 +121,9 @@ def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
     return res
 
 
-if __name__ == "__main__":
+import sys
+
+def classify_4chan_folders():
     net = load_net("cfg/densenet201.cfg", "weights/densenet201.weights", 0)
     meta = load_meta("cfg/imagenet1k.data")
 
@@ -133,7 +135,11 @@ if __name__ == "__main__":
     # mypath = '/mnt/drive1/4chan_scrape/hc/'
     # mypath = '/mnt/drive1/4chan_scrape/ic/'
     # mypath = '/mnt/drive1/4chan_scrape/g/'
-    mypath = '/mnt/drive1/4chan_scrape/tv/'
+    # mypath = '/mnt/drive1/4chan_scrape/tv/'
+    # mypath = '/mnt/drive1/4chan_scrape/fit/'
+    # mypath = '/mnt/drive1/4chan_scrape/pol/'
+    # mypath = '/mnt/drive1/4chan_scrape/b/'
+    mypath = '/mnt/drive1/4chan_scrape/s/'
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
     saved = {}
@@ -141,7 +147,7 @@ if __name__ == "__main__":
     counter = 0
     for file in onlyfiles:
         path = join(mypath, file)
-        print(path)
+
         try:
             with Image.open(path) as img:
                 split = img.split()
@@ -161,11 +167,76 @@ if __name__ == "__main__":
                 img.close()
         except:
             pass
+        print(path)
+        return
     print(saved)
 
     # with open('test_out_ffffound.json', 'w') as fp:
     # with open('test_out_4chan_hc.json', 'w') as fp:
     # with open('test_out_4chan_ic.json', 'w') as fp:
     # with open('test_out_4chan_g.json', 'w') as fp:
-    with open('test_out_4chan_tv.json', 'w') as fp:
+    # with open('test_out_4chan_tv.json', 'w') as fp:
+    # with open('test_out_4chan_pol.json', 'w') as fp:
+    # with open('test_out_4chan_fit.json', 'w') as fp:
+    # with open('test_out_4chan_b.json', 'w') as fp:
+    with open('test_out_4chan_s.json', 'w') as fp:
         json.dump(saved, fp)
+
+
+def classify_non_porn():
+    net = load_net("cfg/densenet201.cfg", "weights/densenet201.weights", 0)
+    meta = load_meta("cfg/imagenet1k.data")
+
+    import json
+
+    files = []
+    files.append('../../data/porn_detector/4chan_b_not_porn.txt')
+    files.append('../../data/porn_detector/4chan_fit_not_porn.txt')
+    files.append('../../data/porn_detector/4chan_g_not_porn.txt')
+    files.append('../../data/porn_detector/4chan_ic_not_porn.txt')
+    files.append('../../data/porn_detector/4chan_pol_not_porn.txt')
+    files.append('../../data/porn_detector/4chan_tv_not_porn.txt')
+
+    max_lines = 0
+    for file in files:
+        opened = open(file, 'r').readlines()
+        max_lines += len(opened)
+
+    saved = {}
+
+    counter = 0
+    for file in files:
+        opened = open(file, 'r').readlines()
+        for line in opened:
+            line = line.rstrip()
+            try:
+                with Image.open(line) as img:
+                    split = img.split()
+
+                    print(len(split))
+                    if len(split) == 3:
+                        im = load_image(line, 0, 0)
+                        r = classify(net, meta, im)
+
+                        if r[0] > 0.7:
+                            print(str(counter) + ' / ' + str(max_lines))
+                            saved[line] = r[:10]
+                            free_image(im)
+                    else:
+                        print("error")
+                    img.close()
+            except:
+                print(line)
+
+            counter += 1
+            #if counter > 10:
+            #    break
+
+    print(saved)
+
+    with open('4chan_non_porn_classified.json', 'w') as fp:
+        json.dump(saved, fp)
+
+if __name__ == "__main__":
+    classify_non_porn()
+    #classify_4chan_folders()
