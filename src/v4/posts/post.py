@@ -91,7 +91,7 @@ class KaomojiPost(Post):
         self.kaomoji = kao.find(words)
         if not self.kaomoji:
             self.kaomoji = kao.random()
-        self._text = self.kaomoji.kaomoji() + self.kaomoji.emotions()
+        self._text = str(self.kaomoji.kaomoji())
         self._user = self.kaomoji.emotions()
 
 
