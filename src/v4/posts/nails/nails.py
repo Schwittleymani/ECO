@@ -11,6 +11,7 @@ class NailsSimilarityFinder(object):
         self._model = w2v_model
 
         feather_path = 'parsed_v3_log-final_arts_arthistory_aesthetics_bigger_than_2.feather'
+        print('Loading ' + feather_path)
         self._dataframe = feather.read_dataframe(data_access.get_model_folder() + feather_path)
 
     # sentence to vector via w2v
