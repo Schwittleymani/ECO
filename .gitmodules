@@ -1,3 +1,6 @@
 [submodule "src/v4/pytorch_RVAE"]
 	path = src/v4/pytorch_RVAE
 	url = https://github.com/Schwittleymani/pytorch_RVAE
+[submodule "src/v4/posts/DeepMoji"]
+	path = src/v4/posts/DeepMoji
+	url = git@github.com:Schwittleymani/DeepMoji
