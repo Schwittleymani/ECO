@@ -22,6 +22,8 @@ from posts.markov.markov import MarkovManager
 
 from posts.d2vsim.d2vsim import Doc2VecSimilarityManager
 
+from posts.DeepMoji.deepmojiwrapper import DeepMojiWrapper
+
 class Post(object):
     def __init__(self, previous, text='', user='admin'):
         self._text = text
@@ -145,6 +147,8 @@ data.load()
 df = data.df
 generator = Generator(PandasFilter(df), block_words=block_words, block_chars=block_chars)
 
+deepmoji = DeepMojiWrapper()
+
 
 class RedditPost(Post):
     def __init__(self, previous):
@@ -160,7 +164,9 @@ class RedditPost(Post):
         generator.clear()
         generator.length(30, 200).shannon_entropy(0.0, 10)
         generator.generate()
-        self._text = generator.sentences()[0].text
+        t = generator.sentences()[0].text
+        emoji = deepmoji.predict(t)
+        self._text = t + emoji[0]
         self._user = 'reddit'
         self._style = 'spritz'
 
@@ -184,7 +190,9 @@ class NailsPost(Post):
         options = selection[1]
         selected = selection[0]
 
-        self._text = selected['sentence']
+        emoji = deepmoji.predict(selected['author'])[0]
+
+        self._text = selected['sentence'] + emoji +';'
         self._user = selected['author'] + ' options: ' + str(options)
         self._style = 'scroll'
 

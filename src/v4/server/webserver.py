@@ -25,7 +25,7 @@ def msg():
 
 @socketio.on('connect')
 def client_connect():
-    send_msg({'text': 'hello', 'user': 'connected'})
+    send_msg({'text': 'hello &#x1F601;', 'user': 'connected &#x1F601;'})
 
 
 def send_msg(data, bcast=False):

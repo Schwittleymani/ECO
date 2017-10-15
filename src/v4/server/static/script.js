@@ -31,7 +31,7 @@ function appendMsg(socketMsg) {
         //log_div.find('li:first').remove()
     }
 
-    msgObj.find('.timeStamp').text(user + ": " + timestamp)
+    msgObj.find('.timeStamp').html(emojione.toImage(user) + ": " + timestamp);
 
     // checking whether the text should be added to a
     // <pre> (pre-formatted) or <div> tag
@@ -39,29 +39,30 @@ function appendMsg(socketMsg) {
     // TODO style is supposed to be a more complex object, but for now... ok
     // TODO let's also have a default style use its string representation on the top of the file.
     // this is magic number style and often leads to problems when another developer cannot read your mind
-    console.log(style)
+    console.log(msgObj.find('.msgTextDiv'));
+    console.log(style);
+    console.log(text)
     if(style === "unformatted") {
-        msgObj.find('.msgTextDiv').text(text);
+        msgObj.find('.msgTextDiv').html('<p>' + emojione.toImage(text) + '</p>');
     } else if (style === "formatted") {
-        msgObj.find('.msgTextPre').text(text);
+        msgObj.find('.msgTextPre').html('<p>' + emojione.toImage(text) + '</p>');
     } else if( style === "scroll") {
         msgObj.find('.canScroll').addClass("scrollDiv");
-        msgObj.find('.msgTextDiv').text(text);
+        msgObj.find('.msgTextDiv').html('<p>' + emojione.toImage(text) + '</p>');
         msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
     } else if( style === "spritz") {
-        var spritz = new Spritzer(msgObj.find('.canScroll').get(0))
-        spritz.render(text, 230)
-
+        var spritz = new Spritzer(msgObj.find('.canScroll').get(0));
+        spritz.render(text, 230);
     }
 
     if( attachment === null) {
         // remove the image tag
-        msgObj.find('.image').remove()
+        msgObj.find('.image').remove();
     } else {
         // append the image and remove the text
         msgObj.find('.image').attr( 'src', attachment );
-        msgObj.find('.msgTextDiv').remove()
-        msgObj.find('.msgTextPre').remove()
+        msgObj.find('.msgTextDiv').remove();
+        msgObj.find('.msgTextPre').remove();
     }
 
     // adds some css class to divs for left and right style
@@ -71,8 +72,8 @@ function appendMsg(socketMsg) {
     msgObj.effect( "pulsate" );
 
     // adds the customized msg to the log
-    log_div.append(msgObj)
+    log_div.append(msgObj);
 
-    nextMsgRight = !nextMsgRight
+    nextMsgRight = !nextMsgRight;
 }
 
