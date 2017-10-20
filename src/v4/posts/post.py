@@ -176,14 +176,11 @@ class NailsPost(Post):
         super().__init__(previous)
 
     def connection(self, previous):
-        selection = nailsFinder.get_similar(previous.text())
-        options = selection[1]
-        selected = selection[0]
+        author, sentence, options = nailsFinder.get_similar(previous.text())
+        emoji = deepmoji.predict(author)[0]
 
-        emoji = deepmoji.predict(selected['author'])[0]
-
-        self._text = selected['sentence'] + emoji +';'
-        self._user = selected['author'] + ' options: ' + str(options)
+        self._text = sentence + emoji + ';'
+        self._user = author + ' options: ' + str(options)
         self._style = 'scroll'
 
 markovManager = MarkovManager()

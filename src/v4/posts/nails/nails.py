@@ -1,7 +1,8 @@
-import random
 import time
 import numpy as np
 import feather
+import operator
+import gensim
 from nltk.corpus import stopwords
 from misc import data_access
 
@@ -37,6 +38,21 @@ class NailsSimilarityFinder(object):
         vector = np.mean(vectors, axis=0)
         return vector
 
+    def calc_closest_index(self, df, target_vector):
+        vectors = {}
+        for i in range(len(df)):
+            sen = df.iloc[i]['sentence']
+            vec = self.to_vector(sen)
+            vectors[i] = vec
+
+        distances = {}
+        for index, vector in vectors.items():
+            d = np.linalg.norm(vector-target_vector)
+            distances[index] = d
+
+        sorted_distances = sorted(distances.items(), key=operator.itemgetter(1))
+        return int(sorted_distances[0][0])
+
     def get_similar(self, sentence):
         ldf = self._dataframe
         sentence_vec = self.to_vector(sentence)
@@ -53,15 +69,23 @@ class NailsSimilarityFinder(object):
                 print('stopped at index ' + str(i))
                 break
 
-        index = random.randint(0, len(ldf) - 1)
-        return ldf.iloc[index], num_selection
+        index = self.calc_closest_index(ldf, sentence_vec)
+        author = ldf.iloc[index]['author']
+        sentence = ldf.iloc[index]['sentence']
+        #source = ldf.iloc[index]['source']
+        options = num_selection
+        return author, sentence, options
 
 if __name__ == "__main__":
-    finder = NailsSimilarityFinder()
+    w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
+    print('Loading w2v model: ' + w2v_path)
+    model = gensim.models.Word2Vec.load(data_access.get_model_folder() + w2v_path)
+    finder = NailsSimilarityFinder(model)
     start_time = time.time()
-    selection = finder.get_similar('Geeks and freaks become what they are negatively , through the exclusion by others , but together form a class .')
-    print('author: ' + selection['author'])
-    print('sentence: ' + selection['sentence'])
-    print('source: ' + selection['filename'])
+    author, sentence, options = finder.get_similar('Geeks and freaks become what they are negatively , through the exclusion by others , but together form a class .')
+    print('author: ' + author)
+    print('sentence: ' + sentence)
+    #print('source: ' + source)
+    print('options: ' + str(options))
     end_time = time.time() - start_time
-    print(str(end_time) + ' seconds.' )
+    print(str(end_time) + ' seconds.')
