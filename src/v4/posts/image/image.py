@@ -69,7 +69,7 @@ class ImageHelper(object):
         self._json = json.loads(open(path, 'r').readlines()[0])
 
     def random(self):
-        return os.path.basename(random.choice(list(self._json.keys())))
+        return random.choice(list(self._json.keys()))[19:]
 
     def find(self, words):
         detected = {}
@@ -77,18 +77,18 @@ class ImageHelper(object):
             for category in self._json[key]:
                 for word in words:
                     if word.lower() in category[0] and len(word) > 6:
-                        detected[os.path.basename(key)] = category[1]
+                        detected[key] = category[1]
 
         sorted_detected = sorted(detected.items(), key=operator.itemgetter(1), reverse=True)
         if not sorted_detected:
-            return None
-        return sorted_detected[0][0]
+            return self.random()
+        return sorted_detected[0][0][19:]
 
 if __name__ == '__main__':
-    image_helper = ImageHelper(path='data/image/ffffound_image_categories.json')
-    result = image_helper.find(['scoreboard', 'packet', 'horse', 'pig', 'laptop'])
+    image_helper = ImageHelper(path='data/image/4chan_non_porn_classified.json')
+    result = image_helper.find(['computer', 'pc', 'keyboard'])
     print(result)
 
-    helper = AsciiHelper()
-    ascii = helper.image2ascii(helper.load('server/static/image/gif.gif'))
-    print(ascii)
+    #helper = AsciiHelper()
+    #ascii = helper.image2ascii(helper.load('server/static/image/gif.gif'))
+    #print(ascii)

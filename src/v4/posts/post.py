@@ -1,8 +1,6 @@
-from enum import Enum
 import json
 import time
 import datetime
-import random
 import gensim
 import os
 import socket
@@ -23,6 +21,7 @@ from posts.markov.markov import MarkovManager
 from posts.d2vsim.d2vsim import Doc2VecSimilarityManager
 
 from posts.DeepMoji.deepmojiwrapper import DeepMojiWrapper
+
 
 class Post(object):
     def __init__(self, previous, text='', user='admin'):
@@ -51,8 +50,6 @@ class Post(object):
     def text(self):
         return self._text
 
-
-    # TODO for what?
     def msg_dict(self):
         """
         returns a dict of the post
@@ -94,12 +91,10 @@ class KaomojiPost(Post):
         if not self.kaomoji:
             self.kaomoji = kao.random()
         self._text = str(self.kaomoji.kaomoji())
-        self._user = self.kaomoji.emotions()
+        self._user = ' '.join(self.kaomoji.emotions())
 
 
-image_helper = ImageHelper(path='data/image/ffffound_image_categories.json')
-#image_helper = ImageHelper(path='data/image/test_out_4chan_hc.json')
-#image_helper = ImageHelper(path='data/image/test_out_4chan_g.json')
+image_helper = ImageHelper(path=data_access.get_model_folder() + '4chan_non_porn_classified.json')
 ascii_helper = AsciiHelper()
 
 
@@ -111,14 +106,9 @@ class ImagePost(Post):
         self._text = previous.text()
 
         if socket.gethostname() == 'lyrik':
-            image_name = image_helper.find(self._text.split())
-            if image_name is None:
-                image_name = image_helper.random()
-
-            image_path = os.path.join('static/image/ffffound_scrape/ffffound_images/', image_name)
-            #image_path = os.path.join('static/image/4chan_hc/', image_name)
-            #image_path = os.path.join('static/image/4chan_g/', image_name)
-            self.path = image_path
+            self.path = image_helper.find(self._text.split())
+            self.path = os.path.join('static/image/', self.path)
+            print(self.path)
         else:
             self.path = 'static/image/gif.gif'
 
@@ -246,5 +236,12 @@ class EmojiPost(Post):
         super().__init__(previous)
 
     def connection(self, previous):
-        self._text = 'i like :smiley:'
-        self._user = "emo"
+        if previous.text() == "":
+            emojis = deepmoji.random()
+        else:
+            emojis = deepmoji.predict(previous.text())
+        self._text = ''
+        for emoji in emojis:
+            self._text += emoji
+        self._user = 'emo mojo'
+        self._style = 'unformatted'
