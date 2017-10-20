@@ -4,6 +4,8 @@ import datetime
 import gensim
 import os
 import socket
+import giphypop
+import requests
 from misc import data_access
 
 from posts.reddit.generator import Generator
@@ -242,3 +244,36 @@ class EmojiPost(Post):
             self._text += emoji
         self._user = 'emo mojo'
         self._style = 'unformatted'
+
+
+giphy = giphypop.Giphy()
+
+
+class GifPost(Post):
+    def __init__(self, previous):
+        super().__init__(previous)
+
+    def download_gif(self, keywords, url):
+        filename = keywords[:30] + '.gif'
+        path = data_access.get_model_folder() + 'gifs/' + filename
+        print('saving to ' + path)
+        file = open(path, 'wb')
+        file.write(requests.get(url).content)
+        return filename
+
+    def connection(self, previous):
+        try:
+            result = [x for x in giphy.search(previous.text())]
+            filename = self.download_gif(previous.text(), result[0].media_url)
+            path = 'static/image/gifs/' + filename
+            print('loading from ' + path)
+        except:
+            result = [x for x in giphy.search('computer cyber space')]
+            filename = self.download_gif(previous.text(), result[0].media_url)
+            path = 'static/image/gifs/' + filename
+            print('loading from ' + path)
+
+        self._user = 'giphy'
+        self._style = 'formatted'
+        self._text = previous.text()
+        self._attachment = path
