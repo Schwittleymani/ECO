@@ -3,6 +3,7 @@ import time
 import datetime
 import gensim
 import os
+import random
 import socket
 import giphypop
 import requests
@@ -26,12 +27,16 @@ from posts.DeepMoji.deepmojiwrapper import DeepMojiWrapper
 
 
 class Post(object):
-    def __init__(self, previous, text='', user='admin'):
+    def __init__(self, previous, posttype, text='', user='admin'):
         self._text = text
         self._user = user
+        self._type = posttype
         self._attachment = None
         self._style = 'unformatted'
         self._timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+
+        if previous is not None:
+            print(previous.type() + ' -> ' + self.type())
 
         self.connection(previous)
 
@@ -52,6 +57,9 @@ class Post(object):
     def text(self):
         return self._text
 
+    def type(self):
+        return self._type
+
     def msg_dict(self):
         """
         returns a dict of the post
@@ -61,7 +69,8 @@ class Post(object):
             'text': self._text,
             'attachment': self._attachment,
             'style': self._style,
-            'timestamp': self._timestamp
+            'timestamp': self._timestamp,
+            'type': self._type
         }
 
 
@@ -69,22 +78,23 @@ class StartPost(Post):
     """
     this post is just there for the initial post
     because all new posts require a previous post
-
     this is a way to define the starting topic
     """
-    def __init__(self):
-        super().__init__(None, text='welcome')
+
+    def __init__(self, posttype):
+        super().__init__(None, posttype, text='welcome', user='eco')
 
     def connection(self, previous=None):
         pass
+
 
 # some static variable
 kao = KaomojiHelp()
 
 
 class KaomojiPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
+    def __init__(self, previous, posttype):
+        super().__init__(previous, posttype)
         self.kaomoji = kao.random()
 
     def connection(self, previous):
@@ -101,8 +111,8 @@ ascii_helper = AsciiHelper()
 
 
 class ImagePost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
+    def __init__(self, previous, posttype):
+        super().__init__(previous, posttype)
 
     def connection(self, previous):
         self._text = previous.text()
@@ -130,7 +140,7 @@ class ImagePost(Post):
 
 
 # some heavy, static variables
-feather_file = 'data/reddit/test_reddit_4chan.feather'
+feather_file = data_access.get_model_folder() + '/test_reddit_4chan.feather'
 print('Loading ' + feather_file + ' for RedditPost')
 block_words = open('data/reddit/blocked_words.txt').readlines()
 block_chars = "".join(open('data/reddit/blocked_chars.txt').readlines())
@@ -143,13 +153,13 @@ deepmoji = DeepMojiWrapper()
 
 
 class RedditPost(Post):
-    def __init__(self, previous):
+    def __init__(self, previous, posttype):
         """
         uses a class that generates(filters) a new post from reddit/4chan
         this class can be more detailed parametrized. check Generator
         :param previous:
         """
-        super().__init__(previous)
+        super().__init__(previous, posttype)
 
     def connection(self, previous):
         generator.reset()
@@ -158,7 +168,7 @@ class RedditPost(Post):
         generator.generate()
         t = generator.sentences()[0].text
         emoji = deepmoji.predict(t)
-        self._text = t + emoji[0]
+        self._text = t + ' '+ emoji[0]
         self._user = 'reddit'
         self._style = 'spritz'
 
@@ -170,27 +180,28 @@ nailsFinder = NailsSimilarityFinder(model)
 
 
 class NailsPost(Post):
-    def __init__(self, previous):
+    def __init__(self, previous, posttype):
         """
         uses a class that generates(filters) a new post from nails corpus
         :param previous:
         """
-        super().__init__(previous)
+        super().__init__(previous, posttype)
 
     def connection(self, previous):
         author, sentence, options = nailsFinder.get_similar(previous.text())
         emoji = deepmoji.predict(author)[0]
 
-        self._text = sentence + emoji + ';'
+        self._text = sentence + emoji
         self._user = author + ' options: ' + str(options)
         self._style = 'scroll'
+
 
 markovManager = MarkovManager()
 
 
 class MarkovPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
+    def __init__(self, previous, posttype):
+        super().__init__(previous, posttype)
 
     def connection(self, previous):
         start = ''
@@ -207,8 +218,8 @@ doc2vecSimilarityManager = Doc2VecSimilarityManager()
 
 
 class Doc2VecSimilarityPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
+    def __init__(self, previous, posttype):
+        super().__init__(previous, posttype)
 
     def connection(self, previous):
         sentence, author = doc2vecSimilarityManager.get_random_similar(previous.text())
@@ -218,8 +229,8 @@ class Doc2VecSimilarityPost(Post):
 
 
 class AsciiPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
+    def __init__(self, previous, posttype):
+        super().__init__(previous, posttype)
 
     def connection(self, previous):
         self.butterfly = open('data/ascii/butterfly.txt', 'r').readlines()
@@ -231,17 +242,21 @@ class AsciiPost(Post):
 
 
 class EmojiPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
+    def __init__(self, previous, posttype):
+        super().__init__(previous, posttype)
 
     def connection(self, previous):
         if previous.text() == "":
-            emojis = deepmoji.random()
+            emojis = deepmoji.random(count=25)
         else:
             emojis = deepmoji.predict(previous.text())
         self._text = ''
-        for emoji in emojis:
-            self._text += emoji
+
+        amount = random.randint(1, 10)
+        for i in range(amount):
+            for emoji in emojis:
+                self._text += emoji
+
         self._user = 'emo mojo'
         self._style = 'unformatted'
 
@@ -250,8 +265,8 @@ giphy = giphypop.Giphy()
 
 
 class GifPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
+    def __init__(self, previous, posttype):
+        super().__init__(previous, posttype)
 
     def download_gif(self, keywords, url):
         filename = keywords[:30] + '.gif'
@@ -268,8 +283,9 @@ class GifPost(Post):
             path = 'static/image/gifs/' + filename
             print('loading from ' + path)
         except:
-            result = [x for x in giphy.search('computer cyber space')]
-            filename = self.download_gif(previous.text(), result[0].media_url)
+            default_search = 'computer cyber space'
+            result = [x for x in giphy.search(default_search)]
+            filename = self.download_gif(default_search, result[0].media_url)
             path = 'static/image/gifs/' + filename
             print('loading from ' + path)
 

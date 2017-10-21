@@ -7,10 +7,7 @@ var Spritzer = function (el) {
 
     el.style.padding = (parseInt(window.getComputedStyle(el)['font-size']) / 1.3) + 'px'
 
-	//el.appendChild(document.createElement("div"))
-
     this.playing = true
-
     this.currentTimer = null
 
     function processWord(word) {
@@ -18,18 +15,20 @@ var Spritzer = function (el) {
         var center = Math.floor(word.length / 2),
             letters = word.split('')
         return letters.map(function(letter, idx) {
-            if (idx === center)
-                return '<span class="highlight">' + letter + '</span>'
+            //if (idx === center)
+            //    return '<span class="highlight">' + letter + '</span>'
             return letter;
         }).join('')
     }
 
-    function positionWord() {
+    function positionWord(word) {
         var wordEl = el.firstElementChild,
             highlight = wordEl.firstElementChild
-        
-        var centerOffsetX = (highlight.offsetWidth / 2) + highlight.offsetLeft,
-            centerOffsetY = (highlight.offsetHeight / 2) + highlight.offsetTop
+
+        var w = parseInt(window.getComputedStyle(el)['font-size']) * Math.floor(word.length / 2)
+
+        var centerOffsetX = w; //(highlight.offsetWidth / 2) + highlight.offsetLeft,
+        var centerOffsetY = 0; //(highlight.offsetHeight / 2) + highlight.offsetTop
         
         wordEl.style.left = (offsetLeft - centerOffsetX) + 'px'
         wordEl.style.top = (60 - centerOffsetY) + 'px'
@@ -43,22 +42,19 @@ var Spritzer = function (el) {
         if (typeof word == 'undefined') {
             return
         }
-        // WTB> nlp.js...
-        var hasPause = /^\(|[,\.\)]$/.test(word)
-        
         // XSS?! :(
        	window.el = el
         el.firstElementChild.innerHTML = word
-        positionWord()
+        positionWord(word)
 
-        if (currentWord == this.words.length) {
+        if (currentWord === this.words.length) {
             currentWord = 0, delay
         }
-        this.currentTimer = setTimeout(displayNextWord, delay * (hasPause ? 2 : 1))
+        this.currentTimer = setTimeout(displayNextWord, delay )
     }.bind(this)
 
     this.render = function(text, wpm) {
-        text = text.replace(/(\r\n|\n|\r)/gm,"");
+        //text = text.replace(/(\r\n|\n|\r)/gm,"");
         text = text.replace(/ {2,}/g, ' ');
         console.log(text)
         //this.words = text.replace(/^\s+|\s+|\n$/,"")

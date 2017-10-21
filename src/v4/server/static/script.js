@@ -41,19 +41,27 @@ function appendMsg(socketMsg) {
     // this is magic number style and often leads to problems when another developer cannot read your mind
     console.log(msgObj.find('.msgTextDiv'));
     console.log(style);
-    console.log(text)
+    console.log(text);
+
+    _text = emojione.toImage(text);
+    _text = EmojiTranslate.translate(_text)
+
+    console.log('adding ' + _text)
+
     if(style === "unformatted") {
-        msgObj.find('.msgTextDiv').html('<p>' + emojione.toImage(text) + '</p>');
+        msgObj.find('.msgTextDiv').html(_text);
     } else if (style === "formatted") {
-        msgObj.find('.msgTextPre').html('<p>' + emojione.toImage(text) + '</p>');
+        msgObj.find('.msgTextPre').html(_text);
     } else if( style === "scroll") {
         msgObj.find('.canScroll').addClass("scrollDiv");
-        msgObj.find('.msgTextDiv').html('<p>' + emojione.toImage(text) + '</p>');
+        msgObj.find('.msgTextDiv').html(_text);
         msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
     } else if( style === "spritz") {
         var spritz = new Spritzer(msgObj.find('.canScroll').get(0));
         spritz.render(text, 230);
     }
+
+    console.log(msgObj.find('.msgTextDiv'))
 
     if( attachment === null) {
         // remove the image tag

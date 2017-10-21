@@ -13,4 +13,4 @@ if __name__ == "__main__":
         result = requests.post('http://localhost:8090/msg', json_to_send, headers={'Content-Type': 'application/json'})
         if not result.ok:
             print(result.__dict__)
-        time.sleep(random.uniform(2, 4))
+        time.sleep(random.uniform(1, 4))

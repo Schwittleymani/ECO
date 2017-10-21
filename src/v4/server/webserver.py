@@ -25,7 +25,8 @@ def msg():
 
 @socketio.on('connect')
 def client_connect():
-    send_msg({'text': 'hello &#x1F601;', 'user': 'connected &#x1F601;'})
+    sessid = request.sid
+    send_msg({"timestamp": "from the future", "style": "unformatted", "attachment": None, "text": "welcome " + str(sessid), "user": "eco"})
 
 
 def send_msg(data, bcast=False):
