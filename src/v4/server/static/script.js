@@ -7,8 +7,35 @@ window.onload = function () {
     emoji = new EmojiConvertor();
 };
 
+function text2emoji(t){
+    var text = emoji.replace_colons(t);
+    text = emojione.toImage(text);
+    text = EmojiTranslate.translate(text);
+    return text;
+}
+
+document.addEventListener('keydown', function(event) {
+    // a-zA-Z and space
+    if((event.which > 64 && event.which < 91) || event.which === 32) {
+        var t = log_div.find('li:last').find('.timeStamp');
+        console.log(t);
+        if (t.text().indexOf('interactive') !== -1) {
+            var d = log_div.find('li:last').find('.msgTextDiv');
+
+            d.append(event.key);
+        }
+        //event.preventDefault();
+    }
+
+    // enter
+    if(event.which === 8)
+    {
+        var d = log_div.find('li:last').find('.msgTextDiv').text();
+    }
+}, false);
+
 function appendMsg(socketMsg) {
-    var text = emoji.replace_colons(socketMsg.text);
+    var text = text2emoji(socketMsg.text);
     var user = socketMsg.user;
     var attachment = socketMsg.attachment;
     var style = socketMsg.style;
@@ -39,29 +66,21 @@ function appendMsg(socketMsg) {
     // TODO style is supposed to be a more complex object, but for now... ok
     // TODO let's also have a default style use its string representation on the top of the file.
     // this is magic number style and often leads to problems when another developer cannot read your mind
-    console.log(msgObj.find('.msgTextDiv'));
-    console.log(style);
-    console.log(text);
-
-    _text = emojione.toImage(text);
-    _text = EmojiTranslate.translate(_text)
-
-    console.log('adding ' + _text)
 
     if(style === "unformatted") {
-        msgObj.find('.msgTextDiv').html(_text);
+        msgObj.find('.msgTextDiv').html(text);
     } else if (style === "formatted") {
-        msgObj.find('.msgTextPre').html(_text);
+        msgObj.find('.msgTextPre').html(text);
     } else if( style === "scroll") {
         msgObj.find('.canScroll').addClass("scrollDiv");
-        msgObj.find('.msgTextDiv').html(_text);
+        msgObj.find('.msgTextDiv').html(text);
         msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
     } else if( style === "spritz") {
         var spritz = new Spritzer(msgObj.find('.canScroll').get(0));
         spritz.render(text, 230);
     }
 
-    console.log(msgObj.find('.msgTextDiv'))
+    console.log(msgObj.find('.msgTextDiv'));
 
     if( attachment === null) {
         // remove the image tag

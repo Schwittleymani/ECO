@@ -26,12 +26,12 @@ var Spritzer = function (el) {
             highlight = wordEl.firstElementChild
 
         var w = parseInt(window.getComputedStyle(el)['font-size']) * Math.floor(word.length / 2)
-
+        var h = parseInt(window.getComputedStyle(el)['font-size']);
         var centerOffsetX = w; //(highlight.offsetWidth / 2) + highlight.offsetLeft,
         var centerOffsetY = 0; //(highlight.offsetHeight / 2) + highlight.offsetTop
         
         wordEl.style.left = (offsetLeft - centerOffsetX) + 'px'
-        wordEl.style.top = (60 - centerOffsetY) + 'px'
+        wordEl.style.top = (centerOffsetY) + 'px'
     }
 
     var currentWord = 0,
@@ -39,7 +39,7 @@ var Spritzer = function (el) {
     
     var displayNextWord = function() {
         var word = this.words[currentWord++]
-        if (typeof word == 'undefined') {
+        if (typeof word === 'undefined') {
             return
         }
         // XSS?! :(

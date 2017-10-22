@@ -9,6 +9,7 @@ from posts.post import NailsPost
 from posts.post import MarkovPost
 from posts.post import GifPost
 from posts.post import Doc2VecSimilarityPost
+from posts.post import InteractivePost
 
 post_types = {
     "POST_TYPE_KAOMOJI": KaomojiPost,
@@ -18,7 +19,8 @@ post_types = {
     "POST_TYPE_NAILS": NailsPost,
     'POST_TYPE_MARKOV': MarkovPost,
     'POST_TYPE_D2V': Doc2VecSimilarityPost,
-    'POST_TYPE_GIPHY': GifPost
+    'POST_TYPE_GIPHY': GifPost,
+    'POST_TYPE_INTERACTIVE': InteractivePost
 }
 
 
@@ -58,6 +60,7 @@ class PostManager(object):
         post = self.create_post(random_type, self.last())
         self.posts.append(post)
         self._limit()
+        return post
 
     @staticmethod
     def create_post(post_type, previous):

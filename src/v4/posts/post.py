@@ -93,10 +93,6 @@ kao = KaomojiHelp()
 
 
 class KaomojiPost(Post):
-    def __init__(self, previous, posttype):
-        super().__init__(previous, posttype)
-        self.kaomoji = kao.random()
-
     def connection(self, previous):
         words = previous.text().split()
         self.kaomoji = kao.find(words)
@@ -111,9 +107,6 @@ ascii_helper = AsciiHelper()
 
 
 class ImagePost(Post):
-    def __init__(self, previous, posttype):
-        super().__init__(previous, posttype)
-
     def connection(self, previous):
         self._text = previous.text()
 
@@ -153,14 +146,6 @@ deepmoji = DeepMojiWrapper()
 
 
 class RedditPost(Post):
-    def __init__(self, previous, posttype):
-        """
-        uses a class that generates(filters) a new post from reddit/4chan
-        this class can be more detailed parametrized. check Generator
-        :param previous:
-        """
-        super().__init__(previous, posttype)
-
     def connection(self, previous):
         generator.reset()
         generator.clear()
@@ -180,13 +165,6 @@ nailsFinder = NailsSimilarityFinder(model)
 
 
 class NailsPost(Post):
-    def __init__(self, previous, posttype):
-        """
-        uses a class that generates(filters) a new post from nails corpus
-        :param previous:
-        """
-        super().__init__(previous, posttype)
-
     def connection(self, previous):
         author, sentence, options = nailsFinder.get_similar(previous.text())
         emoji = deepmoji.predict(author)[0]
@@ -200,9 +178,6 @@ markovManager = MarkovManager()
 
 
 class MarkovPost(Post):
-    def __init__(self, previous, posttype):
-        super().__init__(previous, posttype)
-
     def connection(self, previous):
         start = ''
         if len(previous.text().split()) > 3:
@@ -218,9 +193,6 @@ doc2vecSimilarityManager = Doc2VecSimilarityManager()
 
 
 class Doc2VecSimilarityPost(Post):
-    def __init__(self, previous, posttype):
-        super().__init__(previous, posttype)
-
     def connection(self, previous):
         sentence, author = doc2vecSimilarityManager.get_random_similar(previous.text())
         self._text = sentence
@@ -229,9 +201,6 @@ class Doc2VecSimilarityPost(Post):
 
 
 class AsciiPost(Post):
-    def __init__(self, previous, posttype):
-        super().__init__(previous, posttype)
-
     def connection(self, previous):
         self.butterfly = open('data/ascii/butterfly.txt', 'r').readlines()
         self._text = ""
@@ -242,9 +211,6 @@ class AsciiPost(Post):
 
 
 class EmojiPost(Post):
-    def __init__(self, previous, posttype):
-        super().__init__(previous, posttype)
-
     def connection(self, previous):
         if previous.text() == "":
             emojis = deepmoji.random(count=25)
@@ -265,9 +231,6 @@ giphy = giphypop.Giphy()
 
 
 class GifPost(Post):
-    def __init__(self, previous, posttype):
-        super().__init__(previous, posttype)
-
     def download_gif(self, keywords, url):
         filename = keywords[:30] + '.gif'
         path = data_access.get_model_folder() + 'gifs/' + filename
@@ -293,3 +256,10 @@ class GifPost(Post):
         self._style = 'formatted'
         self._text = previous.text()
         self._attachment = path
+
+
+class InteractivePost(Post):
+    def connection(self, previous):
+        self._user = 'interactive'
+        self._style = 'unformatted'
+        self._text = ''
