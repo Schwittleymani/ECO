@@ -35,13 +35,40 @@ document.addEventListener('keydown', function(event) {
 }, false);
 
 function appendMsg(socketMsg) {
-    var text = text2emoji(socketMsg.text);
+    var text = socketMsg.text;
     var user = socketMsg.user;
     var attachment = socketMsg.attachment;
     var style = socketMsg.style;
     var timestamp = socketMsg.timestamp;
 
     var msgObj = template.clone();
+
+    var styles = style.split(";");
+    for (var i = 0; i < styles.length; i++) {
+        if(styles[i] === "emojify")
+        {
+            text = text2emoji(text);
+        }
+        if(styles[i] === "unfortmatted")
+        {
+            msgObj.find('.msgTextDiv').html(text);
+        }
+        if(styles[i] === "formatted")
+        {
+            msgObj.find('.msgTextPre').html(text);
+        }
+        if(styles[i] === "scroll")
+        {
+            msgObj.find('.canScroll').addClass("scrollDiv");
+            msgObj.find('.msgTextDiv').html(text);
+            msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
+        }
+        if(styles[i] === "spritz")
+        {
+            var spritz = new Spritzer(msgObj.find('.canScroll').get(0));
+            spritz.render(text, 230);
+        }
+    }
 
     // when there are more than 100 posts
     // remove the first 70
@@ -60,27 +87,6 @@ function appendMsg(socketMsg) {
 
     msgObj.find('.timeStamp').html(emojione.toImage(user) + ": " + timestamp);
 
-    // checking whether the text should be added to a
-    // <pre> (pre-formatted) or <div> tag
-    // important for pre-formatted text like ascii stuff
-    // TODO style is supposed to be a more complex object, but for now... ok
-    // TODO let's also have a default style use its string representation on the top of the file.
-    // this is magic number style and often leads to problems when another developer cannot read your mind
-
-    if(style === "unformatted") {
-        msgObj.find('.msgTextDiv').html(text);
-    } else if (style === "formatted") {
-        msgObj.find('.msgTextPre').html(text);
-    } else if( style === "scroll") {
-        msgObj.find('.canScroll').addClass("scrollDiv");
-        msgObj.find('.msgTextDiv').html(text);
-        msgObj.find('.msgTextDiv').addClass(nextMsgRight ? 'right' : 'left');
-    } else if( style === "spritz") {
-        var spritz = new Spritzer(msgObj.find('.canScroll').get(0));
-        spritz.render(text, 230);
-    }
-
-    console.log(msgObj.find('.msgTextDiv'));
 
     if( attachment === null) {
         // remove the image tag
@@ -96,7 +102,7 @@ function appendMsg(socketMsg) {
     msgObj.find('.msgBox').addClass(nextMsgRight ? 'right' : 'left');
     msgObj.find('.timeStamp').addClass(nextMsgRight ? 'right' : 'left');
 
-    msgObj.effect( "pulsate" );
+    msgObj.effect( "pulsate", {times:5}, 3000 );
 
     // adds the customized msg to the log
     log_div.append(msgObj);

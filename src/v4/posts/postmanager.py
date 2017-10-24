@@ -20,7 +20,7 @@ post_types = {
     'POST_TYPE_MARKOV': MarkovPost,
     'POST_TYPE_D2V': Doc2VecSimilarityPost,
     'POST_TYPE_GIPHY': GifPost,
-    'POST_TYPE_INTERACTIVE': InteractivePost
+    #'POST_TYPE_INTERACTIVE': InteractivePost
 }
 
 

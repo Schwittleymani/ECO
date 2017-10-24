@@ -98,6 +98,7 @@ class KaomojiPost(Post):
         self.kaomoji = kao.find(words)
         if not self.kaomoji:
             self.kaomoji = kao.random()
+        self._style = "unformatted"
         self._text = str(self.kaomoji.kaomoji())
         self._user = ' '.join(self.kaomoji.emotions())
 
@@ -117,6 +118,7 @@ class ImagePost(Post):
         else:
             self.path = 'static/image/gif.gif'
 
+        self._style = "unformatted"
         self._user = 'image'
         self._attachment = self.path
 
@@ -186,7 +188,7 @@ class MarkovPost(Post):
         author, text = markovManager.generate_random(start_string=start, len=30)
         self._text = text
         self._user = author + ' ~MARKOV'
-        self._style = 'scroll'
+        self._style = 'emojify;scroll'
 
 
 doc2vecSimilarityManager = Doc2VecSimilarityManager()
@@ -224,7 +226,7 @@ class EmojiPost(Post):
                 self._text += emoji
 
         self._user = 'emo mojo'
-        self._style = 'unformatted'
+        self._style = 'emojify;unformatted'
 
 
 giphy = giphypop.Giphy()
