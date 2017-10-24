@@ -15,8 +15,8 @@ var Spritzer = function (el) {
         var center = Math.floor(word.length / 2),
             letters = word.split('')
         return letters.map(function(letter, idx) {
-            //if (idx === center)
-            //    return '<span class="highlight">' + letter + '</span>'
+            if (idx === center)
+                return '<span class="highlight">' + letter + '</span>'
             return letter;
         }).join('')
     }
@@ -27,8 +27,8 @@ var Spritzer = function (el) {
 
         var w = parseInt(window.getComputedStyle(el)['font-size']) * Math.floor(word.length / 2)
         var h = parseInt(window.getComputedStyle(el)['font-size']);
-        var centerOffsetX = w; //(highlight.offsetWidth / 2) + highlight.offsetLeft,
-        var centerOffsetY = 0; //(highlight.offsetHeight / 2) + highlight.offsetTop
+        var centerOffsetX = (highlight.offsetWidth / 2) + highlight.offsetLeft,
+         centerOffsetY =(highlight.offsetHeight / 2) + highlight.offsetTop
         
         wordEl.style.left = (offsetLeft - centerOffsetX) + 'px'
         wordEl.style.top = (centerOffsetY) + 'px'
