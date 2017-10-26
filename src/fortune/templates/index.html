@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oracle Fortune cookies</title>
+    <style>
+
+        body {
+            background-color: bisque;
+        }
+
+        .orImg {
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            transform: translate3d(-50%,-50%,0);
+        }
+
+
+        #questForm {
+            padding: 15px;
+            position: absolute;
+            left: 50%;
+            bottom: 25%;
+            transform: translate3d(-50%,50%,0);
+            font-size: 18px;
+        }
+
+
+        .formElem {
+            font-size: 18px;
+        }
+
+        .buttonContainer{
+            position: absolute;
+            left:50%;
+            transform: translateX(-50%);
+            margin-top: 10px;
+        }
+
+        .input {
+            width: 250px;
+        }
+
+        .gone {
+            opacity: 0%;
+        }
+    </style>
+</head>
+<body>
+    <image src="static/oracle.png" class="orImg"></image>
+    <script src="static/jquery-3.2.1.min.js"></script>
+    <!--<script src="static/jquery-3.2.1.slim.min.js"></script>-->
+
+    <div id="questForm">
+        <input type="text" name="text" class="formElem input" id="inputForm"><br>
+        <div class="buttonContainer">
+            <!--<input type="submit" value="callous" class="formElem" id="callous">-->
+            <!--<input type="submit" value="care" class="formElem" id="care">-->
+            <button value="callous" class="formElem" id="callous">callous</button>
+            <button type="submit" value="care" class="formElem" id="care">care</button>
+        </div>
+    </div>
+
+    <script>
+        $("#callous").click(function(event){
+            quest($("#inputForm").val(),'callous');
+        });
+
+        $("#care").click(function(event){
+            quest($("#inputForm").val(),'care');
+        });
+
+        function quest(text, mode){
+            data = JSON.stringify({"text":text, "mode": mode});
+            console.log(data);
+            $.ajax({
+              url: "/quest",
+              type: 'POST',
+              data : data,
+              dataType: 'json',
+              contentType: 'application/json',
+              success: function(){
+                console.log('form submitted.');
+              }
+            });
+        }
+
+    </script>
+</body>
+</html>
