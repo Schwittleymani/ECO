@@ -7,6 +7,9 @@
 
         body {
             background-color: bisque;
+            -webkit-transition: background-color 3s;
+            -moz-transition: background-color 3s;
+            transition: background-color 3s;
         }
 
         .orImg {
@@ -14,8 +17,11 @@
             left: 50%;
             top: 40%;
             transform: translate3d(-50%,-50%,0);
+            -webkit-transition: opacity 2s;
+            -moz-transition: opacity 2s;
+            transition: opacity 2s;
+            width: 1000px;
         }
-
 
         #questForm {
             padding: 15px;
@@ -24,8 +30,10 @@
             bottom: 25%;
             transform: translate3d(-50%,50%,0);
             font-size: 18px;
+            -webkit-transition: opacity 2s;
+            -moz-transition: opacity 2s;
+            transition: opacity 2s;
         }
-
 
         .formElem {
             font-size: 18px;
@@ -36,6 +44,7 @@
             left:50%;
             transform: translateX(-50%);
             margin-top: 10px;
+            width: 170px;
         }
 
         .input {
@@ -43,23 +52,38 @@
         }
 
         .gone {
-            opacity: 0%;
+            opacity: 0;
         }
+
+        #response {
+            position: absolute;
+            left:50%;
+            top: 50%;
+            transform: translate3d(-50%,-50%,0);
+            width= 600px;
+            color: white;
+            font-size: 30px;
+            -webkit-transition: opacity 6s;
+            -moz-transition: opacity 6s;
+            transition: opacity 6s;
+        }
+
     </style>
 </head>
 <body>
-    <image src="static/oracle.png" class="orImg"></image>
+    <image src="static/oracle2.png" class="orImg letgo"></image>
     <script src="static/jquery-3.2.1.min.js"></script>
-    <!--<script src="static/jquery-3.2.1.slim.min.js"></script>-->
 
-    <div id="questForm">
-        <input type="text" name="text" class="formElem input" id="inputForm"><br>
+    <div id="questForm" class="letgo">
+        <input type="text" name="text" class="formElem input" id="inputForm" autofocus="autofocus"><br>
         <div class="buttonContainer">
-            <!--<input type="submit" value="callous" class="formElem" id="callous">-->
-            <!--<input type="submit" value="care" class="formElem" id="care">-->
             <button value="callous" class="formElem" id="callous">callous</button>
             <button type="submit" value="care" class="formElem" id="care">care</button>
         </div>
+    </div>
+
+    <div id="response" class="gone">
+
     </div>
 
     <script>
@@ -72,6 +96,9 @@
         });
 
         function quest(text, mode){
+            $(".letgo").addClass('gone');
+            $("body").css("background-color", "black");
+
             data = JSON.stringify({"text":text, "mode": mode});
             console.log(data);
             $.ajax({
@@ -80,12 +107,33 @@
               data : data,
               dataType: 'json',
               contentType: 'application/json',
-              success: function(){
-                console.log('form submitted.');
+              success: function(data){
+                console.log(data);
+                $("#response").removeClass('gone');
+                $("#response").html(data['fortune'][0]);
+                restore();
+              },
+              error: function(data){
+                $("#response").removeClass('gone');
+                $("#response").html("THE FUTURE IS UNKNOWN");
+                restore();
               }
             });
         }
 
+        restoreTime = 10000;
+
+        function restore() {
+            setTimeout(function(){
+                $("#inputForm").val('')
+                $(".letgo").removeClass('gone');
+                $("body").css("background-color", "bisque");
+                $("#response").addClass('gone');
+                $("#response").html('');
+                document.getElementById("inputForm").focus();
+                //$("#inputForm").focus()
+            },restoreTime)
+        }
     </script>
 </body>
 </html>

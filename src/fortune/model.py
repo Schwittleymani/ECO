@@ -84,7 +84,6 @@ model_file_path = data_access.get_model_folder() + "doc2vec/fortune-gen.doc2vec"
 
 model = None
 
-
 def load_model():
     global model
     model = Doc2VecSimilarities(model_file_path, corpus_file_path)
