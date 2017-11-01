@@ -49,13 +49,15 @@ function appendMsg(socketMsg) {
         {
             text = text2emoji(text);
         }
-        if(styles[i] === "unfortmatted")
+        if(styles[i] === "unformatted")
         {
-            msgObj.find('.msgTextDiv').html(text);
+            var ele = msgObj.find('.msgTextDiv');
+            ele.text(text);
         }
         if(styles[i] === "formatted")
         {
-            msgObj.find('.msgTextPre').html(text);
+            var ele = msgObj.find('.msgTextPre');
+            ele.text(text);
         }
         if(styles[i] === "scroll")
         {
