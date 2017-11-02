@@ -52,12 +52,12 @@ function appendMsg(socketMsg) {
         if(styles[i] === "unformatted")
         {
             var ele = msgObj.find('.msgTextDiv');
-            ele.text(text);
+            ele.html(text);
         }
         if(styles[i] === "formatted")
         {
             var ele = msgObj.find('.msgTextPre');
-            ele.text(text);
+            ele.html(text);
         }
         if(styles[i] === "scroll")
         {
