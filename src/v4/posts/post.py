@@ -225,7 +225,7 @@ class EmojiPost(Post):
             emojis = deepmoji.predict(previous.text())
         self._text = ''
 
-        amount = random.randint(1, 10)
+        amount = random.randint(1, 30)
         for i in range(amount):
             for emoji in emojis:
                 self._text += emoji
