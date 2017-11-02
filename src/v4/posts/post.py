@@ -196,7 +196,12 @@ doc2vecSimilarityManager = Doc2VecSimilarityManager()
 
 class Doc2VecSimilarityPost(Post):
     def connection(self, previous):
-        sentence, author = doc2vecSimilarityManager.get_random_similar(previous.text())
+        if previous.text() == "":
+            text = 'computer cyber space'
+        else:
+            text = previous.text()
+
+        sentence, author = doc2vecSimilarityManager.get_random_similar(text)
         self._text = sentence
         self._user = author + ' ~D2V'
         self._style = 'spritz'
