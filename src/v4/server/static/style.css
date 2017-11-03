@@ -85,6 +85,7 @@ body
 
 .right {
     margin-left: auto;
+    margin-right: 40px;
     float: right;
     text-align: right;
     background: #87D37C;
@@ -162,6 +163,15 @@ body
     max-width: 400px;
     max-height: 400px;
     border-radius: 15px;
+
+}
+
+.left .image {
+    margin-left: 25%;
+}
+
+.right .image {
+    margin-right: 25%;
 }
 
 .msgUser {
