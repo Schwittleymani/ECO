@@ -7,6 +7,7 @@ import random
 import socket
 import giphypop
 import requests
+import grammar_check
 from misc import data_access
 
 from posts.reddit.generator import Generator
@@ -24,6 +25,17 @@ from posts.markov.markov import MarkovManager
 from posts.d2vsim.d2vsim import Doc2VecSimilarityManager
 
 from posts.DeepMoji.deepmojiwrapper import DeepMojiWrapper
+
+grammar_checker = grammar_check.LanguageTool('en-GB')
+
+
+def fix_grammar(text):
+    matches = grammar_checker.check(text)
+    fixed = grammar_check.correct(text, matches)
+
+    print('fixed grammar from ' + text + ' to ' + fixed)
+
+    return fixed
 
 
 class Post(object):
@@ -119,7 +131,7 @@ class ImagePost(Post):
             self.path = 'static/image/gif.gif'
 
         self._style = "unformatted"
-        self._user = 'image'
+        self._user = '4chan'
         self._attachment = self.path
 
         self._ascii = False# bool(random.getrandbits(1))
@@ -155,7 +167,7 @@ class RedditPost(Post):
         generator.generate()
         t = generator.sentences()[0].text
         emoji = deepmoji.predict(t)
-        self._text = t + ' '+ emoji[0]
+        self._text = fix_grammar(t) + ' ' + emoji[0]
         self._user = 'reddit'
         self._style = 'spritz'
 
@@ -186,7 +198,7 @@ class MarkovPost(Post):
             start = ' '.join(previous.text().split()[:3])
 
         author, text = markovManager.generate_random(start_string=start, len=30)
-        self._text = text
+        self._text = fix_grammar(text)
         self._user = author + ' ~MARKOV'
         self._style = 'emojify;scroll'
 

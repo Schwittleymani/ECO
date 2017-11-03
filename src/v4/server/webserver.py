@@ -44,4 +44,4 @@ if __name__ == "__main__":
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         recording_file = open('logs/' + str(timestamp) + '.json', 'w')
 
-    socketio.run(app, host=settings.HOST, port=settings.PORT, debug=settings.DEBUG)
+    socketio.run(app, host=settings.HOST, port=settings.PORT, debug=settings.DEBUG ) # add ssl_context='adhoc' for https
