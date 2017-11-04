@@ -1,6 +1,8 @@
 @font-face {
-  font-family: "Aki Lines";
-  src: url("aki_lines_regular.ttf") format("truetype");
+  /*font-family: "Aki Lines";
+  src: url("aki_lines_regular.ttf") format("truetype");*/
+    font-family: "Cyberspace";
+    src: url("cyberspace.ttf") format("truetype");
 }
 
 body
@@ -48,8 +50,9 @@ body
 }
 
 #top h1 {
-    font-family: "Aki Lines";
-    font-size: 60px;
+    font-family: "Cyberspace";
+    line-height: 70%;
+    font-size: 90px;
     text-align: center;
     background: #f1c40f;
     margin: 0px;
