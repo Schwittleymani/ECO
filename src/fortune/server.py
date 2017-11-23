@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import json
 import serial
-
+import codecs
 import model
 
 #,template_folder='src/fortune/templates'
@@ -34,6 +34,7 @@ def setup_serial():
         write(printer, chr(27))
         write(printer, chr(55))
         write(printer, chr(255))
+        write(printer, ("\n"*3))
         print("printer cool")
     except serial.serialutil.SerialException:
         print("printer problems")
@@ -42,7 +43,7 @@ HOST = '0.0.0.0'
 PORT = 9000
 DEBUG = False
 
-newlines  = 2
+newlines = 2
 
 @app.route('/', methods=['GET'])
 def index():
@@ -62,7 +63,6 @@ def print_it_out_motherfucka(sentence):
         write(printer, chr(False))
 
         write(printer,sentence + ('\n' * newlines))
-        #printer.write(bytes(, 'utf-8'))
         # small font
         write(printer, chr(27))
         write(printer, chr(33))
@@ -72,8 +72,7 @@ def print_it_out_motherfucka(sentence):
         write(printer, chr(97))
         write(printer, chr(2))
 
-        write(printer,"~ORACLE" + ('\n' * 5))
-        #printer.write(bytes(, 'utf-8'))
+        write(printer,"~ORACLE" + ('\n' * 7))
         return True
 
 
@@ -90,7 +89,7 @@ def split_right(sentence):
             c += (len(w))
             if not first_in_line:
                 c += 1
-            if c > next_break:
+            if c > next_break or len(w) > 32:
                 sen += '\n'+w
                 c = len(w) + 1
             else:
@@ -116,20 +115,23 @@ def msg():
             result = model.model.get_top_n(text)
     else:
         result = [model.model.select_random().strip()]
-    logit(text,mode,result)
     print(result)
     sentence = split_right(result[0])
+    logit(text, mode, result)
     print([(s, len(s)) for s in sentence.split('\n')])
     print_job = print_it_out_motherfucka(sentence)
+    send_out = {'fortune': result,"show": False}
     if not print_job:
         print("Printer problems")
         setup_serial()
-    answer = json.dumps({'fortune': result}), 200, {'ContentType': 'application/json'}
+        send_out['show'] = True
+    answer = json.dumps(send_out), 200, {'ContentType': 'application/json'}
     return answer #render_template('index.html')
 
 
 def logit(text, mode, result):
-    pass
+    with codecs.open('log.txt','a',encoding='utf-8') as fout:
+        fout.write(json.dumps({'input':text,'mode':mode,'result':result})+'\n')
 
 def launch():
     setup_serial()

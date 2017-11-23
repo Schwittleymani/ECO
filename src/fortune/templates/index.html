@@ -87,6 +87,10 @@
     </div>
 
     <script>
+
+        restoreTime = 10000;
+        show_response = false;
+
         $("#callous").click(function(event){
             quest($("#inputForm").val(),'callous');
         });
@@ -109,19 +113,23 @@
               contentType: 'application/json',
               success: function(data){
                 console.log(data);
-                $("#response").removeClass('gone');
+                show_response = data["show"]
+                if(show_response){
+                    $("#response").removeClass('gone');
+                }
                 $("#response").html(data['fortune'][0]);
                 restore();
               },
               error: function(data){
-                $("#response").removeClass('gone');
+                if(show_response) {
+                    $("#response").removeClass('gone');
+                }
                 $("#response").html("THE FUTURE IS UNKNOWN");
                 restore();
               }
             });
         }
 
-        restoreTime = 10000;
 
         function restore() {
             setTimeout(function(){
