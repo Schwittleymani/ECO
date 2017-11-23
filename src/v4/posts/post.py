@@ -3,35 +3,104 @@ import time
 import datetime
 import gensim
 import os
+import random
 import socket
 import giphypop
 import requests
+import grammar_check
 from misc import data_access
 
 from posts.reddit.generator import Generator
 from posts.reddit.pandasdata import PandasData
 from posts.reddit.pandasfilter import PandasFilter
-
 from posts.kaomoji.kaomoji import KaomojiHelp
 from posts.image.image import ImageHelper
 from posts.image.image import AsciiHelper
-
 from posts.nails.nails import NailsSimilarityFinder
-
 from posts.markov.markov import MarkovManager
-
 from posts.d2vsim.d2vsim import Doc2VecSimilarityManager
-
 from posts.DeepMoji.deepmojiwrapper import DeepMojiWrapper
 
 
+class StaticHelper(object):
+    def __init__(self):
+        # some heavy, static variables
+
+        self._grammar_checker = grammar_check.LanguageTool('en-GB')
+
+        self._kao = KaomojiHelp()
+        self._image_helper = ImageHelper(path=data_access.get_model_folder() + '4chan_non_porn_classified.json')
+        self._ascii_helper = AsciiHelper()
+        self._deep_moji = DeepMojiWrapper()
+        self._markov_manager = MarkovManager()
+        self._doc2vecSimilarity_manager = Doc2VecSimilarityManager()
+        self._giphy = giphypop.Giphy()
+
+        feather_file = data_access.get_model_folder() + '/test_reddit_4chan.feather'
+        print('Loading ' + feather_file + ' for RedditPost')
+        block_words = open('data/reddit/blocked_words.txt').readlines()
+        block_chars = "".join(open('data/reddit/blocked_chars.txt').readlines())
+        data = PandasData(feather_file, block_words=block_words)
+        data.load()
+        df = data.df
+
+        self._generator = Generator(PandasFilter(df), block_words=block_words, block_chars=block_chars)
+
+        w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
+        print('Loading w2v model: ' + w2v_path)
+        model = gensim.models.Word2Vec.load(data_access.get_model_folder() + w2v_path)
+        self._nails_finder = NailsSimilarityFinder(model)
+
+    def fix_grammar(self, text):
+        matches = self._grammar_checker.check(text)
+        fixed = grammar_check.correct(text, matches)
+
+        print('fixed grammar from ' + text + ' to ' + fixed)
+
+        return fixed
+
+    def kaomoji(self):
+        return self._kao
+
+    def image(self):
+        return self._image_helper
+
+    def ascii(self):
+        return self._ascii_helper
+
+    def pandas(self):
+        return self._generator
+
+    def deepmoji(self):
+        return self._deep_moji
+
+    def nails(self):
+        return self._nails_finder
+
+    def markov(self):
+        return self._markov_manager
+
+    def d2v_sim(self):
+        return self._doc2vecSimilarity_manager
+
+    def giphy(self):
+        return self._giphy
+
+
+helper = StaticHelper()
+
+
 class Post(object):
-    def __init__(self, previous, text='', user='admin'):
+    def __init__(self, previous, posttype, text='', user='admin'):
         self._text = text
         self._user = user
+        self._type = posttype
         self._attachment = None
         self._style = 'unformatted'
         self._timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+
+        if previous is not None:
+            print(previous.type() + ' -> ' + self.type())
 
         self.connection(previous)
 
@@ -52,6 +121,9 @@ class Post(object):
     def text(self):
         return self._text
 
+    def type(self):
+        return self._type
+
     def msg_dict(self):
         """
         returns a dict of the post
@@ -61,7 +133,8 @@ class Post(object):
             'text': self._text,
             'attachment': self._attachment,
             'style': self._style,
-            'timestamp': self._timestamp
+            'timestamp': self._timestamp,
+            'type': self._type
         }
 
 
@@ -69,59 +142,47 @@ class StartPost(Post):
     """
     this post is just there for the initial post
     because all new posts require a previous post
-
     this is a way to define the starting topic
     """
-    def __init__(self):
-        super().__init__(None, text='welcome')
+
+    def __init__(self, posttype):
+        super().__init__(None, posttype, text='welcome', user='eco')
 
     def connection(self, previous=None):
         pass
 
-# some static variable
-kao = KaomojiHelp()
-
 
 class KaomojiPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
-        self.kaomoji = kao.random()
-
     def connection(self, previous):
         words = previous.text().split()
-        self.kaomoji = kao.find(words)
+        self.kaomoji = helper.kaomoji().find(words)
         if not self.kaomoji:
-            self.kaomoji = kao.random()
+            self.kaomoji = helper.kaomoji().random()
+        self._style = "unformatted"
         self._text = str(self.kaomoji.kaomoji())
         self._user = ' '.join(self.kaomoji.emotions())
 
 
-image_helper = ImageHelper(path=data_access.get_model_folder() + '4chan_non_porn_classified.json')
-ascii_helper = AsciiHelper()
-
-
 class ImagePost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
-
     def connection(self, previous):
         self._text = previous.text()
 
         if socket.gethostname() == 'lyrik':
-            self.path = image_helper.find(self._text.split())
+            self.path = helper.image().find(self._text.split())
             self.path = os.path.join('static/image/', self.path)
             print(self.path)
         else:
             self.path = 'static/image/gif.gif'
 
-        self._user = 'image'
+        self._style = "unformatted"
+        self._user = '4chan'
         self._attachment = self.path
 
         self._ascii = False# bool(random.getrandbits(1))
 
         if self._ascii:
             self._attachment = None
-            self._text = ascii_helper.image2ascii(ascii_helper.load('server/' + self.path))
+            self._text = helper.ascii().image2ascii(helper.ascii().load('server/' + self.path))
             self._style = "formatted"
             if self._text is False:
                 self._attachment = self.path
@@ -129,98 +190,55 @@ class ImagePost(Post):
                 self._text = "imagefuck"
 
 
-# some heavy, static variables
-feather_file = 'data/reddit/test_reddit_4chan.feather'
-print('Loading ' + feather_file + ' for RedditPost')
-block_words = open('data/reddit/blocked_words.txt').readlines()
-block_chars = "".join(open('data/reddit/blocked_chars.txt').readlines())
-data = PandasData(feather_file, block_words=block_words)
-data.load()
-df = data.df
-generator = Generator(PandasFilter(df), block_words=block_words, block_chars=block_chars)
-
-deepmoji = DeepMojiWrapper()
-
-
 class RedditPost(Post):
-    def __init__(self, previous):
-        """
-        uses a class that generates(filters) a new post from reddit/4chan
-        this class can be more detailed parametrized. check Generator
-        :param previous:
-        """
-        super().__init__(previous)
-
     def connection(self, previous):
-        generator.reset()
-        generator.clear()
-        generator.length(30, 200).shannon_entropy(0.0, 10)
-        generator.generate()
-        t = generator.sentences()[0].text
-        emoji = deepmoji.predict(t)
-        self._text = t + emoji[0]
+        helper.pandas().reset()
+        helper.pandas().clear()
+        helper.pandas().length(30, 200).shannon_entropy(0.0, 10)
+        helper.pandas().generate()
+        t = helper.pandas().sentences()[0].text
+        emoji = helper.deepmoji().predict(t)
+        self._text = helper.fix_grammar(t) + ' ' + emoji[0]
         self._user = 'reddit'
         self._style = 'spritz'
 
 
-w2v_path = 'word2vec_models/wiki_plus_v3_valid_combined.txt_numpy.w2vmodel'
-print('Loading w2v model: ' + w2v_path)
-model = gensim.models.Word2Vec.load(data_access.get_model_folder() + w2v_path)
-nailsFinder = NailsSimilarityFinder(model)
-
-
 class NailsPost(Post):
-    def __init__(self, previous):
-        """
-        uses a class that generates(filters) a new post from nails corpus
-        :param previous:
-        """
-        super().__init__(previous)
-
     def connection(self, previous):
-        author, sentence, options = nailsFinder.get_similar(previous.text())
-        emoji = deepmoji.predict(author)[0]
+        author, sentence, options = helper.nails().get_similar(previous.text())
+        emoji = helper.deepmoji().predict(author)[0]
 
-        self._text = sentence + emoji + ';'
+        self._text = sentence + emoji
         self._user = author + ' options: ' + str(options)
         self._style = 'scroll'
 
-markovManager = MarkovManager()
-
 
 class MarkovPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
-
     def connection(self, previous):
         start = ''
         if len(previous.text().split()) > 3:
             start = ' '.join(previous.text().split()[:3])
 
-        author, text = markovManager.generate_random(start_string=start, len=30)
-        self._text = text
+        author, text = helper.markov().generate_random(start_string=start, len=30)
+        self._text = helper.fix_grammar(text)
         self._user = author + ' ~MARKOV'
-        self._style = 'scroll'
-
-
-doc2vecSimilarityManager = Doc2VecSimilarityManager()
+        self._style = 'emojify;scroll'
 
 
 class Doc2VecSimilarityPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
-
     def connection(self, previous):
-        sentence, author = doc2vecSimilarityManager.get_random_similar(previous.text())
+        if previous.text() == "":
+            text = 'computer cyber space'
+        else:
+            text = previous.text()
+
+        sentence, author = helper.d2v_sim().get_random_similar(text)
         self._text = sentence
         self._user = author + ' ~D2V'
         self._style = 'spritz'
 
 
 class AsciiPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
-
     def connection(self, previous):
         self.butterfly = open('data/ascii/butterfly.txt', 'r').readlines()
         self._text = ""
@@ -231,28 +249,23 @@ class AsciiPost(Post):
 
 
 class EmojiPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
-
     def connection(self, previous):
         if previous.text() == "":
-            emojis = deepmoji.random()
+            emojis = helper.deepmoji().random(count=25)
         else:
-            emojis = deepmoji.predict(previous.text())
+            emojis = helper.deepmoji().predict(previous.text())
         self._text = ''
-        for emoji in emojis:
-            self._text += emoji
+
+        amount = random.randint(1, 30)
+        for i in range(amount):
+            for emoji in emojis:
+                self._text += emoji
+
         self._user = 'emo mojo'
-        self._style = 'unformatted'
-
-
-giphy = giphypop.Giphy()
+        self._style = 'emojify;unformatted'
 
 
 class GifPost(Post):
-    def __init__(self, previous):
-        super().__init__(previous)
-
     def download_gif(self, keywords, url):
         filename = keywords[:30] + '.gif'
         path = data_access.get_model_folder() + 'gifs/' + filename
@@ -263,13 +276,14 @@ class GifPost(Post):
 
     def connection(self, previous):
         try:
-            result = [x for x in giphy.search(previous.text())]
+            result = [x for x in helper.giphy().search(previous.text())]
             filename = self.download_gif(previous.text(), result[0].media_url)
             path = 'static/image/gifs/' + filename
             print('loading from ' + path)
         except:
-            result = [x for x in giphy.search('computer cyber space')]
-            filename = self.download_gif(previous.text(), result[0].media_url)
+            default_search = 'computer cyber space'
+            result = [x for x in helper.giphy().search(default_search)]
+            filename = self.download_gif(default_search, result[0].media_url)
             path = 'static/image/gifs/' + filename
             print('loading from ' + path)
 
@@ -277,3 +291,10 @@ class GifPost(Post):
         self._style = 'formatted'
         self._text = previous.text()
         self._attachment = path
+
+
+class InteractivePost(Post):
+    def connection(self, previous):
+        self._user = 'interactive'
+        self._style = 'unformatted'
+        self._text = ''

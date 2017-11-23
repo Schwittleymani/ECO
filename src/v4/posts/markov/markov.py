@@ -98,13 +98,10 @@ class MarkovChainBackOff(object):
 
 class MarkovManager(object):
     def __init__(self):
-        #self.train()
-
         self._markovs = {}
         markov_model_folder = data_access.get_model_folder() + 'markov/' + '*.pickle'
         print(markov_model_folder)
         pickle_paths = glob.glob(markov_model_folder)
-        #print(pickle_paths)
         for path in pickle_paths:
             print('loading ' + path)
             _, filename = os.path.split(path)
@@ -139,14 +136,13 @@ class MarkovManager(object):
         for key in json['file_descriptors']:
             values = json['file_descriptors'][key]
             rel_path = values['rel_path']
-            if True:  # rel_path == 'arts_arthistory_aesthetics/' or rel_path == 'own_mixed_collection/':
-                file_name = values['file_name']
-                author_name = values['author_name']
-                abs_path = os.path.join(base_path + rel_path, file_name)
-                if author_name not in authors:
-                    authors[author_name] = []
+            file_name = values['file_name']
+            author_name = values['author_name']
+            abs_path = os.path.join(base_path + rel_path, file_name)
+            if author_name not in authors:
+                authors[author_name] = []
 
-                authors[author_name].append(abs_path)
+            authors[author_name].append(abs_path)
 
         print(len(authors))
         markovs = []
@@ -165,12 +161,5 @@ class MarkovManager(object):
                     markovs.append(mark)
 
 if __name__ == "__main__":
-    doc = ['This is your first text', 'and here is your second text.']
-
-    # mark = MarkovChainBackOff(2, 2)
-    # mark.add_corpus(doc)
-    # mark.start()
-    # save(mark)
-    #mark = load('markov.pickle')
-    #mark.generate_markov_text('type a sentence that has at least n_grams words', size=25)
-
+    markov = MarkovManager()
+    markov.train()
