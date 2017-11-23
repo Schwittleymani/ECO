@@ -1,6 +1,7 @@
 import json
 import random
 
+from misc import data_access
 
 class Kaomoji(object):
     def __init__(self, kaomoji, emotions):
@@ -17,7 +18,7 @@ class Kaomoji(object):
 class KaomojiHelp(object):
     def __init__(self):
         # taken from https://github.com/Yuuki221/kaomojiLib
-        self.kaomoji_json = json.loads(open("data/kaomoji.json", 'r').read())
+        self.kaomoji_json = json.loads(open(data_access.get_data_folder() + "v4/kaomoji.json", 'r').read())
         self.dictionary = {}
         index = 0
         for i in self.kaomoji_json:

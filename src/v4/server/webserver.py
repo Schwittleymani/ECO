@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 import settings
 import json
 import datetime
-
+import os
 
 # "threading", "eventlet" or "gevent"
 async_mode = 'threading'
@@ -42,6 +42,7 @@ def send_msg(data, bcast=False):
 if __name__ == "__main__":
     if settings.RECORD:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        os.makedirs('logs')
         recording_file = open('logs/' + str(timestamp) + '.json', 'w')
 
     socketio.run(app, host=settings.HOST, port=settings.PORT, debug=settings.DEBUG ) # add ssl_context='adhoc' for https

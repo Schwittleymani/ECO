@@ -37,9 +37,10 @@ class StaticHelper(object):
         self._giphy = giphypop.Giphy()
 
         feather_file = data_access.get_model_folder() + '/test_reddit_4chan.feather'
+        # WHY SOME REDDIT CRAP IN THE ABSTRACT CLASS?
         print('Loading ' + feather_file + ' for RedditPost')
-        block_words = open('data/reddit/blocked_words.txt').readlines()
-        block_chars = "".join(open('data/reddit/blocked_chars.txt').readlines())
+        block_words = open(data_access.get_data_folder() + 'v4/reddit/blocked_words.txt').readlines()
+        block_chars = "".join(open(data_access.get_data_folder() + 'v4/reddit/blocked_chars.txt').readlines())
         data = PandasData(feather_file, block_words=block_words)
         data.load()
         df = data.df
