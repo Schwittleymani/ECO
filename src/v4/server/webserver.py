@@ -42,7 +42,8 @@ def send_msg(data, bcast=False):
 if __name__ == "__main__":
     if settings.RECORD:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-        os.makedirs('logs')
+        if not os.path.isdir:
+            os.makedirs('logs')
         recording_file = open('logs/' + str(timestamp) + '.json', 'w')
 
     socketio.run(app, host=settings.HOST, port=settings.PORT, debug=settings.DEBUG ) # add ssl_context='adhoc' for https
