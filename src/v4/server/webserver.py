@@ -1,13 +1,16 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from flask_socketio import SocketIO
 import settings
 import json
 import datetime
 import os
+from v4.misc.data_access import get_data_folder
+
 
 # "threading", "eventlet" or "gevent"
 async_mode = 'threading'
-app = Flask(__name__)
+static_folder = get_data_folder() + "v4/webserver_static_files"
+app = Flask(__name__, static_folder=static_folder)
 socketio = SocketIO(app, async_mode=async_mode)
 
 
@@ -29,6 +32,9 @@ def msg():
     send_msg(data, bcast=True)
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory(static_folder, path)
 
 @socketio.on('connect')
 def client_connect():
